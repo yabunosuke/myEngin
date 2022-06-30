@@ -16,6 +16,7 @@
 TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
+	skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Resources/3d/Box/Box.fbx");
 }
 
 void TitleScene::Initialize()
@@ -29,6 +30,7 @@ void TitleScene::Initialize()
 	obj[0]->SetPosition({ -10,5,0 });
 	obj[1]->SetPosition({ -10,0,0 });
 	obj[2]->SetPosition({ -10,-5,0 });
+
 }
 
 void TitleScene::Finalize()

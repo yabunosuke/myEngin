@@ -142,11 +142,11 @@
     <ClCompile Include="LightComponent.cpp">
       <Filter>Engin\Object\GameObject\Component\Light</Filter>
     </ClCompile>
-    <ClCompile Include="FbxObject3d.cpp">
-      <Filter>Engin\Object\FBX</Filter>
-    </ClCompile>
     <ClCompile Include="ComponentList.cpp">
       <Filter>Engin\Object\GameObject\Component\ComponentList</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedMesh.cpp">
+      <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -292,11 +292,11 @@
     <ClInclude Include="LightComponent.h">
       <Filter>Engin\Object\GameObject\Component\Light</Filter>
     </ClInclude>
-    <ClInclude Include="FbxObject3d.h">
-      <Filter>Engin\Object\FBX</Filter>
-    </ClInclude>
     <ClInclude Include="ComponentList.h">
       <Filter>Engin\Object\GameObject\Component\ComponentList</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedMesh.h">
+      <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

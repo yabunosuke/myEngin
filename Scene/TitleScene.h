@@ -7,8 +7,8 @@
 #include "DebugText.h"
 #include "Camera.h"
 #include <vector>
-//
-//#include "SkinnedMesh.h"
+
+#include "SkinnedMesh.h"
 //#include "FbxObject3d.h"
 
 #include "Model.h"
@@ -31,7 +31,8 @@ private:
 
 	std::unique_ptr<Model> model;
 	std::unique_ptr<Object3d> obj[3];
-	//std::shared_ptr<SkinnedMesh> skinnedMeshes[8];
+
+	std::shared_ptr<SkinnedMesh> skinnedMeshes[8];
 	//std::unique_ptr<FbxObject3d> obj;
 };
 

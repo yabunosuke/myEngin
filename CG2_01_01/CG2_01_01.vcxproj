@@ -201,7 +201,6 @@
     <ClCompile Include="ComponentList.cpp" />
     <ClCompile Include="DebugText.cpp" />
     <ClCompile Include="Editor.cpp" />
-    <ClCompile Include="FbxObject3d.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
@@ -209,6 +208,7 @@
     <ClCompile Include="imguiManager.cpp" />
     <ClCompile Include="LightComponent.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SkinnedMesh.cpp" />
     <ClCompile Include="SkinnedMesh.cpp" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
@@ -343,13 +343,13 @@
     <ClInclude Include="ComponentList.h" />
     <ClInclude Include="DebugText.h" />
     <ClInclude Include="Editor.h" />
-    <ClInclude Include="FbxObject3d.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="imguiManager.h" />
     <ClInclude Include="LightComponent.h" />
+    <ClInclude Include="SkinnedMesh.h" />
     <ClInclude Include="SkinnedMesh.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="TransformComponent.h" />

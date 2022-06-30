@@ -1,49 +1,48 @@
-ï»¿#include "SkinnedMesh.h"
-#include <assert.h>
+#include "SkinnedMesh.h"
 #include <sstream>
 #include <functional>
-#include <d3dcompiler.h>
-#pragma comment(lib, "d3dcompiler.lib")
 
 SkinnedMesh::SkinnedMesh(ID3D12Device *dev, const char *fileName, bool trianglate)
 {
+	// ƒ}ƒl[ƒWƒƒ[‚Ì¶¬
 	FbxManager *fbxManager = FbxManager::Create();
+	// ƒV[ƒ“¶¬
 	FbxScene *fbxScene = FbxScene::Create(fbxManager, "");
 
 	FbxImporter *fbxImporter = FbxImporter::Create(fbxManager, "");
-	// ãƒ•ã‚¡ã‚¤ãƒ«åã‚’æŒ‡å®šã—ã¦FBXãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€
+	// ƒtƒ@ƒCƒ‹–¼‚ğw’è‚µ‚ÄFBXƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş
 	if (!fbxImporter->Initialize(fileName, -1, fbxManager->GetIOSettings()))
 	{
 		assert(0);
 	}
 
-	//ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
+	//ƒCƒ“ƒ|[ƒg
 	if (!fbxImporter->Import(fbxScene)) {
 		assert(0);
 	}
 
-	//ä¸‰è§’å½¢åŒ–
+	//OŠpŒ`‰»
 	FbxGeometryConverter fbx_converter(fbxManager);
 	if (trianglate) {
 		fbx_converter.Triangulate(fbxScene, true);
 		fbx_converter.RemoveBadPolygonsFromMeshes(fbxScene);
 	}
 
-	//ã‚»ãƒ³ãƒãƒ¡ãƒ¼ãƒˆãƒ«ã«å¤‰æ›
+	//ƒZƒ“ƒ`ƒ[ƒgƒ‹‚É•ÏŠ·
 	FbxSystemUnit::m.ConvertScene(fbxScene);
 
-	//ãƒãƒ¼ãƒ‰ã®å–å¾—
+	//ƒm[ƒh‚Ìæ“¾
 	std::function<void(FbxNode *)> traverse{ [&](FbxNode *fbxNode) {
 		Scene::Node &node = sceneView.nodes.emplace_back();
-		//typeãŒnullã ã£ãŸã‚‰eUnknownã‚’ã‚»ãƒƒãƒˆ
+		//type‚ªnull‚¾‚Á‚½‚çeUnknown‚ğƒZƒbƒg
 		node.atribute = fbxNode->GetNodeAttribute() ?
 			fbxNode->GetNodeAttribute()->GetAttributeType() : FbxNodeAttribute::EType::eUnknown;
 		node.name = fbxNode->GetName();
 		node.uniqueID = fbxNode->GetUniqueID();
-		//è¦ªãŒã„ãªã‘ã‚Œã°0ã‚’ä»£å…¥
+		//e‚ª‚¢‚È‚¯‚ê‚Î0‚ğ‘ã“ü
 		node.pearentIndex = sceneView.indexof(fbxNode->GetParent() ?
 			fbxNode->GetParent()->GetUniqueID() : 0);
-		//å­ã«å¯¾ã—ã¦å†èµ·å‡¦ç†
+		//q‚É‘Î‚µ‚ÄÄ‹Nˆ—
 		for (int childIndex = 0; childIndex < fbxNode->GetChildCount(); ++childIndex) {
 			traverse(fbxNode->GetChild(childIndex));
 		}
@@ -51,46 +50,67 @@ SkinnedMesh::SkinnedMesh(ID3D12Device *dev, const char *fileName, bool trianglat
 
 	traverse(fbxScene->GetRootNode());
 
-	FetchMeshes(fbxScene, meshes);
+#if 0
+	for (const Scene::Node &node : sceneView.nodes) {
+		FbxNode *fbxNode = fbxScene->FindNodeByName(node.name.c_str());
+		std::string nodeName = fbxNode->GetName();
+		uint64_t uid = fbxNode->GetUniqueID();
+		uint64_t parentUid =
+			fbxNode->GetParent() ? fbxNode->GetParent()->GetUniqueID() : 0;
+		int32_t type =
+			fbxNode->GetNodeAttribute() ? fbxNode->GetNodeAttribute()->GetAttributeType() : 0;
+
+		std::stringstream debugString;
+		debugString << nodeName << ":" << uid << ":" << parentUid << ":" << type << "\n";
+		OutputDebugStringA(debugString.str().c_str());
+	}
+#endif
 
 	fbxManager->Destroy();
 
-	CreateComObjects(dev, fileName);
 }
 
 void SkinnedMesh::FetchMeshes(FbxScene *fbxScene, std::vector<Mesh> &meshes)
 {
+	// ‚·‚×‚Ä‚Ìƒm[ƒh‚ğƒ`ƒFƒbƒN
 	for (const Scene::Node &node : sceneView.nodes) {
-		// ãƒ¡ãƒƒã‚·ãƒ¥ã§ãªã‘ã‚Œã°ã‚³ãƒ³ãƒ†ãƒ‹ãƒ¥ãƒ¼
+		// ƒƒbƒVƒ…‚Å‚È‚¯‚ê‚ÎƒXƒLƒbƒv
 		if (node.atribute != FbxNodeAttribute::EType::eMesh) {
 			continue;
 		}
-
+		// ƒm[ƒh‚ÆƒƒbƒVƒ…‚ğ”²‚«o‚µ
 		FbxNode *fbxNode = fbxScene->FindNodeByName(node.name.c_str());
 		FbxMesh *fbxMesh = fbxNode->GetMesh();
-
+		
+		// ƒƒbƒVƒ…\‘¢‘Ì‚É“–‚Ä‚Í‚ß‚é
 		Mesh &mesh = meshes.emplace_back();
 		mesh.uniqueID = fbxMesh->GetNode()->GetUniqueID();
 		mesh.name = fbxMesh->GetNode()->GetName();
 		mesh.nodeIndex = sceneView.indexof(mesh.uniqueID);
 
+		// ƒ|ƒŠƒSƒ“‚Ì”‚©‚ç’¸“_‚ÆƒCƒ“ƒfƒbƒNƒX‚ğ‚ ‚ç‚©‚¶‚ßŠm•Û
 		const int polygonCount = fbxMesh->GetPolygonCount();
 		mesh.vertices.resize(polygonCount * 3LL);
 		mesh.indices.resize(polygonCount * 3LL);
 
+		// UV‚ğæ“¾
 		FbxStringList uvNames;
 		fbxMesh->GetUVSetNames(uvNames);
+		// ƒRƒ“ƒgƒ[ƒ‹ƒ|ƒCƒ“ƒg‚Ìæ“¾
 		const FbxVector4 *controlPoints = fbxMesh->GetControlPoints();
 		for (int polygonIndex = 0; polygonIndex < polygonCount; ++polygonIndex) {
 			for (int positionInPolygon = 0; positionInPolygon < 3; ++positionInPolygon) {
+				// ’¸“_‚ÌƒCƒ“ƒfƒbƒNƒX
 				const int vertexIndex = polygonIndex * 3 + positionInPolygon;
 
+				// ’¸“_
 				Vertex vertex;
 				const int polygonVertex = fbxMesh->GetPolygonVertex(polygonIndex, positionInPolygon);
 				vertex.position.x = static_cast<float>(controlPoints[polygonVertex][0]);
 				vertex.position.y = static_cast<float>(controlPoints[polygonVertex][1]);
 				vertex.position.z = static_cast<float>(controlPoints[polygonVertex][2]);
 
+				// –@ü‚ª‚ ‚ê‚ÎƒRƒs[
 				if (fbxMesh->GetElementNormalCount() > 0) {
 					FbxVector4 normal;
 					fbxMesh->GetPolygonVertexNormal(polygonIndex, positionInPolygon, normal);
@@ -99,6 +119,7 @@ void SkinnedMesh::FetchMeshes(FbxScene *fbxScene, std::vector<Mesh> &meshes)
 					vertex.normal.z = static_cast<float>(normal[2]);
 				}
 
+				// UV‚ª‚ ‚ê‚ÎƒRƒs[
 				if (fbxMesh->GetElementUVCount() > 0) {
 					FbxVector2 uv;
 					bool unmappedUv;
@@ -114,109 +135,4 @@ void SkinnedMesh::FetchMeshes(FbxScene *fbxScene, std::vector<Mesh> &meshes)
 
 	}
 
-}
-
-void SkinnedMesh::CreateComObjects(ID3D12Device *dev, const char *fileName)
-{
-	//ãƒ¡ãƒƒã‚·ãƒ¥ã®æ•°ã ã‘
-	for (Mesh &mesh : meshes) {
-		HRESULT result;
-
-		// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿å…¨ä½“ã®ã‚µã‚¤ã‚º
-		UINT sizeVB = static_cast<UINT>(sizeof(Vertex) * mesh.vertices.size());
-		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
-		result = dev->CreateCommittedResource(
-			&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
-			D3D12_HEAP_FLAG_NONE,
-			&CD3DX12_RESOURCE_DESC::Buffer(sizeVB),
-			D3D12_RESOURCE_STATE_GENERIC_READ,
-			nullptr,
-			IID_PPV_ARGS(&mesh.vertexBuffer));
-		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã¸ã®ãƒ‡ãƒ¼ã‚¿è»¢é€
-		Vertex *vertMap = nullptr;
-		result = mesh.vertexBuffer->Map(0, nullptr, (void **)&vertMap);
-		if (SUCCEEDED(result)) {
-			std::copy(mesh.vertices.begin(), mesh.vertices.end(), vertMap);
-			mesh.vertexBuffer->Unmap(0, nullptr);
-		}
-		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼(VBV)ã®ä½œæˆ
-		mesh.vbView.BufferLocation = mesh.vertexBuffer->GetGPUVirtualAddress();
-		mesh.vbView.SizeInBytes = sizeVB;
-		mesh.vbView.StrideInBytes = sizeof(mesh.vertices[0]);
-
-
-		// é ‚ç‚¹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹å…¨ä½“ã®ã‚µã‚¤ã‚º
-		UINT sizeIB = static_cast<UINT>(sizeof(unsigned short) * mesh.indices.size());
-		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
-		result = dev->CreateCommittedResource(
-			&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
-			D3D12_HEAP_FLAG_NONE,
-			&CD3DX12_RESOURCE_DESC::Buffer(sizeIB),
-			D3D12_RESOURCE_STATE_GENERIC_READ,
-			nullptr,
-			IID_PPV_ARGS(&mesh.indexBuffer));
-		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã¸ã®ãƒ‡ãƒ¼ã‚¿è»¢é€
-		unsigned short *indexMap = nullptr;
-		result = mesh.indexBuffer->Map(0, nullptr, (void **)&indexMap);
-		if (SUCCEEDED(result)) {
-			std::copy(mesh.indices.begin(), mesh.indices.end(), indexMap);
-			mesh.indexBuffer->Unmap(0, nullptr);
-		}
-		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼(IBV)ã®ä½œæˆ
-		mesh.ibView.BufferLocation = mesh.indexBuffer->GetGPUVirtualAddress();
-		mesh.ibView.Format = DXGI_FORMAT_R16_UINT;
-		mesh.ibView.SizeInBytes = sizeIB;
-
-#if 1
-		mesh.vertices.clear();
-		mesh.indices.clear();
-#endif
-	}
-
-	HRESULT result;
-
-	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
-	result = dev->CreateCommittedResource
-	(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
-		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(Constants) + 0xff) & ~0xff),
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&constantBufferTransform)
-	);
-}
-
-void SkinnedMesh::Render(ComPtr<ID3D12GraphicsCommandList> cmdList, const XMFLOAT4X4 &world, const XMFLOAT4 &materialColor)
-{
-	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã‚’ã‚»ãƒƒãƒˆ
-	cmdList->SetGraphicsRootConstantBufferView(0, constantBufferTransform->GetGPUVirtualAddress());
-
-	
-	for (const Mesh &mesh : meshes) {
-		HRESULT result;
-
-
-		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ã‚»ãƒƒãƒˆ(VBV)
-		cmdList->IASetVertexBuffers(0, 1, &mesh.vbView);
-		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ã‚»ãƒƒãƒˆ(IBV)
-		cmdList->IASetIndexBuffer(&mesh.ibView);
-		
-		// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¸ãƒ‡ãƒ¼ã‚¿è»¢é€
-		Constants *constMap = nullptr;
-		result = constantBufferTransform->Map(0, nullptr, (void **)&constMap);
-		if (SUCCEEDED(result))
-		{
-			constMap->world = world;
-			constMap->materialColor = materialColor;
-			constantBufferTransform->Unmap(0, nullptr);
-		}
-		// å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã‚’ã‚»ãƒƒãƒˆ
-		cmdList->SetGraphicsRootConstantBufferView(0, constantBufferTransform->GetGPUVirtualAddress());
-
-
-		// æç”»ã‚³ãƒãƒ³ãƒ‰
-		cmdList->DrawIndexedInstanced((UINT)mesh.indices.size(), 1, 0, 0, 0);
-
-	}
 }
