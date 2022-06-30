@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# Destroy
+.vs/
+x64/
+CG2_01_01/x64/
+lib/fbx_sdk/
