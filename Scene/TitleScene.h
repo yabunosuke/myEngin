@@ -30,7 +30,7 @@ private:
 	Camera *cam;
 
 	std::unique_ptr<Model> model;
-	std::unique_ptr<Object3d> obj[3];
+	std::unique_ptr<Object3d> obj;
 
 	std::shared_ptr<SkinnedMesh> skinnedMeshes[8];
 	//std::unique_ptr<FbxObject3d> obj;

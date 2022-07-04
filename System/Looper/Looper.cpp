@@ -22,20 +22,20 @@ Looper::Looper() {
 
 bool Looper::Loop()
 {
+	// ImGui描画前処理
+	ImGui_ImplDX12_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+
 	//キーボード更新
 	KeyboardInput::GetIns()->Update();
 	//シーンの更新
 	sceneStack.top()->Update();
 	//シーンの描画コマンドを発行
 	sceneStack.top()->Draw();
-	//ImGuiの描画コマンドを発行
 
-	//描画前処理
-	ImGui_ImplDX12_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
-
-	//シーンマネージャーのImGui
+	
+	// エディタ描画
 	editor.Draw();
 	imguiManager::GetIns()->Draw();
 	//描画コマンド実行

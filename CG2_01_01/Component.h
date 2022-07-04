@@ -3,7 +3,7 @@
 #include <DirectXMath.h>
 #include <memory>
 #include "imgui.h"
-
+//#include "GameObject.h"
 
 class GameObject;
 
@@ -72,15 +72,18 @@ protected:	//関数
 
 
 protected:
-	//コンポーネントの名前
-	std::string name;
 	// オブジェクト
 	std::weak_ptr<GameObject> object;
 	// アクティブフラグ
 	bool isActive;
-	// 削除不可
-	bool isDontRemove;
 	// リムーブフラグ
 	bool isRemove;
+private:
+	//コンポーネントの名前
+	std::string name;
+	// 削除不可
+	bool isDontRemove;
+	// 重複不可
+	
 };
 

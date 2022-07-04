@@ -133,9 +133,6 @@
     <ClCompile Include="Editor.cpp">
       <Filter>Engin\Editor</Filter>
     </ClCompile>
-    <ClCompile Include="SkinnedMesh.cpp">
-      <Filter>Engin\Object\FBX</Filter>
-    </ClCompile>
     <ClCompile Include="TransformComponent.cpp">
       <Filter>Engin\Object\GameObject\Component\Transform</Filter>
     </ClCompile>
@@ -147,6 +144,9 @@
     </ClCompile>
     <ClCompile Include="SkinnedMesh.cpp">
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Engin\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -283,9 +283,6 @@
     <ClInclude Include="Editor.h">
       <Filter>Engin\Editor</Filter>
     </ClInclude>
-    <ClInclude Include="SkinnedMesh.h">
-      <Filter>Engin\Object\FBX</Filter>
-    </ClInclude>
     <ClInclude Include="TransformComponent.h">
       <Filter>Engin\Object\GameObject\Component\Transform</Filter>
     </ClInclude>
@@ -297,6 +294,9 @@
     </ClInclude>
     <ClInclude Include="SkinnedMesh.h">
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Engin\Texture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -400,6 +400,9 @@
     </Filter>
     <Filter Include="Engin\Object\GameObject\Component\ComponentList">
       <UniqueIdentifier>{adffe5e4-1486-4fbf-a67a-3882c02a314c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engin\Texture">
+      <UniqueIdentifier>{6c53a731-7f5c-4943-842c-076c96b0eb05}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

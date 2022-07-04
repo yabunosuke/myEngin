@@ -1,10 +1,14 @@
 #pragma once
+#include <d3d12.h>
 #include <d3dx12.h>
 #include <wrl.h>
 #include <DirectXMath.h>
 #include <vector>
 #include <string>
 #include <fbxsdk.h>
+#include <unordered_map>
+
+//#include "Component.h"
 
 struct Scene {
 	// ノード
@@ -60,11 +64,68 @@ public:	// サブクラス
 		XMFLOAT3 texcoord;
 	};
 
-	// 定数バッファ用
-	struct Constants {
+	// メッシュバッファ用
+	struct MeshConstantBuffer {
 		XMFLOAT4X4 world;
 		XMFLOAT4 materialColor;
 	};
+
+	// シーンバッファ用
+	struct SceneConstantBuffer {
+		XMFLOAT4X4 view_projection;
+		XMFLOAT4 light_direction;
+		XMFLOAT4 camera_position;
+	};
+
+	//// マテリアル
+	//struct Material {
+	//	// ID
+	//	uint64_t unique_id;
+	//	// 名前
+	//	std::string name;
+	//	
+	//	XMFLOAT4 Ka = {0.2f,0.2f,0.2f,1.0f};	// Albedo
+	//	XMFLOAT4 Kd = {0.8f,0.8f,0.8f,1.0f};	// Diffuse
+	//	XMFLOAT4 Ks = {1.0f,1.0f,1.0f,1.0f};	// Specular
+	//	
+	//	// テクスチャの名前
+	//	std::string texture_filenames[4];
+	//	// シェーダーリソースビュー
+	//	ComPtr<ID3D12DescriptorHeap> shader_resource_views[4];
+	//};
+	//std::unordered_map<uint64_t, Material> materials;
+	
+	struct Mesh
+	{
+		//メッシュID
+		uint64_t uniqueID = 0;
+		// メッシュ名
+		std::string name;
+		int64_t nodeIndex = 0;
+
+		std::vector<Vertex> vertices;
+		std::vector<uint32_t> indices;
+
+	private:
+		// 頂点バッファ
+		ComPtr<ID3D12Resource> vertexBuffer;
+		// 頂点バッファビュー
+		D3D12_VERTEX_BUFFER_VIEW vbView = {};
+		// インデックスバッファ
+		ComPtr<ID3D12Resource> indexBuffer;
+		// インデックスバッファビュー
+		D3D12_INDEX_BUFFER_VIEW ibView = {};
+
+
+		friend class SkinnedMesh;
+
+	};
+	std::vector<Mesh> meshes;
+
+
+public:
+	static void CreatePipline();
+
 
 public:
 	/// <summary>
@@ -76,19 +137,55 @@ public:
 	SkinnedMesh(
 		ID3D12Device *dev,
 		const char *fileName,
-		bool trianglate = false);
+		bool trianglate = true);
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
 	virtual ~SkinnedMesh() = default;
+
+	/// <summary>
+	/// ノードからメッシュ情報を取得
+	/// </summary>
+	/// <param name="fbxScene">シーン</param>
+	/// <param name="meshes">メッシュの格納先</param>
+	void FetchMeshes(FbxScene *fbx_scene, std::vector<Mesh> &meshes);
+
+	/// <summary>
+	/// materialの取得
+	/// </summary>
+	/// <param name="fbx_scene">シーン</param>
+	/// <param name="materials">materialの格納先</param>
+	//void FetchMaterial(FbxScene *fbx_scene, std::unordered_map<uint64_t, Material> &materials);
+
+	/// <summary>
+	/// オブジェクト生成
+	/// </summary>
+	/// <param name="dev">デバイス</param>
+	/// <param name="fileName">ファイル名</param>
+	void CreateComObjects(ID3D12Device *dev, const char *fileName);
+
+	/// <summary>
+	/// 描画コマンド発行
+	/// </summary>
+	/// <param name="cmdList">コマンドリスト</param>
+	/// <param name="world">ワールド行列</param>
+	/// <param name="materialColor">マテリアルカラー</param>
+	void Render(ComPtr<ID3D12GraphicsCommandList> cmdList, const XMFLOAT4X4 &world, const XMFLOAT4 &materialColor);
+
 
 private:
 	// ルートシグネチャ
-	ComPtr<ID3D12RootSignature> rootsignature;
+	ComPtr<ID3D12RootSignature> rootsignature_;
 	// パイプラインステートオブジェクト
-	ComPtr<ID3D12PipelineState> pipelinestate;
-	// 定数バッファ
-	ComPtr<ID3D12Resource> constBuffTransform;
+	ComPtr<ID3D12PipelineState> pipelinestate_;
+	// メッシュ定数バッファ
+	ComPtr<ID3D12Resource> mesh_constant_buffer_;
+	// シーン定数バッファ
+	ComPtr<ID3D12Resource> scene_constant_buffer_;
+
 
 protected:
 	// シーンビュー
-	Scene sceneView;
+	Scene scene_view_;
 };
 

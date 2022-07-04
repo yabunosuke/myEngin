@@ -2,6 +2,11 @@
 
 CameraComponent::CameraComponent() :
 	Component("Camera"),
-	clearFlag(CLEAR_FLAG::SKY_BOX)
+	clearFlag(ClearFlag::SKY_BOX)
 {
+}
+
+void CameraComponent::VirtualUpdate()
+{
+	auto transfome = object.lock().get();
 }

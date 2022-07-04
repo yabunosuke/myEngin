@@ -6,7 +6,7 @@ class CameraComponent :
 {
 public:	//サブクラス
 	//クリアフラグ
-	enum class CLEAR_FLAG
+	enum class ClearFlag
 	{
 		SKY_BOX,
 		SOILD_COLOR,
@@ -15,16 +15,26 @@ public:	//サブクラス
 	};
 
 	//投影方法
-	enum class PROJECTION_TYPE
+	enum class ProjectionType
 	{
 		PERSPECTIV,
 		ORTHOGRAPHIC
 	};
 	
+	
 public:
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	CameraComponent();
 
+	void VirtualUpdate() override;
+
 private:
-	CLEAR_FLAG clearFlag;
+	ClearFlag clearFlag;
+
+	XMFLOAT3 eye_;
+	XMFLOAT3 target_;
+	XMFLOAT3 up_;
 };
 

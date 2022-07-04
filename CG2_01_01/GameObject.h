@@ -97,6 +97,7 @@ public:	//関数
 		return nullptr;
 	};
 
+	//コンポーネントの追加
 	void AddComponent(const std::shared_ptr<Component> &component);
 
 	

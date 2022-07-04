@@ -209,8 +209,8 @@
     <ClCompile Include="LightComponent.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SkinnedMesh.cpp" />
-    <ClCompile Include="SkinnedMesh.cpp" />
     <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -350,8 +350,8 @@
     <ClInclude Include="imguiManager.h" />
     <ClInclude Include="LightComponent.h" />
     <ClInclude Include="SkinnedMesh.h" />
-    <ClInclude Include="SkinnedMesh.h" />
     <ClInclude Include="TestScene.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="yMath.h" />
   </ItemGroup>
