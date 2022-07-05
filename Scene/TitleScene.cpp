@@ -11,12 +11,14 @@
 #include "ColliderComponent.h"
 
 #include "Easing.h"
+#include "yMath.h"
 
 
 TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
 	skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Resources/3d/box/box.fbx");
+	skinnedMeshes[1] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Resources/3d/box/ball.fbx");
 }
 
 void TitleScene::Initialize()
@@ -76,23 +78,27 @@ void TitleScene::Draw() const
 	static XMFLOAT3 pos = { 0,0,0 }, rot = { 0,0,0 }, sca = { 1,1,1 };
 
 	ImGui::Begin("testWindow");
+	ImGui::DragFloat3("pos", &pos.x);
 	ImGui::DragFloat3("rot", &rot.x);
 	
 	ImGui::End();
 
 	XMMATRIX transfome = DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
-	XMMATRIX rotX = DirectX::XMMatrixRotationX(rot.x);
-	XMMATRIX rotY = DirectX::XMMatrixRotationY(rot.y);
-	XMMATRIX rotZ = DirectX::XMMatrixRotationZ(rot.z);
+	XMMATRIX rotX = DirectX::XMMatrixRotationX(DegToRad(rot.x));
+	XMMATRIX rotY = DirectX::XMMatrixRotationY(DegToRad(rot.y));
+	XMMATRIX rotZ = DirectX::XMMatrixRotationZ(DegToRad(rot.z));
 	XMMATRIX rotation = rotY * rotZ * rotX;
 	XMMATRIX scale = DirectX::XMMatrixScaling(sca.x, sca.y, sca.z);
 	
 	XMMATRIX mat = scale * rotation * transfome;
 	DirectX::XMStoreFloat4x4(&world,mat);
 	//•`ŽÊƒeƒXƒg
-	skinnedMeshes[0]->Render(DirectXCommon::cmdList.Get(), world, { 1,0,0,1 });
+	skinnedMeshes[0]->Render(DirectXCommon::dev.Get(),DirectXCommon::cmdList.Get(), world, { 1,0,0,1 });
 	//obj->Draw(DirectXCommon::cmdList.Get());
 	
+	gameObjectManager.Draw();
+
+
 	Sprite::PreDraw(DirectXCommon::cmdList.Get());
 	Sprite::PostDraw();
 }

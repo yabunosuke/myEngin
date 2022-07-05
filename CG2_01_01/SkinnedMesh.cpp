@@ -1,11 +1,17 @@
 #include "SkinnedMesh.h"
 #include <sstream>
 #include <functional>
+#include <filesystem>
 
 #include <d3dcompiler.h>
 #pragma comment(lib, "d3dcompiler.lib")
 
+#include "Texture.h"
 #include "Camera.h"
+
+void SkinnedMesh::CreatePipline()
+{
+}
 
 SkinnedMesh::SkinnedMesh(ID3D12Device *dev, const char *fileName, bool trianglate)
 {
@@ -58,7 +64,7 @@ SkinnedMesh::SkinnedMesh(ID3D12Device *dev, const char *fileName, bool trianglat
 	// メッシュ情報を取得
 	FetchMeshes(fbx_scene, meshes);
 	// マテリアル情報を取得
-	//FetchMaterial(fbx_scene, materials);
+	FetchMaterial(fbx_scene, materials);
 #if 0
 	for (const Scene::Node &node : sceneView.nodes) {
 		FbxNode *fbxNode = fbxScene->FindNodeByName(node.name.c_str());
@@ -147,52 +153,52 @@ void SkinnedMesh::FetchMeshes(FbxScene *fbxScene, std::vector<Mesh> &meshes)
 
 }
 
-//void SkinnedMesh::FetchMaterial(FbxScene *fbx_scene, std::unordered_map<uint64_t, Material> &materials)
-//{
-//	// ノードの数
-//	const size_t node_count = scene_view_.nodes.size();
-//	for (int node_index = 0; node_index < node_count; ++node_index) {
-//		const Scene::Node &node = scene_view_.nodes.at(node_index);
-//		const FbxNode *fbx_node = fbx_scene->FindNodeByName(node.name.c_str());
-//		const int material_count = fbx_node->GetMaterialCount();
-//
-//		for (int material_index = 0; material_index < material_count; ++material_index) {
-//			// マテリアル取得
-//			const FbxSurfaceMaterial *fbx_material = fbx_node->GetMaterial(material_index);
-//
-//			Material material;
-//			material.name = fbx_material->GetName();
-//			material.unique_id = fbx_material->GetUniqueID();
-//			FbxProperty fbx_property = fbx_material->FindProperty(FbxSurfaceMaterial::sDiffuse);
-//
-//			if (fbx_property.IsValid()) {
-//
-//				material.Ka.x;
-//				material.Ka.y;
-//				material.Ka.z;
-//				material.Ka.w;
-//
-//				const FbxDouble3 color = fbx_property.Get<FbxDouble3>();
-//				material.Kd.x = static_cast<float>(color[0]);
-//				material.Kd.y = static_cast<float>(color[1]);
-//				material.Kd.z = static_cast<float>(color[2]);
-//				material.Kd.w = 1.0f;
-//
-//
-//				material.Ks.x;
-//				material.Ks.y;
-//				material.Ks.z;
-//				material.Ks.w;
-//
-//				const FbxFileTexture *fbx_texture = fbx_property.GetSrcObject<FbxFileTexture>();
-//				material.texture_filenames[0] =
-//					fbx_texture ? fbx_texture->GetRelativeFileName() : "";
-//			}
-//
-//			materials.emplace(material.unique_id, std::move(material));
-//		}
-//	}
-//}
+void SkinnedMesh::FetchMaterial(FbxScene *fbx_scene, std::unordered_map<uint64_t, Material> &materials)
+{
+	// ノードの数
+	const size_t node_count = scene_view_.nodes.size();
+	for (int node_index = 0; node_index < node_count; ++node_index) {
+		const Scene::Node &node = scene_view_.nodes.at(node_index);
+		const FbxNode *fbx_node = fbx_scene->FindNodeByName(node.name.c_str());
+		const int material_count = fbx_node->GetMaterialCount();
+
+		for (int material_index = 0; material_index < material_count; ++material_index) {
+			// マテリアル取得
+			const FbxSurfaceMaterial *fbx_material = fbx_node->GetMaterial(material_index);
+
+			Material material;
+			material.name = fbx_material->GetName();
+			material.unique_id = fbx_material->GetUniqueID();
+			FbxProperty fbx_property = fbx_material->FindProperty(FbxSurfaceMaterial::sDiffuse);
+
+			if (fbx_property.IsValid()) {
+
+				material.Ka.x;
+				material.Ka.y;
+				material.Ka.z;
+				material.Ka.w;
+
+				const FbxDouble3 color = fbx_property.Get<FbxDouble3>();
+				material.Kd.x = static_cast<float>(color[0]);
+				material.Kd.y = static_cast<float>(color[1]);
+				material.Kd.z = static_cast<float>(color[2]);
+				material.Kd.w = 1.0f;
+
+
+				material.Ks.x;
+				material.Ks.y;
+				material.Ks.z;
+				material.Ks.w;
+
+				const FbxFileTexture *fbx_texture = fbx_property.GetSrcObject<FbxFileTexture>();
+				material.texture_filenames[0] =
+					fbx_texture ? fbx_texture->GetRelativeFileName() : "";
+			}
+
+			materials.emplace(material.unique_id, std::move(material));
+		}
+	}
+}
 
 
 
@@ -372,22 +378,22 @@ void SkinnedMesh::CreateComObjects(ID3D12Device *dev, const char *fileName)
 	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0～255指定のRGBA
 	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
 
-	//// デスクリプタレンジ(テクスチャを四枚まで)
-	//CD3DX12_DESCRIPTOR_RANGE descRangeSRV[4] = {};
-	//descRangeSRV[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
-	//descRangeSRV[1].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1); // t1 レジスタ
-	//descRangeSRV[2].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2); // t2 レジスタ
-	//descRangeSRV[3].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 3); // t3 レジスタ
+	// デスクリプタレンジ(テクスチャを四枚まで)
+	CD3DX12_DESCRIPTOR_RANGE desc_range_srv[4] = {};
+	desc_range_srv[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
+	desc_range_srv[1].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1); // t1 レジスタ
+	desc_range_srv[2].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2); // t2 レジスタ
+	desc_range_srv[3].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 3); // t3 レジスタ
 
 
 	// ルートパラメータ
-	CD3DX12_ROOT_PARAMETER rootparams[2];
+	CD3DX12_ROOT_PARAMETER rootparams[3];
 	// CBV（座標変換行列用）
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	// CBV（シーンバッファ）
 	rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
-	//// SRV（テクスチャ）
-	//rootparams[1].InitAsDescriptorTable(_countof(descRangeSRV), descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
+	// SRV（テクスチャ）
+	rootparams[2].InitAsDescriptorTable(_countof(desc_range_srv), desc_range_srv, D3D12_SHADER_VISIBILITY_ALL);
 	////CBV(スキニング用)
 	//rootparams[2].InitAsConstantBufferView(3, 0, D3D12_SHADER_VISIBILITY_ALL);
 	//// CBV（マテリアル用）
@@ -396,11 +402,15 @@ void SkinnedMesh::CreateComObjects(ID3D12Device *dev, const char *fileName)
 	//rootparams[4].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
 
 	// スタティックサンプラー
-	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
+	CD3DX12_STATIC_SAMPLER_DESC sampler_desc[3] = { 
+		CD3DX12_STATIC_SAMPLER_DESC(0),
+		CD3DX12_STATIC_SAMPLER_DESC(1),
+		CD3DX12_STATIC_SAMPLER_DESC(2)
+	};
 
 	// ルートシグネチャの設定
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
-	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, _countof(sampler_desc), sampler_desc, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 	ComPtr<ID3DBlob> rootSigBlob;
 	// バージョン自動判定のシリアライズ
@@ -414,6 +424,8 @@ void SkinnedMesh::CreateComObjects(ID3D12Device *dev, const char *fileName)
 	// グラフィックスパイプラインの生成
 	result = dev->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(pipelinestate_.ReleaseAndGetAddressOf()));
 	if (FAILED(result)) { assert(0); }
+
+
 
 	// メッシュ定数バッファの生成
 	result = dev->CreateCommittedResource
@@ -436,10 +448,27 @@ void SkinnedMesh::CreateComObjects(ID3D12Device *dev, const char *fileName)
 		IID_PPV_ARGS(&scene_constant_buffer_)
 	);
 
+
+	// シェーダーリソースビューの生成
+	for (std::unordered_map<uint64_t, Material>::iterator itr = materials.begin(); itr != materials.end(); ++itr) {
+		// テクスチャが指定されていれば設定
+		if (itr->second.texture_filenames[0].size() > 0) {
+			// ファイル名保存
+			std::filesystem::path path = fileName;
+			path.replace_filename(itr->second.texture_filenames[0]);
+
+			// テクスチャ読み込み
+			Texture::LoadTextureFromFile(dev, path.c_str(), itr->second.shader_resource_views[0].GetAddressOf());
+			itr->second.texture_num[0] = 0;
+		}
+		else {
+			//
+		}
+	}
 }
 
 
-void SkinnedMesh::Render(ComPtr<ID3D12GraphicsCommandList> cmdList, const XMFLOAT4X4 &world, const XMFLOAT4 &materialColor)
+void SkinnedMesh::Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cmdList, const XMFLOAT4X4 &world, const XMFLOAT4 &materialColor)
 {
 	HRESULT result;
 	// メッシュバッファ更新
@@ -487,10 +516,15 @@ void SkinnedMesh::Render(ComPtr<ID3D12GraphicsCommandList> cmdList, const XMFLOA
 		cmdList->IASetIndexBuffer(&mesh.ibView);
 
 		//// デスクリプタヒープのセット
-		//ID3D12DescriptorHeap *ppHeaps[] = { descHeapSRV.Get() };
-		//cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-		//// シェーダリソースビューをセット
-		//cmdList->SetGraphicsRootDescriptorTable(1, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
+		ID3D12DescriptorHeap *ppHeaps[] = { materials.cbegin()->second.shader_resource_views[0].Get() };
+		cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+		// シェーダリソースビューをセット
+		cmdList->SetGraphicsRootDescriptorTable(
+			1, CD3DX12_GPU_DESCRIPTOR_HANDLE(
+				Texture::descriptor_heap_->GetGPUDescriptorHandleForHeapStart(),
+				materials.cbegin()->second.texture_num[0],
+				dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
+
 
 		// 描画コマンド
 		cmdList->DrawIndexedInstanced((UINT)mesh.indices.size(), 1, 0, 0, 0);

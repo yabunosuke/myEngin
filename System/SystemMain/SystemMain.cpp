@@ -9,6 +9,7 @@
 #include "AudioManager.h"
 #include "ModelManager.h"			//モデル
 #include "imguiManager.h"
+#include "Texture.h"
 
 //imgui
 #include "imgui.h"
@@ -23,6 +24,8 @@ bool SystemMain::Initialize() const
 	//imguiを初期化
 	imguiManager::GetIns()->Initialize();
 
+	// テクスチャデスクリプタヒープ生成
+	Texture::CreateDescriptorHeap(DirectXCommon::dev.Get());
 	
 	Object3d::StaticInitialize(DirectXCommon::dev.Get());//オブジェクト共通データ生成
 	//Model::StaticInitialize(DirectXCommon::dev.Get());	//モデル姿勢的初期化

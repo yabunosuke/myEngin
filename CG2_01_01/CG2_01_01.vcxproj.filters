@@ -156,7 +156,6 @@
     <ClInclude Include="..\System\Looper\Looper.h" />
     <ClInclude Include="..\System\SystemMain\SystemMain.h" />
     <ClInclude Include="DebugText.h" />
-    <ClInclude Include="yMath.h" />
     <ClInclude Include="..\DirectX\Collision\BaseCollider.h">
       <Filter>Engin\Collision</Filter>
     </ClInclude>
@@ -297,6 +296,9 @@
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Engin\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="yMath.h">
+      <Filter>Engin\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

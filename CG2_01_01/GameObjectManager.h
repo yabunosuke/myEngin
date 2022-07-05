@@ -20,7 +20,7 @@ public:
 	/// <summary>
 	/// 有効なオブジェクトを描画
 	/// </summary>
-	void Draw();
+	void Draw() const;
 
 
 	void DrawHierarchy(int &selectNum);

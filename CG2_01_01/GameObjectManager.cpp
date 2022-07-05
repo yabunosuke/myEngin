@@ -17,7 +17,7 @@ void GameObjectManager::Update()
 	}
 }
 
-void GameObjectManager::Draw()
+void GameObjectManager::Draw() const
 {
 	//•`‰æ
 	for (auto &e : gameObjects) {

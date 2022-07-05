@@ -77,24 +77,26 @@ public:	// サブクラス
 		XMFLOAT4 camera_position;
 	};
 
-	//// マテリアル
-	//struct Material {
-	//	// ID
-	//	uint64_t unique_id;
-	//	// 名前
-	//	std::string name;
-	//	
-	//	XMFLOAT4 Ka = {0.2f,0.2f,0.2f,1.0f};	// Albedo
-	//	XMFLOAT4 Kd = {0.8f,0.8f,0.8f,1.0f};	// Diffuse
-	//	XMFLOAT4 Ks = {1.0f,1.0f,1.0f,1.0f};	// Specular
-	//	
-	//	// テクスチャの名前
-	//	std::string texture_filenames[4];
-	//	// シェーダーリソースビュー
-	//	ComPtr<ID3D12DescriptorHeap> shader_resource_views[4];
-	//};
-	//std::unordered_map<uint64_t, Material> materials;
+	// マテリアル
+	struct Material {
+		// ID
+		uint64_t unique_id;
+		// 名前
+		std::string name;
+		
+		XMFLOAT4 Ka = {0.2f,0.2f,0.2f,1.0f};	// Albedo
+		XMFLOAT4 Kd = {0.8f,0.8f,0.8f,1.0f};	// Diffuse
+		XMFLOAT4 Ks = {1.0f,1.0f,1.0f,1.0f};	// Specular
+		
+		// テクスチャの名前
+		std::string texture_filenames[4];
+		// シェーダーリソースビュー
+		ComPtr<ID3D12DescriptorHeap> shader_resource_views[4];
+		int texture_num[4];
+	};
+	std::unordered_map<uint64_t, Material> materials;
 	
+	// メッシュ構造体
 	struct Mesh
 	{
 		//メッシュID
@@ -155,7 +157,7 @@ public:
 	/// </summary>
 	/// <param name="fbx_scene">シーン</param>
 	/// <param name="materials">materialの格納先</param>
-	//void FetchMaterial(FbxScene *fbx_scene, std::unordered_map<uint64_t, Material> &materials);
+	void FetchMaterial(FbxScene *fbx_scene, std::unordered_map<uint64_t, Material> &materials);
 
 	/// <summary>
 	/// オブジェクト生成
@@ -170,7 +172,7 @@ public:
 	/// <param name="cmdList">コマンドリスト</param>
 	/// <param name="world">ワールド行列</param>
 	/// <param name="materialColor">マテリアルカラー</param>
-	void Render(ComPtr<ID3D12GraphicsCommandList> cmdList, const XMFLOAT4X4 &world, const XMFLOAT4 &materialColor);
+	void Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cmdList, const XMFLOAT4X4 &world, const XMFLOAT4 &materialColor);
 
 
 private:
