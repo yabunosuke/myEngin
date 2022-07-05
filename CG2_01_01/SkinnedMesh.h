@@ -92,7 +92,7 @@ public:	// サブクラス
 		std::string texture_filenames[4];
 		// シェーダーリソースビュー
 		ComPtr<ID3D12DescriptorHeap> shader_resource_views[4];
-		int texture_num[4];
+		//int texture_num[4];
 	};
 	std::unordered_map<uint64_t, Material> materials;
 	

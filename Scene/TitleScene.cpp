@@ -17,8 +17,8 @@
 TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
-	skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Resources/3d/box/box.fbx");
-	skinnedMeshes[1] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Resources/3d/box/ball.fbx");
+	skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Resources/3d/test/MP5K_.fbx");
+	//skinnedMeshes[1] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Resources/3d/box/ball.fbx");
 }
 
 void TitleScene::Initialize()
@@ -93,7 +93,7 @@ void TitleScene::Draw() const
 	XMMATRIX mat = scale * rotation * transfome;
 	DirectX::XMStoreFloat4x4(&world,mat);
 	//•`ŽÊƒeƒXƒg
-	skinnedMeshes[0]->Render(DirectXCommon::dev.Get(),DirectXCommon::cmdList.Get(), world, { 1,0,0,1 });
+	skinnedMeshes[0]->Render(DirectXCommon::dev.Get(),DirectXCommon::cmdList.Get(), world, { 1,1,1,1 });
 	//obj->Draw(DirectXCommon::cmdList.Get());
 	
 	gameObjectManager.Draw();

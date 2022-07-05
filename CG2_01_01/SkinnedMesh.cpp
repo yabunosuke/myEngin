@@ -459,10 +459,11 @@ void SkinnedMesh::CreateComObjects(ID3D12Device *dev, const char *fileName)
 
 			// テクスチャ読み込み
 			Texture::LoadTextureFromFile(dev, path.c_str(), itr->second.shader_resource_views[0].GetAddressOf());
-			itr->second.texture_num[0] = 0;
+			//itr->second.texture_num[0] = 0;
+			itr->second.shader_resource_views[0] = Texture::descriptor_heap_;
 		}
 		else {
-			//
+			// テクスチャがない場合
 		}
 	}
 }
@@ -471,7 +472,7 @@ void SkinnedMesh::CreateComObjects(ID3D12Device *dev, const char *fileName)
 void SkinnedMesh::Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cmdList, const XMFLOAT4X4 &world, const XMFLOAT4 &materialColor)
 {
 	HRESULT result;
-	// メッシュバッファ更新
+	// メッシュ定数バッファ更新
 	MeshConstantBuffer *mesh_constant_buffer_map = nullptr;
 	result = mesh_constant_buffer_->Map(0, nullptr, (void **)&mesh_constant_buffer_map);
 	if (SUCCEEDED(result))
@@ -491,7 +492,6 @@ void SkinnedMesh::Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cm
 		scene_constant_buffer_map->camera_position = { Camera::GetCam()->eye.x,Camera::GetCam()->eye.y,Camera::GetCam()->eye.z ,1};
 		scene_constant_buffer_->Unmap(0, nullptr);
 	}
-
 
 	//メッシュ回数分
 	for (const Mesh &mesh : meshes) {
@@ -520,10 +520,7 @@ void SkinnedMesh::Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cm
 		cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 		// シェーダリソースビューをセット
 		cmdList->SetGraphicsRootDescriptorTable(
-			1, CD3DX12_GPU_DESCRIPTOR_HANDLE(
-				Texture::descriptor_heap_->GetGPUDescriptorHandleForHeapStart(),
-				materials.cbegin()->second.texture_num[0],
-				dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
+			2, materials.cbegin()->second.shader_resource_views[0].Get()->GetGPUDescriptorHandleForHeapStart());
 
 
 		// 描画コマンド
