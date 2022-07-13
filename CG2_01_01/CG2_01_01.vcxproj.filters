@@ -7,17 +7,17 @@
     <FxCompile Include="OBJVertexShader.hlsl" />
     <FxCompile Include="SpriteVS.hlsl" />
     <FxCompile Include="SpritePS.hlsl" />
-    <FxCompile Include="Resources\Shaders\FBXPS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\FBXVS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
     <FxCompile Include="SkinnedMeshVS.hlsl">
       <Filter>Engin\Object\FBX\Shader</Filter>
     </FxCompile>
     <FxCompile Include="SkinnedMeshPS.hlsl">
       <Filter>Engin\Object\FBX\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\FBXPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\FBXVS.hlsl">
+      <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
@@ -76,9 +76,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Engin\Object\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="TestScene.cpp">
-      <Filter>Game\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="..\Scene\GameScene.cpp">
       <Filter>Game\Scene</Filter>
     </ClCompile>
@@ -121,9 +118,6 @@
     <ClCompile Include="GameObjectManager.cpp">
       <Filter>Engin\Object\GameObjectManager</Filter>
     </ClCompile>
-    <ClCompile Include="imguiManager.cpp">
-      <Filter>Engin\imgui\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="FileManager.cpp">
       <Filter>Engin\File</Filter>
     </ClCompile>
@@ -147,6 +141,9 @@
     </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Engin\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\imgui\imguiManager.cpp">
+      <Filter>Engin\imgui\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -219,9 +216,6 @@
     <ClInclude Include="Camera.h">
       <Filter>Engin\Object\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="TestScene.h">
-      <Filter>Game\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="..\Scene\GameScene.h">
       <Filter>Game\Scene</Filter>
     </ClInclude>
@@ -267,9 +261,6 @@
     <ClInclude Include="GameObjectManager.h">
       <Filter>Engin\Object\GameObjectManager</Filter>
     </ClInclude>
-    <ClInclude Include="imguiManager.h">
-      <Filter>Engin\imgui\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="ImageManager.h">
       <Filter>Engin</Filter>
     </ClInclude>
@@ -297,7 +288,10 @@
     <ClInclude Include="Texture.h">
       <Filter>Engin\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="yMath.h">
+    <ClInclude Include="..\imgui\imguiManager.h">
+      <Filter>Engin\imgui\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Math\yMath.h">
       <Filter>Engin\Math</Filter>
     </ClInclude>
   </ItemGroup>
@@ -305,11 +299,11 @@
     <None Include="Basic.hlsli" />
     <None Include="OBJShaderHeader.hlsli" />
     <None Include="Sprite.hlsli" />
-    <None Include="Resources\Shaders\FBX.hlsli">
-      <Filter>Shader</Filter>
-    </None>
     <None Include="SkinnedMesh.hlsli">
       <Filter>Engin\Object\FBX\Shader</Filter>
+    </None>
+    <None Include="Assets\Shaders\FBX.hlsli">
+      <Filter>Shader</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

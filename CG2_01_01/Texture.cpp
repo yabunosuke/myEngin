@@ -1,5 +1,6 @@
 #include "Texture.h"
 #include <DirectXTex.h>
+#include <memory>
 
 using namespace DirectX;
 
@@ -22,7 +23,7 @@ void Texture::CreateDescriptorHeap(ID3D12Device *dev)
 	}
 }
 
-HRESULT Texture::LoadTextureFromFile(ID3D12Device *dev, const wchar_t *filename, ID3D12DescriptorHeap **shader_resource_view)
+D3D12_GPU_DESCRIPTOR_HANDLE Texture::LoadTextureFromFile(ID3D12Device *dev, const wchar_t *filename)
 {
     HRESULT result = S_OK;
 
@@ -40,7 +41,7 @@ HRESULT Texture::LoadTextureFromFile(ID3D12Device *dev, const wchar_t *filename,
 	const Image *img = scratchImg.GetImage(0, 0, 0);
 
 	//リソース設定
-	CD3DX12_RESOURCE_DESC texresDesc =
+	CD3DX12_RESOURCE_DESC texres_desc =
 		CD3DX12_RESOURCE_DESC::Tex2D(
 			metadata.format,
 			metadata.width,
@@ -48,14 +49,11 @@ HRESULT Texture::LoadTextureFromFile(ID3D12Device *dev, const wchar_t *filename,
 			(UINT16)metadata.arraySize,
 			(UINT16)metadata.mipLevels);
 
-	// 仮バッファ
-	std::wstring ws(filename);
-	std::string str(ws.begin(), ws.end());
 	// テクスチャバッファ生成
 	result = dev->CreateCommittedResource(	//GPUリソースの生成
 		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
 		D3D12_HEAP_FLAG_NONE,
-		&texresDesc,
+		&texres_desc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,	//テクスチャ用指定
 		nullptr,
 		IID_PPV_ARGS(&texture_buffer_.emplace_back()));
@@ -74,21 +72,85 @@ HRESULT Texture::LoadTextureFromFile(ID3D12Device *dev, const wchar_t *filename,
 
 
 	//シェーダリソースビュー設定
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体
-	srvDesc.Format = metadata.format;	//RGBA
-	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
-	srvDesc.Texture1D.MipLevels = 1;
+	D3D12_SHADER_RESOURCE_VIEW_DESC srv_desc{};	//設定構造体
+	srv_desc.Format = metadata.format;	//RGBA
+	srv_desc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srv_desc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
+	srv_desc.Texture1D.MipLevels = 1;
 
 	//シェーダーリソースビュー作成
 	dev->CreateShaderResourceView(
 		texture_buffer_.back().Get(),	//ビューと関連付けるバッファ
-		&srvDesc,	//テクスチャ設定情報
+		&srv_desc,	//テクスチャ設定情報
 		CD3DX12_CPU_DESCRIPTOR_HANDLE(
 			descriptor_heap_->GetCPUDescriptorHandleForHeapStart(),
 			texture_buffer_.size()-1,
 			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV))
 	);
 
-    return result;
+	
+
+	return CD3DX12_GPU_DESCRIPTOR_HANDLE(
+		descriptor_heap_->GetGPUDescriptorHandleForHeapStart(),
+		texture_buffer_.size() - 1,
+		dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
+}
+
+HRESULT Texture::MakeDummmyTexture(ID3D12Device *dev, DWORD color, UINT dimension)
+{
+	HRESULT result = S_OK;
+	
+	// 塗りつぶした画像生成
+	size_t texels = dimension * dimension;
+	UINT *img = new UINT[texels];
+	for (size_t i = 0; i < texels; ++i) {
+		img[i] = color;
+	}
+
+
+	//リソース設定
+	CD3DX12_RESOURCE_DESC texres_desc =
+		CD3DX12_RESOURCE_DESC::Tex2D(
+			DXGI_FORMAT_R8G8B8A8_UNORM,
+			dimension,
+			(UINT)dimension,
+			1,0,1,0,
+			D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
+
+
+	// テクスチャバッファ生成
+	result = dev->CreateCommittedResource(	//GPUリソースの生成
+		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
+		D3D12_HEAP_FLAG_NONE,
+		&texres_desc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,	//テクスチャ用指定
+		nullptr,
+		IID_PPV_ARGS(&texture_buffer_.emplace_back()));
+	// テクスチャバッファへのデータ転送
+	result = texture_buffer_.back()->WriteToSubresource(
+		0, nullptr,
+		img, dimension, dimension
+		);
+	assert(SUCCEEDED(result));
+	delete[] img;
+
+
+	//シェーダリソースビュー設定
+	D3D12_SHADER_RESOURCE_VIEW_DESC srv_desc{};	//設定構造体
+	srv_desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;	//RGBA
+	srv_desc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srv_desc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
+	srv_desc.Texture1D.MipLevels = 1;
+
+	//シェーダーリソースビュー作成
+	dev->CreateShaderResourceView(
+		texture_buffer_.back().Get(),	//ビューと関連付けるバッファ
+		&srv_desc,						//テクスチャ設定情報
+		CD3DX12_CPU_DESCRIPTOR_HANDLE(
+			descriptor_heap_->GetCPUDescriptorHandleForHeapStart(),
+			texture_buffer_.size() - 1,
+			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV))
+	);
+
+	return result;
 }

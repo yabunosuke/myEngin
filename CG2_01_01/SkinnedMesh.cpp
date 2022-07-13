@@ -13,6 +13,36 @@ void SkinnedMesh::CreatePipline()
 {
 }
 
+inline XMFLOAT4X4 SkinnedMesh::ConvertXMFLOAT4X4FromFbx(const FbxMatrix &fbx_matrix)
+{
+	XMFLOAT4X4 xmfloat4x4;
+	for (int row = 0; row < 4; row++) {
+		for (int column = 0; column < 4; column++) {
+			xmfloat4x4.m[row][column] = static_cast<float>(fbx_matrix[row][column]);
+		}
+	}
+	return xmfloat4x4;
+}
+
+inline XMFLOAT3 SkinnedMesh::ConvertXMFLOAT3FromFbx(const FbxDouble3 &fbx_double3)
+{
+	XMFLOAT3 xmfloat3;
+	xmfloat3.x = static_cast<float>(fbx_double3[0]);
+	xmfloat3.y = static_cast<float>(fbx_double3[1]);
+	xmfloat3.z = static_cast<float>(fbx_double3[2]);
+	return xmfloat3;
+}
+
+inline XMFLOAT4 SkinnedMesh::ConvertXMFLOAT4FromFbx(const FbxDouble4 &fbx_double4)
+{
+	XMFLOAT4 xmfloat4;
+	xmfloat4.x = static_cast<float>(fbx_double4[0]);
+	xmfloat4.y = static_cast<float>(fbx_double4[1]);
+	xmfloat4.z = static_cast<float>(fbx_double4[2]);
+	xmfloat4.w = static_cast<float>(fbx_double4[3]);
+	return xmfloat4;
+}
+
 SkinnedMesh::SkinnedMesh(ID3D12Device *dev, const char *fileName, bool trianglate)
 {
 	// マネージャーの生成
@@ -65,21 +95,7 @@ SkinnedMesh::SkinnedMesh(ID3D12Device *dev, const char *fileName, bool trianglat
 	FetchMeshes(fbx_scene, meshes);
 	// マテリアル情報を取得
 	FetchMaterial(fbx_scene, materials);
-#if 0
-	for (const Scene::Node &node : sceneView.nodes) {
-		FbxNode *fbxNode = fbxScene->FindNodeByName(node.name.c_str());
-		std::string nodeName = fbxNode->GetName();
-		uint64_t uid = fbxNode->GetUniqueID();
-		uint64_t parentUid =
-			fbxNode->GetParent() ? fbxNode->GetParent()->GetUniqueID() : 0;
-		int32_t type =
-			fbxNode->GetNodeAttribute() ? fbxNode->GetNodeAttribute()->GetAttributeType() : 0;
 
-		std::stringstream debugString;
-		debugString << nodeName << ":" << uid << ":" << parentUid << ":" << type << "\n";
-		OutputDebugStringA(debugString.str().c_str());
-	}
-#endif
 	// 解放
 	fbx_manager->Destroy();
 	// オブジェクト生成
@@ -100,12 +116,43 @@ void SkinnedMesh::FetchMeshes(FbxScene *fbxScene, std::vector<Mesh> &meshes)
 		
 		// メッシュ構造体に当てはめる
 		Mesh &mesh = meshes.emplace_back();
-		mesh.uniqueID = fbx_mesh->GetNode()->GetUniqueID();
+		mesh.unique_id = fbx_mesh->GetNode()->GetUniqueID();
 		mesh.name = fbx_mesh->GetNode()->GetName();
-		mesh.nodeIndex = scene_view_.indexof(mesh.uniqueID);
+		mesh.node_index = scene_view_.indexof(mesh.unique_id);
+		
+		//mesh.default_grlobal_transform = ConvertXMFLOAT4X4FromFbx(fbx_mesh->GetNode()->EvaluateGlobalTransform());
+
+		// コンテナの取得
+		std::vector<Mesh::Subset> &subsets = mesh.subsets;
+		// マテリアルカウント
+		const int material_count = fbx_mesh->GetNode()->GetMaterialCount();
+		// あらかじめ領域を確保（最低1）
+		subsets.resize(material_count > 0 ? material_count : 1);
+		// 全てのマテリアルidと名前を取得
+		for (int material_index = 0; material_index < material_count; ++material_index) {
+			const FbxSurfaceMaterial *fbx_material = fbx_mesh->GetNode()->GetMaterial(material_index);
+			subsets.at(material_index).material_name = fbx_material->GetName();
+			subsets.at(material_index).material_unique_id = fbx_material->GetUniqueID();
+		}
+
+		// ポリゴン数の取得
+		const int polygon_count = fbx_mesh->GetPolygonCount();
+
+		// マテリアルが設定されていればポリゴンごとにマテリアルを設定する
+		if (material_count > 0) {
+			for (int polygon_index = 0; polygon_index < polygon_count; ++polygon_index) {
+				const int material_index = fbx_mesh->GetElementMaterial()->GetIndexArray().GetAt(polygon_index);
+				subsets.at(material_index).index_count += 3;
+			}
+			uint32_t offset = 0;
+			for (Mesh::Subset &subset : subsets) {
+				subset.start_index = offset;
+				offset += subset.index_count;
+				subset.index_count = 0;
+			}
+		}
 
 		// ポリゴンの数から頂点とインデックスをあらかじめ確保
-		const int polygon_count = fbx_mesh->GetPolygonCount();
 		mesh.vertices.resize(polygon_count * 3LL);
 		mesh.indices.resize(polygon_count * 3LL);
 
@@ -115,6 +162,13 @@ void SkinnedMesh::FetchMeshes(FbxScene *fbxScene, std::vector<Mesh> &meshes)
 		// コントロールポイントの取得
 		const FbxVector4 *control_points = fbx_mesh->GetControlPoints();
 		for (int polygon_index = 0; polygon_index < polygon_count; ++polygon_index) {
+			const int material_index =
+				material_count > 0 ?
+				fbx_mesh->GetElementMaterial()->GetIndexArray().GetAt(polygon_index) :
+				0;
+			Mesh::Subset &subset = subsets.at(material_index);
+			const uint32_t offset = subset.start_index + subset.index_count;
+
 			for (int position_in_polygon = 0; position_in_polygon < 3; ++position_in_polygon) {
 				// 頂点のインデックス
 				const int vertex_index = polygon_index * 3 + position_in_polygon;
@@ -145,7 +199,8 @@ void SkinnedMesh::FetchMeshes(FbxScene *fbxScene, std::vector<Mesh> &meshes)
 				}
 
 				mesh.vertices.at(vertex_index) = std::move(vertex);
-				mesh.indices.at(vertex_index) = vertex_index;
+				mesh.indices.at(static_cast<size_t>(offset) + position_in_polygon) = vertex_index;
+				subset.index_count++;
 			}
 		}
 
@@ -157,11 +212,12 @@ void SkinnedMesh::FetchMaterial(FbxScene *fbx_scene, std::unordered_map<uint64_t
 {
 	// ノードの数
 	const size_t node_count = scene_view_.nodes.size();
+
 	for (int node_index = 0; node_index < node_count; ++node_index) {
 		const Scene::Node &node = scene_view_.nodes.at(node_index);
 		const FbxNode *fbx_node = fbx_scene->FindNodeByName(node.name.c_str());
+		
 		const int material_count = fbx_node->GetMaterialCount();
-
 		for (int material_index = 0; material_index < material_count; ++material_index) {
 			// マテリアル取得
 			const FbxSurfaceMaterial *fbx_material = fbx_node->GetMaterial(material_index);
@@ -169,26 +225,17 @@ void SkinnedMesh::FetchMaterial(FbxScene *fbx_scene, std::unordered_map<uint64_t
 			Material material;
 			material.name = fbx_material->GetName();
 			material.unique_id = fbx_material->GetUniqueID();
-			FbxProperty fbx_property = fbx_material->FindProperty(FbxSurfaceMaterial::sDiffuse);
 
+			// あとでADS全部とれるようにする
+			// デュフューズ
+			FbxProperty fbx_property = fbx_material->FindProperty(FbxSurfaceMaterial::sDiffuse);
 			if (fbx_property.IsValid()) {
 
-				material.Ka.x;
-				material.Ka.y;
-				material.Ka.z;
-				material.Ka.w;
-
-				const FbxDouble3 color = fbx_property.Get<FbxDouble3>();
-				material.Kd.x = static_cast<float>(color[0]);
-				material.Kd.y = static_cast<float>(color[1]);
-				material.Kd.z = static_cast<float>(color[2]);
+				const FbxDouble3 diffuse = fbx_property.Get<FbxDouble3>();
+				material.Kd.x = static_cast<float>(diffuse[0]);
+				material.Kd.y = static_cast<float>(diffuse[1]);
+				material.Kd.z = static_cast<float>(diffuse[2]);
 				material.Kd.w = 1.0f;
-
-
-				material.Ks.x;
-				material.Ks.y;
-				material.Ks.z;
-				material.Ks.w;
 
 				const FbxFileTexture *fbx_texture = fbx_property.GetSrcObject<FbxFileTexture>();
 				material.texture_filenames[0] =
@@ -198,9 +245,10 @@ void SkinnedMesh::FetchMaterial(FbxScene *fbx_scene, std::unordered_map<uint64_t
 			materials.emplace(material.unique_id, std::move(material));
 		}
 	}
+	if (materials.size() == 0) {
+		CreateDummyMaterial(materials);
+	}
 }
-
-
 
 
 void SkinnedMesh::CreateComObjects(ID3D12Device *dev, const char *fileName)
@@ -458,29 +506,21 @@ void SkinnedMesh::CreateComObjects(ID3D12Device *dev, const char *fileName)
 			path.replace_filename(itr->second.texture_filenames[0]);
 
 			// テクスチャ読み込み
-			Texture::LoadTextureFromFile(dev, path.c_str(), itr->second.shader_resource_views[0].GetAddressOf());
-			//itr->second.texture_num[0] = 0;
-			itr->second.shader_resource_views[0] = Texture::descriptor_heap_;
+			itr->second.shader_resource_views[0] = Texture::LoadTextureFromFile(dev, path.c_str());
+			
 		}
+		// テクスチャがない場合
 		else {
-			// テクスチャがない場合
+			// ダミーテクスチャ生成
+			Texture::MakeDummmyTexture(dev/*, itr->second.shader_resource_views[0]*/);
 		}
 	}
 }
 
-
-void SkinnedMesh::Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cmdList, const XMFLOAT4X4 &world, const XMFLOAT4 &materialColor)
+void SkinnedMesh::Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cmdList, const XMFLOAT4X4 &world, const XMFLOAT4 &material_color)
 {
 	HRESULT result;
-	// メッシュ定数バッファ更新
-	MeshConstantBuffer *mesh_constant_buffer_map = nullptr;
-	result = mesh_constant_buffer_->Map(0, nullptr, (void **)&mesh_constant_buffer_map);
-	if (SUCCEEDED(result))
-	{
-		mesh_constant_buffer_map->world = world;
-		mesh_constant_buffer_map->materialColor = materialColor;
-		mesh_constant_buffer_->Unmap(0, nullptr);
-	}
+	
 	// シーンバッファ更新
 	SceneConstantBuffer *scene_constant_buffer_map = nullptr;
 	result = scene_constant_buffer_->Map(0, nullptr, (void **)&scene_constant_buffer_map);
@@ -495,7 +535,6 @@ void SkinnedMesh::Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cm
 
 	//メッシュ回数分
 	for (const Mesh &mesh : meshes) {
-
 
 		//各バッファのセット
 		// パイプラインステートの設定
@@ -516,14 +555,68 @@ void SkinnedMesh::Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cm
 		cmdList->IASetIndexBuffer(&mesh.ibView);
 
 		//// デスクリプタヒープのセット
-		ID3D12DescriptorHeap *ppHeaps[] = { materials.cbegin()->second.shader_resource_views[0].Get() };
+		ID3D12DescriptorHeap *ppHeaps[] = { Texture::descriptor_heap_.Get() };
 		cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-		// シェーダリソースビューをセット
-		cmdList->SetGraphicsRootDescriptorTable(
-			2, materials.cbegin()->second.shader_resource_views[0].Get()->GetGPUDescriptorHandleForHeapStart());
+		
+		//// メッシュ定数バッファ更新
+		//MeshConstantBuffer *mesh_constant_buffer_map = nullptr;
+		//result = mesh_constant_buffer_->Map(0, nullptr, (void **)&mesh_constant_buffer_map);
+		//if (SUCCEEDED(result))
+		//{
+		//	mesh_constant_buffer_map->world = world;
+		//	//XMStoreFloat4x4(&mesh_constant_buffer_map->world, XMLoadFloat4x4(&mesh.default_grlobal_transform) /** XMLoadFloat4x4(&world)*/);
+
+		//	// 色情報
+		//	//mesh_constant_buffer_map->materialColor = material_color;
+		//	XMStoreFloat4(&mesh_constant_buffer_map->material_color, XMLoadFloat4(&material_color) * XMLoadFloat4(&materials.cbegin()->second.Kd));
+
+		//	mesh_constant_buffer_->Unmap(0, nullptr);
+		//}
+
+		//// シェーダリソースビューをセット
+		//cmdList->SetGraphicsRootDescriptorTable(
+		//	2, materials.cbegin()->second.shader_resource_views[0].Get()->GetGPUDescriptorHandleForHeapStart());
+
+		////描画コマンド
+		//cmdList->DrawIndexedInstanced((UINT)mesh.indices.size(), 1, 0, 0, 0);
 
 
-		// 描画コマンド
-		cmdList->DrawIndexedInstanced((UINT)mesh.indices.size(), 1, 0, 0, 0);
+
+		// サブセット単位で描画
+		for (const Mesh::Subset &subset : mesh.subsets) {
+			const Material &material = materials.at(subset.material_unique_id);
+			
+			// メッシュ定数バッファ更新
+			MeshConstantBuffer *mesh_constant_buffer_map = nullptr;
+			result = mesh_constant_buffer_->Map(0, nullptr, (void **)&mesh_constant_buffer_map);
+			if (SUCCEEDED(result))
+			{
+				mesh_constant_buffer_map->world = world;
+				//XMStoreFloat4x4(&mesh_constant_buffer_map->world, XMLoadFloat4x4(&mesh.default_grlobal_transform) /** XMLoadFloat4x4(&world)*/);
+				// 色情報
+				XMStoreFloat4(&mesh_constant_buffer_map->material_color, XMLoadFloat4(&material_color) * XMLoadFloat4(&material.Kd));
+				//XMStoreFloat4(&mesh_constant_buffer_map->material_color, XMLoadFloat4(&material_color) * XMLoadFloat4(&material.Kd));
+
+				mesh_constant_buffer_->Unmap(0, nullptr);
+			}
+
+			// シェーダリソースビューをセット
+			cmdList->SetGraphicsRootDescriptorTable(
+				2, material.shader_resource_views[0]);
+
+			//描画コマンド
+			cmdList->DrawIndexedInstanced(subset.index_count,1, subset.start_index, 0, 0);
+		}
 	}
+}
+
+void SkinnedMesh::CreateDummyMaterial(std::unordered_map<uint64_t, Material> &materials)
+{
+	Material material;
+	material.name = "dummy";
+	material.unique_id = 0;
+
+	materials.emplace(material.unique_id, std::move(material));
+
+
 }

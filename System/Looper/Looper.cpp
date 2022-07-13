@@ -9,7 +9,6 @@
 
 //シーン
 #include "TitleScene.h"
-#include "TestScene.h"
 
 Looper::Looper() {
 	//最初のシーン
@@ -60,9 +59,6 @@ void Looper::OnSceneChanged(const Scenes scene, const bool stackClear)
 	switch (scene) {
 	case Scenes::Title:
 		sceneStack.push(make_shared<TitleScene>(this));
-		break;
-	case Scenes::Test:
-		sceneStack.push(make_shared<TestScene>(this));
 		break;
 	
 	default:

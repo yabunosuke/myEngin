@@ -17,8 +17,7 @@
 TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
-	skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Resources/3d/test/MP5K_.fbx");
-	//skinnedMeshes[1] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Resources/3d/box/ball.fbx");
+	skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/cube.002.0.fbx");
 }
 
 void TitleScene::Initialize()
@@ -39,22 +38,6 @@ void TitleScene::Update()
 {
 	static float t = 0;
 
-	if (KeyboardInput::GetIns()->GetKeyPressT(DIK_SPACE)) {
-		t = 0.0f;
-		//obj->SetPosition({ -10,5,0 });
-
-	}
-	//obj->SetPosition(Ease(In, Quad, t, { -10,5,0 }, { 10,5,0 }));
-
-	if (t >= 1.0f) {
-		t = 1.0f;
-	}
-	else {
-		t += 0.005f;
-
-	}
-
-	//obj->Update();
 	
 	//ゲームオブジェクト全てをアップデート
 	gameObjectManager.Update();
@@ -68,12 +51,6 @@ void TitleScene::Update()
 
 void TitleScene::Draw() const
 {
-	XMFLOAT4X4 world = {
-		1,0,0,0,
-		0,1,0,0,
-		0,0,1,0,
-		0,0,0,1
-	};
 
 	static XMFLOAT3 pos = { 0,0,0 }, rot = { 0,0,0 }, sca = { 1,1,1 };
 
@@ -83,14 +60,47 @@ void TitleScene::Draw() const
 	
 	ImGui::End();
 
-	XMMATRIX transfome = DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
-	XMMATRIX rotX = DirectX::XMMatrixRotationX(DegToRad(rot.x));
-	XMMATRIX rotY = DirectX::XMMatrixRotationY(DegToRad(rot.y));
-	XMMATRIX rotZ = DirectX::XMMatrixRotationZ(DegToRad(rot.z));
-	XMMATRIX rotation = rotY * rotZ * rotX;
-	XMMATRIX scale = DirectX::XMMatrixScaling(sca.x, sca.y, sca.z);
-	
-	XMMATRIX mat = scale * rotation * transfome;
+	const XMFLOAT4X4 coordinate_system_transforms[] = {
+		{	-1, 0, 0, 0,
+			 0, 1, 0, 0,
+			 0, 0, 1, 0,
+			 0, 0, 0, 1
+		}, // 0:RHS Y-UP
+		
+		{	1, 0, 0, 0,
+			0, 1, 0, 0,
+			0, 0, 1, 0,
+			0, 0, 0, 1 
+		}, // 1:LHS Y-UP
+		
+		{	-1, 0,  0, 0,
+			 0, 0, -1, 0,
+			 0, 1,  0, 0,
+			 0, 0,  0, 1
+		}, // 2:RHS Z-UP
+
+		{	1, 0, 0, 0,
+			0, 0, 1, 0,
+			0, 1, 0, 0,
+			0, 0, 0, 1 }, // 3:LHS Z-UP
+	};
+	const float scale_factor = 1.0f;
+	//XMMATRIX C = XMLoadFloat4x4(&coordinate_system_transforms[0]) * XMMatrixScaling(scale_factor, scale_factor, scale_factor);
+	XMMATRIX S = XMMatrixScaling(1, 1, 1);
+	XMMATRIX R = XMMatrixRotationRollPitchYaw(DegToRad(rot.x), DegToRad(rot.y), DegToRad(rot.z));
+	XMMATRIX T = XMMatrixTranslation(pos.x,pos.y,pos.z);
+
+	XMFLOAT4X4 world;
+	//XMStoreFloat4x4(&world, C * S * R * T);
+
+	//XMMATRIX transfome = DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
+	//XMMATRIX rotX = DirectX::XMMatrixRotationX(DegToRad(rot.x));
+	//XMMATRIX rotY = DirectX::XMMatrixRotationY(DegToRad(rot.y));
+	//XMMATRIX rotZ = DirectX::XMMatrixRotationZ(DegToRad(rot.z));
+	//XMMATRIX rotation = rotY * rotZ * rotX;
+	//XMMATRIX scale = DirectX::XMMatrixScaling(sca.x, sca.y, sca.z);
+
+	XMMATRIX mat = S * R * T;
 	DirectX::XMStoreFloat4x4(&world,mat);
 	//描写テスト
 	skinnedMeshes[0]->Render(DirectXCommon::dev.Get(),DirectXCommon::cmdList.Get(), world, { 1,1,1,1 });

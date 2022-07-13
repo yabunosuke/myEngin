@@ -67,7 +67,7 @@ public:	// サブクラス
 	// メッシュバッファ用
 	struct MeshConstantBuffer {
 		XMFLOAT4X4 world;
-		XMFLOAT4 materialColor;
+		XMFLOAT4 material_color;
 	};
 
 	// シーンバッファ用
@@ -91,22 +91,44 @@ public:	// サブクラス
 		// テクスチャの名前
 		std::string texture_filenames[4];
 		// シェーダーリソースビュー
-		ComPtr<ID3D12DescriptorHeap> shader_resource_views[4];
-		//int texture_num[4];
+		/*ComPtr<*/D3D12_GPU_DESCRIPTOR_HANDLE/*>*/ shader_resource_views[4];
 	};
 	std::unordered_map<uint64_t, Material> materials;
 	
 	// メッシュ構造体
 	struct Mesh
 	{
-		//メッシュID
-		uint64_t uniqueID = 0;
+		// メッシュID
+		uint64_t unique_id = 0;
 		// メッシュ名
 		std::string name;
-		int64_t nodeIndex = 0;
+		int64_t node_index = 0;
 
 		std::vector<Vertex> vertices;
 		std::vector<uint32_t> indices;
+
+		// デフォルトのグローバルトランスフォーム
+		XMFLOAT4X4 default_grlobal_transform = {
+			1,0,0,0,
+			0,1,0,0,
+			0,0,1,0,
+			0,0,0,1,
+		};
+
+		// 複数マテリアル
+		struct Subset {
+			// マテリアルID
+			uint64_t material_unique_id = 0;
+			// マテリアル名
+			std::string material_name;
+			
+			// スタートインデックス
+			uint32_t start_index = 0;
+			// インデックスカウント
+			uint32_t index_count = 0;
+		};
+		std::vector<Subset> subsets;
+
 
 	private:
 		// 頂点バッファ
@@ -118,7 +140,7 @@ public:	// サブクラス
 		// インデックスバッファビュー
 		D3D12_INDEX_BUFFER_VIEW ibView = {};
 
-
+		// フレンドクラス
 		friend class SkinnedMesh;
 
 	};
@@ -128,7 +150,10 @@ public:	// サブクラス
 public:
 	static void CreatePipline();
 
-
+	// コンバート用
+	inline XMFLOAT4X4 ConvertXMFLOAT4X4FromFbx(const FbxMatrix &fbx_matrix);
+	inline XMFLOAT3 ConvertXMFLOAT3FromFbx(const FbxDouble3 &fbx_double3);
+	inline XMFLOAT4 ConvertXMFLOAT4FromFbx(const FbxDouble4 &fbx_double4);
 public:
 	/// <summary>
 	/// コンストラクタ
@@ -174,6 +199,8 @@ public:
 	/// <param name="materialColor">マテリアルカラー</param>
 	void Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cmdList, const XMFLOAT4X4 &world, const XMFLOAT4 &materialColor);
 
+private:
+	void CreateDummyMaterial(std::unordered_map<uint64_t, Material> &materials);
 
 private:
 	// ルートシグネチャ
