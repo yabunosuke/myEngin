@@ -96,7 +96,7 @@ D3D12_GPU_DESCRIPTOR_HANDLE Texture::LoadTextureFromFile(ID3D12Device *dev, cons
 		dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
 }
 
-HRESULT Texture::MakeDummmyTexture(ID3D12Device *dev, DWORD color, UINT dimension)
+D3D12_GPU_DESCRIPTOR_HANDLE Texture::MakeDummmyTexture(ID3D12Device *dev, DWORD color, UINT dimension)
 {
 	HRESULT result = S_OK;
 	
@@ -152,5 +152,9 @@ HRESULT Texture::MakeDummmyTexture(ID3D12Device *dev, DWORD color, UINT dimensio
 			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV))
 	);
 
-	return result;
+	return CD3DX12_GPU_DESCRIPTOR_HANDLE(
+		descriptor_heap_->GetGPUDescriptorHandleForHeapStart(),
+		texture_buffer_.size() - 1,
+		dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
+	;
 }

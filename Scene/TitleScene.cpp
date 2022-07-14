@@ -17,7 +17,7 @@
 TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
-	skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/cube.002.0.fbx");
+	skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/cube.003.0.fbx");
 }
 
 void TitleScene::Initialize()

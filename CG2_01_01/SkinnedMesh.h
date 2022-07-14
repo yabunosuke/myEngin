@@ -84,6 +84,7 @@ public:	// サブクラス
 		// 名前
 		std::string name;
 		
+		// ADS
 		XMFLOAT4 Ka = {0.2f,0.2f,0.2f,1.0f};	// Albedo
 		XMFLOAT4 Kd = {0.8f,0.8f,0.8f,1.0f};	// Diffuse
 		XMFLOAT4 Ks = {1.0f,1.0f,1.0f,1.0f};	// Specular
@@ -112,7 +113,7 @@ public:	// サブクラス
 			1,0,0,0,
 			0,1,0,0,
 			0,0,1,0,
-			0,0,0,1,
+			0,0,0,1
 		};
 
 		// 複数マテリアル
@@ -129,6 +130,8 @@ public:	// サブクラス
 		};
 		std::vector<Subset> subsets;
 
+		// メッシュ定数バッファ
+		ComPtr<ID3D12Resource> mesh_constant_buffer_;
 
 	private:
 		// 頂点バッファ
@@ -150,7 +153,7 @@ public:	// サブクラス
 public:
 	static void CreatePipline();
 
-	// コンバート用
+	// Fbx用の型をXMにコンバート
 	inline XMFLOAT4X4 ConvertXMFLOAT4X4FromFbx(const FbxMatrix &fbx_matrix);
 	inline XMFLOAT3 ConvertXMFLOAT3FromFbx(const FbxDouble3 &fbx_double3);
 	inline XMFLOAT4 ConvertXMFLOAT4FromFbx(const FbxDouble4 &fbx_double4);
@@ -207,13 +210,10 @@ private:
 	ComPtr<ID3D12RootSignature> rootsignature_;
 	// パイプラインステートオブジェクト
 	ComPtr<ID3D12PipelineState> pipelinestate_;
-	// メッシュ定数バッファ
-	ComPtr<ID3D12Resource> mesh_constant_buffer_;
+	
 	// シーン定数バッファ
 	ComPtr<ID3D12Resource> scene_constant_buffer_;
 
-
-protected:
 	// シーンビュー
 	Scene scene_view_;
 };

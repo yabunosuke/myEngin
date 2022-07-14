@@ -32,7 +32,7 @@ public:
 	/// <param name="color">色 AABBGGRR</param>
 	/// <param name="dimension"></param>
 	/// <returns></returns>
-	static HRESULT MakeDummmyTexture(ID3D12Device *dev, DWORD color = 0xffff00ff, UINT dimension = 8);
+	static D3D12_GPU_DESCRIPTOR_HANDLE MakeDummmyTexture(ID3D12Device *dev, DWORD color = 0xffff00ff, UINT dimension = 8);
 
 public:
 	// テクスチャの最大数

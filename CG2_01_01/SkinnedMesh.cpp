@@ -120,7 +120,7 @@ void SkinnedMesh::FetchMeshes(FbxScene *fbxScene, std::vector<Mesh> &meshes)
 		mesh.name = fbx_mesh->GetNode()->GetName();
 		mesh.node_index = scene_view_.indexof(mesh.unique_id);
 		
-		//mesh.default_grlobal_transform = ConvertXMFLOAT4X4FromFbx(fbx_mesh->GetNode()->EvaluateGlobalTransform());
+		mesh.default_grlobal_transform = ConvertXMFLOAT4X4FromFbx(fbx_mesh->GetNode()->EvaluateGlobalTransform());
 
 		// コンテナの取得
 		std::vector<Mesh::Subset> &subsets = mesh.subsets;
@@ -212,7 +212,7 @@ void SkinnedMesh::FetchMaterial(FbxScene *fbx_scene, std::unordered_map<uint64_t
 {
 	// ノードの数
 	const size_t node_count = scene_view_.nodes.size();
-
+	CreateDummyMaterial(materials);
 	for (int node_index = 0; node_index < node_count; ++node_index) {
 		const Scene::Node &node = scene_view_.nodes.at(node_index);
 		const FbxNode *fbx_node = fbx_scene->FindNodeByName(node.name.c_str());
@@ -245,9 +245,9 @@ void SkinnedMesh::FetchMaterial(FbxScene *fbx_scene, std::unordered_map<uint64_t
 			materials.emplace(material.unique_id, std::move(material));
 		}
 	}
-	if (materials.size() == 0) {
+	/*if (materials.size() == 0) {
 		CreateDummyMaterial(materials);
-	}
+	}*/
 }
 
 
@@ -301,6 +301,18 @@ void SkinnedMesh::CreateComObjects(ID3D12Device *dev, const char *fileName)
 		mesh.ibView.BufferLocation = mesh.indexBuffer->GetGPUVirtualAddress();
 		mesh.ibView.Format = DXGI_FORMAT_R16_UINT;
 		mesh.ibView.SizeInBytes = sizeIB;
+
+
+		// メッシュ定数バッファの生成
+		result = dev->CreateCommittedResource
+		(
+			&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+			D3D12_HEAP_FLAG_NONE,
+			&CD3DX12_RESOURCE_DESC::Buffer((sizeof(MeshConstantBuffer) + 0xff) & ~0xff),
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(&mesh.mesh_constant_buffer_)
+		);
 	}
 
 
@@ -473,18 +485,6 @@ void SkinnedMesh::CreateComObjects(ID3D12Device *dev, const char *fileName)
 	result = dev->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(pipelinestate_.ReleaseAndGetAddressOf()));
 	if (FAILED(result)) { assert(0); }
 
-
-
-	// メッシュ定数バッファの生成
-	result = dev->CreateCommittedResource
-	(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
-		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(MeshConstantBuffer) + 0xff) & ~0xff),
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&mesh_constant_buffer_)
-	);
 	// シーン定数バッファの生成
 	result = dev->CreateCommittedResource
 	(
@@ -512,7 +512,7 @@ void SkinnedMesh::CreateComObjects(ID3D12Device *dev, const char *fileName)
 		// テクスチャがない場合
 		else {
 			// ダミーテクスチャ生成
-			Texture::MakeDummmyTexture(dev/*, itr->second.shader_resource_views[0]*/);
+			itr->second.shader_resource_views[0] = Texture::MakeDummmyTexture(dev);
 		}
 	}
 }
@@ -544,7 +544,7 @@ void SkinnedMesh::Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cm
 		// プリミティブ形状を設定
 		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		// メッシュ定数バッファビューをセット
-		cmdList->SetGraphicsRootConstantBufferView(0, mesh_constant_buffer_->GetGPUVirtualAddress());
+		cmdList->SetGraphicsRootConstantBufferView(0, mesh.mesh_constant_buffer_->GetGPUVirtualAddress());
 		// シーン定数バッファビューをセット
 		cmdList->SetGraphicsRootConstantBufferView(1, scene_constant_buffer_->GetGPUVirtualAddress());
 
@@ -581,23 +581,23 @@ void SkinnedMesh::Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cm
 		//cmdList->DrawIndexedInstanced((UINT)mesh.indices.size(), 1, 0, 0, 0);
 
 
-
 		// サブセット単位で描画
 		for (const Mesh::Subset &subset : mesh.subsets) {
 			const Material &material = materials.at(subset.material_unique_id);
 			
 			// メッシュ定数バッファ更新
 			MeshConstantBuffer *mesh_constant_buffer_map = nullptr;
-			result = mesh_constant_buffer_->Map(0, nullptr, (void **)&mesh_constant_buffer_map);
+			result = mesh.mesh_constant_buffer_->Map(0, nullptr, (void **)&mesh_constant_buffer_map);
 			if (SUCCEEDED(result))
 			{
-				mesh_constant_buffer_map->world = world;
-				//XMStoreFloat4x4(&mesh_constant_buffer_map->world, XMLoadFloat4x4(&mesh.default_grlobal_transform) /** XMLoadFloat4x4(&world)*/);
+				// 座標情報
+				//mesh_constant_buffer_map->world = world;
+				XMStoreFloat4x4(&mesh_constant_buffer_map->world, XMLoadFloat4x4(&mesh.default_grlobal_transform) * XMLoadFloat4x4(&world));
 				// 色情報
 				XMStoreFloat4(&mesh_constant_buffer_map->material_color, XMLoadFloat4(&material_color) * XMLoadFloat4(&material.Kd));
 				//XMStoreFloat4(&mesh_constant_buffer_map->material_color, XMLoadFloat4(&material_color) * XMLoadFloat4(&material.Kd));
 
-				mesh_constant_buffer_->Unmap(0, nullptr);
+				mesh.mesh_constant_buffer_->Unmap(0, nullptr);
 			}
 
 			// シェーダリソースビューをセット
@@ -614,6 +614,8 @@ void SkinnedMesh::CreateDummyMaterial(std::unordered_map<uint64_t, Material> &ma
 {
 	Material material;
 	material.name = "dummy";
+
+	static int id = 100;
 	material.unique_id = 0;
 
 	materials.emplace(material.unique_id, std::move(material));
