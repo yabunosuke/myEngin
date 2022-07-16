@@ -4,6 +4,8 @@ struct VSInput
     float4 position     : POSITION;     // 位置
     float4 normal       : NORMAL;       // 頂点法線
     float2 texcoord     : TEXCOORD;     // テクスチャー座標
+    float4 bone_weights : WEIGHTS;      // ボーン影響度
+    uint4 bone_indices  : BONES;        // ボーンインデックス
 };
 
 // 頂点シェーダーからピクセルシェーダーへのやり取りに使用する構造体

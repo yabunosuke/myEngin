@@ -17,7 +17,7 @@
 TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
-	skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/cube.003.0.fbx");
+	skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/cube.004.fbx");
 }
 
 void TitleScene::Initialize()
@@ -57,36 +57,14 @@ void TitleScene::Draw() const
 	ImGui::Begin("testWindow");
 	ImGui::DragFloat3("pos", &pos.x);
 	ImGui::DragFloat3("rot", &rot.x);
+	ImGui::DragFloat3("sca", &sca.x);
 	
 	ImGui::End();
 
-	const XMFLOAT4X4 coordinate_system_transforms[] = {
-		{	-1, 0, 0, 0,
-			 0, 1, 0, 0,
-			 0, 0, 1, 0,
-			 0, 0, 0, 1
-		}, // 0:RHS Y-UP
-		
-		{	1, 0, 0, 0,
-			0, 1, 0, 0,
-			0, 0, 1, 0,
-			0, 0, 0, 1 
-		}, // 1:LHS Y-UP
-		
-		{	-1, 0,  0, 0,
-			 0, 0, -1, 0,
-			 0, 1,  0, 0,
-			 0, 0,  0, 1
-		}, // 2:RHS Z-UP
-
-		{	1, 0, 0, 0,
-			0, 0, 1, 0,
-			0, 1, 0, 0,
-			0, 0, 0, 1 }, // 3:LHS Z-UP
-	};
+	
 	const float scale_factor = 1.0f;
 	//XMMATRIX C = XMLoadFloat4x4(&coordinate_system_transforms[0]) * XMMatrixScaling(scale_factor, scale_factor, scale_factor);
-	XMMATRIX S = XMMatrixScaling(1, 1, 1);
+	XMMATRIX S = XMMatrixScaling(sca.x,sca.y,sca.z);
 	XMMATRIX R = XMMatrixRotationRollPitchYaw(DegToRad(rot.x), DegToRad(rot.y), DegToRad(rot.z));
 	XMMATRIX T = XMMatrixTranslation(pos.x,pos.y,pos.z);
 

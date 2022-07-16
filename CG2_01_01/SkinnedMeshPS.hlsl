@@ -15,5 +15,5 @@ float4 main(VSOutput pin) : SV_Target
     float3 L = normalize(-lightDirection.xyz);
     float3 diffuse = color.rgb * max(0, dot(N, L));
     
-    return float4(diffuse, color.a/*1*/) * pin.color;
+    return float4(diffuse, color.a) * pin.color;
 }

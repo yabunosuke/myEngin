@@ -57,11 +57,15 @@ private: // エイリアス
 
 
 public:	// サブクラス
+	// ボーンの影響数
+	static const int MAX_BONE_INFLUENCES = 4;
 	// 頂点データ構造体
 	struct Vertex {
 		XMFLOAT3 position;
 		XMFLOAT3 normal;
 		XMFLOAT3 texcoord;
+		float bone_weights[MAX_BONE_INFLUENCES] = { 1,0,0,0 };
+		uint32_t bone_indices[MAX_BONE_INFLUENCES];
 	};
 
 	// メッシュバッファ用
@@ -127,11 +131,11 @@ public:	// サブクラス
 			uint32_t start_index = 0;
 			// インデックスカウント
 			uint32_t index_count = 0;
+
+			// メッシュ定数バッファ
+			ComPtr<ID3D12Resource> mesh_constant_buffer_;
 		};
 		std::vector<Subset> subsets;
-
-		// メッシュ定数バッファ
-		ComPtr<ID3D12Resource> mesh_constant_buffer_;
 
 	private:
 		// 頂点バッファ
@@ -151,12 +155,11 @@ public:	// サブクラス
 
 
 public:
-	static void CreatePipline();
-
 	// Fbx用の型をXMにコンバート
 	inline XMFLOAT4X4 ConvertXMFLOAT4X4FromFbx(const FbxMatrix &fbx_matrix);
 	inline XMFLOAT3 ConvertXMFLOAT3FromFbx(const FbxDouble3 &fbx_double3);
 	inline XMFLOAT4 ConvertXMFLOAT4FromFbx(const FbxDouble4 &fbx_double4);
+
 public:
 	/// <summary>
 	/// コンストラクタ
@@ -216,5 +219,42 @@ private:
 
 	// シーンビュー
 	Scene scene_view_;
+
+	/// <summary>
+	/// 上軸
+	/// </summary>
+	int axis_up_;
+
+	/// <summary>
+	/// 座標系
+	/// </summary>
+	int axis_coord_;
+
+	// 座標系変換用
+	const XMFLOAT4X4 coordinate_system_transforms[4] = {
+		{	-1, 0, 0, 0,
+			 0, 1, 0, 0,
+			 0, 0, 1, 0,
+			 0, 0, 0, 1
+		}, // 0:RHS Y-UP
+
+		{	1, 0, 0, 0,
+			0, 1, 0, 0,
+			0, 0, 1, 0,
+			0, 0, 0, 1
+		}, // 1:LHS Y-UP
+
+		{	-1, 0,  0, 0,
+			 0, 0, -1, 0,
+			 0, 1,  0, 0,
+			 0, 0,  0, 1
+		}, // 2:RHS Z-UP
+
+		{	1, 0, 0, 0,
+			0, 0, 1, 0,
+			0, 1, 0, 0,
+			0, 0, 0, 1
+		}, // 3:LHS Z-UP
+	};
 };
 

@@ -96,7 +96,7 @@ D3D12_GPU_DESCRIPTOR_HANDLE Texture::LoadTextureFromFile(ID3D12Device *dev, cons
 		dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
 }
 
-D3D12_GPU_DESCRIPTOR_HANDLE Texture::MakeDummmyTexture(ID3D12Device *dev, DWORD color, UINT dimension)
+D3D12_GPU_DESCRIPTOR_HANDLE Texture::MakeDummyTexture(ID3D12Device *dev, DWORD color, UINT dimension)
 {
 	HRESULT result = S_OK;
 	

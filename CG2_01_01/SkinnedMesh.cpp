@@ -9,8 +9,36 @@
 #include "Texture.h"
 #include "Camera.h"
 
-void SkinnedMesh::CreatePipline()
-{
+// ボーン影響度
+struct BoneInfluence {
+	uint32_t bone_index;
+	float bone_weight;
+};
+using BoneInfluencesPerControlPoint = std::vector<BoneInfluence>;
+
+void FetchBoneInfluences(const FbxMesh *fbx_mesh, std::vector<BoneInfluencesPerControlPoint> &bone_influences) {
+	const int control_points_count = fbx_mesh->GetControlPointsCount();
+	bone_influences.resize(control_points_count);
+
+	const int skin_count = fbx_mesh->GetDeformerCount(FbxDeformer::eSkin);
+	for (int skin_index = 0; skin_index < skin_count; ++skin_index) {
+		const FbxSkin *fbx_skin = static_cast<FbxSkin *>(fbx_mesh->GetDeformer(skin_index, FbxDeformer::eSkin));
+		const int cluster_count = fbx_skin->GetClusterCount();
+
+		for (int cluster_index = 0; cluster_index < cluster_count; ++cluster_index) {
+			const FbxCluster *fbx_cluster = fbx_skin->GetCluster(cluster_index);
+
+			const int control_point_indices_count = fbx_cluster->GetControlPointIndicesCount();
+
+			for (int control_point_indices_index = 0; control_point_indices_index < control_point_indices_count; ++control_point_indices_index) {
+				int control_point_index{ fbx_cluster->GetControlPointIndices()[control_point_indices_index] };
+				double control_point_weight = fbx_cluster->GetControlPointWeights()[control_point_indices_index];
+				BoneInfluence & bone_influence = bone_influences.at(control_point_index).emplace_back();
+				bone_influence.bone_index = static_cast<uint32_t>(cluster_index);
+				bone_influence.bone_weight = static_cast<float>(control_point_weight);
+			}
+		}
+	}
 }
 
 inline XMFLOAT4X4 SkinnedMesh::ConvertXMFLOAT4X4FromFbx(const FbxMatrix &fbx_matrix)
@@ -48,7 +76,8 @@ SkinnedMesh::SkinnedMesh(ID3D12Device *dev, const char *fileName, bool trianglat
 	// マネージャーの生成
 	FbxManager *fbx_manager = FbxManager::Create();
 	// シーン生成
-	FbxScene *fbx_scene = FbxScene::Create(fbx_manager, "");
+	FbxScene *fbx_scene = FbxScene::Create(fbx_manager, "MyScene");
+
 
 	FbxImporter *fbxImporter = FbxImporter::Create(fbx_manager, "");
 	// ファイル名を指定してFBXファイルを読み込む
@@ -57,20 +86,27 @@ SkinnedMesh::SkinnedMesh(ID3D12Device *dev, const char *fileName, bool trianglat
 		assert(0);
 	}
 
-	//インポート
+	// インポート
 	if (!fbxImporter->Import(fbx_scene)) {
 		assert(0);
 	}
 
-	//三角形化
+	// 座標系の統一
+	FbxAxisSystem scene_axis_system = fbx_scene->GetGlobalSettings().GetAxisSystem();
+	if (scene_axis_system != FbxAxisSystem::DirectX) {
+		FbxAxisSystem::DirectX.DeepConvertScene(fbx_scene);
+		//target_axis_sytem.ConvertScene(fbx_scene);
+	}
+
+	// 三角形化
 	FbxGeometryConverter fbx_converter(fbx_manager);
 	if (trianglate) {
 		fbx_converter.Triangulate(fbx_scene, true);
 		fbx_converter.RemoveBadPolygonsFromMeshes(fbx_scene);
 	}
 
-	//センチメートルに変換
-	FbxSystemUnit::m.ConvertScene(fbx_scene);
+	// センチメートルに変換
+	// FbxSystemUnit::m.ConvertScene(fbx_scene);
 
 	//ノードの取得
 	std::function<void(FbxNode *)> traverse{ [&](FbxNode *fbxNode) {
@@ -121,6 +157,10 @@ void SkinnedMesh::FetchMeshes(FbxScene *fbxScene, std::vector<Mesh> &meshes)
 		mesh.node_index = scene_view_.indexof(mesh.unique_id);
 		
 		mesh.default_grlobal_transform = ConvertXMFLOAT4X4FromFbx(fbx_mesh->GetNode()->EvaluateGlobalTransform());
+
+		// ボーン影響度の獲得
+		std::vector<BoneInfluencesPerControlPoint> bone_influences;
+		FetchBoneInfluences(fbx_mesh, bone_influences);
 
 		// コンテナの取得
 		std::vector<Mesh::Subset> &subsets = mesh.subsets;
@@ -175,10 +215,21 @@ void SkinnedMesh::FetchMeshes(FbxScene *fbxScene, std::vector<Mesh> &meshes)
 
 				// 頂点
 				Vertex vertex;
-				const int polygonVertex = fbx_mesh->GetPolygonVertex(polygon_index, position_in_polygon);
-				vertex.position.x = static_cast<float>(control_points[polygonVertex][0]);
-				vertex.position.y = static_cast<float>(control_points[polygonVertex][1]);
-				vertex.position.z = static_cast<float>(control_points[polygonVertex][2]);
+				const int polygon_vertex = fbx_mesh->GetPolygonVertex(polygon_index, position_in_polygon);
+				vertex.position.x = static_cast<float>(control_points[polygon_vertex][0]);
+				vertex.position.y = static_cast<float>(control_points[polygon_vertex][1]);
+				vertex.position.z = static_cast<float>(control_points[polygon_vertex][2]);
+
+				// 4つまで影響受ける
+				const BoneInfluencesPerControlPoint &influences_per_control_point = bone_influences.at(polygon_vertex);
+				for (size_t influence_index = 0; influence_index < influences_per_control_point.size(); ++influence_index) {
+					if (influence_index < MAX_BONE_INFLUENCES) {
+						vertex.bone_weights[influence_index] = influences_per_control_point.at(influence_index).bone_weight;
+						vertex.bone_indices[influence_index] = influences_per_control_point.at(influence_index).bone_index;
+
+					}
+				}
+
 
 				// 法線があればコピー
 				if (fbx_mesh->GetElementNormalCount() > 0) {
@@ -302,17 +353,17 @@ void SkinnedMesh::CreateComObjects(ID3D12Device *dev, const char *fileName)
 		mesh.ibView.Format = DXGI_FORMAT_R16_UINT;
 		mesh.ibView.SizeInBytes = sizeIB;
 
-
-		// メッシュ定数バッファの生成
-		result = dev->CreateCommittedResource
-		(
-			&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
-			D3D12_HEAP_FLAG_NONE,
-			&CD3DX12_RESOURCE_DESC::Buffer((sizeof(MeshConstantBuffer) + 0xff) & ~0xff),
-			D3D12_RESOURCE_STATE_GENERIC_READ,
-			nullptr,
-			IID_PPV_ARGS(&mesh.mesh_constant_buffer_)
-		);
+		for (Mesh::Subset &subset : mesh.subsets) {
+			// メッシュ定数バッファの生成
+			result = dev->CreateCommittedResource
+			(
+				&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+				D3D12_HEAP_FLAG_NONE,
+				&CD3DX12_RESOURCE_DESC::Buffer((sizeof(MeshConstantBuffer) + 0xff) & ~0xff),
+				D3D12_RESOURCE_STATE_GENERIC_READ,
+				nullptr,
+				IID_PPV_ARGS(&subset.mesh_constant_buffer_));
+		}
 	}
 
 
@@ -378,21 +429,32 @@ void SkinnedMesh::CreateComObjects(ID3D12Device *dev, const char *fileName)
 	// 頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] =
 	{
-		{ // xy座標(1行で書いたほうが見やすい)
+		{ // xy座標
 			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
-		{ // 法線ベクトル(1行で書いたほうが見やすい)
+		{ // 法線ベクトル
 			"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
-		{ // uv座標(1行で書いたほうが見やすい)
+		{ // uv座標
 			"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
+		{ // ボーン影響度
+			"WEIGHTS", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		},
+		{ // ボーン
+			"BONES", 0, DXGI_FORMAT_R32G32B32A32_UINT, 0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		},
+
 	};
 
 	// グラフィックスパイプラインの流れを設定
@@ -463,9 +525,9 @@ void SkinnedMesh::CreateComObjects(ID3D12Device *dev, const char *fileName)
 
 	// スタティックサンプラー
 	CD3DX12_STATIC_SAMPLER_DESC sampler_desc[3] = { 
-		CD3DX12_STATIC_SAMPLER_DESC(0),
-		CD3DX12_STATIC_SAMPLER_DESC(1),
-		CD3DX12_STATIC_SAMPLER_DESC(2)
+		CD3DX12_STATIC_SAMPLER_DESC(0,D3D12_FILTER_MIN_MAG_MIP_LINEAR),
+		CD3DX12_STATIC_SAMPLER_DESC(1,D3D12_FILTER_MIN_MAG_MIP_LINEAR),
+		CD3DX12_STATIC_SAMPLER_DESC(2,D3D12_FILTER_MIN_MAG_MIP_LINEAR)
 	};
 
 	// ルートシグネチャの設定
@@ -512,7 +574,7 @@ void SkinnedMesh::CreateComObjects(ID3D12Device *dev, const char *fileName)
 		// テクスチャがない場合
 		else {
 			// ダミーテクスチャ生成
-			itr->second.shader_resource_views[0] = Texture::MakeDummmyTexture(dev);
+			itr->second.shader_resource_views[0] = Texture::MakeDummyTexture(dev);
 		}
 	}
 }
@@ -543,8 +605,8 @@ void SkinnedMesh::Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cm
 		cmdList->SetGraphicsRootSignature(rootsignature_.Get());
 		// プリミティブ形状を設定
 		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		// メッシュ定数バッファビューをセット
-		cmdList->SetGraphicsRootConstantBufferView(0, mesh.mesh_constant_buffer_->GetGPUVirtualAddress());
+		//// メッシュ定数バッファビューをセット
+		//cmdList->SetGraphicsRootConstantBufferView(0, mesh.mesh_constant_buffer_->GetGPUVirtualAddress());
 		// シーン定数バッファビューをセット
 		cmdList->SetGraphicsRootConstantBufferView(1, scene_constant_buffer_->GetGPUVirtualAddress());
 
@@ -583,11 +645,13 @@ void SkinnedMesh::Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cm
 
 		// サブセット単位で描画
 		for (const Mesh::Subset &subset : mesh.subsets) {
+			// メッシュ定数バッファビューをセット
+			cmdList->SetGraphicsRootConstantBufferView(0, subset.mesh_constant_buffer_->GetGPUVirtualAddress());
 			const Material &material = materials.at(subset.material_unique_id);
 			
 			// メッシュ定数バッファ更新
 			MeshConstantBuffer *mesh_constant_buffer_map = nullptr;
-			result = mesh.mesh_constant_buffer_->Map(0, nullptr, (void **)&mesh_constant_buffer_map);
+			result = subset.mesh_constant_buffer_->Map(0, nullptr, (void **)&mesh_constant_buffer_map);
 			if (SUCCEEDED(result))
 			{
 				// 座標情報
@@ -597,7 +661,7 @@ void SkinnedMesh::Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cm
 				XMStoreFloat4(&mesh_constant_buffer_map->material_color, XMLoadFloat4(&material_color) * XMLoadFloat4(&material.Kd));
 				//XMStoreFloat4(&mesh_constant_buffer_map->material_color, XMLoadFloat4(&material_color) * XMLoadFloat4(&material.Kd));
 
-				mesh.mesh_constant_buffer_->Unmap(0, nullptr);
+				subset.mesh_constant_buffer_->Unmap(0, nullptr);
 			}
 
 			// シェーダリソースビューをセット
@@ -615,8 +679,12 @@ void SkinnedMesh::CreateDummyMaterial(std::unordered_map<uint64_t, Material> &ma
 	Material material;
 	material.name = "dummy";
 
-	static int id = 100;
 	material.unique_id = 0;
+
+	material.Kd.x = 1.0f;
+	material.Kd.y = 0.0f;
+	material.Kd.z = 1.0f;
+	material.Kd.w = 1.0f;
 
 	materials.emplace(material.unique_id, std::move(material));
 
