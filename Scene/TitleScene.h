@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "SkinnedMesh.h"
-//#include "FbxObject3d.h"
 
 #include "Model.h"
 #include "ModelLoader.h"
@@ -33,6 +32,5 @@ private:
 	std::unique_ptr<Object3d> obj;
 
 	std::shared_ptr<SkinnedMesh> skinnedMeshes[8];
-	//std::unique_ptr<FbxObject3d> obj;
 };
 

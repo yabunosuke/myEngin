@@ -2,6 +2,7 @@
 #include <sstream>
 #include <functional>
 #include <filesystem>
+#include <memory>
 
 #include <d3dcompiler.h>
 #pragma comment(lib, "d3dcompiler.lib")
@@ -91,11 +92,11 @@ SkinnedMesh::SkinnedMesh(ID3D12Device *dev, const char *fileName, bool trianglat
 		assert(0);
 	}
 
+	
 	// 座標系の統一
 	FbxAxisSystem scene_axis_system = fbx_scene->GetGlobalSettings().GetAxisSystem();
 	if (scene_axis_system != FbxAxisSystem::DirectX) {
 		FbxAxisSystem::DirectX.DeepConvertScene(fbx_scene);
-		//target_axis_sytem.ConvertScene(fbx_scene);
 	}
 
 	// 三角形化
@@ -105,8 +106,13 @@ SkinnedMesh::SkinnedMesh(ID3D12Device *dev, const char *fileName, bool trianglat
 		fbx_converter.RemoveBadPolygonsFromMeshes(fbx_scene);
 	}
 
-	// センチメートルに変換
-	// FbxSystemUnit::m.ConvertScene(fbx_scene);
+	// メートルに変換
+	FbxSystemUnit scene_unit = fbx_scene->GetGlobalSettings().GetSystemUnit();
+	scale_factor_ = scene_unit.GetScaleFactor();
+	if (scene_unit != FbxSystemUnit::m) {
+		//FbxSystemUnit::m.ConvertScene(fbx_scene);
+	//	FbxSystemUnit::m.ConvertScene(fbx_scene);
+	}
 
 	//ノードの取得
 	std::function<void(FbxNode *)> traverse{ [&](FbxNode *fbxNode) {
@@ -117,7 +123,7 @@ SkinnedMesh::SkinnedMesh(ID3D12Device *dev, const char *fileName, bool trianglat
 		node.name = fbxNode->GetName();
 		node.uniqueID = fbxNode->GetUniqueID();
 		// 親がいなければ0を代入
-		node.pearentIndex = scene_view_.indexof(fbxNode->GetParent() ?
+		node.pearent_index = scene_view_.indexof(fbxNode->GetParent() ?
 			fbxNode->GetParent()->GetUniqueID() : 0);
 		// 子に対して再起処理
 		for (int child_index = 0; child_index < fbxNode->GetChildCount(); ++child_index) {
@@ -131,6 +137,8 @@ SkinnedMesh::SkinnedMesh(ID3D12Device *dev, const char *fileName, bool trianglat
 	FetchMeshes(fbx_scene, meshes);
 	// マテリアル情報を取得
 	FetchMaterial(fbx_scene, materials);
+	// アニメーションを取得
+	FetchAnimations(fbx_scene, animation_clips_);
 
 	// 解放
 	fbx_manager->Destroy();
@@ -161,6 +169,8 @@ void SkinnedMesh::FetchMeshes(FbxScene *fbxScene, std::vector<Mesh> &meshes)
 		// ボーン影響度の獲得
 		std::vector<BoneInfluencesPerControlPoint> bone_influences;
 		FetchBoneInfluences(fbx_mesh, bone_influences);
+		// バインドポーズの取得
+		FetchSkelton(fbx_mesh, mesh.bind_pose);
 
 		// コンテナの取得
 		std::vector<Mesh::Subset> &subsets = mesh.subsets;
@@ -301,6 +311,111 @@ void SkinnedMesh::FetchMaterial(FbxScene *fbx_scene, std::unordered_map<uint64_t
 	}*/
 }
 
+void SkinnedMesh::FetchSkelton(FbxMesh *fbx_mesh, Skeleton &bind_pose)
+{
+	const int deformer_count = fbx_mesh->GetDeformerCount(FbxDeformer::eSkin);
+	for (int deformer_index = 0; deformer_index < deformer_count; ++deformer_index) {
+		FbxSkin *skin = static_cast<FbxSkin *>(fbx_mesh->GetDeformer(deformer_index, FbxDeformer::eSkin));
+		const int cluster_count = skin->GetClusterCount();
+		bind_pose.bones.resize(cluster_count);
+
+		for (int cluster_index = 0; cluster_index < cluster_count; ++cluster_index) {
+			FbxCluster *cluster = skin->GetCluster(cluster_index);
+
+			Skeleton::Bone &bone = bind_pose.bones.at(cluster_index);
+			bone.name = cluster->GetLink()->GetName();
+			bone.unique_id = cluster->GetLink()->GetUniqueID();
+			bone.parent_index = bind_pose.indexof(cluster->GetLink()->GetParent()->GetUniqueID());
+			bone.node_index = scene_view_.indexof(bone.unique_id);
+
+			// 初期ポーズ
+			FbxAMatrix reference_global_init_position;
+			cluster->GetTransformAssociateModelMatrix(reference_global_init_position);
+
+			FbxAMatrix cluster_globar_init_position;
+			cluster->GetTransformLinkMatrix(cluster_globar_init_position);
+
+			// offsetの取得
+			bone.offset_transform =
+				ConvertXMFLOAT4X4FromFbx(cluster_globar_init_position.Inverse() * reference_global_init_position);
+		}
+	}
+}
+
+
+void SkinnedMesh::FetchAnimations(FbxScene *fbx_scene, std::vector<Animation> &animation_clips, float sampling_rate)
+{
+	// アニメーションコンテナ
+	FbxArray<FbxString *> animation_stack_names;
+	// アニメーションの名前を格納
+	fbx_scene->FillAnimStackNameArray(animation_stack_names);
+	const int animation_stack_count = animation_stack_names.GetCount();
+	for (int animation_stack_index = 0; animation_stack_index < animation_stack_count; ++animation_stack_index) {
+		Animation &animation_clip = animation_clips.emplace_back();
+		animation_clip.name = animation_stack_names[animation_stack_index]->Buffer();
+
+		FbxAnimStack *animation_stack = fbx_scene->FindMember<FbxAnimStack>(animation_clip.name.c_str());
+		fbx_scene->SetCurrentAnimationStack(animation_stack);
+
+		// FBXのキーフレーム単位を変換
+		const FbxTime::EMode time_mode = fbx_scene->GetGlobalSettings().GetTimeMode();
+		FbxTime one_second;
+		one_second.SetTime(0, 0, 1, 0, 0, time_mode);
+		animation_clip.sampling_rate = sampling_rate > 0 ?
+			sampling_rate : static_cast<float>(one_second.GetFrameRate(time_mode));
+		
+		// サンプリング間隔を設定
+		const FbxTime sampling_interval = static_cast<FbxLongLong>(one_second.Get() / animation_clip.sampling_rate);
+		const FbxTakeInfo *take_info = fbx_scene->GetTakeInfo(animation_clip.name.c_str());
+		const FbxTime start_time = take_info->mLocalTimeSpan.GetStart();
+		const FbxTime stop_time = take_info->mLocalTimeSpan.GetStop();
+		
+		// キーフレームの取得
+		for (FbxTime time = start_time; time < stop_time; time += sampling_interval) {
+			Animation::Keyframe &keyframe = animation_clip.sequence.emplace_back();
+
+			const size_t node_count = scene_view_.nodes.size();
+			keyframe.nodes.resize(node_count);
+			for (size_t node_index = 0; node_index < node_count; ++node_index) {
+				FbxNode *fbx_node = fbx_scene->FindNodeByName(scene_view_.nodes.at(node_index).name.c_str());
+				if (fbx_node) {
+					Animation::Keyframe::Node &node = keyframe.nodes.at(node_index);
+					// グローバルトランスフォームの取得
+					node.global_transform = ConvertXMFLOAT4X4FromFbx(fbx_node->EvaluateGlobalTransform(time));
+
+					const FbxAMatrix &local_transform = fbx_node->EvaluateLocalTransform(time);
+					node.scaling = ConvertXMFLOAT3FromFbx(local_transform.GetS());
+					node.rotation = ConvertXMFLOAT4FromFbx(local_transform.GetQ());
+					node.translation = ConvertXMFLOAT3FromFbx(local_transform.GetT());
+				}
+			}
+		}
+	}
+	for (int animation_stack_index = 0; animation_stack_index < animation_stack_count; ++animation_stack_index) {
+		delete animation_stack_names[animation_stack_index];
+	}
+}
+
+void SkinnedMesh::UpdateAnimation(Animation::Keyframe &keyframe)
+{
+	size_t node_count = keyframe.nodes.size();
+	for (size_t node_index = 0; node_index < node_count; ++node_index) {
+		Animation::Keyframe::Node &node{ keyframe.nodes.at(node_index) };
+		XMMATRIX S = XMMatrixScaling(node.scaling.x, node.scaling.y, node.scaling.z);
+		XMMATRIX R = XMMatrixRotationQuaternion(XMLoadFloat4(&node.rotation));
+		XMMATRIX T = XMMatrixTranslation(node.translation.x, node.translation.y, node.translation.z);
+		
+		int64_t parent_index = scene_view_.nodes.at(node_index).pearent_index;
+		XMMATRIX P{ parent_index < 0 ? XMMatrixIdentity() :
+			XMLoadFloat4x4(&keyframe.nodes.at(parent_index).global_transform) };
+		
+		XMStoreFloat4x4(&node.global_transform, S * R * T * P);
+	}
+}
+
+bool SkinnedMesh::AppendAnimations(const char *animation_filename, float sampling_rate)
+{
+}
 
 void SkinnedMesh::CreateComObjects(ID3D12Device *dev, const char *fileName)
 {
@@ -440,7 +555,7 @@ void SkinnedMesh::CreateComObjects(ID3D12Device *dev, const char *fileName)
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
 		{ // uv座標
-			"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
+			"TEXCOORD", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
@@ -577,9 +692,10 @@ void SkinnedMesh::CreateComObjects(ID3D12Device *dev, const char *fileName)
 			itr->second.shader_resource_views[0] = Texture::MakeDummyTexture(dev);
 		}
 	}
+	
 }
 
-void SkinnedMesh::Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cmdList, const XMFLOAT4X4 &world, const XMFLOAT4 &material_color)
+void SkinnedMesh::Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cmdList, const XMFLOAT4X4 &world, const XMFLOAT4 &material_color, const Animation::Keyframe *keyframe)
 {
 	HRESULT result;
 	
@@ -616,31 +732,16 @@ void SkinnedMesh::Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cm
 		// インデックスバッファをセット(IBV)
 		cmdList->IASetIndexBuffer(&mesh.ibView);
 
-		//// デスクリプタヒープのセット
+		// デスクリプタヒープのセット
 		ID3D12DescriptorHeap *ppHeaps[] = { Texture::descriptor_heap_.Get() };
 		cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 		
-		//// メッシュ定数バッファ更新
-		//MeshConstantBuffer *mesh_constant_buffer_map = nullptr;
-		//result = mesh_constant_buffer_->Map(0, nullptr, (void **)&mesh_constant_buffer_map);
-		//if (SUCCEEDED(result))
-		//{
-		//	mesh_constant_buffer_map->world = world;
-		//	//XMStoreFloat4x4(&mesh_constant_buffer_map->world, XMLoadFloat4x4(&mesh.default_grlobal_transform) /** XMLoadFloat4x4(&world)*/);
 
-		//	// 色情報
-		//	//mesh_constant_buffer_map->materialColor = material_color;
-		//	XMStoreFloat4(&mesh_constant_buffer_map->material_color, XMLoadFloat4(&material_color) * XMLoadFloat4(&materials.cbegin()->second.Kd));
-
-		//	mesh_constant_buffer_->Unmap(0, nullptr);
-		//}
-
-		//// シェーダリソースビューをセット
-		//cmdList->SetGraphicsRootDescriptorTable(
-		//	2, materials.cbegin()->second.shader_resource_views[0].Get()->GetGPUDescriptorHandleForHeapStart());
-
-		////描画コマンド
-		//cmdList->DrawIndexedInstanced((UINT)mesh.indices.size(), 1, 0, 0, 0);
+		
+		MeshConstantBuffer mesh_constant_deta ;
+		const Animation::Keyframe::Node &mesh_node = keyframe->nodes.at(mesh.node_index);
+		XMStoreFloat4x4(&mesh_constant_deta.world, XMLoadFloat4x4(&mesh_node.global_transform) * XMLoadFloat4x4(&world));
+		//XMStoreFloat4x4(&mesh_constant_deta.world, XMLoadFloat4x4(&mesh.default_grlobal_transform) * XMLoadFloat4x4(&world));
 
 
 		// サブセット単位で描画
@@ -648,18 +749,34 @@ void SkinnedMesh::Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cm
 			// メッシュ定数バッファビューをセット
 			cmdList->SetGraphicsRootConstantBufferView(0, subset.mesh_constant_buffer_->GetGPUVirtualAddress());
 			const Material &material = materials.at(subset.material_unique_id);
-			
-			// メッシュ定数バッファ更新
+
+			// バッファ転送用データ
 			MeshConstantBuffer *mesh_constant_buffer_map = nullptr;
+			// メッシュ定数バッファ更新
 			result = subset.mesh_constant_buffer_->Map(0, nullptr, (void **)&mesh_constant_buffer_map);
 			if (SUCCEEDED(result))
 			{
-				// 座標情報
-				//mesh_constant_buffer_map->world = world;
-				XMStoreFloat4x4(&mesh_constant_buffer_map->world, XMLoadFloat4x4(&mesh.default_grlobal_transform) * XMLoadFloat4x4(&world));
+				// world計算
+				mesh_constant_buffer_map->world = mesh_constant_deta.world;
+				//XMStoreFloat4x4(&mesh_constant_buffer_map->world, XMLoadFloat4x4(&mesh.default_grlobal_transform) * XMLoadFloat4x4(&world));
+				//const Animation::Keyframe::Node &mesh_node = keyframe->nodes.at(mesh.node_index);
+				//XMStoreFloat4x4(&mesh_constant_buffer_map->world, XMLoadFloat4x4(&mesh_node.global_transform) * XMLoadFloat4x4(&world));
+				
+				// ボーン計算
+				const size_t bone_count = mesh.bind_pose.bones.size();
+				for (int bone_index = 0; bone_index < bone_count; ++bone_index) {
+					const Skeleton::Bone &bone = mesh.bind_pose.bones.at(bone_index);
+					const Animation::Keyframe::Node &bone_node = keyframe->nodes.at(bone.node_index);
+					XMStoreFloat4x4(&mesh_constant_buffer_map->bone_transforms[bone_index],
+						XMLoadFloat4x4(&bone.offset_transform) *
+						XMLoadFloat4x4(&bone_node.global_transform) *
+						XMMatrixInverse(nullptr, XMLoadFloat4x4(&mesh.default_grlobal_transform))
+					);
+				}
+
 				// 色情報
 				XMStoreFloat4(&mesh_constant_buffer_map->material_color, XMLoadFloat4(&material_color) * XMLoadFloat4(&material.Kd));
-				//XMStoreFloat4(&mesh_constant_buffer_map->material_color, XMLoadFloat4(&material_color) * XMLoadFloat4(&material.Kd));
+
 
 				subset.mesh_constant_buffer_->Unmap(0, nullptr);
 			}

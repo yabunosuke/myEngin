@@ -3,7 +3,7 @@ struct VSInput
 {
     float4 position     : POSITION;     // 位置
     float4 normal       : NORMAL;       // 頂点法線
-    float2 texcoord     : TEXCOORD;     // テクスチャー座標
+    float3 texcoord     : TEXCOORD;     // テクスチャー座標
     float4 bone_weights : WEIGHTS;      // ボーン影響度
     uint4 bone_indices  : BONES;        // ボーンインデックス
 };
@@ -14,14 +14,16 @@ struct VSOutput
     float4 position     : SV_POSITION;  // システム用頂点座標
     float4 worldPosition: POSITION;     // ワールド座標
     float4 worldNormal  : NORMAL;       // 法線
-    float2 texcoord     : TEXCOORD;     // uv値
+    float3 texcoord     : TEXCOORD;     // uv値
     float4 color        : COLOR;        // 色
 };
 
+static const int MAX_BONES = 256;
 cbuffer OBJECT_CONSTANT_BUFFER : register(b0)
 {
     row_major float4x4 world;
     float4 materialColor;
+    row_major float4x4 bone_transforms[MAX_BONES];
 };
 
 cbuffer SCENE_CONSTANT_BUFFER : register(b1)

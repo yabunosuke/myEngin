@@ -20,7 +20,7 @@ struct Scene {
 		// ノードタイプ
 		FbxNodeAttribute::EType atribute = FbxNodeAttribute::EType::eUnknown;
 		// 親のID
-		int64_t pearentIndex = -1;
+		int64_t pearent_index = -1;
 	};
 
 	// ノードコンテナ
@@ -42,6 +42,64 @@ struct Scene {
 		}
 		return -1;
 	}
+};
+
+struct Skeleton {
+	struct Bone {
+		uint64_t unique_id = 0;
+		std::string name;
+
+		int64_t parent_index = -1;
+		int64_t node_index = 0;
+
+		DirectX::XMFLOAT4X4 offset_transform = {
+			1,0,0,0,
+			0,1,0,0,
+			0,0,1,0,
+			0,0,0,1
+		};
+
+		/// <summary>
+		/// 親がいないか
+		/// </summary>
+		/// <returns>親がいなければtrue</returns>
+		bool is_orphan() const { return parent_index < 0; };
+	};
+	std::vector<Bone> bones;
+
+	int64_t indexof(uint64_t unique_id) const {
+		int64_t index = 0;
+		for (const Bone &bone : bones) {
+			if (bone.unique_id == unique_id) {
+				return index;
+			}
+			++index;
+		}
+		return -1;
+	}
+};
+
+struct Animation {
+	std::string name;
+	float sampling_rate = 0;
+
+	struct Keyframe {
+		struct Node {
+			DirectX::XMFLOAT4X4 global_transform = {
+			1,0,0,0,
+			0,1,0,0,
+			0,0,1,0,
+			0,0,0,1
+			};
+
+			DirectX::XMFLOAT3 scaling = { 1,1,1 };
+			DirectX::XMFLOAT4 rotation = { 0,0,0,1 };
+			DirectX::XMFLOAT3 translation = { 0,0,0 };
+		};
+		std::vector<Node> nodes;
+	};
+	// シークエンス
+	std::vector<Keyframe> sequence;
 };
 
 class SkinnedMesh
@@ -68,10 +126,23 @@ public:	// サブクラス
 		uint32_t bone_indices[MAX_BONE_INFLUENCES];
 	};
 
+	// 最大読み込みボーン数
+	static const int MAX_BONES = 256;
 	// メッシュバッファ用
 	struct MeshConstantBuffer {
-		XMFLOAT4X4 world;
+		XMFLOAT4X4 world = {
+			1,0,0,0,
+			0,1,0,0,
+			0,0,1,0,
+			0,0,0,1
+		};
 		XMFLOAT4 material_color;
+		XMFLOAT4X4 bone_transforms[MAX_BONES] = { {
+			1,0,0,0,
+			0,1,0,0,
+			0,0,1,0,
+			0,0,0,1
+		} };
 	};
 
 	// シーンバッファ用
@@ -137,6 +208,7 @@ public:	// サブクラス
 		};
 		std::vector<Subset> subsets;
 
+		
 	private:
 		// 頂点バッファ
 		ComPtr<ID3D12Resource> vertexBuffer;
@@ -146,6 +218,9 @@ public:	// サブクラス
 		ComPtr<ID3D12Resource> indexBuffer;
 		// インデックスバッファビュー
 		D3D12_INDEX_BUFFER_VIEW ibView = {};
+
+		// バインドポーズ
+		Skeleton bind_pose;
 
 		// フレンドクラス
 		friend class SkinnedMesh;
@@ -191,6 +266,26 @@ public:
 	void FetchMaterial(FbxScene *fbx_scene, std::unordered_map<uint64_t, Material> &materials);
 
 	/// <summary>
+	/// バインドポーズの取得
+	/// </summary>
+	/// <param name="fbx_mesh">シーン</param>
+	/// <param name="bind_pose"></param>
+	void FetchSkelton(FbxMesh *fbx_mesh, Skeleton &bind_pose);
+
+	/// <summary>
+	/// アニメーション取得
+	/// </summary>
+	/// <param name="fbx_scene">シーン</param>
+	/// <param name="animation_clips"></param>
+	/// <param name="sampling_rate"></param>
+	void FetchAnimations(FbxScene *fbx_scene, std::vector<Animation> &animation_clips, float sampling_rate = 0);
+
+
+	void UpdateAnimation(Animation::Keyframe &keyframe);
+
+	void AppendAnimations(const char *animation_filename, float sampling_rate);
+
+	/// <summary>
 	/// オブジェクト生成
 	/// </summary>
 	/// <param name="dev">デバイス</param>
@@ -203,7 +298,10 @@ public:
 	/// <param name="cmdList">コマンドリスト</param>
 	/// <param name="world">ワールド行列</param>
 	/// <param name="materialColor">マテリアルカラー</param>
-	void Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cmdList, const XMFLOAT4X4 &world, const XMFLOAT4 &materialColor);
+	void Render(ID3D12Device *dev, ComPtr<ID3D12GraphicsCommandList> cmdList, const XMFLOAT4X4 &world, const XMFLOAT4 &materialColor,const Animation::Keyframe *keyframe);
+
+public:
+	std::vector<Animation> animation_clips_;
 
 private:
 	void CreateDummyMaterial(std::unordered_map<uint64_t, Material> &materials);
@@ -220,41 +318,7 @@ private:
 	// シーンビュー
 	Scene scene_view_;
 
-	/// <summary>
-	/// 上軸
-	/// </summary>
-	int axis_up_;
-
-	/// <summary>
-	/// 座標系
-	/// </summary>
-	int axis_coord_;
-
-	// 座標系変換用
-	const XMFLOAT4X4 coordinate_system_transforms[4] = {
-		{	-1, 0, 0, 0,
-			 0, 1, 0, 0,
-			 0, 0, 1, 0,
-			 0, 0, 0, 1
-		}, // 0:RHS Y-UP
-
-		{	1, 0, 0, 0,
-			0, 1, 0, 0,
-			0, 0, 1, 0,
-			0, 0, 0, 1
-		}, // 1:LHS Y-UP
-
-		{	-1, 0,  0, 0,
-			 0, 0, -1, 0,
-			 0, 1,  0, 0,
-			 0, 0,  0, 1
-		}, // 2:RHS Z-UP
-
-		{	1, 0, 0, 0,
-			0, 0, 1, 0,
-			0, 1, 0, 0,
-			0, 0, 0, 1
-		}, // 3:LHS Z-UP
-	};
+	//
+	float scale_factor_;
 };
 

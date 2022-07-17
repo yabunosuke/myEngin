@@ -12,7 +12,6 @@ ModelManager *ModelManager::GetIns()
 void ModelManager::AllLoad()
 {
 	LoadModel("ball");
-	LoadModel("Box");
 }
 
 void ModelManager::LoadModel(std::string fileName)

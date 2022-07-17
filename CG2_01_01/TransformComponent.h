@@ -9,9 +9,19 @@ public:
 
 	void Infomation() override;
 
+	void VirtualUpdate() override;
+
 private:
 	XMFLOAT3 position;
 	XMFLOAT3 rotate;
 	XMFLOAT3 scale;
+
+	DirectX::XMFLOAT4X4 transform = {
+		1,0,0,0,
+		0,1,0,0,
+		0,0,1,0,
+		0,0,0,1
+	};
+
 };
 

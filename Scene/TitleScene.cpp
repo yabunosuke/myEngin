@@ -17,12 +17,13 @@
 TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
-	skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/cube.004.fbx");
+	//skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/Drone166/Drone166.1.fbx",false);
+	skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/plantune.fbx");
 }
 
 void TitleScene::Initialize()
 {
-	cam = new Camera({ 0,0,-20 });
+	cam = new Camera({ 0,0,-50 });
 	Camera::SetCam(cam);
 	//model = ModelLoader::GetInstance()->LoadModelFromFile("ball");
 	//obj = Object3d::Create(model.get());
@@ -62,26 +63,45 @@ void TitleScene::Draw() const
 	ImGui::End();
 
 	
-	const float scale_factor = 1.0f;
-	//XMMATRIX C = XMLoadFloat4x4(&coordinate_system_transforms[0]) * XMMatrixScaling(scale_factor, scale_factor, scale_factor);
+	const float scale_factor = 100.0f;
+	XMMATRIX C = XMMatrixIdentity() * XMMatrixScaling(scale_factor, scale_factor, scale_factor);
 	XMMATRIX S = XMMatrixScaling(sca.x,sca.y,sca.z);
 	XMMATRIX R = XMMatrixRotationRollPitchYaw(DegToRad(rot.x), DegToRad(rot.y), DegToRad(rot.z));
 	XMMATRIX T = XMMatrixTranslation(pos.x,pos.y,pos.z);
 
 	XMFLOAT4X4 world;
-	//XMStoreFloat4x4(&world, C * S * R * T);
-
-	//XMMATRIX transfome = DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
-	//XMMATRIX rotX = DirectX::XMMatrixRotationX(DegToRad(rot.x));
-	//XMMATRIX rotY = DirectX::XMMatrixRotationY(DegToRad(rot.y));
-	//XMMATRIX rotZ = DirectX::XMMatrixRotationZ(DegToRad(rot.z));
-	//XMMATRIX rotation = rotY * rotZ * rotX;
-	//XMMATRIX scale = DirectX::XMMatrixScaling(sca.x, sca.y, sca.z);
-
-	XMMATRIX mat = S * R * T;
+	XMMATRIX mat =  S * R * T;
 	DirectX::XMStoreFloat4x4(&world,mat);
+
+	//アニメーション
+	int clip_index = 0;
+	int frame_index = 0;
+	static float animation_tick = 0;
+	Animation &animation = skinnedMeshes[0]->animation_clips_.at(clip_index);
+	frame_index = static_cast<int>(animation_tick * animation.sampling_rate);
+	if (frame_index > animation.sequence.size() - 1) {
+		frame_index = 0;
+		animation_tick = 0;
+	}
+	else {
+		animation_tick += 0.016;
+	}
+	Animation::Keyframe &keyframe = animation.sequence.at(frame_index);
+
+	XMStoreFloat4(&keyframe.nodes.at(30).rotation, DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(1, 0, 0, 0), 1.5f));
+	keyframe.nodes.at(30).translation.x = -300.0f;
+	/*static float kubi[3] = { 0,0,0 };
+	ImGui::Begin("kubi");
+	ImGui::DragFloat3("kubi", kubi);
+	ImGui::End();
+	keyframe.nodes.at(30).translation.x = kubi[0];
+	keyframe.nodes.at(30).translation.y = kubi[1];
+	keyframe.nodes.at(30).translation.z = kubi[2];*/
+
+	skinnedMeshes[0]->UpdateAnimation(keyframe);
+
 	//描写テスト
-	skinnedMeshes[0]->Render(DirectXCommon::dev.Get(),DirectXCommon::cmdList.Get(), world, { 1,1,1,1 });
+	skinnedMeshes[0]->Render(DirectXCommon::dev.Get(),DirectXCommon::cmdList.Get(), world, { 1,1,1,1 },&keyframe);
 	//obj->Draw(DirectXCommon::cmdList.Get());
 	
 	gameObjectManager.Draw();

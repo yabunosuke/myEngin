@@ -16,3 +16,7 @@ void TransformComponent::Infomation()
 	ImGui::Text("Scale"); ImGui::SameLine(100); ImGui::DragFloat3("##Sca", (float *)&scale);
 	
 }
+
+void TransformComponent::VirtualUpdate()
+{
+}

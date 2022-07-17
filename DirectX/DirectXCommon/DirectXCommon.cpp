@@ -289,7 +289,7 @@ bool DirectXCommon::ResourceBarrierWriting()
 
 bool DirectXCommon::ScreenClear()
 {
-    float color[] = { 0.2f,0.2f,0.2f,0.0f };
+    float color[] = { 0.0f,0.0f,1.0f,0.0f };
     cmdList->ClearRenderTargetView(rtvH, color, 0, nullptr);
     cmdList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
     return true;
