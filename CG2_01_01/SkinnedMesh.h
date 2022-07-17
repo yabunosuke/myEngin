@@ -340,8 +340,12 @@ public:	// サブクラス
 	};
 	std::vector<Mesh> meshes;
 
+public: //静的
+	static void CreatePipline(std::string shader_name);
+private:
+	//static std::map<std::string, ComPtr<ID3D12PipelineState>> piplinstates;
 
-public:
+public:	// インライン関数
 	// Fbx用の型をXMにコンバート
 	inline XMFLOAT4X4 ConvertXMFLOAT4X4FromFbx(const FbxMatrix &fbx_matrix);
 	inline XMFLOAT3 ConvertXMFLOAT3FromFbx(const FbxDouble3 &fbx_double3);

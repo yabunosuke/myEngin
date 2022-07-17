@@ -1,7 +1,7 @@
 #include "ModelManager.h"
 #include "ModelLoader.h"
 
-std::map<const std::string, std::unique_ptr<Model>> ModelManager::model;
+std::map<const std::string, std::shared_ptr<FbxResource>> ModelManager::model;
 
 ModelManager *ModelManager::GetIns()
 {
@@ -11,7 +11,6 @@ ModelManager *ModelManager::GetIns()
 
 void ModelManager::AllLoad()
 {
-	LoadModel("ball");
 }
 
 void ModelManager::LoadModel(std::string fileName)
