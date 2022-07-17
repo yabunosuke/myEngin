@@ -145,6 +145,9 @@
     <ClCompile Include="..\imgui\imguiManager.cpp">
       <Filter>Engin\imgui\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="FbxResource.cpp">
+      <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\DirectXCommon\DirectXCommon.h" />
@@ -293,6 +296,9 @@
     </ClInclude>
     <ClInclude Include="..\DirectX\Math\yMath.h">
       <Filter>Engin\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="FbxResource.h">
+      <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

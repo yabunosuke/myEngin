@@ -204,6 +204,7 @@
     <ClCompile Include="ComponentList.cpp" />
     <ClCompile Include="DebugText.cpp" />
     <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="FbxResource.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
@@ -346,6 +347,7 @@
     <ClInclude Include="ComponentList.h" />
     <ClInclude Include="DebugText.h" />
     <ClInclude Include="Editor.h" />
+    <ClInclude Include="FbxResource.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectManager.h" />
