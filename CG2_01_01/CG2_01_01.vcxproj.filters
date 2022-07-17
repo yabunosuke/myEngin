@@ -139,9 +139,6 @@
     <ClCompile Include="ComponentList.cpp">
       <Filter>Engin\Object\GameObject\Component\ComponentList</Filter>
     </ClCompile>
-    <ClCompile Include="SkinnedMesh.cpp">
-      <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
-    </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Engin\Texture</Filter>
     </ClCompile>
@@ -157,6 +154,7 @@
     <ClCompile Include="Fbx.cpp">
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\DirectXCommon\DirectXCommon.h" />
@@ -291,9 +289,6 @@
     <ClInclude Include="ComponentList.h">
       <Filter>Engin\Object\GameObject\Component\ComponentList</Filter>
     </ClInclude>
-    <ClInclude Include="SkinnedMesh.h">
-      <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
-    </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Engin\Texture</Filter>
     </ClInclude>
@@ -312,6 +307,7 @@
     <ClInclude Include="Fbx.h">
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Basic.hlsli" />
@@ -370,9 +366,6 @@
     <Filter Include="Engin\AbstractScene">
       <UniqueIdentifier>{7d4c353e-72a7-41d2-9617-7393c53e5aee}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Ball">
-      <UniqueIdentifier>{bb7ca04a-973b-4207-9e58-b93233cf6a4e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engin\imgui">
       <UniqueIdentifier>{54ddc8be-935a-498d-b897-524a21a3b234}</UniqueIdentifier>
     </Filter>
@@ -426,6 +419,9 @@
     </Filter>
     <Filter Include="Engin\Object\FBX\Shader\Lambert">
       <UniqueIdentifier>{51e9491b-69cd-471a-a516-c3aabb10ac2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Player">
+      <UniqueIdentifier>{bb7ca04a-973b-4207-9e58-b93233cf6a4e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

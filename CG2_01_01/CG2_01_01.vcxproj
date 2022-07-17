@@ -212,7 +212,7 @@
     <ClCompile Include="LightComponent.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PipelineManager.cpp" />
-    <ClCompile Include="SkinnedMesh.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
@@ -363,7 +363,7 @@
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="LightComponent.h" />
     <ClInclude Include="PipelineManager.h" />
-    <ClInclude Include="SkinnedMesh.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TransformComponent.h" />
   </ItemGroup>

@@ -60,9 +60,17 @@ void GameObjectManager::Finalize()
 {
 }
 
-void GameObjectManager::CreateObject()
+
+std::weak_ptr<GameObject> GameObjectManager::CreateObject(std::string object_name)
 {
-	std::unique_ptr<GameObject> gameObject = std::make_unique<GameObject>("GameObject(" + std::to_string(gameObjects.size()) + ")");
-	
-	gameObjects.push_back(std::move(gameObject));
+	std::shared_ptr<GameObject> gameObject;
+	// –¼‘O‚ª“ü‚Á‚Ä‚¢‚È‚¯‚ê‚Î
+	if (object_name.size() == 0) {
+		gameObject = std::make_shared<GameObject>("GameObject(" + std::to_string(gameObjects.size()) + ")");
+	}
+	else {
+		gameObject = std::make_shared<GameObject>(object_name);
+	}
+
+	return gameObjects.emplace_back(std::move(gameObject));
 }

@@ -33,9 +33,11 @@ public:
 	/// <summary>
 	/// オブジェクト生成
 	/// </summary>
-	void CreateObject();
+	/// <param name="object_name">オブジェクト名（重複可）</param>
+	/// <returns>オブジェクトのweak_ptr</returns>
+	std::weak_ptr<GameObject> CreateObject(std::string object_name = "");
 
 	//オブジェクト
-	std::vector<std::unique_ptr<GameObject>> gameObjects;
+	std::vector<std::shared_ptr<GameObject>> gameObjects;
 };
 

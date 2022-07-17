@@ -77,6 +77,7 @@ void FbxResource::LoadModel(ID3D12Device *dev, const char *fbx_filename)
 {
 	// シリアライズ
 	std::filesystem::path cereal_filename = fbx_filename;
+	filename_ = fbx_filename;
 	cereal_filename.replace_extension(cerealize_extension);		//拡張子部分をcerealに変更
 	// シリアライズ済みのデータがあればそれを読み込む
 	if (std::filesystem::exists(cereal_filename.c_str())) {
@@ -468,9 +469,6 @@ void FbxResource::BindMaterial()
 				Material material;
 				material.id = subset.material_index;
 				material.name = "dummy";
-				material.shader_resource_views[0] = nullptr;
-				material.shader_resource_views[1] = nullptr;
-				material.shader_resource_views[2] = nullptr;
 				material.texture_filenames[0] = "";
 				material.texture_filenames[1] = "";
 
@@ -572,7 +570,7 @@ void FbxResource::CreateComObjects(ID3D12Device *dev)
 			}
 			else {
 				texture_name = material.texture_filenames[0];
-				texture_extension = material.texture_filenames[1];
+				texture_extension = material.texture_filenames[0];
 			}
 			texture_name = texture_name.replace_extension("");
 			texture_extension = texture_extension.extension();
@@ -586,11 +584,16 @@ void FbxResource::CreateComObjects(ID3D12Device *dev)
 			// テクスチャのチェック
 			// ファイルがあれば読み込み
 			if (std::filesystem::exists(path)) {
-
-				material.shader_resource_views[i] = &Texture::LoadTextureFromFile(dev, path.c_str());
+				// マテリアルのみの場合はダミーを貼る
+				if (texture_path.c_str()[0] == 0) {
+					material.shader_resource_views[i] = Texture::MakeDummyTexture(dev);
+				}
+				else {
+					material.shader_resource_views[i] = Texture::LoadTextureFromFile(dev, path.c_str());
+				}
 			}
 			else {
-				material.shader_resource_views[i] = &Texture::MakeDummyTexture(dev);
+				material.shader_resource_views[i] = Texture::MakeDummyTexture(dev);
 			}
 		}
 	}

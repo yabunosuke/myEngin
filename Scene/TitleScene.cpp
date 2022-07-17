@@ -14,6 +14,11 @@
 #include "yMath.h"
 
 
+#include "PipelineManager.h"
+
+
+#include "Player.h"
+
 TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
@@ -22,7 +27,13 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	//skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/nico.fbx");
 	//skinnedMeshes[0]->AppendAnimations("Assets/3d/UNIT/AimTest/Aim_Space.fbx");
 
+	PipelineManager::GetInstance()->CreatePipline(DirectXCommon::dev.Get(), "Lambert");
+	test[0] = std::make_shared<Fbx>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/drone166/drone166.1.fbx");
 
+
+	gameObjectManager.CreateObject();
+	auto player = gameObjectManager.CreateObject("Player");
+	player.lock().get()->AddComponent(std::make_shared<Player>());
 }
 
 void TitleScene::Initialize()
@@ -31,8 +42,6 @@ void TitleScene::Initialize()
 	Camera::SetCam(cam);
 	//model = ModelLoader::GetInstance()->LoadModelFromFile("ball");
 	//obj = Object3d::Create(model.get());
-	
-
 }
 
 void TitleScene::Finalize()
@@ -41,8 +50,7 @@ void TitleScene::Finalize()
 
 void TitleScene::Update()
 {
-	static float t = 0;
-
+	test[0]->UpdateAnimation();
 	
 	//ゲームオブジェクト全てをアップデート
 	gameObjectManager.Update();
@@ -63,19 +71,33 @@ void TitleScene::Draw() const
 	ImGui::DragFloat3("pos", &pos.x);
 	ImGui::DragFloat3("rot", &rot.x);
 	ImGui::DragFloat3("sca", &sca.x);
-	
-	ImGui::End();
 
+	if (ImGui::Button("0")) {
+		test[0]->PlayAnimation(0);
+	}
+	if (ImGui::Button("1")) {
+		test[0]->PlayAnimation(1);
+	}
+	if (ImGui::Button("6")) {
+		test[0]->PlayAnimation(6);
+	}
+	ImGui::End();
+	
+	XMMATRIX S = XMMatrixScaling(sca.x, sca.y, sca.z);
+	XMMATRIX R = XMMatrixRotationRollPitchYaw(DegToRad(rot.x), DegToRad(rot.y), DegToRad(rot.z));
+	XMMATRIX T = XMMatrixTranslation(pos.x, pos.y, pos.z);
+
+	XMFLOAT4X4 world;
+	XMMATRIX mat = S * R * T;
+	DirectX::XMStoreFloat4x4(&world, mat);
+	
+	test[0].get()->UpdateTransform(world);
+
+	test[0].get()->Draw(DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get());
 	
 	//const float scale_factor = 100.0f;
-	//XMMATRIX C = XMMatrixIdentity() * XMMatrixScaling(scale_factor, scale_factor, scale_factor);
-	//XMMATRIX S = XMMatrixScaling(sca.x,sca.y,sca.z);
-	//XMMATRIX R = XMMatrixRotationRollPitchYaw(DegToRad(rot.x), DegToRad(rot.y), DegToRad(rot.z));
-	//XMMATRIX T = XMMatrixTranslation(pos.x,pos.y,pos.z);
-
-	//XMFLOAT4X4 world;
-	//XMMATRIX mat =  S * R * T;
-	//DirectX::XMStoreFloat4x4(&world,mat);
+	
+	
 
 	////アニメーション
 	//int clip_index = 0;

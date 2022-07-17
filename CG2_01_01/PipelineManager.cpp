@@ -20,7 +20,7 @@ void PipelineManager::CreatePipline(ComPtr<ID3D12Device> dev,const std::string &
 	// 頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile
 	(
-		L"SkinnedMeshVS.hlsl",    // シェーダファイル名
+		L"LambertVS.hlsl",    // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "vs_5_0",    // エントリーポイント名、シェーダーモデル指定
@@ -46,7 +46,7 @@ void PipelineManager::CreatePipline(ComPtr<ID3D12Device> dev,const std::string &
 	// ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile
 	(
-		L"SkinnedMeshPS.hlsl",    // シェーダファイル名
+		L"LambertPS.hlsl",    // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "ps_5_0",    // エントリーポイント名、シェーダーモデル指定

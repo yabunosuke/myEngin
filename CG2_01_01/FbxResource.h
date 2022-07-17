@@ -105,7 +105,7 @@ public:
 	// テクスチャ名
 	const std::string filename[static_cast<int>(TextureType::MAX)]{
 		"",			// ベース
-		"_Normal",	// ノーマルマップ
+		"",			// ノーマルマップ
 		"_MS"		// メタリックとスムースネス
 	};
 
@@ -139,7 +139,7 @@ public:
 
 		DirectX::XMFLOAT4		color = { 0.8f,0.8f,0.8f,1.0f };
 
-		D3D12_GPU_DESCRIPTOR_HANDLE *shader_resource_views[static_cast<int>(TextureType::MAX)];
+		D3D12_GPU_DESCRIPTOR_HANDLE shader_resource_views[static_cast<int>(TextureType::MAX)];
 
 		template < class T>
 		void serialize(T &archive) {
@@ -227,7 +227,7 @@ public:
 		}
 
 		// 使うパイプラインの名前
-		std::string pipline_name;
+		std::string pipline_name = "Lambert";
 
 		template < class T>
 		void serialize(T &archive) {

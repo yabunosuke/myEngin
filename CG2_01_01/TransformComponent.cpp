@@ -14,7 +14,6 @@ void TransformComponent::Infomation()
 	ImGui::Text("Position"); ImGui::SameLine(100); ImGui::DragFloat3("##Pos", (float *)&position);
 	ImGui::Text("Rotation"); ImGui::SameLine(100); ImGui::DragFloat3("##Rot", (float *)&rotate);
 	ImGui::Text("Scale"); ImGui::SameLine(100); ImGui::DragFloat3("##Sca", (float *)&scale);
-	
 }
 
 void TransformComponent::VirtualUpdate()

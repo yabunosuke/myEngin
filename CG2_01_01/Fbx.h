@@ -66,7 +66,12 @@ public:
 	/// <returns>ノード</returns>
 	Node *FindNode(const char *name);
 
+	void UpdateAnimation(float elapsed_time = 0.016f);
+	void PlayAnimation(uint64_t index, bool loop = true, float blend_seconds = 1.0f);
+	float GetCurrentAnimationSeconds() const { return current_animation_seconds_; }
 
+	// アニメーション中か判定
+	bool IsPlayAnimation() const;
 
 private:
 	// リソース
