@@ -18,7 +18,11 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
 	//skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/Drone166/Drone166.1.fbx",false);
-	skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/plantune.fbx");
+	//skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/AimTest/MNK_Mesh.fbx");
+	skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/nico.fbx");
+	//skinnedMeshes[0]->AppendAnimations("Assets/3d/UNIT/AimTest/Aim_Space.fbx");
+
+
 }
 
 void TitleScene::Initialize()
@@ -88,8 +92,8 @@ void TitleScene::Draw() const
 	}
 	Animation::Keyframe &keyframe = animation.sequence.at(frame_index);
 
-	XMStoreFloat4(&keyframe.nodes.at(30).rotation, DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(1, 0, 0, 0), 1.5f));
-	keyframe.nodes.at(30).translation.x = -300.0f;
+	//XMStoreFloat4(&keyframe.nodes.at(30).rotation, DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(1, 0, 0, 0), 1.5f));
+	//keyframe.nodes.at(30).translation.x = -300.0f;
 	/*static float kubi[3] = { 0,0,0 };
 	ImGui::Begin("kubi");
 	ImGui::DragFloat3("kubi", kubi);
@@ -98,7 +102,7 @@ void TitleScene::Draw() const
 	keyframe.nodes.at(30).translation.y = kubi[1];
 	keyframe.nodes.at(30).translation.z = kubi[2];*/
 
-	skinnedMeshes[0]->UpdateAnimation(keyframe);
+	//skinnedMeshes[0]->UpdateAnimation(keyframe);
 
 	//•`ŽÊƒeƒXƒg
 	skinnedMeshes[0]->Render(DirectXCommon::dev.Get(),DirectXCommon::cmdList.Get(), world, { 1,1,1,1 },&keyframe);

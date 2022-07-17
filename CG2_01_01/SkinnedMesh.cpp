@@ -2,6 +2,7 @@
 #include <sstream>
 #include <functional>
 #include <filesystem>
+#include <fstream>
 #include <memory>
 
 #include <d3dcompiler.h>
@@ -34,12 +35,16 @@ void FetchBoneInfluences(const FbxMesh *fbx_mesh, std::vector<BoneInfluencesPerC
 			for (int control_point_indices_index = 0; control_point_indices_index < control_point_indices_count; ++control_point_indices_index) {
 				int control_point_index{ fbx_cluster->GetControlPointIndices()[control_point_indices_index] };
 				double control_point_weight = fbx_cluster->GetControlPointWeights()[control_point_indices_index];
-				BoneInfluence & bone_influence = bone_influences.at(control_point_index).emplace_back();
+				BoneInfluence &bone_influence = bone_influences.at(control_point_index).emplace_back();
 				bone_influence.bone_index = static_cast<uint32_t>(cluster_index);
 				bone_influence.bone_weight = static_cast<float>(control_point_weight);
 			}
 		}
 	}
+}
+
+void SkinnedMesh::CreatePipline(std::string shader_name)
+{
 }
 
 inline XMFLOAT4X4 SkinnedMesh::ConvertXMFLOAT4X4FromFbx(const FbxMatrix &fbx_matrix)
@@ -72,78 +77,94 @@ inline XMFLOAT4 SkinnedMesh::ConvertXMFLOAT4FromFbx(const FbxDouble4 &fbx_double
 	return xmfloat4;
 }
 
-SkinnedMesh::SkinnedMesh(ID3D12Device *dev, const char *fileName, bool trianglate)
+SkinnedMesh::SkinnedMesh(ID3D12Device *dev, const char *file_name, bool trianglate)
 {
-	// マネージャーの生成
-	FbxManager *fbx_manager = FbxManager::Create();
-	// シーン生成
-	FbxScene *fbx_scene = FbxScene::Create(fbx_manager, "MyScene");
-
-
-	FbxImporter *fbxImporter = FbxImporter::Create(fbx_manager, "");
-	// ファイル名を指定してFBXファイルを読み込む
-	if (!fbxImporter->Initialize(fileName, -1, fbx_manager->GetIOSettings()))
-	{
-		assert(0);
+	// シリアライズ
+	std::filesystem::path cereal_filename = file_name;
+	cereal_filename.replace_extension("cerealv1");		//拡張子部分をcerealに変更
+	// シリアライズ済みのデータがあればそれを読み込む
+	if (std::filesystem::exists(cereal_filename.c_str())) {
+		std::ifstream ifs(cereal_filename.c_str(), std::ios::binary);
+		cereal::BinaryInputArchive deserialization = ifs;
+		deserialization(scene_view_, meshes, materials, animation_clips_);
 	}
+	else {
+		// マネージャーの生成
+		FbxManager *fbx_manager = FbxManager::Create();
+		// シーン生成
+		FbxScene *fbx_scene = FbxScene::Create(fbx_manager, "MyScene");
 
-	// インポート
-	if (!fbxImporter->Import(fbx_scene)) {
-		assert(0);
-	}
 
-	
-	// 座標系の統一
-	FbxAxisSystem scene_axis_system = fbx_scene->GetGlobalSettings().GetAxisSystem();
-	if (scene_axis_system != FbxAxisSystem::DirectX) {
-		FbxAxisSystem::DirectX.DeepConvertScene(fbx_scene);
-	}
-
-	// 三角形化
-	FbxGeometryConverter fbx_converter(fbx_manager);
-	if (trianglate) {
-		fbx_converter.Triangulate(fbx_scene, true);
-		fbx_converter.RemoveBadPolygonsFromMeshes(fbx_scene);
-	}
-
-	// メートルに変換
-	FbxSystemUnit scene_unit = fbx_scene->GetGlobalSettings().GetSystemUnit();
-	scale_factor_ = scene_unit.GetScaleFactor();
-	if (scene_unit != FbxSystemUnit::m) {
-		//FbxSystemUnit::m.ConvertScene(fbx_scene);
-	//	FbxSystemUnit::m.ConvertScene(fbx_scene);
-	}
-
-	//ノードの取得
-	std::function<void(FbxNode *)> traverse{ [&](FbxNode *fbxNode) {
-		Scene::Node &node = scene_view_.nodes.emplace_back();
-		// typeがnullだったらeUnknownをセット
-		node.atribute = fbxNode->GetNodeAttribute() ?
-			fbxNode->GetNodeAttribute()->GetAttributeType() : FbxNodeAttribute::EType::eUnknown;
-		node.name = fbxNode->GetName();
-		node.uniqueID = fbxNode->GetUniqueID();
-		// 親がいなければ0を代入
-		node.pearent_index = scene_view_.indexof(fbxNode->GetParent() ?
-			fbxNode->GetParent()->GetUniqueID() : 0);
-		// 子に対して再起処理
-		for (int child_index = 0; child_index < fbxNode->GetChildCount(); ++child_index) {
-			traverse(fbxNode->GetChild(child_index));
+		FbxImporter *fbxImporter = FbxImporter::Create(fbx_manager, "");
+		// ファイル名を指定してFBXファイルを読み込む
+		if (!fbxImporter->Initialize(file_name, -1, fbx_manager->GetIOSettings()))
+		{
+			assert(0);
 		}
-	} };
-	
-	// ノード取得
-	traverse(fbx_scene->GetRootNode());
-	// メッシュ情報を取得
-	FetchMeshes(fbx_scene, meshes);
-	// マテリアル情報を取得
-	FetchMaterial(fbx_scene, materials);
-	// アニメーションを取得
-	FetchAnimations(fbx_scene, animation_clips_);
 
-	// 解放
-	fbx_manager->Destroy();
+		// インポート
+		if (!fbxImporter->Import(fbx_scene)) {
+			assert(0);
+		}
+
+
+		// 座標系の統一
+		FbxAxisSystem scene_axis_system = fbx_scene->GetGlobalSettings().GetAxisSystem();
+		if (scene_axis_system != FbxAxisSystem::DirectX) {
+			FbxAxisSystem::DirectX.DeepConvertScene(fbx_scene);
+		}
+
+		// 三角形化
+		FbxGeometryConverter fbx_converter(fbx_manager);
+		if (trianglate) {
+			fbx_converter.Triangulate(fbx_scene, true);
+			fbx_converter.RemoveBadPolygonsFromMeshes(fbx_scene);
+		}
+
+		// メートルに変換
+		FbxSystemUnit scene_unit = fbx_scene->GetGlobalSettings().GetSystemUnit();
+		scale_factor_ = scene_unit.GetScaleFactor();
+		if (scene_unit != FbxSystemUnit::m) {
+			//FbxSystemUnit::m.ConvertScene(fbx_scene);
+		//	FbxSystemUnit::m.ConvertScene(fbx_scene);
+		}
+
+		//ノードの取得
+		std::function<void(FbxNode *)> traverse{ [&](FbxNode *fbxNode) {
+			Scene::Node &node = scene_view_.nodes.emplace_back();
+			// typeがnullだったらeUnknownをセット
+			node.atribute = fbxNode->GetNodeAttribute() ?
+				fbxNode->GetNodeAttribute()->GetAttributeType() : FbxNodeAttribute::EType::eUnknown;
+			node.name = fbxNode->GetName();
+			node.unique_id = fbxNode->GetUniqueID();
+			// 親がいなければ0を代入
+			node.parent_index = scene_view_.indexof(fbxNode->GetParent() ?
+				fbxNode->GetParent()->GetUniqueID() : 0);
+			// 子に対して再起処理
+			for (int child_index = 0; child_index < fbxNode->GetChildCount(); ++child_index) {
+				traverse(fbxNode->GetChild(child_index));
+			}
+		} };
+
+		// ノード取得
+		traverse(fbx_scene->GetRootNode());
+		// メッシュ情報を取得
+		FetchMeshes(fbx_scene, meshes);
+		// マテリアル情報を取得
+		FetchMaterial(fbx_scene, materials);
+		// アニメーションを取得
+		FetchAnimations(fbx_scene, animation_clips_);
+
+		// 解放
+		fbx_manager->Destroy();
+
+		std::ofstream ofs(cereal_filename.c_str(), std::ios::binary);
+		cereal::BinaryOutputArchive serialization = ofs;
+		serialization(scene_view_, meshes, materials, animation_clips_);
+
+	}
 	// オブジェクト生成
-	CreateComObjects(dev, fileName);
+	CreateComObjects(dev, file_name);
 }
 
 void SkinnedMesh::FetchMeshes(FbxScene *fbxScene, std::vector<Mesh> &meshes)
@@ -170,7 +191,7 @@ void SkinnedMesh::FetchMeshes(FbxScene *fbxScene, std::vector<Mesh> &meshes)
 		std::vector<BoneInfluencesPerControlPoint> bone_influences;
 		FetchBoneInfluences(fbx_mesh, bone_influences);
 		// バインドポーズの取得
-		FetchSkelton(fbx_mesh, mesh.bind_pose);
+		FetchSkeleton(fbx_mesh, mesh.bind_pose);
 
 		// コンテナの取得
 		std::vector<Mesh::Subset> &subsets = mesh.subsets;
@@ -306,12 +327,9 @@ void SkinnedMesh::FetchMaterial(FbxScene *fbx_scene, std::unordered_map<uint64_t
 			materials.emplace(material.unique_id, std::move(material));
 		}
 	}
-	/*if (materials.size() == 0) {
-		CreateDummyMaterial(materials);
-	}*/
 }
 
-void SkinnedMesh::FetchSkelton(FbxMesh *fbx_mesh, Skeleton &bind_pose)
+void SkinnedMesh::FetchSkeleton(FbxMesh *fbx_mesh, Skeleton &bind_pose)
 {
 	const int deformer_count = fbx_mesh->GetDeformerCount(FbxDeformer::eSkin);
 	for (int deformer_index = 0; deformer_index < deformer_count; ++deformer_index) {
@@ -405,7 +423,7 @@ void SkinnedMesh::UpdateAnimation(Animation::Keyframe &keyframe)
 		XMMATRIX R = XMMatrixRotationQuaternion(XMLoadFloat4(&node.rotation));
 		XMMATRIX T = XMMatrixTranslation(node.translation.x, node.translation.y, node.translation.z);
 		
-		int64_t parent_index = scene_view_.nodes.at(node_index).pearent_index;
+		int64_t parent_index = scene_view_.nodes.at(node_index).parent_index;
 		XMMATRIX P{ parent_index < 0 ? XMMatrixIdentity() :
 			XMLoadFloat4x4(&keyframe.nodes.at(parent_index).global_transform) };
 		
@@ -415,6 +433,24 @@ void SkinnedMesh::UpdateAnimation(Animation::Keyframe &keyframe)
 
 bool SkinnedMesh::AppendAnimations(const char *animation_filename, float sampling_rate)
 {
+	FbxManager *fbx_manager = FbxManager::Create();
+	FbxScene *fbx_scene = FbxScene::Create(fbx_manager, "AppendAnimations") ;
+	
+	FbxImporter *fbx_importer = FbxImporter::Create(fbx_manager, "") ;
+	bool import_status = false;
+	import_status = fbx_importer->Initialize(animation_filename);
+	assert(import_status);
+
+	import_status = fbx_importer->Import(fbx_scene);
+	assert(import_status);
+
+	// アニメーション情報取得
+	FetchAnimations(fbx_scene, animation_clips_, sampling_rate);
+	
+	// マネージャー破棄
+	fbx_manager->Destroy();
+	
+	return true;
 }
 
 void SkinnedMesh::CreateComObjects(ID3D12Device *dev, const char *fileName)

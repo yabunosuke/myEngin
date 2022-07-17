@@ -8,19 +8,77 @@
 #include <fbxsdk.h>
 #include <unordered_map>
 
+//シリアライズ
+#include <cereal/archives/binary.hpp>
+#include <cereal/types/memory.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/types/set.hpp>
+#include <cereal/types/unordered_map.hpp>
+
 //#include "Component.h"
+
+// DirectXMath構造体用Template
+namespace DirectX {
+	template<class T>
+	void serialize(T &archive, DirectX::XMFLOAT2 &v) {
+		archive(
+			cereal::make_nvp("x", v.x),
+			cereal::make_nvp("y", v.y)
+		);
+	}
+
+	template<class T>
+	void serialize(T &archive, DirectX::XMFLOAT3 &v) {
+		archive(
+			cereal::make_nvp("x", v.x),
+			cereal::make_nvp("y", v.y),
+			cereal::make_nvp("z", v.z)
+		);
+	}
+
+	template < class T>
+	void serialize(T &archive, DirectX::XMFLOAT4 &v) {
+		archive(
+			cereal::make_nvp("x", v.x),
+			cereal::make_nvp("y", v.y),
+			cereal::make_nvp("z", v.z),
+			cereal::make_nvp("w", v.w)
+		);
+	}
+
+	template < class T>
+	void serialize(T &archive, DirectX::XMFLOAT4X4 &m) {
+		archive(
+			cereal::make_nvp("_11", m._11), cereal::make_nvp("_12", m._12),
+			cereal::make_nvp("_13", m._13), cereal::make_nvp("_14", m._14),
+			cereal::make_nvp("_21", m._21), cereal::make_nvp("_22", m._22),
+			cereal::make_nvp("_23", m._23), cereal::make_nvp("_24", m._24),
+			cereal::make_nvp("_31", m._31), cereal::make_nvp("_32", m._32),
+			cereal::make_nvp("_33", m._33), cereal::make_nvp("_34", m._34),
+			cereal::make_nvp("_41", m._41), cereal::make_nvp("_42", m._42),
+			cereal::make_nvp("_43", m._43), cereal::make_nvp("_44", m._44)
+		);
+	}
+
+}
+
 
 struct Scene {
 	// ノード
 	struct Node {
 		// ノードID
-		uint64_t uniqueID = 0;
+		uint64_t unique_id = 0;
 		// ノード名
 		std::string name;
 		// ノードタイプ
 		FbxNodeAttribute::EType atribute = FbxNodeAttribute::EType::eUnknown;
 		// 親のID
-		int64_t pearent_index = -1;
+		int64_t parent_index = -1;
+
+		template < class T>
+		void serialize(T &archive) {
+			archive(unique_id, name, atribute, parent_index);
+		}
 	};
 
 	// ノードコンテナ
@@ -35,12 +93,17 @@ struct Scene {
 		int64_t index = 0;
 		for (const Node &node : nodes) {
 			//IDが合致したらindexを返す
-			if (node.uniqueID == uniqueID) {
+			if (node.unique_id == uniqueID) {
 				return index;
 			}
 			index++;
 		}
 		return -1;
+	}
+
+	template < class T>
+	void serialize(T &archive) {
+		archive(nodes);
 	}
 };
 
@@ -64,6 +127,11 @@ struct Skeleton {
 		/// </summary>
 		/// <returns>親がいなければtrue</returns>
 		bool is_orphan() const { return parent_index < 0; };
+
+		template < class T>
+		void serialize(T & archive) {
+			archive(unique_id, name, parent_index, node_index, offset_transform);
+		}
 	};
 	std::vector<Bone> bones;
 
@@ -76,6 +144,11 @@ struct Skeleton {
 			++index;
 		}
 		return -1;
+	}
+
+	template < class T>
+	void serialize(T &archive) {
+		archive(bones);
 	}
 };
 
@@ -95,11 +168,28 @@ struct Animation {
 			DirectX::XMFLOAT3 scaling = { 1,1,1 };
 			DirectX::XMFLOAT4 rotation = { 0,0,0,1 };
 			DirectX::XMFLOAT3 translation = { 0,0,0 };
+
+			template < class T>
+			void serialize(T & archive) {
+				archive(global_transform, scaling, rotation, translation);
+			}
 		};
 		std::vector<Node> nodes;
+
+
+		template < class T>
+		void serialize(T &archive) {
+			archive(nodes);
+		}
 	};
 	// シークエンス
 	std::vector<Keyframe> sequence;
+
+
+	template < class T>
+	void serialize(T &archive) {
+		archive(name, sampling_rate, sequence);
+	}
 };
 
 class SkinnedMesh
@@ -124,6 +214,12 @@ public:	// サブクラス
 		XMFLOAT3 texcoord;
 		float bone_weights[MAX_BONE_INFLUENCES] = { 1,0,0,0 };
 		uint32_t bone_indices[MAX_BONE_INFLUENCES];
+
+
+		template < class T>
+		void serialize(T &archive) {
+			archive(position, normal, texcoord, bone_weights, bone_indices);
+		}
 	};
 
 	// 最大読み込みボーン数
@@ -168,6 +264,11 @@ public:	// サブクラス
 		std::string texture_filenames[4];
 		// シェーダーリソースビュー
 		/*ComPtr<*/D3D12_GPU_DESCRIPTOR_HANDLE/*>*/ shader_resource_views[4];
+
+		template < class T>
+		void serialize(T & archive) {
+			archive(unique_id, name, Ka, Kd, Ks, texture_filenames);
+		}
 	};
 	std::unordered_map<uint64_t, Material> materials;
 	
@@ -205,9 +306,20 @@ public:	// サブクラス
 
 			// メッシュ定数バッファ
 			ComPtr<ID3D12Resource> mesh_constant_buffer_;
+
+
+			template < class T>
+			void serialize(T &archive) {
+				archive(material_unique_id, material_name, start_index, index_count);
+			}
 		};
 		std::vector<Subset> subsets;
 
+
+		template < class T>
+		void serialize(T &archive) {
+			archive(unique_id, node_index, subsets, default_grlobal_transform, bind_pose, vertices, indices);
+		}
 		
 	private:
 		// 頂点バッファ
@@ -270,7 +382,7 @@ public:
 	/// </summary>
 	/// <param name="fbx_mesh">シーン</param>
 	/// <param name="bind_pose"></param>
-	void FetchSkelton(FbxMesh *fbx_mesh, Skeleton &bind_pose);
+	void FetchSkeleton(FbxMesh *fbx_mesh, Skeleton &bind_pose);
 
 	/// <summary>
 	/// アニメーション取得
@@ -283,7 +395,7 @@ public:
 
 	void UpdateAnimation(Animation::Keyframe &keyframe);
 
-	void AppendAnimations(const char *animation_filename, float sampling_rate);
+	bool AppendAnimations(const char *animation_filename, float sampling_rate = 0.0f);
 
 	/// <summary>
 	/// オブジェクト生成
