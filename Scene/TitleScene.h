@@ -31,6 +31,6 @@ private:
 	std::unique_ptr<Model> model;
 	std::unique_ptr<Object3d> obj;
 
-	std::shared_ptr<SkinnedMesh> skinnedMeshes[8];
+	//std::shared_ptr<SkinnedMesh> skinnedMeshes[8];
 };
 

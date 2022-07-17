@@ -59,8 +59,6 @@ namespace DirectX {
 
 }
 
-
-
 class FbxResource
 {
 private: // エイリアス
@@ -98,7 +96,7 @@ public:
 	struct Node {
 		NodeId					id = 0;				// ノードID
 		std::string				name;				// ノード名
-		FbxNodeAttribute::EType	atribute = FbxNodeAttribute::EType::eUnknown;	// ノードタイプ
+		FbxNodeAttribute::EType	attribute = FbxNodeAttribute::EType::eUnknown;	// ノードタイプ
 		int64_t					parent_index = -1;	// 親のインデックス
 
 		// トランスフォーム
@@ -108,7 +106,7 @@ public:
 
 		template < class T>
 		void serialize(T &archive) {
-			archive(id, name, attribute, parent_index, scale, rotate, translate);
+			archive(id, name, attribute, parent_index, scaling, rotation, translation);
 		}
 	};
 
@@ -124,7 +122,7 @@ public:
 
 		DirectX::XMFLOAT4		color = { 0.8f,0.8f,0.8f,1.0f };
 
-		ComPtr<D3D12_GPU_DESCRIPTOR_HANDLE> shader_resource_views[4];
+		D3D12_GPU_DESCRIPTOR_HANDLE *shader_resource_views[static_cast<int>(TextureType::MAX)];
 
 		template < class T>
 		void serialize(T &archive) {
@@ -246,13 +244,13 @@ public:
 	{
 		std::string					name;			// アニメーション名
 		float						seconds_length;	// アニメーションにかかる時間
-		float						samping_rate;	// サンプリングレート
+		float						sampling_rate;	// サンプリングレート
 		std::vector<Keyframe>		keyframes;		// キーフレームコンテナ
 
 		template<class T>
 		void serialize(T &archive)
 		{
-			archive(name, seconds_length, samping_rate, keyframes);
+			archive(name, seconds_length, sampling_rate, keyframes);
 		}
 	};
 
@@ -271,7 +269,53 @@ public:
 	const std::vector<Animation> &GetAnimation() const { return animations_; }
 
 private:
-	
+	/// <summary>
+	/// ノードインデックス検索
+	/// </summary>
+	/// <param name="nodeId">検索したいノードID</param>
+	/// <returns>インデックス番号</returns>
+	NodeId FindNodeIndex(NodeId nodeId) const;
+
+	/// <summary>
+	/// ノードからメッシュ情報を取得
+	/// </summary>
+	/// <param name="fbxScene">シーン</param>
+	/// <param name="meshes">メッシュの格納先</param>
+	void FetchMeshes(FbxScene *fbx_scene, std::vector<Mesh> &meshes);
+
+	/// <summary>
+	/// バインドポーズの取得
+	/// </summary>
+	/// <param name="fbx_mesh">シーン</param>
+	/// <param name="bind_pose"></param>
+	void FetchSkeleton(FbxMesh *fbx_mesh, Mesh *bind_pose);
+
+	/// <summary>
+	/// materialの取得
+	/// </summary>
+	/// <param name="fbx_scene">シーン</param>
+	/// <param name="materials">materialの格納先</param>
+	void FetchMaterial(FbxScene *fbx_scene, std::vector<Material> &materials);
+
+
+	/// <summary>
+	/// アニメーション取得
+	/// </summary>
+	/// <param name="fbx_scene">シーン</param>
+	/// <param name="animation_clips"></param>
+	/// <param name="sampling_rate"></param>
+	void FetchAnimations(FbxScene *fbx_scene, std::vector<Animation> &animation_clips, float sampling_rate = 0);
+
+	/// <summary>
+	/// マテリアルとサブセットの紐づけ
+	/// </summary>
+	void BindMaterial();
+
+	/// <summary>
+	/// ComObject生成
+	/// </summary>
+	/// <param name="dev">デバイス</param>
+	void CreateComObjects(ID3D12Device *dev);
 
 private:
 	std::vector<Node>		nodes_;

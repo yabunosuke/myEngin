@@ -46,9 +46,6 @@
     <ClCompile Include="..\DirectX\Object3d\Object3d.cpp">
       <Filter>Engin\Object</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX\Object3d\GameObjCommon.cpp">
-      <Filter>Engin\Object</Filter>
-    </ClCompile>
     <ClCompile Include="..\DirectX\Object3d\Model.cpp">
       <Filter>Engin\Object</Filter>
     </ClCompile>
@@ -148,6 +145,9 @@
     <ClCompile Include="FbxResource.cpp">
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
     </ClCompile>
+    <ClCompile Include="PipelineManager.cpp">
+      <Filter>Engin\Object\GameObject\Pipline</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\DirectXCommon\DirectXCommon.h" />
@@ -184,9 +184,6 @@
       <Filter>Engin\Collision</Filter>
     </ClInclude>
     <ClInclude Include="..\DirectX\Object3d\Object3d.h">
-      <Filter>Engin\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="..\DirectX\Object3d\GameObjCommon.h">
       <Filter>Engin\Object</Filter>
     </ClInclude>
     <ClInclude Include="..\DirectX\Object3d\Model.h">
@@ -300,6 +297,9 @@
     <ClInclude Include="FbxResource.h">
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
     </ClInclude>
+    <ClInclude Include="PipelineManager.h">
+      <Filter>Engin\Object\GameObject\Pipline</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Basic.hlsli" />
@@ -405,6 +405,9 @@
     </Filter>
     <Filter Include="Engin\Texture">
       <UniqueIdentifier>{6c53a731-7f5c-4943-842c-076c96b0eb05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engin\Object\GameObject\Pipline">
+      <UniqueIdentifier>{f17c122e-2c6e-4b6e-a4fd-d48b7f4b66ca}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -177,7 +177,6 @@
     <ClCompile Include="..\DirectX\Input\ControllerInput.cpp" />
     <ClCompile Include="..\DirectX\Input\KeyboardInput.cpp" />
     <ClCompile Include="..\DirectX\Math\Easing.cpp" />
-    <ClCompile Include="..\DirectX\Object3d\GameObjCommon.cpp" />
     <ClCompile Include="..\DirectX\Object3d\Model.cpp" />
     <ClCompile Include="..\DirectX\Object3d\ModelLoader.cpp" />
     <ClCompile Include="..\DirectX\Object3d\ModelManager.cpp" />
@@ -211,6 +210,7 @@
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="LightComponent.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PipelineManager.cpp" />
     <ClCompile Include="SkinnedMesh.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
@@ -318,7 +318,6 @@
     <ClInclude Include="..\DirectX\Math\Easing.h" />
     <ClInclude Include="..\DirectX\Math\Vector3.h" />
     <ClInclude Include="..\DirectX\Math\yMath.h" />
-    <ClInclude Include="..\DirectX\Object3d\GameObjCommon.h" />
     <ClInclude Include="..\DirectX\Object3d\Model.h" />
     <ClInclude Include="..\DirectX\Object3d\ModelLoader.h" />
     <ClInclude Include="..\DirectX\Object3d\ModelManager.h" />
@@ -353,6 +352,7 @@
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="LightComponent.h" />
+    <ClInclude Include="PipelineManager.h" />
     <ClInclude Include="SkinnedMesh.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TransformComponent.h" />

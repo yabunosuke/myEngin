@@ -36,9 +36,9 @@ public:
 		gravityPow(0.98f)
 	{
 		Object3d::Initialize();
-		SetModel(ModelManager::GetIns()->GetModel(modelName));
+		//SetModel(ModelManager::GetIns()->GetModel(modelName));
 		name = &modelName;
-		/*objectData->*/SetModel(ModelManager::GetIns()->GetModel(modelName));
+		///*objectData->*/SetModel(ModelManager::GetIns()->GetModel(modelName));
 		/*objectData->*/SetPosition(pos);
 		/*objectData->*/SetRotation(rotate);
 		/*objectData->*/SetScale(scale);

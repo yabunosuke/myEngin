@@ -89,7 +89,6 @@ D3D12_GPU_DESCRIPTOR_HANDLE Texture::LoadTextureFromFile(ID3D12Device *dev, cons
 	);
 
 	
-
 	return CD3DX12_GPU_DESCRIPTOR_HANDLE(
 		descriptor_heap_->GetGPUDescriptorHandleForHeapStart(),
 		texture_buffer_.size() - 1,
