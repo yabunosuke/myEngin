@@ -19,6 +19,12 @@
     <FxCompile Include="Assets\Shaders\FBXVS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="LambertPS.hlsl">
+      <Filter>Engin\Object\FBX\Shader\Lambert</Filter>
+    </FxCompile>
+    <FxCompile Include="LambertVS.hlsl">
+      <Filter>Engin\Object\FBX\Shader\Lambert</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\DirectX\DirectXCommon\DirectXCommon.cpp" />
@@ -147,6 +153,9 @@
     </ClCompile>
     <ClCompile Include="PipelineManager.cpp">
       <Filter>Engin\Object\GameObject\Pipline</Filter>
+    </ClCompile>
+    <ClCompile Include="Fbx.cpp">
+      <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -300,6 +309,9 @@
     <ClInclude Include="PipelineManager.h">
       <Filter>Engin\Object\GameObject\Pipline</Filter>
     </ClInclude>
+    <ClInclude Include="Fbx.h">
+      <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Basic.hlsli" />
@@ -310,6 +322,9 @@
     </None>
     <None Include="Assets\Shaders\FBX.hlsli">
       <Filter>Shader</Filter>
+    </None>
+    <None Include="Lambert.hlsli">
+      <Filter>Engin\Object\FBX\Shader\Lambert</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -408,6 +423,9 @@
     </Filter>
     <Filter Include="Engin\Object\GameObject\Pipline">
       <UniqueIdentifier>{f17c122e-2c6e-4b6e-a4fd-d48b7f4b66ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engin\Object\FBX\Shader\Lambert">
+      <UniqueIdentifier>{51e9491b-69cd-471a-a516-c3aabb10ac2a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

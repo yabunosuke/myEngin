@@ -483,10 +483,10 @@ void FbxResource::BindMaterial()
 
 void FbxResource::CreateComObjects(ID3D12Device *dev)
 {
+	HRESULT result;
 
 	//メッシュの数処理を繰り返す
 	for (Mesh &mesh : meshes_) {
-		HRESULT result;
 
 		// 頂点データ全体のサイズ
 		UINT sizeVB = static_cast<UINT>(sizeof(Vertex) * mesh.vertices.size());
@@ -533,38 +533,64 @@ void FbxResource::CreateComObjects(ID3D12Device *dev)
 		mesh.ibView.Format = DXGI_FORMAT_R16_UINT;
 		mesh.ibView.SizeInBytes = sizeIB;
 
-		for (Material &material : materials_) {
-			// テクスチャデータ
-			for (int i = 0; i < static_cast<int>(TextureType::MAX); ++i){
-				std::filesystem::path texture_name;			// テクスチャの名前
-				std::filesystem::path texture_extension;	// 拡張子
+		// メッシュ定数バッファの生成
+		result = dev->CreateCommittedResource
+		(
+			&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+			D3D12_HEAP_FLAG_NONE,
+			&CD3DX12_RESOURCE_DESC::Buffer((sizeof(MeshConstantBuffer) + 0xff) & ~0xff),
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(&mesh.mesh_constant_buffer_)
+		);
 
-				if (static_cast<TextureType>(i) == TextureType::NORMAL) {
-					texture_name = material.texture_filenames[1];
-					texture_extension = material.texture_filenames[1];
-				}
-				else {
-					texture_name = material.texture_filenames[0];
-					texture_extension = material.texture_filenames[1];
-				}
-				texture_name = texture_name.replace_extension("");
-				texture_extension = texture_extension.extension();
+		// サブセット定数バッファの生成
+		for (Subset &subset : mesh.subsets) {
+			result = dev->CreateCommittedResource
+			(
+				&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+				D3D12_HEAP_FLAG_NONE,
+				&CD3DX12_RESOURCE_DESC::Buffer((sizeof(SubsetConstantBuffer) + 0xff) & ~0xff),
+				D3D12_RESOURCE_STATE_GENERIC_READ,
+				nullptr,
+				IID_PPV_ARGS(&subset.subset_constant_buffer_)
+			);
+		}
+	}
 
-				std::filesystem::path texture_path =
-					texture_name.string() + filename[i] + texture_extension.string();
+	
 
-				std::filesystem::path path = filename_;
-				path.replace_filename(texture_path);
+	for (Material &material : materials_) {
+		// テクスチャデータ
+		for (int i = 0; i < static_cast<int>(TextureType::MAX); ++i) {
+			std::filesystem::path texture_name;			// テクスチャの名前
+			std::filesystem::path texture_extension;	// 拡張子
 
-				// テクスチャのチェック
-				// ファイルがあれば読み込み
-				if (std::filesystem::exists(path)) {
-					
-					material.shader_resource_views[i] = &Texture::LoadTextureFromFile(dev, path.c_str());
-				}
-				else {
-					material.shader_resource_views[i] = &Texture::MakeDummyTexture(dev);
-				}
+			if (static_cast<TextureType>(i) == TextureType::NORMAL) {
+				texture_name = material.texture_filenames[1];
+				texture_extension = material.texture_filenames[1];
+			}
+			else {
+				texture_name = material.texture_filenames[0];
+				texture_extension = material.texture_filenames[1];
+			}
+			texture_name = texture_name.replace_extension("");
+			texture_extension = texture_extension.extension();
+
+			std::filesystem::path texture_path =
+				texture_name.string() + filename[i] + texture_extension.string();
+
+			std::filesystem::path path = filename_;
+			path.replace_filename(texture_path);
+
+			// テクスチャのチェック
+			// ファイルがあれば読み込み
+			if (std::filesystem::exists(path)) {
+
+				material.shader_resource_views[i] = &Texture::LoadTextureFromFile(dev, path.c_str());
+			}
+			else {
+				material.shader_resource_views[i] = &Texture::MakeDummyTexture(dev);
 			}
 		}
 	}

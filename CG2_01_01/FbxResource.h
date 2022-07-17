@@ -77,6 +77,23 @@ public:
 	// シリアライズ時の拡張子
 	const char *cerealize_extension = "model_v2";
 
+	// 最大読み込みボーン数
+	static const int MAX_BONES = 256;
+	struct MeshConstantBuffer {
+		XMFLOAT4X4 bone_transforms[MAX_BONES] = { {
+			1,0,0,0,
+			0,1,0,0,
+			0,0,1,0,
+			0,0,0,1
+		} };
+	};
+
+	// サブセットバッファ
+	struct SubsetConstantBuffer {
+		XMFLOAT4 color = { 1,1,1,1 };
+	};
+
+
 	// テクスチャの種類
 	enum class TextureType {
 		BASE,
@@ -138,6 +155,9 @@ public:
 
 		Material *material = nullptr;
 
+		// サブセット定数バッファ
+		ComPtr<ID3D12Resource> subset_constant_buffer_;
+
 		template < class T>
 		void serialize(T &archive) {
 			archive(start_index, index_count, material_index);
@@ -151,7 +171,7 @@ public:
 		XMFLOAT3				position = { 0, 0, 0 };
 		XMFLOAT3				normal = { 0, 0, 0 };
 		XMFLOAT3				tangent = { 0, 0, 0 };
-		XMFLOAT2				texcoord = { 0, 0 };
+		XMFLOAT3				texcoord = { 0, 0 ,0 };
 		XMFLOAT4				color = { 1, 1, 1, 1 };
 		float bone_weights[MAX_BONE_INFLUENCES] = { 1,0,0,0 };
 		uint32_t bone_indices[MAX_BONE_INFLUENCES];
@@ -206,6 +226,8 @@ public:
 			return -1;
 		}
 
+		// 使うパイプラインの名前
+		std::string pipline_name;
 
 		template < class T>
 		void serialize(T &archive) {
@@ -264,9 +286,9 @@ public: //静的
 public:
 	// ゲッター
 	const std::vector<Mesh> &GetMeshes() const { return meshes_; }
-	const std::vector<Node> &GetNode() const { return nodes_; }
-	const std::vector<Material> &GetMaterial() const { return materials_; }
-	const std::vector<Animation> &GetAnimation() const { return animations_; }
+	const std::vector<Node> &GetNodes() const { return nodes_; }
+	const std::vector<Material> &GetMaterials() const { return materials_; }
+	const std::vector<Animation> &GetAnimations() const { return animations_; }
 
 private:
 	/// <summary>
