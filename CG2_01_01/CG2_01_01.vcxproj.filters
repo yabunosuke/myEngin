@@ -109,12 +109,6 @@
     <ClCompile Include="Component.cpp">
       <Filter>Engin\Object\GameObject\Component</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Engin\Object\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="ColliderComponent.cpp">
-      <Filter>Engin\Object\GameObject\Component</Filter>
-    </ClCompile>
     <ClCompile Include="GameObjectManager.cpp">
       <Filter>Engin\Object\GameObjectManager</Filter>
     </ClCompile>
@@ -146,7 +140,7 @@
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
     </ClCompile>
     <ClCompile Include="PipelineManager.cpp">
-      <Filter>Engin\Object\GameObject\Pipline</Filter>
+      <Filter>Engin\Object\GameObject\Component\3dObject\Pipline</Filter>
     </ClCompile>
     <ClCompile Include="Fbx.cpp">
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
@@ -156,6 +150,12 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Game\Scene\Title\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Engin\Object\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderComponent.cpp">
+      <Filter>Engin\Object\GameObject\Component\Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -261,9 +261,6 @@
     <ClInclude Include="GameObject.h">
       <Filter>Engin\Object\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="ColliderComponent.h">
-      <Filter>Engin\Object\GameObject\Component</Filter>
-    </ClInclude>
     <ClInclude Include="GameObjectManager.h">
       <Filter>Engin\Object\GameObjectManager</Filter>
     </ClInclude>
@@ -301,7 +298,7 @@
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
     </ClInclude>
     <ClInclude Include="PipelineManager.h">
-      <Filter>Engin\Object\GameObject\Pipline</Filter>
+      <Filter>Engin\Object\GameObject\Component\3dObject\Pipline</Filter>
     </ClInclude>
     <ClInclude Include="Fbx.h">
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
@@ -311,6 +308,9 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Game\Scene\Title\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderComponent.h">
+      <Filter>Engin\Object\GameObject\Component\Collider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -406,9 +406,6 @@
     <Filter Include="Engin\Object\GameObject\Component\Light">
       <UniqueIdentifier>{4e140796-d5ed-4b21-a7be-3f0360ee5de7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engin\Object\GameObject\Component\Transform">
-      <UniqueIdentifier>{9efb7f7c-0dcf-47de-91f3-87c1df4d67e2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engin\Object\FBX\Shader">
       <UniqueIdentifier>{a0fdb385-3b8a-4d43-b2d2-e8a5a0e3682d}</UniqueIdentifier>
     </Filter>
@@ -418,14 +415,20 @@
     <Filter Include="Engin\Texture">
       <UniqueIdentifier>{6c53a731-7f5c-4943-842c-076c96b0eb05}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engin\Object\GameObject\Pipline">
-      <UniqueIdentifier>{f17c122e-2c6e-4b6e-a4fd-d48b7f4b66ca}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engin\Object\FBX\Shader\Lambert">
       <UniqueIdentifier>{51e9491b-69cd-471a-a516-c3aabb10ac2a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\Scene\Title\Player">
       <UniqueIdentifier>{d1f1a3c2-5281-4822-98ec-35cc798708e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engin\Object\GameObject\Component\Transform">
+      <UniqueIdentifier>{9efb7f7c-0dcf-47de-91f3-87c1df4d67e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engin\Object\GameObject\Component\3dObject\Pipline">
+      <UniqueIdentifier>{f17c122e-2c6e-4b6e-a4fd-d48b7f4b66ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engin\Object\GameObject\Component\Collider">
+      <UniqueIdentifier>{bc73365e-4036-4ffd-9c7c-0802e2937e41}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

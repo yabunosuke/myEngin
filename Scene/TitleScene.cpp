@@ -28,10 +28,10 @@ TitleScene::TitleScene(IoChangedListener *impl)
 
 
 	gameObjectManager.CreateObject();
-	auto plantune = gameObjectManager.CreateObject("Nico");
+	auto plantune = gameObjectManager.CreateObject("plantune");
 	plantune.lock().get()->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(), 
-			"Assets/3d/UNIT/nico.fbx");
+			"Assets/3d/UNIT/plantune.fbx");
 
 	plantune.lock().get()->AddComponent<Player>();
 }
