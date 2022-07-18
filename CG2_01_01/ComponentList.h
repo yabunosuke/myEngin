@@ -41,13 +41,13 @@ public:
 private:
 	static void addDummy(GameObject *object) {};
 	//トランスフォームコンポーネント追加
-	static void addTransform(GameObject *object) {object->AddComponent(std::make_shared<TransformComponent>());}
+	static void addTransform(GameObject *object) {object->AddComponent<TransformComponent>();}
 	//ライトコンポーネント追加
-	static void addLight(GameObject *object) { object->AddComponent(std::make_shared<LightComponent>()); }
+	static void addLight(GameObject *object) { object->AddComponent<LightComponent>(); }
 	//トランスフォームコンポーネント追加
-	static void addColision(GameObject *object) { object->AddComponent(std::make_shared<TransformComponent>()); }
+	static void addColision(GameObject *object) { object->AddComponent<TransformComponent>(); }
 	//トランスフォームコンポーネント追加
-	static void addCamera(GameObject *object) { object->AddComponent(std::make_shared<CameraComponent>()); }
+	static void addCamera(GameObject *object) { object->AddComponent<CameraComponent>(); }
 
 
 	//コンポーネントグループ

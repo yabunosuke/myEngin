@@ -151,9 +151,11 @@
     <ClCompile Include="Fbx.cpp">
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Object3dComponent.cpp">
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Game\Scene\Title\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -304,9 +306,11 @@
     <ClInclude Include="Fbx.h">
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h" />
     <ClInclude Include="Object3dComponent.h">
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Game\Scene\Title\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -419,6 +423,9 @@
     </Filter>
     <Filter Include="Engin\Object\FBX\Shader\Lambert">
       <UniqueIdentifier>{51e9491b-69cd-471a-a516-c3aabb10ac2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Scene\Title\Player">
+      <UniqueIdentifier>{d1f1a3c2-5281-4822-98ec-35cc798708e6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

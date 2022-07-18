@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+
 //コンポーネント基底クラス
 #include "Component.h"
 
@@ -50,7 +51,7 @@ public:	//関数
 
 	//初期化
 	void Initialize();
-	
+
 	/// <summary>
 	/// 毎フレーム更新
 	/// </summary>
@@ -58,7 +59,7 @@ public:	//関数
 
 	//一定の間隔で更新
 	void FixUpdate() {};
-	
+
 	/// <summary>
 	/// 描画
 	/// </summary>
@@ -79,7 +80,7 @@ public:	//関数
 	/// コンポーネントリストの取得
 	/// </summary>
 	/// <returns></returns>
-	std::list<std::shared_ptr<Component>> GetComponentList() { return componentList; }
+	std::list<Component *> GetComponentList() { return componentList; }
 
 	/// <summary>
 	/// コンポーネントの取得
@@ -89,7 +90,7 @@ public:	//関数
 	template<class T>
 	T *GetComponent() {
 		for (auto &component : componentList) {
-			T* temp = dynamic_cast<T*>(component.get());
+			T *temp = dynamic_cast<T *>(component);
 			if (temp != nullptr) {
 				return temp;
 			}
@@ -98,8 +99,15 @@ public:	//関数
 	};
 
 	//コンポーネントの追加
-	void AddComponent(const std::shared_ptr<Component> &component);
-
+	template<class T, class... Args>
+	T *AddComponent(Args ...args)
+	{
+		T *buff = new T(args...);
+		buff->SetParent(this);
+		componentList.emplace_back(buff);
+		buff->Initialize();
+		return buff;
+	}
 	
 protected:
 	// 名前
@@ -111,7 +119,7 @@ protected:
 	// 子オブジェクトのコンテナ
 	std::vector<std::shared_ptr<GameObject>> childGameObject;
 	// コンポーネント
-	std::list<std::shared_ptr<Component>> componentList;
+	std::list<Component *> componentList;
 
 private:	// 静的メンバ変数
 	// オブジェクトIDの重複回避用

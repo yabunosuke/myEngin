@@ -44,6 +44,8 @@ public:
 	/// </summary>
 	void ImGuiDraw();
 
+	void SetParent(GameObject *obj) { parent = obj; }
+
 
 public:	//ゲッター＆セッタ
 	
@@ -78,6 +80,7 @@ protected:	//関数
 	/// 情報
 	/// </summary>
 	virtual void Infomation() {};
+
 
 
 protected:

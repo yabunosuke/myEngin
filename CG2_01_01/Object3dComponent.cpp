@@ -58,6 +58,34 @@ void Object3dComponent::VirtualFinalize()
 
 void Object3dComponent::Infomation()
 {
+	// 現在選択されているアニメーション名
+	static const char *combo_preview_value = nullptr;
+	static int animation_id = 0;
+	if (ImGui::BeginCombo("Animation ", combo_preview_value))
+	{
+		for (int n = 0; n < object_fbx.get()->GetResource()->GetAnimations().size(); n++) {
+			auto &animation = object_fbx.get()->GetResource()->GetAnimations()[n];
+			const bool is_selected = (animation_id == n);
+			
+			if (ImGui::Selectable(animation.name.c_str(), is_selected)) {
+				animation_id = n;
+				combo_preview_value = animation.name.c_str();
+			}
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+
+	static bool is_loop = false;
+	if (ImGui::Checkbox("isLoop", &is_loop)) {
+	}
+
+	if (ImGui::Button("Play Animation")) {
+		object_fbx.get()->PlayAnimation(animation_id,is_loop,1.5f);
+	}
+
 	/*ImGui::ProgressBar(
 		object_fbx.get()->GetResource()->GetAnimations()[0].seconds_length/
 		object_fbx.get()->GetCurrentAnimationSeconds());*/

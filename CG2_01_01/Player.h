@@ -1,5 +1,7 @@
 #pragma once
 #include "Component.h"
+#include "Vector3.h"
+
 class Player :
     public Component
 {
@@ -28,5 +30,8 @@ public:
 	/// </summary>
 	void Infomation() override;
 
+private:
+
+	Vector3 velosity;
 };
 

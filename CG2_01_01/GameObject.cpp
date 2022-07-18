@@ -13,8 +13,9 @@ GameObject::GameObject(std::string name) :
 	name(name),
 	id(++ID)
 {
-	std::shared_ptr<TransformComponent> t = std::make_shared<TransformComponent>();
-	AddComponent(t);
+	//std::shared_ptr<TransformComponent> t = std::make_shared<TransformComponent>();
+	//AddComponent(t);
+	AddComponent<TransformComponent>();
 }
 
 void GameObject::Initialize()
@@ -32,7 +33,7 @@ void GameObject::Update()
 	auto &itr = componentList.begin();
 	while (itr != componentList.end()) {
 		if ((*itr)->GetIsRemove()) {
-			itr->reset();
+			delete *itr;
 			itr = componentList.erase(itr);
 		}
 		else {
@@ -75,17 +76,11 @@ void GameObject::DrawInspector()
 	int i = 0;
 	for (auto &component : componentList) {
 		ImGui::PushID(i);
-		component.get()->ImGuiDraw();
+		component->ImGuiDraw();
 		ImGui::Separator();
 		ImGui::PopID();
 		i++;
 	}
 
 
-}
-
-void GameObject::AddComponent(const std::shared_ptr<Component> &component)
-{
-	component.get()->SetObject(this);
-	componentList.emplace_back(component);
 }

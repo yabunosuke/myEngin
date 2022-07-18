@@ -11,14 +11,21 @@ public:
 
 	void VirtualUpdate() override;
 
-	XMFLOAT3 GetPositon() const { return position; }
-	XMFLOAT3 GetRotate() const { return rotate; }
-	XMFLOAT3 GetScale() const { return scale; }
+	XMFLOAT3 GetPositon()	const	{ return position_; }
+	XMFLOAT3 GetRotate()	const	{ return rotate_; }
+	XMFLOAT3 GetScale()		const	{ return scale_; }
+
+	void SetPositon(XMFLOAT3 pos)	{ position_ = pos; }
+	void SetRotate(XMFLOAT3 rot)	{ rotate_ = rot; }
+	void SetScale(XMFLOAT3 sca)		{ scale_ = sca; }
+
+
+	XMFLOAT4X4 GetTransform() const;
 
 private:
-	XMFLOAT3 position;
-	XMFLOAT3 rotate;
-	XMFLOAT3 scale;
+	XMFLOAT3 position_;
+	XMFLOAT3 rotate_;
+	XMFLOAT3 scale_;
 
 	DirectX::XMFLOAT4X4 transform = {
 		1,0,0,0,
