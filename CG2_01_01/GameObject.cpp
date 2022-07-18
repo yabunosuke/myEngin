@@ -86,5 +86,6 @@ void GameObject::DrawInspector()
 
 void GameObject::AddComponent(const std::shared_ptr<Component> &component)
 {
+	component.get()->SetObject(this);
 	componentList.emplace_back(component);
 }

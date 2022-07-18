@@ -2,7 +2,10 @@
 #include <string>
 #include <DirectXMath.h>
 #include <memory>
+#include <wrl.h>
+#include <vector>
 #include "imgui.h"
+
 //#include "GameObject.h"
 
 class GameObject;
@@ -10,10 +13,13 @@ class GameObject;
 class Component
 {
 protected: // エイリアス
+	// Microsoft::WRL::を省略
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
+	using XMFLOAT4X4 = DirectX::XMFLOAT4X4;
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
@@ -38,8 +44,11 @@ public:
 	/// </summary>
 	void ImGuiDraw();
 
+
 public:	//ゲッター＆セッタ
 	
+	void SetObject(GameObject *obj) { parent = obj; }
+
 	// isRemove
 	void Remove() { isRemove = true; }
 	bool GetIsRemove() { return isRemove; }
@@ -73,7 +82,7 @@ protected:	//関数
 
 protected:
 	// オブジェクト
-	std::weak_ptr<GameObject> object;
+	GameObject *parent = nullptr;
 	// アクティブフラグ
 	bool isActive;
 	// リムーブフラグ

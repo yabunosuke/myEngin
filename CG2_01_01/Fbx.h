@@ -66,6 +66,12 @@ public:
 	/// <returns>ÉmÅ[Éh</returns>
 	Node *FindNode(const char *name);
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
+	const FbxResource *GetResource() const { return resource_.get(); }
+
 	void UpdateAnimation(float elapsed_time = 0.016f);
 	void PlayAnimation(uint64_t index, bool loop = true, float blend_seconds = 1.0f);
 	float GetCurrentAnimationSeconds() const { return current_animation_seconds_; }

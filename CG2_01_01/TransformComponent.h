@@ -11,6 +11,10 @@ public:
 
 	void VirtualUpdate() override;
 
+	XMFLOAT3 GetPositon() const { return position; }
+	XMFLOAT3 GetRotate() const { return rotate; }
+	XMFLOAT3 GetScale() const { return scale; }
+
 private:
 	XMFLOAT3 position;
 	XMFLOAT3 rotate;

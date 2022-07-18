@@ -7,8 +7,6 @@
 #include "CollisionManager.h"
 
 #include "Collision.h"
-#include "TransformComponent.h"
-#include "ColliderComponent.h"
 
 #include "Easing.h"
 #include "yMath.h"
@@ -16,24 +14,24 @@
 
 #include "PipelineManager.h"
 
-
-#include "Player.h"
+// コンポーネント
+#include "Object3dComponent.h"
+#include "TransformComponent.h"
+#include "ColliderComponent.h"
 
 TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
-	//skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/Drone166/Drone166.1.fbx",false);
-	//skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/AimTest/MNK_Mesh.fbx");
-	//skinnedMeshes[0] = std::make_shared<SkinnedMesh>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/nico.fbx");
-	//skinnedMeshes[0]->AppendAnimations("Assets/3d/UNIT/AimTest/Aim_Space.fbx");
-
 	PipelineManager::GetInstance()->CreatePipline(DirectXCommon::dev.Get(), "Lambert");
-	test[0] = std::make_shared<Fbx>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/drone166/drone166.1.fbx");
+	//test[0] = std::make_shared<Fbx>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/plantune.fbx");
 
 
 	gameObjectManager.CreateObject();
-	auto player = gameObjectManager.CreateObject("Player");
-	player.lock().get()->AddComponent(std::make_shared<Player>());
+	auto plantune = gameObjectManager.CreateObject("Plantune");
+	plantune.lock().get()->AddComponent(
+		std::make_shared<Object3dComponent>(
+			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(), 
+			"Assets/3d/UNIT/plantune.fbx"));
 }
 
 void TitleScene::Initialize()
@@ -50,7 +48,7 @@ void TitleScene::Finalize()
 
 void TitleScene::Update()
 {
-	test[0]->UpdateAnimation();
+	//test[0]->UpdateAnimation();
 	
 	//ゲームオブジェクト全てをアップデート
 	gameObjectManager.Update();
@@ -72,7 +70,7 @@ void TitleScene::Draw() const
 	ImGui::DragFloat3("rot", &rot.x);
 	ImGui::DragFloat3("sca", &sca.x);
 
-	if (ImGui::Button("0")) {
+	/*if (ImGui::Button("0")) {
 		test[0]->PlayAnimation(0);
 	}
 	if (ImGui::Button("1")) {
@@ -80,7 +78,7 @@ void TitleScene::Draw() const
 	}
 	if (ImGui::Button("6")) {
 		test[0]->PlayAnimation(6);
-	}
+	}*/
 	ImGui::End();
 	
 	XMMATRIX S = XMMatrixScaling(sca.x, sca.y, sca.z);
@@ -91,9 +89,9 @@ void TitleScene::Draw() const
 	XMMATRIX mat = S * R * T;
 	DirectX::XMStoreFloat4x4(&world, mat);
 	
-	test[0].get()->UpdateTransform(world);
+	//test[0].get()->UpdateTransform(world);
 
-	test[0].get()->Draw(DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get());
+	//test[0].get()->Draw(DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get());
 	
 	//const float scale_factor = 100.0f;
 	

@@ -89,8 +89,8 @@ public:	//ä÷êî
 	template<class T>
 	T *GetComponent() {
 		for (auto &component : componentList) {
-			std::shared_ptr<T> temp = std::make_shared<T>();
-			if (true) {
+			T* temp = dynamic_cast<T*>(component.get());
+			if (temp != nullptr) {
 				return temp;
 			}
 		}

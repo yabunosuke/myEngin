@@ -8,5 +8,4 @@ CameraComponent::CameraComponent() :
 
 void CameraComponent::VirtualUpdate()
 {
-	auto transfome = object.lock().get();
 }

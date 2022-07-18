@@ -180,7 +180,6 @@
     <ClCompile Include="..\DirectX\Object3d\Model.cpp" />
     <ClCompile Include="..\DirectX\Object3d\ModelLoader.cpp" />
     <ClCompile Include="..\DirectX\Object3d\ModelManager.cpp" />
-    <ClCompile Include="..\DirectX\Object3d\Object3d.cpp" />
     <ClCompile Include="..\DirectX\Sprite\Sprite.cpp" />
     <ClCompile Include="..\DirectX\WinApp\WinApp.cpp" />
     <ClCompile Include="..\imgui\imgui.cpp" />
@@ -211,6 +210,7 @@
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="LightComponent.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Object3dComponent.cpp" />
     <ClCompile Include="PipelineManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -330,7 +330,6 @@
     <ClInclude Include="..\DirectX\Object3d\Model.h" />
     <ClInclude Include="..\DirectX\Object3d\ModelLoader.h" />
     <ClInclude Include="..\DirectX\Object3d\ModelManager.h" />
-    <ClInclude Include="..\DirectX\Object3d\Object3d.h" />
     <ClInclude Include="..\DirectX\Sprite\Sprite.h" />
     <ClInclude Include="..\DirectX\WinApp\WinApp.h" />
     <ClInclude Include="..\imgui\imconfig.h" />
@@ -362,6 +361,7 @@
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="LightComponent.h" />
+    <ClInclude Include="Object3dComponent.h" />
     <ClInclude Include="PipelineManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Texture.h" />

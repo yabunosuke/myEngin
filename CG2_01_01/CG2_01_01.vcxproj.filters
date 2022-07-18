@@ -49,9 +49,6 @@
     <ClCompile Include="..\DirectX\Collision\SphereCollider.cpp">
       <Filter>Engin\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX\Object3d\Object3d.cpp">
-      <Filter>Engin\Object</Filter>
-    </ClCompile>
     <ClCompile Include="..\DirectX\Object3d\Model.cpp">
       <Filter>Engin\Object</Filter>
     </ClCompile>
@@ -155,6 +152,9 @@
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Object3dComponent.cpp">
+      <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\DirectXCommon\DirectXCommon.h" />
@@ -189,9 +189,6 @@
     </ClInclude>
     <ClInclude Include="..\DirectX\Collision\SphereCollider.h">
       <Filter>Engin\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="..\DirectX\Object3d\Object3d.h">
-      <Filter>Engin\Object</Filter>
     </ClInclude>
     <ClInclude Include="..\DirectX\Object3d\Model.h">
       <Filter>Engin\Object</Filter>
@@ -308,6 +305,9 @@
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
     </ClInclude>
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Object3dComponent.h">
+      <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Basic.hlsli" />
@@ -419,9 +419,6 @@
     </Filter>
     <Filter Include="Engin\Object\FBX\Shader\Lambert">
       <UniqueIdentifier>{51e9491b-69cd-471a-a516-c3aabb10ac2a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Player">
-      <UniqueIdentifier>{bb7ca04a-973b-4207-9e58-b93233cf6a4e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
