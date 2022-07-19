@@ -12,6 +12,12 @@ void Component::Update()
 	VirtualUpdate();
 }
 
+void Component::LustUpdate()
+{
+	if (!isActive) return;
+	VirtualLustUpdate();
+}
+
 void Component::Draw()
 {
 	if (!isActive) return;

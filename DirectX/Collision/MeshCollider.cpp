@@ -3,7 +3,7 @@
 
 using namespace DirectX;
 
-void MeshCollider::ConstructTriangles(Model* model)
+void MeshCollider::ConstructTriangles(/*Model* model*/)
 {
 	////三角形リストをクリア
 	//triangles.clear();
@@ -60,80 +60,80 @@ void MeshCollider::ConstructTriangles(Model* model)
 void MeshCollider::Update()
 {
 	//ワールド行列の逆行列を計算
-	invMatWorld = XMMatrixInverse(nullptr, GetObject3d()->GetMatWorld());
+	//invMatWorld = XMMatrixInverse(nullptr, GetObject3d()->GetMatWorld());
 }
 
 bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, DirectX::XMVECTOR* inter, DirectX::XMVECTOR* reject)
 {
-	// オブジェクトのローカル座標系での球を得る（半径はXスケールを参照)
-	Sphere localSphere;
-	localSphere.center = XMVector3Transform(sphere.center, invMatWorld);
-	localSphere.radius *= XMVector3Length(invMatWorld.r[0]).m128_f32[0];
-	//ローカル座標系で交差をチェック
-	std::vector<Triangle>::const_iterator it = triangles.cbegin();
-
-	for (; it != triangles.cend(); ++it)
-	{
-		const Triangle& triangle = *it;
-		//球と三角形の当たり判定
-		if (Collision::CheckSphere2Triangle(localSphere, triangle, inter, reject))
-		{
-			if (inter)
-			{
-				const XMMATRIX& matWorld = GetObject3d()->GetMatWorld();
-				//ワールド座標系での交点を得る
-				*inter = XMVector3Transform(*inter, matWorld);
-			}
-			if (reject)
-			{
-				const XMMATRIX& matWorld = GetObject3d()->GetMatWorld();
-				//ワールド座標系での排斥ベクトルに変換
-				*reject = XMVector3TransformNormal(*reject, matWorld);
-			}
-			return true;
-		}
-	}
+//	// オブジェクトのローカル座標系での球を得る（半径はXスケールを参照)
+//	Sphere localSphere;
+//	localSphere.center = XMVector3Transform(sphere.center, invMatWorld);
+//	localSphere.radius *= XMVector3Length(invMatWorld.r[0]).m128_f32[0];
+//	//ローカル座標系で交差をチェック
+//	std::vector<Triangle>::const_iterator it = triangles.cbegin();
+//
+//	for (; it != triangles.cend(); ++it)
+//	{
+//		const Triangle& triangle = *it;
+//		//球と三角形の当たり判定
+//		if (Collision::CheckSphere2Triangle(localSphere, triangle, inter, reject))
+//		{
+//			if (inter)
+//			{
+//				const XMMATRIX& matWorld = GetObject3d()->GetMatWorld();
+//				//ワールド座標系での交点を得る
+//				*inter = XMVector3Transform(*inter, matWorld);
+//			}
+//			if (reject)
+//			{
+//				const XMMATRIX& matWorld = GetObject3d()->GetMatWorld();
+//				//ワールド座標系での排斥ベクトルに変換
+//				*reject = XMVector3TransformNormal(*reject, matWorld);
+//			}
+//			return true;
+//		}
+//	}
 
 	return false;
 }
 
 bool MeshCollider::CheckCollisionRay(const Ray& ray, float* distance, DirectX::XMVECTOR* inter)
 {
-	// オブジェクトのローカル座標系でのレイを得る
-	Ray localRay;
-	localRay.start = XMVector3Transform(ray.start, invMatWorld);
-	localRay.dir = XMVector3TransformNormal(ray.dir, invMatWorld);
-	//ローカル座標系で交差をチェック
-	std::vector<Triangle>::const_iterator it = triangles.cbegin();
-
-	for (; it != triangles.cend(); ++it)
-	{
-		const Triangle& triangle = *it;
-
-		XMVECTOR tempInter;
-		//レイと三角形の当たり判定
-		if (Collision::CheckRay2Triangle(localRay, triangle, nullptr, &tempInter))
-		{
-
-			const XMMATRIX& matWorld = GetObject3d()->GetMatWorld();
-			//ワールド座標系での交点を得る
-			tempInter = XMVector3Transform(tempInter, matWorld);
-
-			if (distance)
-			{
-				//交点とレイ始点の距離を計算
-				XMVECTOR sub = tempInter - ray.start;
-				*distance = XMVector3Dot(sub, ray.dir).m128_f32[0];
-			}
-
-			if (inter)
-			{
-				*inter = tempInter;
-			}
-
-			return true;
-		}
-	}
+//	// オブジェクトのローカル座標系でのレイを得る
+//	Ray localRay;
+//	localRay.start = XMVector3Transform(ray.start, invMatWorld);
+//	localRay.dir = XMVector3TransformNormal(ray.dir, invMatWorld);
+//	//ローカル座標系で交差をチェック
+//	std::vector<Triangle>::const_iterator it = triangles.cbegin();
+//
+//	for (; it != triangles.cend(); ++it)
+//	{
+//		const Triangle& triangle = *it;
+//
+//		XMVECTOR tempInter;
+//		//レイと三角形の当たり判定
+//		if (Collision::CheckRay2Triangle(localRay, triangle, nullptr, &tempInter))
+//		{
+//
+//			const XMMATRIX& matWorld = GetObject3d()->GetMatWorld();
+//			//ワールド座標系での交点を得る
+//			tempInter = XMVector3Transform(tempInter, matWorld);
+//
+//			if (distance)
+//			{
+//				//交点とレイ始点の距離を計算
+//				XMVECTOR sub = tempInter - ray.start;
+//				*distance = XMVector3Dot(sub, ray.dir).m128_f32[0];
+//			}
+//
+//			if (inter)
+//			{
+//				*inter = tempInter;
+//			}
+//
+//			return true;
+//		}
+//	}
 
 	return false;
 }

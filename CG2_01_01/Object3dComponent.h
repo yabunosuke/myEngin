@@ -30,6 +30,8 @@ public:
 	/// </summary>
 	void Infomation() override;
 
+	// オブジェクトの取得
+	Fbx *GetObjectData() const { return object_fbx.get(); }
 private:
 
 	// FBXオブジェクト

@@ -10,8 +10,8 @@ GameObject::GameObject(std::string name) :
 	isActive(true),
 	isBlind(false),
 	isRemove(false),
-	name(name),
-	id(++ID)
+	name_(name),
+	id_(++ID)
 {
 	//std::shared_ptr<TransformComponent> t = std::make_shared<TransformComponent>();
 	//AddComponent(t);
@@ -25,7 +25,7 @@ void GameObject::Initialize()
 void GameObject::Update()
 {
 	// 親オブジェクトのアクティブ（親が存在しないときはfalse）
-	bool pealentIsActive = !(pearentGameObject.lock().get() && !pearentGameObject.lock().get()->isActive);
+	bool pealentIsActive = !(pearent_game_object_.lock().get() && !pearent_game_object_.lock().get()->isActive);
 	// 親オブジェクトが非アクティブなときと、自身が非アクティブなときは更新しない
 	if (!pealentIsActive || !isActive) return;
 
@@ -33,7 +33,7 @@ void GameObject::Update()
 	auto &itr = componentList.begin();
 	while (itr != componentList.end()) {
 		if ((*itr)->GetIsRemove()) {
-			delete *itr;
+			itr->reset();
 			itr = componentList.erase(itr);
 		}
 		else {
@@ -44,6 +44,15 @@ void GameObject::Update()
 	// 全てのコンポーネントを更新
 	for (auto &component : componentList) {
 		component->Update();
+	}
+}
+
+void GameObject::LastUpdate()
+{
+	//アクティブでなければ描画しない
+	if (!isActive) return;
+	for (auto &component : componentList) {
+		component->LustUpdate();
 	}
 }
 
@@ -66,9 +75,9 @@ void GameObject::DrawInspector()
 	ImGui::Checkbox("##Active", &isActive); ImGui::SameLine();
 	//名前の変更と描画
 	char buf[64] = "";
-	sprintf_s(buf, name.c_str());
+	sprintf_s(buf, name_.c_str());
 	if (ImGui::InputText("##", buf, 64,ImGuiInputTextFlags_EnterReturnsTrue)) {
-		name = buf;
+		name_ = buf;
 	}
 	ImGui::Separator();
 

@@ -1,26 +1,35 @@
 #include "TransformComponent.h"
+#include "yMath.h"
 
-
-TransformComponent::TransformComponent(XMFLOAT3 position, XMFLOAT3 rotate, XMFLOAT3 scale) :
-	Component("Transform",true),
-	position_	(position),
-	rotate_		(rotate),
-	scale_		(scale)
+TransformComponent::TransformComponent() :
+	Component("Transform",true)
 {
 }
 
 void TransformComponent::Infomation()
 {
-	ImGui::Text("Position"); ImGui::SameLine(100); ImGui::DragFloat3("##Pos", (float *)&position_);
-	ImGui::Text("Rotation"); ImGui::SameLine(100); ImGui::DragFloat3("##Rot", (float *)&rotate_);
-	ImGui::Text("Scale"); ImGui::SameLine(100); ImGui::DragFloat3("##Sca", (float *)&scale_);
+	ImGui::Text("Position"); ImGui::SameLine(100); ImGui::DragFloat3("##Pos", (float *)&transform_.position);
+	ImGui::Text("Rotation"); ImGui::SameLine(100); ImGui::DragFloat3("##Rot", (float *)&transform_.rotate);
+	ImGui::Text("Scale"); ImGui::SameLine(100); ImGui::DragFloat3("##Sca", (float *)&transform_.scale);
 }
 
 void TransformComponent::VirtualUpdate()
 {
-}
-
-DirectX::XMFLOAT4X4 TransformComponent::GetTransform() const
-{
-	return XMFLOAT4X4();
+	// ç¿ïWïœä∑çsóÒ
+	XMMATRIX S = DirectX::XMMatrixScaling(
+		transform_.scale.x,
+		transform_.scale.y, 
+		transform_.scale.z
+	);
+	XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(
+		DegToRad(transform_.rotate.x),
+		DegToRad(transform_.rotate.y), 
+		DegToRad(transform_.rotate.z)
+	);
+	XMMATRIX T = DirectX::XMMatrixTranslation(
+		transform_.position.x, 
+		transform_.position.y,
+		transform_.position.z
+	);
+	matrix_ = S * R * T;
 }

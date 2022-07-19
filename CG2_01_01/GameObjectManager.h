@@ -16,6 +16,10 @@ public:
 	/// 有効なオブジェクトをアップデート
 	/// </summary>
 	void Update();
+	/// <summary>
+	/// 有効なオブジェクトをアップデート
+	/// </summary>
+	void LastUpdate();
 
 	/// <summary>
 	/// 有効なオブジェクトを描画

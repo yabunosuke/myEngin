@@ -124,11 +124,11 @@ void Editor::DrawHierarchy()
 	);
 
 	ImGui::Text(nowScene.get()->name.c_str());
-	nowScene.get()->gameObjectManager.DrawHierarchy(selectedObjectNum);
+	nowScene.get()->GetObjectManager()->DrawHierarchy(selectedObjectNum);
 
 	//追加
 	if (ImGui::Button("add")) {
-		nowScene->gameObjectManager.CreateObject();
+		nowScene->GetObjectManager()->CreateObject();
 	}
 
 	//終了
@@ -145,7 +145,7 @@ void Editor::DrawInspector()
 		return;
 	}
 
-	auto *selectObject = nowScene->gameObjectManager.gameObjects[selectedObjectNum].get();
+	auto *selectObject = nowScene->GetObjectManager()->gameObjects[selectedObjectNum].get();
 
 	//インスペクター描画
 	ImGui::PushID(selectedObjectNum);

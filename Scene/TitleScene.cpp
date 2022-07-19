@@ -27,11 +27,13 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	//test[0] = std::make_shared<Fbx>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/plantune.fbx");
 
 
-	gameObjectManager.CreateObject();
-	auto plantune = gameObjectManager.CreateObject("plantune");
+	game_object_manager_.CreateObject();
+	auto plantune = game_object_manager_.CreateObject("plantune");
 	plantune.lock().get()->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(), 
-			"Assets/3d/UNIT/plantune.fbx");
+			//"Assets/3d/UNIT/plantune.fbx");
+			"Assets/3d/test/human.fbx");
+			//"Assets/3d/Test/stage.fbx");
 
 	plantune.lock().get()->AddComponent<Player>();
 }
@@ -41,7 +43,7 @@ void TitleScene::Initialize()
 	cam = new Camera({ 0,0,-50 });
 	Camera::SetCam(cam);
 
-	gameObjectManager.Initialize();
+	game_object_manager_.Initialize();
 }
 
 void TitleScene::Finalize()
@@ -53,18 +55,23 @@ void TitleScene::Update()
 	//test[0]->UpdateAnimation();
 	
 	//ゲームオブジェクト全てをアップデート
-	gameObjectManager.Update();
+	game_object_manager_.Update();
+
+	//当たり判定チェック
+	collision_manager_.CheckBroadCollisions(game_object_manager_.gameObjects);
+
+	game_object_manager_.LastUpdate();
 
 	Camera::GetCam()->UpdateViewMatrix();
 	Camera::GetCam()->UpdateProjectionMatrix();
 
 
- 	CollisionManager::GetInstance()->CheckBroadCollisions();
+ 	
 }
 
 void TitleScene::Draw() const
 {
-	gameObjectManager.Draw();
+	game_object_manager_.Draw();
 
 
 	Sprite::PreDraw(DirectXCommon::cmdList.Get());

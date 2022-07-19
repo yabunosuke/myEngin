@@ -32,6 +32,10 @@ public:
 	/// </summary>
 	void Update();
 	/// <summary>
+	/// アクティブなときだけ更新
+	/// </summary>
+	void LustUpdate();
+	/// <summary>
 	/// アクティブなときだけ描画
 	/// </summary>
 	void Draw();
@@ -67,6 +71,10 @@ protected:	//関数
 	/// 更新
 	/// </summary>
 	virtual void VirtualUpdate() {};
+	/// <summary>
+	/// 更新
+	/// </summary>
+	virtual void VirtualLustUpdate() {};
 	/// <summary>
 	/// 描画
 	/// </summary>

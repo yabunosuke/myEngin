@@ -20,6 +20,7 @@ struct Vector3 : public XMFLOAT3 {
 		XMStoreFloat3(this, temp);
 	}
 
+
 	//‰‰ŽZ
 	inline bool operator == (const Vector3 &r) const { return x == r.x && y == r.y && z == r.z; }
 	inline bool operator != (const Vector3 &r) const { return !(*this == r); }
@@ -100,3 +101,7 @@ struct Vector3 : public XMFLOAT3 {
 
 	}
 };
+
+static const Vector3 foward{ 0,0,1 };
+static const Vector3 right{ 1,0,0 };
+static const Vector3 up{ 0,1,0 };

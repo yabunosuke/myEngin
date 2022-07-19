@@ -1,7 +1,8 @@
 #pragma once
 
 #include "CollisionInfo.h"
-#include "GameObjCommon.h"
+//#include "GameObjCommon.h"
+#include "GameObject.h"
 #include <string>
 
 
@@ -35,9 +36,9 @@ public:
 	virtual ~BaseCollider() = default;		//仮想デストラクタ
 
 	//オブジェクトをセット
-	inline void SetObject(GameObjCommon *object) { this->object = object; }
+	inline void SetObject(GameObject *object) { this->object = object; }
 	//セットされているオブジェクトをリターン
-	inline GameObjCommon *GetObject3d() { return object; }
+	inline GameObject *GetObject3d() { return object; }
 
 	//更新
 	virtual void Update() = 0;
@@ -48,7 +49,7 @@ public:
 	//衝突時コールバック関数
 	inline void OnCollision(const CollisionInfo& info)
 	{
-		object->OnCollision(info);
+		//object->OnCollision(info);
 	}
 
 	// 当たり判定属性をセット
@@ -64,7 +65,7 @@ public:
 	}
 
 protected:
-	GameObjCommon *object = nullptr;
+	GameObject *object = nullptr;
 	//形状タイプ
 	CollisionShapeType shapeType = SHAPE_UNKNOWN;
 	//当たり判定タグ

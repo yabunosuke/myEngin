@@ -75,7 +75,7 @@ private: // エイリアス
 
 public:
 	// シリアライズ時の拡張子
-	const char *cerealize_extension = "model_v2";
+	const char *cerealize_extension = "model_v2_1";
 
 	// 最大読み込みボーン数
 	static const int MAX_BONES = 256;
@@ -168,7 +168,7 @@ public:
 	static const int MAX_BONE_INFLUENCES = 4;
 	// 頂点データ構造体
 	struct Vertex {
-		XMFLOAT3				position = { 0, 0, 0 };
+		XMFLOAT4				position = { 0, 0, 0, 1 };
 		XMFLOAT3				normal = { 0, 0, 0 };
 		XMFLOAT3				tangent = { 0, 0, 0 };
 		XMFLOAT3				texcoord = { 0, 0 ,0 };

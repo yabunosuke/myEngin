@@ -5,105 +5,138 @@
 
 using namespace DirectX;
 
-CollisionManager *CollisionManager::GetInstance()
-{
-	static CollisionManager instance;
-	return &instance;
-}
-
 //ここでの処理を2ms以内に収める
-void CollisionManager::CheckBroadCollisions()
-{
-	std::forward_list<BaseCollider *>::iterator itABroad;
-	std::forward_list<BaseCollider *>::iterator itBBroad;
+void CollisionManager::CheckBroadCollisions(const std::vector<std::shared_ptr<GameObject>> &game_objects)
+{ 
 
-	//ブロードフェーズ
-	itABroad = broadColliders.begin();
-	for (; itABroad != broadColliders.end(); ++itABroad)
-	{
-		itBBroad = itABroad;
-		++itBBroad;
-		for (; itBBroad != broadColliders.end(); ++itBBroad)
-		{
-			BaseCollider *colABroad = *itABroad;
-			BaseCollider *colBBroad = *itBBroad;
+	// 全てのオブジェクトのブロードフェーズ用のAABBを計算
+	for (const auto &object : game_objects) {
+		// コライダーを持っていなかったらコンテニュー
+		if (object.get()->GetComponent<ColliderComponent>().size() == 0) continue;
 
-			//自分同士の衝突や、コライダー未設定の者は無視する
-			if (itBBroad == itABroad ||
-				colABroad->GetShapeType() == SHAPE_UNKNOWN ||
-				colBBroad->GetShapeType() == SHAPE_UNKNOWN) {
-				continue;
-			}
-			//除外リストに載っているものをパスする
-			if (colABroad->object->exclusionList.size() != 0) {
-				auto result = std::find(
-					colABroad->object->exclusionList.begin(),
-					colABroad->object->exclusionList.end(),
-					colBBroad->object->Tag);
-				if (result != colABroad->object->exclusionList.end()) {
-					continue;
-				}
-			}
-
-			//ブロードフェーズ判定
-			DirectX::XMVECTOR interBroad;
-			if (CheckHitCollision(colABroad, colBBroad, &interBroad)) {
-				//仮
-				GameObjCommon *a = colABroad->GetObject3d();
-				GameObjCommon *b = colBBroad->GetObject3d();
-				//合計質量
-				float TotalN = a->N + b->N;
-				//反発係数もどき
-				float RefRate = 1 + a->e * b->e;
-				//衝突軸
-				Vector3 Direction = Vector3(b->GetPos()) - Vector3(a->GetPos());
-				Direction.Normalize();
-				//内積
-				float Dot = Vector3(a->velocity - b->velocity).VDot(Direction);
-				//定数ベクトル
-				Vector3 ConstVec = RefRate * Dot / TotalN * Direction;
-
-				//衝突後の速度
-				a->velocity = ConstVec * -b->N + a->velocity;
-				b->velocity = ConstVec * a->N + b->velocity;
-				//衝突後の位置
-				a->pos = /*a->velocity + */(interBroad - Direction * dynamic_cast<Sphere*>(colABroad)->radius);
-				b->pos = /*b->velocity + */(interBroad + Direction * dynamic_cast<Sphere *>(colBBroad)->radius);
-				
-				/*colABroad->OnCollision(CollisionInfo(colBBroad->GetObject3d(), colBBroad, interBroad, colABroad->GetCollisionName()));
-				colBBroad->OnCollision(CollisionInfo(colABroad->GetObject3d(), colABroad, interBroad, colBBroad->GetCollisionName()));
-				*/
-				
-				////衝突していればナローフェイズの当たり判定
-				//std::map<std::string, BaseCollider *>::iterator itANarrow;
-				//std::map<std::string, BaseCollider *>::iterator itBNarrow;
-				//itANarrow = colABroad->GetObject3d()->GetNarrowCollider().begin();
-				//for (;itANarrow != colABroad->GetObject3d()->GetNarrowCollider().end(); ++itANarrow) {
-				//	itBNarrow = colBBroad->GetObject3d()->GetNarrowCollider().begin();
-				//	for (; itBNarrow != colBBroad->GetObject3d()->GetNarrowCollider().end(); ++itBNarrow) {
-
-				//		BaseCollider *colANarrow = itANarrow->second;
-				//		BaseCollider *colBNarrow = itBNarrow->second;
-
-				//		//自分同士の衝突や、コライダー未設定の者は無視する
-				//		if (itBNarrow->second == itANarrow->second ||
-				//			colANarrow->GetShapeType() == SHAPE_UNKNOWN ||
-				//			colBNarrow->GetShapeType() == SHAPE_UNKNOWN) {
-				//			continue;
-				//		}
-
-				//		DirectX::XMVECTOR interNarrow;
-				//		//ナローフェイズの処理
-				//		if (CheckHitCollision(colANarrow, colBNarrow,&interNarrow)) {
-				//			colANarrow->OnCollision(CollisionInfo(colBNarrow->GetObject3d(), colBNarrow, interNarrow, colANarrow->GetCollisionName()));
-				//			colBNarrow->OnCollision(CollisionInfo(colANarrow->GetObject3d(), colANarrow, interNarrow, colBNarrow->GetCollisionName()));
-				//		}
-				//	}
-				//}
-				
-			}
-		}
+	//	BroadPhase broad;
+	//	broad.narrowphase_collider_list = *object.get()->GetComponent<ColliderComponent>();
+	//	
+	//	object_list_has_collider_.emplace_back(broad);
+	//	// コライダーが2つ以上あったらブロードコライダーの計算をする
+	//	
 	}
+
+	//std::forward_list<std::weak_ptr<GameObject>>::iterator object_A;
+	//std::forward_list<std::weak_ptr<GameObject>>::iterator object_B;
+
+	//// 全てのブロードフェーズの衝突チェック
+	//for (object_A = object_list_has_collider_.begin(); 
+	//	object_A != object_list_has_collider_.end();
+	//	++object_A) 
+	//{
+	//	object_B = object_A;
+	//	++object_B;
+
+	//	for (; object_B != object_list_has_collider_.end(); ++object_B)
+	//	{
+	//		// 衝突チェック
+	//		if (true) {
+
+	//			// ナローフェーズ
+
+	//		}
+
+	//	}
+
+	//}
+	// オブジェクトの持っているブロード同士が衝突していればナローフェーズを行う
+
+
+	//std::forward_list<std::weak_ptr<BaseCollider>>::iterator itA;
+	//std::forward_list<std::weak_ptr<BaseCollider>>::iterator itB;
+
+	//// 衝突判定
+	//for (itA = broadColliders.begin(); itA != broadColliders.end(); ++itA)
+	//{
+	//	itB = itA;
+	//	++itB;
+	//	for (; itB != broadColliders.end(); ++itB)
+	//	{
+	//		BaseCollider *colABroad = itA->lock().get();
+	//		BaseCollider *colBBroad = itB->lock().get();
+
+	//		//自分同士の衝突や、コライダー未設定の者は無視する
+	//		if (itB == itA ||
+	//			colABroad->GetShapeType() == SHAPE_UNKNOWN ||
+	//			colBBroad->GetShapeType() == SHAPE_UNKNOWN) {
+	//			continue;
+	//		}
+	//		//除外リストに載っているものをパスする
+	//		/*if (colABroad->object->exclusionList.size() != 0) {
+	//			auto result = std::find(
+	//				colABroad->object->exclusionList.begin(),
+	//				colABroad->object->exclusionList.end(),
+	//				colBBroad->object->Tag);
+	//			if (result != colABroad->object->exclusionList.end()) {
+	//				continue;
+	//			}
+	//		}*/
+
+	//		//ブロードフェーズ判定
+	//		DirectX::XMVECTOR interBroad;
+	//		if (CheckHitCollision(colABroad, colBBroad, &interBroad)) {
+	//			//仮
+	//			GameObject *a = colABroad->GetObject3d();
+	//			GameObject *b = colBBroad->GetObject3d();
+	//			//合計質量
+	//			float TotalN = a->N + b->N;
+	//			//反発係数もどき
+	//			float RefRate = 1 + a->e * b->e;
+	//			//衝突軸
+	//			Vector3 Direction = Vector3(b->GetPos()) - Vector3(a->GetPos());
+	//			Direction.Normalize();
+	//			//内積
+	//			float Dot = Vector3(a->velocity - b->velocity).VDot(Direction);
+	//			//定数ベクトル
+	//			Vector3 ConstVec = RefRate * Dot / TotalN * Direction;
+
+	//			//衝突後の速度
+	//			a->velocity = ConstVec * -b->N + a->velocity;
+	//			b->velocity = ConstVec * a->N + b->velocity;
+	//			//衝突後の位置
+	//			a->pos = /*a->velocity + */(interBroad - Direction * dynamic_cast<Sphere*>(colABroad)->radius);
+	//			b->pos = /*b->velocity + */(interBroad + Direction * dynamic_cast<Sphere *>(colBBroad)->radius);
+	//			
+	//			/*colABroad->OnCollision(CollisionInfo(colBBroad->GetObject3d(), colBBroad, interBroad, colABroad->GetCollisionName()));
+	//			colBBroad->OnCollision(CollisionInfo(colABroad->GetObject3d(), colABroad, interBroad, colBBroad->GetCollisionName()));
+	//			*/
+	//			
+	//			////衝突していればナローフェイズの当たり判定
+	//			//std::map<std::string, BaseCollider *>::iterator itANarrow;
+	//			//std::map<std::string, BaseCollider *>::iterator itBNarrow;
+	//			//itANarrow = colABroad->GetObject3d()->GetNarrowCollider().begin();
+	//			//for (;itANarrow != colABroad->GetObject3d()->GetNarrowCollider().end(); ++itANarrow) {
+	//			//	itBNarrow = colBBroad->GetObject3d()->GetNarrowCollider().begin();
+	//			//	for (; itBNarrow != colBBroad->GetObject3d()->GetNarrowCollider().end(); ++itBNarrow) {
+
+	//			//		BaseCollider *colANarrow = itANarrow->second;
+	//			//		BaseCollider *colBNarrow = itBNarrow->second;
+
+	//			//		//自分同士の衝突や、コライダー未設定の者は無視する
+	//			//		if (itBNarrow->second == itANarrow->second ||
+	//			//			colANarrow->GetShapeType() == SHAPE_UNKNOWN ||
+	//			//			colBNarrow->GetShapeType() == SHAPE_UNKNOWN) {
+	//			//			continue;
+	//			//		}
+
+	//			//		DirectX::XMVECTOR interNarrow;
+	//			//		//ナローフェイズの処理
+	//			//		if (CheckHitCollision(colANarrow, colBNarrow,&interNarrow)) {
+	//			//			colANarrow->OnCollision(CollisionInfo(colBNarrow->GetObject3d(), colBNarrow, interNarrow, colANarrow->GetCollisionName()));
+	//			//			colBNarrow->OnCollision(CollisionInfo(colANarrow->GetObject3d(), colANarrow, interNarrow, colBNarrow->GetCollisionName()));
+	//			//		}
+	//			//	}
+	//			//}
+	//			
+	//		}
+	//	}
+	//}
 } 
 
 bool CollisionManager::CheckHitCollision(BaseCollider *colA, BaseCollider *colB, DirectX::XMVECTOR *inter)
@@ -264,61 +297,61 @@ bool CollisionManager::CheckHitCollision(BaseCollider *colA, BaseCollider *colB,
 
 void CollisionManager::QuerySphere(const Sphere &sphere, QueryCallback *callback)
 {
-	assert(callback);
+	//assert(callback);
 
-	std::forward_list<BaseCollider *>::iterator it;
+	//std::forward_list<BaseCollider *>::iterator it;
 
-	// 全てのコライダーと総当りチェック
-	it = broadColliders.begin();
-	for (; it != broadColliders.end(); ++it)
-	{
-		BaseCollider *col = *it;
+	//// 全てのコライダーと総当りチェック
+	//it = broadColliders.begin();
+	//for (; it != broadColliders.end(); ++it)
+	//{
+	//	BaseCollider *col = *it;
 
-		// 球
-		if (col->GetShapeType() == SHAPE_SPHERE)
-		{
-			Sphere *sphereB = dynamic_cast<Sphere *>(col);
+	//	// 球
+	//	if (col->GetShapeType() == SHAPE_SPHERE)
+	//	{
+	//		Sphere *sphereB = dynamic_cast<Sphere *>(col);
 
-			XMVECTOR tempInter;
-			XMVECTOR tempReject;
-			if (!Collision::CheckSphere2Sphere(sphere, *sphereB, &tempInter, &tempReject)) continue;
+	//		XMVECTOR tempInter;
+	//		XMVECTOR tempReject;
+	//		if (!Collision::CheckSphere2Sphere(sphere, *sphereB, &tempInter, &tempReject)) continue;
 
-			// 交差情報をセット
-			QueryHit info;
-			info.collider = col;
-			info.object = col->GetObject3d();
-			info.inter = tempInter;
-			info.reject = tempReject;
+	//		// 交差情報をセット
+	//		QueryHit info;
+	//		info.collider = col;
+	//		info.object = col->GetObject3d();
+	//		info.inter = tempInter;
+	//		info.reject = tempReject;
 
-			// クエリーコールバック呼び出し
-			if (!callback->OnQueryHit(info))
-			{
-				// 戻り値がfalseの場合、継続せず終了
-				return;
-			}
-		}
-		// メッシュ
-		else if (col->GetShapeType() == SHAPE_MESH)
-		{
-			MeshCollider *meshCollider = dynamic_cast<MeshCollider *>(col);
+	//		// クエリーコールバック呼び出し
+	//		if (!callback->OnQueryHit(info))
+	//		{
+	//			// 戻り値がfalseの場合、継続せず終了
+	//			return;
+	//		}
+	//	}
+	//	// メッシュ
+	//	else if (col->GetShapeType() == SHAPE_MESH)
+	//	{
+	//		MeshCollider *meshCollider = dynamic_cast<MeshCollider *>(col);
 
-			XMVECTOR tempInter;
-			XMVECTOR tempReject;
-			if (!meshCollider->CheckCollisionSphere(sphere, &tempInter, &tempReject)) continue;
+	//		XMVECTOR tempInter;
+	//		XMVECTOR tempReject;
+	//		if (!meshCollider->CheckCollisionSphere(sphere, &tempInter, &tempReject)) continue;
 
-			// 交差情報をセット
-			QueryHit info;
-			info.collider = col;
-			info.object = col->GetObject3d();
-			info.inter = tempInter;
-			info.reject = tempReject;
+	//		// 交差情報をセット
+	//		QueryHit info;
+	//		info.collider = col;
+	//		info.object = col->GetObject3d();
+	//		info.inter = tempInter;
+	//		info.reject = tempReject;
 
-			// クエリーコールバック呼び出し
-			if (!callback->OnQueryHit(info))
-			{
-				// 戻り値がfalseの場合、継続せず終了
-				return;
-			}
-		}
-	}
+	//		// クエリーコールバック呼び出し
+	//		if (!callback->OnQueryHit(info))
+	//		{
+	//			// 戻り値がfalseの場合、継続せず終了
+	//			return;
+	//		}
+	//	}
+	//}
 }

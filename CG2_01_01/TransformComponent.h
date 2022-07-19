@@ -1,38 +1,71 @@
 #pragma once
 #include <DirectXMath.h>
 #include "Component.h"
+#include "Vector3.h"
 class TransformComponent :
 	public Component
 {
 public:
-	TransformComponent(XMFLOAT3 position = {0,0,0}, XMFLOAT3 rotate = { 0,0,0 }, XMFLOAT3 scale = { 1,1,1 });
+	struct Transform {
+		Vector3 position	=	{ 0,0,0 };	// 座標
+		// ベクトルで移動
+		void Translate(float x, float y, float z) {
+			position.x += x;
+			position.y += y;
+			position.z += z;
+		}
+		void Translate(Vector3 velocity) {
+			position += velocity;
+		}
+
+		Vector3 rotate		=	{ 0,0,0 };		// 回転
+		Vector3 scale		=	{ 1,1,1 };		// 拡大
+		
+
+		// 正面ベクトル
+		Vector3 forward() {
+
+			return Vector3(0, 0, 0);
+		};
+		// 右ベクトル
+		Vector3 right() {
+			return Vector3(0, 0, 0);
+		};
+		// 上ベクトル
+		Vector3 up() {
+			return Vector3(0, 0, 0);
+		};
+	};
+public:
+	TransformComponent();
 
 	void Infomation() override;
 
 	void VirtualUpdate() override;
 
-	XMFLOAT3 GetPositon()	const	{ return position_; }
-	XMFLOAT3 GetRotate()	const	{ return rotate_; }
-	XMFLOAT3 GetScale()		const	{ return scale_; }
+	// トランスフォーム
+	Transform GetTransform() { return transform_; }
+	void SetTransform(const Transform &transform) { transform_ = transform; }
 
-	void SetPositon(XMFLOAT3 pos)	{ position_ = pos; }
-	void SetRotate(XMFLOAT3 rot)	{ rotate_ = rot; }
-	void SetScale(XMFLOAT3 sca)		{ scale_ = sca; }
+	// 行列の受け渡し
+	XMMATRIX GetMatrix() { return matrix_; }
 
+	// 各セッター
+	void SetPosition(XMFLOAT3 position)	{ transform_ .position = position;}
+	void SetRotate(XMFLOAT3 rotate)		{ transform_.rotate = rotate; }
+	void SetScale(XMFLOAT3 scale)		{ transform_.scale = scale;}
 
-	XMFLOAT4X4 GetTransform() const;
 
 private:
-	XMFLOAT3 position_;
-	XMFLOAT3 rotate_;
-	XMFLOAT3 scale_;
+	
+	Transform transform_;
+	XMMATRIX matrix_;
 
-	DirectX::XMFLOAT4X4 transform = {
-		1,0,0,0,
-		0,1,0,0,
-		0,0,1,0,
-		0,0,0,1
-	};
+	//XMFLOAT3 position_;
+	//XMFLOAT3 rotate_;
+	//XMFLOAT3 scale_;
+
+	
 
 };
 

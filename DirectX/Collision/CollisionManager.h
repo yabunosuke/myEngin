@@ -3,6 +3,11 @@
 #include "CollisionPrimitive.h"
 #include "RaycastHit.h"
 #include "QueryCallback.h"
+#include "GameObjectManager.h"
+#include "GameObject.h"
+
+#include "ColliderComponent.h"
+#include <memory>
 
 #include <d3d12.h>
 #include <forward_list>
@@ -11,24 +16,27 @@ class BaseCollider;
 
 class CollisionManager
 {
-public:// 静的メンバ関数
-	static CollisionManager *GetInstance();
+public:
+	struct BroadPhase {
+		AABB broadphase_collider;
+		std::vector<std::weak_ptr<ColliderComponent>> narrowphase_collider_list;
+	};
 
 public:// メンバ関数
 	// コライダーの追加
-	inline void AddCollider(BaseCollider *collider)
+	inline void AddCollider(std::shared_ptr<BaseCollider> collider)
 	{
 		broadColliders.push_front(collider);
 	}
 
 	// コライダーの削除
-	inline void RemoveBroadCollider(BaseCollider *collider)
+	/*inline void RemoveBroadCollider(BaseCollider *collider)
 	{
 		broadColliders.remove(collider);
-	}
+	}*/
 
 	//全てのブロードフェイズ衝突チェック
-	void CheckBroadCollisions();
+	void CheckBroadCollisions(const std::vector<std::shared_ptr<GameObject>> &game_objects);
 
 	//二つの衝突チェック
 	bool CheckHitCollision(BaseCollider *colA, BaseCollider *colB, DirectX::XMVECTOR *inter = nullptr);
@@ -43,11 +51,11 @@ public:// メンバ関数
 	void QuerySphere(const Sphere &sphere, QueryCallback *callback);
 
 private:
-	CollisionManager() = default;
-	CollisionManager(const CollisionManager &) = delete;
-	~CollisionManager() = default;
-	CollisionManager &operator=(const CollisionManager &) = delete;
+	// コライダーを持っているオブジェクトのリスト
+	//std::forward_list<std::weak_ptr<GameObject>> object_list_has_collider_;
+
+
 
 	//ブロードフェイズ用のコライダーのリスト
-	std::forward_list<BaseCollider *> broadColliders;
+	std::forward_list<std::weak_ptr<BaseCollider>> broadColliders;
 };

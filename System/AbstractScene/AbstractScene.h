@@ -4,6 +4,7 @@
 #include "imguiManager.h"
 #include "IoChangedListener.h"
 #include "GameObjectManager.h"
+#include "CollisionManager.h"
 
 class AbstractScene
 {
@@ -36,8 +37,18 @@ public:
 	//シーン名
 	std::string name;
 
-	GameObjectManager gameObjectManager;
+
+	GameObjectManager *GetObjectManager() { return &game_object_manager_; }
+	CollisionManager *GetCollisionManager() { return &collision_manager_; }
+
+
+protected:
+	// オブジェクトマネージャー
+	GameObjectManager game_object_manager_;
+	// コリジョンマネージャー
+	CollisionManager collision_manager_;
 
 private:
+
 };
 

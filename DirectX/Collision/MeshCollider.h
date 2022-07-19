@@ -15,7 +15,7 @@ public:
 	}
 
 	// 三角形の配列を構築する
-	void ConstructTriangles(Model* model);
+	void ConstructTriangles(/*Model* model*/);
 	// 更新
 	void Update() override;
 	// 球との当たり判定
