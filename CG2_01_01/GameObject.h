@@ -98,6 +98,7 @@ public:	//ä÷êî
 	template<class T>
 	std::vector<T *> GetComponent() {
 		static std::vector<T *> component_list;
+		component_list.clear();
 		for (auto &component : componentList) {
 			T *temp = dynamic_cast<T *>(component.get());
 			if (temp != nullptr) {

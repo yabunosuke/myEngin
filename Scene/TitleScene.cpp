@@ -8,8 +8,11 @@
 
 #include "Collision.h"
 
+
+
 #include "Easing.h"
 #include "yMath.h"
+//#include "Quaternion.h"
 
 
 #include "PipelineManager.h"
@@ -27,20 +30,25 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	//test[0] = std::make_shared<Fbx>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/plantune.fbx");
 
 
-	game_object_manager_.CreateObject();
-	auto plantune = game_object_manager_.CreateObject("plantune");
-	plantune.lock().get()->AddComponent<Object3dComponent>(
+	auto house = game_object_manager_.CreateObject("house");
+	house.lock().get()->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/UNIT/plantune.fbx");
+	
+
+	auto player = game_object_manager_.CreateObject("human");
+	player.lock().get()->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(), 
-			//"Assets/3d/UNIT/plantune.fbx");
+			//"Assets/3d/UNIT/cube.000.fbx");
 			"Assets/3d/test/human.fbx");
 			//"Assets/3d/Test/stage.fbx");
 
-	plantune.lock().get()->AddComponent<Player>();
+	player.lock().get()->AddComponent<Player>();
 }
 
 void TitleScene::Initialize()
 {
-	cam = new Camera({ 0,0,-50 });
+	cam = new Camera({ 0,0,50 });
 	Camera::SetCam(cam);
 
 	game_object_manager_.Initialize();

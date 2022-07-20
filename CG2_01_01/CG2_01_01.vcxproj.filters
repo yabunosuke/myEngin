@@ -312,6 +312,9 @@
     <ClInclude Include="ColliderComponent.h">
       <Filter>Engin\Object\GameObject\Component\Collider</Filter>
     </ClInclude>
+    <ClInclude Include="..\DirectX\Math\Quaternion.h">
+      <Filter>Engin\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Basic.hlsli" />

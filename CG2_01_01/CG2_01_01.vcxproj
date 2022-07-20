@@ -325,6 +325,7 @@
     <ClInclude Include="..\DirectX\Input\ControllerInput.h" />
     <ClInclude Include="..\DirectX\Input\KeyboardInput.h" />
     <ClInclude Include="..\DirectX\Math\Easing.h" />
+    <ClInclude Include="..\DirectX\Math\Quaternion.h" />
     <ClInclude Include="..\DirectX\Math\Vector3.h" />
     <ClInclude Include="..\DirectX\Math\yMath.h" />
     <ClInclude Include="..\DirectX\Object3d\Model.h" />
