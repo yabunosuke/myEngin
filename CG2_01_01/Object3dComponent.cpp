@@ -20,7 +20,7 @@ void Object3dComponent::VirtualInitialize()
 void Object3dComponent::VirtualUpdate()
 {
 	XMFLOAT4X4 world;
-	DirectX::XMStoreFloat4x4(&world, parent->GetComponent<TransformComponent>().at(0)->GetMatrix());
+	DirectX::XMStoreFloat4x4(&world, parent->GetComponent<TransformComponent>()->GetMatrix());
 
 	// アニメーション再生
 	object_fbx->UpdateAnimation();

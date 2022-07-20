@@ -11,17 +11,16 @@ Player::Player() :
 
 void Player::VirtualInitialize()
 {
-	transform_ = parent->GetComponent<TransformComponent>().at(0)->GetTransform();
-	transform_.scale = 0.2f;
-	parent->GetComponent<TransformComponent>().at(0)->SetTransform(transform_);
+	transform_ = parent->GetComponent<TransformComponent>()->GetTransform();
+	transform_->scale = 0.2f;
 	
-	game_object = parent->GetComponent<Object3dComponent>().at(0)->GetObjectData();
+	game_object = parent->GetComponent<Object3dComponent>()->GetObjectData();
 
 }
 
 void Player::VirtualUpdate()
 {
-	transform_ = parent->GetComponent<TransformComponent>().at(0)->GetTransform();
+	//transform_ = parent->GetComponent<TransformComponent>()->GetTransform();
 	
 	Move();
 
@@ -31,7 +30,7 @@ void Player::VirtualUpdate()
 void Player::VirtualLustUpdate()
 {
 	// 移動を適応
-	parent->GetComponent<TransformComponent>().at(0)->SetTransform(transform_);
+	// parent->GetComponent<TransformComponent>()->SetTransform(transform_);
 }
 
 void Player::VirtualDraw()
@@ -76,7 +75,7 @@ void Player::Move()
 	}
 	else {
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_W)) {
-			transform_.Translate(0, 0, 0.7f);
+			transform_->Translate(0, 0, 0.7f);
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK;
 			}
@@ -86,7 +85,7 @@ void Player::Move()
 			game_object->PlayAnimation(static_cast<int>(state));
 		}
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_S)) {
-			transform_.Translate(0, 0, -0.5f);
+			transform_->Translate(0, 0, -0.5f);
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_BACK;
 			}
@@ -96,7 +95,7 @@ void Player::Move()
 			game_object->PlayAnimation(static_cast<int>(state));
 		}
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_D)) {
-			transform_.Translate(0.8f, 0, 0);
+			transform_->Translate(1.8f, 0, 0);
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_RIGHT;
 			}
@@ -106,7 +105,7 @@ void Player::Move()
 			game_object->PlayAnimation(static_cast<int>(state));
 		}
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_A)) {
-			transform_.Translate(-0.8f, 0, 0);
+			transform_->Translate(-1.8f, 0, 0);
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_LEFT;
 			}
@@ -121,10 +120,10 @@ void Player::Move()
 
 	// 回転デバッグ
 	if (KeyboardInput::GetIns()->GetKeyPress(DIK_Q)) {
-		transform_.rotate.y -= 1.0f;
+		transform_->rotate.y -= 1.0f;
 	}
 	if (KeyboardInput::GetIns()->GetKeyPress(DIK_E)) {
-		transform_.rotate.y += 1.0f;
+		transform_->rotate.y += 1.0f;
 
 	}
 

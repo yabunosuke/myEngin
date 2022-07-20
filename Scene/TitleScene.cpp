@@ -44,6 +44,7 @@ TitleScene::TitleScene(IoChangedListener *impl)
 			//"Assets/3d/Test/stage.fbx");
 
 	player.lock().get()->AddComponent<Player>();
+	player.lock().get()->AddComponent<ColliderComponent>(this);
 }
 
 void TitleScene::Initialize()

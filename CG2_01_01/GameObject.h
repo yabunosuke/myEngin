@@ -96,19 +96,7 @@ public:	//関数
 	/// <typeparam name="T"></typeparam>
 	/// <returns></returns>
 	template<class T>
-	std::vector<T *> GetComponent() {
-		static std::vector<T *> component_list;
-		component_list.clear();
-		for (auto &component : componentList) {
-			T *temp = dynamic_cast<T *>(component.get());
-			if (temp != nullptr) {
-				component_list.emplace_back(temp);
-			}
-
-		}
-
-		return component_list;
-	};
+	T *GetComponent(std::string tag = "");
 
 	//コンポーネントの追加
 	template<class T, class... Args>
@@ -151,3 +139,18 @@ private://変数
 
 };
 
+template<class T>
+inline T *GameObject::GetComponent(std::string tag)
+{
+	for (auto &component : componentList) {
+		T *temp = dynamic_cast<T *>(component.get());
+		if (temp != nullptr) {
+			if (temp->GetTag() == tag) {
+
+				return temp;
+			}
+		}
+	}
+
+	return nullptr;
+}

@@ -38,6 +38,7 @@ Component::Component(std::string name, bool dontRemove):
 {
 }
 
+
 void Component::ImGuiDraw()
 {
 	ImGui::Checkbox("##isActive", &isActive); ImGui::SameLine();

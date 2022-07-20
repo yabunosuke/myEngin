@@ -8,7 +8,7 @@ class ColliderComponent :
 	public Component
 {
 public:
-	ColliderComponent(CollisionShapeType type, AbstractScene &scene);
+	ColliderComponent(AbstractScene *scene, CollisionShapeType type = SHAPE_SPHERE);
 
 	/// <summary>
 	/// ‰Šú‰»

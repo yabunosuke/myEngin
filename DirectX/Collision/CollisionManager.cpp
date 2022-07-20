@@ -12,7 +12,7 @@ void CollisionManager::CheckBroadCollisions(const std::vector<std::shared_ptr<Ga
 	// 全てのオブジェクトのブロードフェーズ用のAABBを計算
 	for (const auto &object : game_objects) {
 		// コライダーを持っていなかったらコンテニュー
-		if (object.get()->GetComponent<ColliderComponent>().size() == 0) continue;
+		//if (object.get()->GetComponent<ColliderComponent>().size() == 0) continue;
 
 	//	BroadPhase broad;
 	//	broad.narrowphase_collider_list = *object.get()->GetComponent<ColliderComponent>();

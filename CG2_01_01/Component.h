@@ -60,6 +60,8 @@ public:	//ゲッター＆セッタ
 	bool GetIsRemove() { return isRemove; }
 
 
+	std::string GetTag() { return tag; }
+
 protected:	//関数
 	Component(std::string name,bool dontRemove = false);
 
@@ -90,7 +92,6 @@ protected:	//関数
 	virtual void Infomation() {};
 
 
-
 protected:
 	// オブジェクト
 	GameObject *parent = nullptr;
@@ -99,8 +100,11 @@ protected:
 	// リムーブフラグ
 	bool isRemove;
 private:
-	//コンポーネントの名前
+	// コンポーネントの名前
 	std::string name;
+	// 重複チェック用のタグ
+	std::string tag = "";
+
 	// 削除不可
 	bool isDontRemove;
 	// 重複不可

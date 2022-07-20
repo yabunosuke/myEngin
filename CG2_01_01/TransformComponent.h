@@ -44,8 +44,8 @@ public:
 	void VirtualUpdate() override;
 
 	// トランスフォーム
-	Transform GetTransform() { return transform_; }
-	void SetTransform(const Transform &transform) { transform_ = transform; }
+	Transform *GetTransform() { return &transform_; }
+	// void SetTransform(const Transform &transform) { transform_ = transform; }
 
 	// 行列の受け渡し
 	XMMATRIX GetMatrix() { return matrix_; }

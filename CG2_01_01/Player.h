@@ -35,7 +35,7 @@ public:
 	void Infomation() override;
 
 private:
-	TransformComponent::Transform transform_;
+	TransformComponent::Transform *transform_;
 	void Move();
 
 	// アニメーションステート

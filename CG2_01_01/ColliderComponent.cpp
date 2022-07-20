@@ -4,7 +4,7 @@
 // コライダー
 #include "SphereCollider.h"
 
-ColliderComponent::ColliderComponent(CollisionShapeType type, AbstractScene &scene):
+ColliderComponent::ColliderComponent(AbstractScene *scene, CollisionShapeType type):
 	Component("Collider")
 {
 	switch (type)
@@ -40,7 +40,7 @@ ColliderComponent::ColliderComponent(CollisionShapeType type, AbstractScene &sce
 		break;
 	}
 	collider->SetObject(parent);
-	scene.GetCollisionManager()->AddCollider(collider);
+	scene->GetCollisionManager()->AddCollider(collider);
 }
 
 void ColliderComponent::VirtualInitialize()
