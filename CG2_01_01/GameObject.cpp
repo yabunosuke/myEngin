@@ -1,3 +1,4 @@
+
 #include "GameObject.h"
 #include "TransformComponent.h"
 #include "imguiManager.h"
@@ -20,6 +21,12 @@ GameObject::GameObject(std::string name) :
 
 void GameObject::Initialize()
 {
+	scripts_.clear();
+	for (auto component : component_list_) {
+		if (dynamic_cast<ScriptComponent *>(component.get())) {
+			scripts_.emplace_back(component);
+		}
+	}
 }
 
 void GameObject::Update()

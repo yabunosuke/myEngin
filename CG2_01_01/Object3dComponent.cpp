@@ -1,7 +1,6 @@
 #include "Object3dComponent.h"
 #include "TransformComponent.h"
 #include "GameObject.h"
-#include "Player.h"
 #include "yMath.h"
 
 Object3dComponent::Object3dComponent(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cmd_list, const char *file_path):

@@ -147,7 +147,12 @@ void Fbx::Draw(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cmd_l
 			result = subset.subset_constant_buffer_->Map(0, nullptr, (void **)&subset_constant_buffer_map);
 			if (SUCCEEDED(result))
 			{
-				subset_constant_buffer_map->color = subset.material->color;
+				subset_constant_buffer_map->color = {
+					subset.material->color.x * color_.x,
+					subset.material->color.y * color_.y,
+					subset.material->color.z * color_.z,
+					subset.material->color.w * color_.w
+				};
 				subset.subset_constant_buffer_->Unmap(0, nullptr);
 			}
 			

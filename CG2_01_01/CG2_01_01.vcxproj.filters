@@ -148,9 +148,6 @@
     <ClCompile Include="Object3dComponent.cpp">
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Game\Scene\Title\Player</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Engin\Object\GameObject</Filter>
     </ClCompile>
@@ -315,9 +312,6 @@
     </ClInclude>
     <ClInclude Include="Object3dComponent.h">
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Game\Scene\Title\Player</Filter>
     </ClInclude>
     <ClInclude Include="ColliderComponent.h">
       <Filter>Engin\Object\GameObject\Component\Collider</Filter>

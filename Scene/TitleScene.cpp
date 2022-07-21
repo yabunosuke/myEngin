@@ -21,7 +21,6 @@
 #include "Object3dComponent.h"
 #include "TransformComponent.h"
 #include "ColliderComponent.h"
-#include "Player.h"
 #include "PlayerTest.h"
 
 TitleScene::TitleScene(IoChangedListener *impl)
@@ -45,7 +44,6 @@ TitleScene::TitleScene(IoChangedListener *impl)
 			"Assets/3d/test/human.fbx");
 			//"Assets/3d/Test/stage.fbx");
 
-	player.lock().get()->AddComponent<Player>();
 	player.lock().get()->AddComponent<ColliderComponent>(this);
 	player.lock().get()->AddComponent<PlayerTest>();
 }

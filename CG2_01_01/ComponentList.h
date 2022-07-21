@@ -26,6 +26,7 @@ public:
 		Transfome,
 		Light,
 		Physics,
+		Physics2D,
 		Rendering,
 
 		End,

@@ -113,7 +113,7 @@ public:	//関数
 	void RemoveCollider(std::weak_ptr<BaseCollider> collider);
 
 	// Script
-	const std::vector<std::shared_ptr<Component>> &GetScripts() { return scripts_; }
+	const std::vector<std::weak_ptr<Component>> &GetScripts() { return scripts_; }
 
 private:	// 静的メンバ変数
 	// オブジェクトIDの重複回避用
@@ -138,7 +138,7 @@ private://変数
 	std::vector<std::weak_ptr<BaseCollider>> colliders_;
 
 	// Scriptリスト
-	std::vector<std::shared_ptr<Component>> scripts_;
+	std::vector<std::weak_ptr<Component>> scripts_;
 
 	// アクティブか
 	bool isActive;
@@ -175,10 +175,6 @@ inline T *GameObject::AddComponent(Args ...args)
 	component_list_.emplace_back(buff);
 	buff->CheckInitialize();
 
-	// スプライトが追加された場合スプライトコンテナにポインタを渡す
-	//if (dynamic_cast) {
-		scripts_.emplace_back(component_list_.back());
-	//}
 
 	return buff;
 }

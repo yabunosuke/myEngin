@@ -62,9 +62,11 @@ void CollisionManager::CheckBroadCollisions(const std::vector<std::shared_ptr<Ga
 					if (CheckHitCollision(colider_a.lock().get(), colider_b.lock().get(), &interBroad)) {
 						// 衝突コールバック
 						for (const auto &script_a : game_object_it_a->get()->GetScripts()) {
-							dynamic_cast<ScriptComponent*>(script_a.get())->OnCollisionEnter();
+							std::static_pointer_cast<ScriptComponent>(script_a.lock())->OnCollisionEnter();
 						}
-						
+						for (const auto &script_b : game_object_it_b->get()->GetScripts()) {
+							std::static_pointer_cast<ScriptComponent>(script_b.lock())->OnCollisionEnter();
+						}
 					}
 				}
 

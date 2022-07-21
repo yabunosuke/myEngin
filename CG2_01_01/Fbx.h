@@ -79,6 +79,9 @@ public:
 	// アニメーション中か判定
 	bool IsPlayAnimation() const;
 
+	// 色を設定
+	void SetColor(XMFLOAT4 color) { color_ = color; }
+
 private:
 	// リソース
 	std::shared_ptr<FbxResource>	resource_;	// モデルデータ
@@ -91,6 +94,9 @@ private:
 	bool	animation_end_flag_ = false;		// アニメーション終了フラグ
 	float	animation_blend_time_ = 0.0f;		// 補完にかける秒数
 	float	animation_blend_seconds_ = 0.0f;	// 補完の原罪時間
+
+
+	XMFLOAT4 color_ = { 1,1,1,1 };	//カラー
 
 	// 描画用
 	ComPtr<ID3D12Resource> scene_constant_buffer_;	// シーン定数バッファ

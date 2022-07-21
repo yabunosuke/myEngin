@@ -6,6 +6,7 @@ ScriptComponent::ScriptComponent(std::string script_name) :
 	Component("Script", true),
 	script_name_(script_name)
 {
+	isDontRemove = false;
 }
 
 void ScriptComponent::ComponentInitialize()

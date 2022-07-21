@@ -213,7 +213,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object3dComponent.cpp" />
     <ClCompile Include="PipelineManager.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerTest.cpp" />
     <ClCompile Include="RigidbodyComponent.cpp" />
     <ClCompile Include="ScriptComponent.cpp" />
@@ -368,7 +367,6 @@
     <ClInclude Include="LightComponent.h" />
     <ClInclude Include="Object3dComponent.h" />
     <ClInclude Include="PipelineManager.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerTest.h" />
     <ClInclude Include="RigidbodyComponent.h" />
     <ClInclude Include="ScriptComponent.h" />
