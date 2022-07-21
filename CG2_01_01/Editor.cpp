@@ -159,6 +159,12 @@ void Editor::DrawInspector()
 	if (openAddComponent) {
 		ImGui::OpenPopup("ComponentList");
 	}
+
+	// コンポーネントグループ
+	auto &component_groups = ComponentList::GetIns()->GetComponentGroup();
+	// コンポーネントリスト
+	auto &component_list = ComponentList::GetIns()->GetComponentList();
+
 	if (ImGui::BeginPopup("ComponentList")) {
 		// コンポーネントの検索
 		static char searchComponent[64] = "";
@@ -169,28 +175,56 @@ void Editor::DrawInspector()
 			ImGui::Text("Component");
 
 			//グループ単位で表示
-			for (auto &componentGroup : ComponentList::GetIns()->GetComponentGroup()) {
-				switch (componentGroup.first)
+			for (auto &component_group : component_groups) {
+				// グループ名表示
+				std::string group_name = "";
+				switch (component_group.first)
 				{
-				case ComponentList::Group::Rendering:
-					if(ImGui::TreeNode("Rendering")){
-
-						//中身を表示
-						for (auto &component : componentGroup.second) {
-							if (ImGui::Button(component.c_str())) {
-								ComponentList::GetIns()->GetComponentList()[component];
-							}
-						}
-
-						ImGui::TreePop();
-					}
+				case ComponentList::Group::Physics:
+					group_name = "Physics";
+					break;
+				case ComponentList::Group::Physics2D:
+					group_name = "Physics2D";
 					break;
 				default:
-					ImGui::TreeNode("Dummy");
-					ImGui::TreePop();
-
+					group_name = "error";
 					break;
 				}
+				
+
+				// グループごとに表示
+				if (ImGui::TreeNode(group_name.c_str())) {
+					// 属しているコンポーネントを表示
+					for (auto &component : component_group.second) {
+						if (ImGui::Button(component.c_str())) {
+							// コンポーネント追加
+							component_list[component];
+						}
+					}
+					ImGui::TreePop();
+				}
+
+				//switch (component.first)
+				//{
+				//case ComponentList::Group::Rendering:
+				//	if(ImGui::TreeNode("Rendering")){
+
+				//		//中身を表示
+				//		for (auto &component : component.second) {
+				//			if (ImGui::Button(component.c_str())) {
+				//				ComponentList::GetIns()->GetComponentList()[component];
+				//			}
+				//		}
+
+				//		ImGui::TreePop();
+				//	}
+				//	break;
+				//default:
+				//	ImGui::TreeNode("Dummy");
+				//	ImGui::TreePop();
+
+				//	break;
+				//}
 				//ImGui::Button(component.first)
 				
 			}

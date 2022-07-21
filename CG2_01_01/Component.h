@@ -99,15 +99,13 @@ protected:
 	bool isActive;
 	// リムーブフラグ
 	bool isRemove;
-	// 削除不可
-	bool isDontRemove;
 private:
 	// コンポーネントの名前
 	std::string name;
 	// 重複チェック用のタグ
 	std::string tag = "";
-
-	// 重複不可
+	// 削除不可
+	bool isDontRemove;
 	
 };
 

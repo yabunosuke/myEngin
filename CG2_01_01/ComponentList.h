@@ -10,13 +10,17 @@
 
 #include "GameObject.h"
 
+
 class ComponentList
 {
+
 private:	//シングルトンパターン
 	ComponentList() = default;
 	~ComponentList() = default;
 	ComponentList(const ComponentList &r) = default;
 	ComponentList &operator= (const ComponentList &r) = default;
+
+	// エイリアス
 
 public:
 	//コンポーネントの種類
@@ -37,25 +41,28 @@ public:
 
 	static void Initialize();
 	
-	std::map<ComponentList::Group, std::vector<std::string>> &GetComponentGroup() { return componentGroup; }
-	std::map<std::string, void(*)(GameObject *)> &GetComponentList() { return componentList; }
+	std::map<ComponentList::Group, std::vector<std::string>> &GetComponentGroup() { return component_group_; }
+	std::map<std::string, void(*)(GameObject *)> &GetComponentList() { return components_; }
 private:
-	static void addDummy(GameObject *object) {};
+	static void ComponentGroupSet(Group group, std::string name);
+
+	void addDummy(GameObject *object) {};
 	//トランスフォームコンポーネント追加
-	static void addTransform(GameObject *object) {object->AddComponent<TransformComponent>();}
+	void addTransform(GameObject *object) {object->AddComponent<TransformComponent>();}
 	//ライトコンポーネント追加
-	static void addLight(GameObject *object) { object->AddComponent<LightComponent>(); }
+	void addLight(GameObject *object) { object->AddComponent<LightComponent>(); }
 	//トランスフォームコンポーネント追加
-	static void addColision(GameObject *object) { object->AddComponent<TransformComponent>(); }
+	void addColision(GameObject *object) { object->AddComponent<TransformComponent>(); }
 	//トランスフォームコンポーネント追加
-	static void addCamera(GameObject *object) { object->AddComponent<CameraComponent>(); }
+	void addCamera(GameObject *object) { object->AddComponent<CameraComponent>(); }
 
 
 	//コンポーネントグループ
-	static std::map<ComponentList::Group, std::vector<std::string>> componentGroup;
+	static std::map<ComponentList::Group, std::vector<std::string>> component_group_;
 	//コンポーネント名とAddComponentのセット
-	static std::map<std::string, void(*)(GameObject*)> componentList;
+	static std::map<std::string, void(*)(GameObject*)> components_;
 
-
+	// オブジェクトのポインタ
+	
 };
 

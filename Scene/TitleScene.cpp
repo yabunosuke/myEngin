@@ -50,7 +50,8 @@ TitleScene::TitleScene(IoChangedListener *impl)
 
 void TitleScene::Initialize()
 {
-	cam = new Camera({ 0,0,50 });
+	cam = new Camera({ 0,50,-50 });
+	cam->eye = { 0,50,0 };
 	Camera::SetCam(cam);
 
 	game_object_manager_.Initialize();
@@ -63,7 +64,7 @@ void TitleScene::Finalize()
 void TitleScene::Update()
 {
 	//test[0]->UpdateAnimation();
-	
+
 	//ゲームオブジェクト全てをアップデート
 	game_object_manager_.Update();
 

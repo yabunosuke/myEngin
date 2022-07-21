@@ -23,6 +23,7 @@ public:
 
 public:
 
+	void CreateAllPiplines();
 	void CreatePipline(ComPtr<ID3D12Device> dev, const std::string &pipline_name);
 	
 	void SetPipline(ComPtr<ID3D12GraphicsCommandList> cmd_list, std::string pipline_name);

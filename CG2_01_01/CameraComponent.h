@@ -36,4 +36,3 @@ private:
 	XMFLOAT3 target_;
 	XMFLOAT3 up_;
 };
-
