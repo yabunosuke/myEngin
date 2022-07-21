@@ -6,10 +6,9 @@
 Player::Player() :
 	Component("Player", true)
 {
-
 }
 
-void Player::VirtualInitialize()
+void Player::ComponentInitialize()
 {
 	transform_ = parent->GetComponent<TransformComponent>()->GetTransform();
 	transform_->scale = 0.2f;
@@ -18,26 +17,22 @@ void Player::VirtualInitialize()
 
 }
 
-void Player::VirtualUpdate()
+void Player::ComponentUpdate()
 {
-	//transform_ = parent->GetComponent<TransformComponent>()->GetTransform();
 	
 	Move();
-
-	//game_object->PlayAnimation(static_cast<int>(state), isAnimationRoop);
 }
 
-void Player::VirtualLustUpdate()
+void Player::ComponentLustUpdate()
 {
-	// ˆÚ“®‚ð“K‰ž
-	// parent->GetComponent<TransformComponent>()->SetTransform(transform_);
+
 }
 
-void Player::VirtualDraw()
+void Player::ComponentDraw()
 {
 }
 
-void Player::VirtualFinalize()
+void Player::ComponentFinalize()
 {
 }
 

@@ -23,6 +23,11 @@ public:
 	// XV
 	void Update() override;
 
+	/// <summary>
+	/// ImGui—p
+	/// </summary>
+	void Infomation() override;
+
 	inline const XMVECTOR& GetOffset() { return offset; }
 
 	inline void SetOffset(const XMVECTOR& offset) { this->offset = offset; }

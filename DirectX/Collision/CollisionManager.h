@@ -26,14 +26,14 @@ public:// メンバ関数
 	// コライダーの追加
 	inline void AddCollider(std::shared_ptr<BaseCollider> collider)
 	{
-		broadColliders.push_front(collider);
+		colliders_.push_front(collider);
 	}
 
 	// コライダーの削除
-	/*inline void RemoveBroadCollider(BaseCollider *collider)
+	inline void RemoveBroadCollider(std::shared_ptr<BaseCollider> collider)
 	{
-		broadColliders.remove(collider);
-	}*/
+		//colliders_.remove(collider);
+	}
 
 	//全てのブロードフェイズ衝突チェック
 	void CheckBroadCollisions(const std::vector<std::shared_ptr<GameObject>> &game_objects);
@@ -47,15 +47,11 @@ public:// メンバ関数
 	/*bool Raycast(const Ray& ray, unsigned short attribute, RaycastHit* hitInfo = nullptr,
 		float maxDistance = D3D12_FLOAT32_MAX);*/
 
-		// 球による衝突全検索
+	// 球による衝突全検索
 	void QuerySphere(const Sphere &sphere, QueryCallback *callback);
 
 private:
-	// コライダーを持っているオブジェクトのリスト
-	//std::forward_list<std::weak_ptr<GameObject>> object_list_has_collider_;
 
-
-
-	//ブロードフェイズ用のコライダーのリスト
-	std::forward_list<std::weak_ptr<BaseCollider>> broadColliders;
+	// 全てのコライダー
+	std::forward_list<std::weak_ptr<BaseCollider>> colliders_;
 };

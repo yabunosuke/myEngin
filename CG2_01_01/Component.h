@@ -26,23 +26,23 @@ public:
 	/// <summary>
 	/// アクティブなときだけ初期化
 	/// </summary>
-	void Initialize();
+	void CheckInitialize();
 	/// <summary>
 	/// アクティブなときだけ更新
 	/// </summary>
-	void Update();
+	void CheckUpdate();
 	/// <summary>
 	/// アクティブなときだけ更新
 	/// </summary>
-	void LustUpdate();
+	void CheckLustUpdate();
 	/// <summary>
 	/// アクティブなときだけ描画
 	/// </summary>
-	void Draw();
+	void CheckDraw();
 	/// <summary>
 	/// アクティブなときだけ終了処理
 	/// </summary>
-	void Finalize();
+	void CheckFinalize();
 	/// <summary>
 	/// インスペクター用
 	/// </summary>
@@ -68,23 +68,23 @@ protected:	//関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	virtual void VirtualInitialize() {};
+	virtual void ComponentInitialize() {};
 	/// <summary>
 	/// 更新
 	/// </summary>
-	virtual void VirtualUpdate() {};
+	virtual void ComponentUpdate() {};
 	/// <summary>
 	/// 更新
 	/// </summary>
-	virtual void VirtualLustUpdate() {};
+	virtual void ComponentLustUpdate() {};
 	/// <summary>
 	/// 描画
 	/// </summary>
-	virtual void VirtualDraw() {};
+	virtual void ComponentDraw() {};
 	/// <summary>
 	/// 終了処理
 	/// </summary>
-	virtual void VirtualFinalize() {};
+	virtual void ComponentFinalize() {};
 	
 	/// <summary>
 	/// 情報

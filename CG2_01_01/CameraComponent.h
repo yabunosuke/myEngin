@@ -28,7 +28,6 @@ public:
 	/// </summary>
 	CameraComponent();
 
-	void VirtualUpdate() override;
 
 private:
 	ClearFlag clearFlag;

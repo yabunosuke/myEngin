@@ -1,33 +1,33 @@
 #include "Component.h"
 
-void Component::Initialize()
+void Component::CheckInitialize()
 {
 	if (!isActive) return;
-	VirtualInitialize();
+	ComponentInitialize();
 }
 
-void Component::Update()
+void Component::CheckUpdate()
 {
 	if (!isActive) return;
-	VirtualUpdate();
+	ComponentUpdate();
 }
 
-void Component::LustUpdate()
+void Component::CheckLustUpdate()
 {
 	if (!isActive) return;
-	VirtualLustUpdate();
+	ComponentLustUpdate();
 }
 
-void Component::Draw()
+void Component::CheckDraw()
 {
 	if (!isActive) return;
-	VirtualDraw();
+	ComponentDraw();
 }
 
-void Component::Finalize()
+void Component::CheckFinalize()
 {
 	if (!isActive) return;
-	VirtualFinalize();
+	ComponentFinalize();
 }
 
 Component::Component(std::string name, bool dontRemove):

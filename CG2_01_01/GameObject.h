@@ -3,9 +3,14 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <map>
 
 //コンポーネント基底クラス
 #include "Component.h"
+#include "ScriptComponent.h"
+
+// コライダー
+class BaseCollider;
 
 class GameObject
 {
@@ -88,7 +93,7 @@ public:	//関数
 	/// コンポーネントリストの取得
 	/// </summary>
 	/// <returns></returns>
-	std::list<std::shared_ptr<Component>> GetComponentList() { return componentList; }
+	std::list<std::shared_ptr<Component>> GetComponentList() { return component_list_; }
 
 	/// <summary>
 	/// コンポーネントの取得
@@ -100,14 +105,15 @@ public:	//関数
 
 	//コンポーネントの追加
 	template<class T, class... Args>
-	T *AddComponent(Args ...args)
-	{
-		T *buff = new T(args...);
-		buff->SetParent(this);
-		componentList.emplace_back(buff);
-		buff->Initialize();
-		return buff;
-	}
+	T *AddComponent(Args ...args);
+
+	// コライダー
+	void AddCollider(std::weak_ptr<BaseCollider> collider);
+	const std::vector<std::weak_ptr<BaseCollider>> &GetColliders() { return colliders_; }
+	void RemoveCollider(std::weak_ptr<BaseCollider> collider);
+
+	// Script
+	const std::vector<std::shared_ptr<Component>> &GetScripts() { return scripts_; }
 
 private:	// 静的メンバ変数
 	// オブジェクトIDの重複回避用
@@ -121,14 +127,18 @@ private://変数
 	std::string name_;
 	// タグ
 	std::vector<std::string> tags_;
+
 	// 親オブジェクト
 	std::weak_ptr<GameObject> pearent_game_object_;
 	// 子オブジェクトのコンテナ
 	std::vector<std::shared_ptr<GameObject>> childGameObject;
 	// コンポーネント
-	std::list<std::shared_ptr<Component>> componentList;
+	std::list<std::shared_ptr<Component>> component_list_;
+	// コライダーリスト
+	std::vector<std::weak_ptr<BaseCollider>> colliders_;
 
-
+	// Scriptリスト
+	std::vector<std::shared_ptr<Component>> scripts_;
 
 	// アクティブか
 	bool isActive;
@@ -137,12 +147,14 @@ private://変数
 	// 削除するか
 	bool isRemove;
 
+
+
 };
 
 template<class T>
 inline T *GameObject::GetComponent(std::string tag)
 {
-	for (auto &component : componentList) {
+	for (auto &component : component_list_) {
 		T *temp = dynamic_cast<T *>(component.get());
 		if (temp != nullptr) {
 			if (temp->GetTag() == tag) {
@@ -153,4 +165,20 @@ inline T *GameObject::GetComponent(std::string tag)
 	}
 
 	return nullptr;
+}
+
+template<class T, class ...Args>
+inline T *GameObject::AddComponent(Args ...args)
+{
+	T *buff = new T(args...);
+	buff->SetParent(this);
+	component_list_.emplace_back(buff);
+	buff->CheckInitialize();
+
+	// スプライトが追加された場合スプライトコンテナにポインタを渡す
+	//if (dynamic_cast) {
+		scripts_.emplace_back(component_list_.back());
+	//}
+
+	return buff;
 }

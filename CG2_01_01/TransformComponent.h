@@ -2,46 +2,47 @@
 #include <DirectXMath.h>
 #include "Component.h"
 #include "Vector3.h"
+
+struct Transform {
+	Vector3 position = { 0,0,0 };	// 座標
+	// ベクトルで移動
+	void Translate(float x, float y, float z) {
+		position.x += x;
+		position.y += y;
+		position.z += z;
+	}
+	void Translate(Vector3 velocity) {
+		position += velocity;
+	}
+
+	Vector3 rotate = { 0,0,0 };		// 回転
+	Vector3 scale = { 1,1,1 };		// 拡大
+
+
+	// 正面ベクトル
+	Vector3 forward() {
+
+		return Vector3(0, 0, 0);
+	};
+	// 右ベクトル
+	Vector3 right() {
+		return Vector3(0, 0, 0);
+	};
+	// 上ベクトル
+	Vector3 up() {
+		return Vector3(0, 0, 0);
+	};
+};
+
 class TransformComponent :
 	public Component
 {
-public:
-	struct Transform {
-		Vector3 position	=	{ 0,0,0 };	// 座標
-		// ベクトルで移動
-		void Translate(float x, float y, float z) {
-			position.x += x;
-			position.y += y;
-			position.z += z;
-		}
-		void Translate(Vector3 velocity) {
-			position += velocity;
-		}
-
-		Vector3 rotate		=	{ 0,0,0 };		// 回転
-		Vector3 scale		=	{ 1,1,1 };		// 拡大
-		
-
-		// 正面ベクトル
-		Vector3 forward() {
-
-			return Vector3(0, 0, 0);
-		};
-		// 右ベクトル
-		Vector3 right() {
-			return Vector3(0, 0, 0);
-		};
-		// 上ベクトル
-		Vector3 up() {
-			return Vector3(0, 0, 0);
-		};
-	};
 public:
 	TransformComponent();
 
 	void Infomation() override;
 
-	void VirtualUpdate() override;
+	void ComponentUpdate() override;
 
 	// トランスフォーム
 	Transform *GetTransform() { return &transform_; }

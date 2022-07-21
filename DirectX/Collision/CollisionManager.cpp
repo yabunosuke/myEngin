@@ -2,55 +2,77 @@
 #include "BaseCollider.h"
 #include "Collision.h"
 #include "MeshCollider.h"
+#include "ScriptComponent.h"
 
 using namespace DirectX;
 
 //ここでの処理を2ms以内に収める
 void CollisionManager::CheckBroadCollisions(const std::vector<std::shared_ptr<GameObject>> &game_objects)
 { 
-
-	// 全てのオブジェクトのブロードフェーズ用のAABBを計算
-	for (const auto &object : game_objects) {
-		// コライダーを持っていなかったらコンテニュー
-		//if (object.get()->GetComponent<ColliderComponent>().size() == 0) continue;
-
-	//	BroadPhase broad;
-	//	broad.narrowphase_collider_list = *object.get()->GetComponent<ColliderComponent>();
-	//	
-	//	object_list_has_collider_.emplace_back(broad);
-	//	// コライダーが2つ以上あったらブロードコライダーの計算をする
-	//	
-	}
-
-	//std::forward_list<std::weak_ptr<GameObject>>::iterator object_A;
-	//std::forward_list<std::weak_ptr<GameObject>>::iterator object_B;
-
-	//// 全てのブロードフェーズの衝突チェック
-	//for (object_A = object_list_has_collider_.begin(); 
-	//	object_A != object_list_has_collider_.end();
-	//	++object_A) 
-	//{
-	//	object_B = object_A;
-	//	++object_B;
-
-	//	for (; object_B != object_list_has_collider_.end(); ++object_B)
-	//	{
-	//		// 衝突チェック
-	//		if (true) {
-
-	//			// ナローフェーズ
-
-	//		}
-
-	//	}
-
-	//}
-	// オブジェクトの持っているブロード同士が衝突していればナローフェーズを行う
-
-
+	// オブジェクトのイテレーター
+	std::vector<std::shared_ptr<GameObject>>::const_iterator game_object_it_a;
+	std::vector<std::shared_ptr<GameObject>>::const_iterator game_object_it_b;
+	// コライダーのイテレーター
+	std::vector<std::weak_ptr<BaseCollider>>::const_iterator collider_it_a;
+	std::vector<std::weak_ptr<BaseCollider>>::const_iterator collider_it_b;
 	//std::forward_list<std::weak_ptr<BaseCollider>>::iterator itA;
 	//std::forward_list<std::weak_ptr<BaseCollider>>::iterator itB;
 
+	// 全てのオブジェクトをチェック
+	for (game_object_it_a = game_objects.begin(); game_object_it_a != game_objects.end(); ++game_object_it_a) {
+		
+		// Bオブジェクトのイテレータを一つずらす
+		game_object_it_b = game_object_it_a;
+		++game_object_it_b;
+
+
+		for (; game_object_it_b != game_objects.end(); ++game_object_it_b) {
+
+			// ブロードフェーズ
+			if (false) {
+				// ブロードフェーズが衝突していなければ次のオブジェクトへ
+				continue;
+			}
+
+			// ナローフェーズ
+			for (collider_it_a = game_object_it_a->get()->GetColliders().begin();
+				collider_it_a != game_object_it_a->get()->GetColliders().end();
+				++collider_it_a) {
+
+				collider_it_b = collider_it_a;
+				++collider_it_b;
+
+				// Aコライダー
+				std::weak_ptr<BaseCollider> colider_a = collider_it_a->lock();
+
+				// コライダー未設定は無視する
+				if (colider_a.lock()->GetShapeType() == SHAPE_UNKNOWN) continue;
+				
+				for (collider_it_b = game_object_it_b->get()->GetColliders().begin();
+					collider_it_b != game_object_it_b->get()->GetColliders().end();
+					++collider_it_b) {
+
+					// Bコライダー
+					std::weak_ptr<BaseCollider>  colider_b = collider_it_b->lock();
+					
+					// コライダー未設定は無視する
+					if (colider_b.lock()->GetShapeType() == SHAPE_UNKNOWN) continue;
+					
+					DirectX::XMVECTOR interBroad;
+					if (CheckHitCollision(colider_a.lock().get(), colider_b.lock().get(), &interBroad)) {
+						// 衝突コールバック
+						for (const auto &script_a : game_object_it_a->get()->GetScripts()) {
+							dynamic_cast<ScriptComponent*>(script_a.get())->OnCollisionEnter();
+						}
+						
+					}
+				}
+
+			}
+
+
+		}
+	}
 	//// 衝突判定
 	//for (itA = broadColliders.begin(); itA != broadColliders.end(); ++itA)
 	//{

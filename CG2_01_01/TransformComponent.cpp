@@ -13,7 +13,7 @@ void TransformComponent::Infomation()
 	ImGui::Text("Scale"); ImGui::SameLine(100); ImGui::DragFloat3("##Sca", (float *)&transform_.scale);
 }
 
-void TransformComponent::VirtualUpdate()
+void TransformComponent::ComponentUpdate()
 {
 	// ç¿ïWïœä∑çsóÒ
 	XMMATRIX S = DirectX::XMMatrixScaling(

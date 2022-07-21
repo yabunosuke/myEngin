@@ -1,7 +1,7 @@
 #include "GameObject.h"
 #include "TransformComponent.h"
 #include "imguiManager.h"
-#include "LightComponent.h"
+#include "BaseCollider.h"
 
 uint64_t GameObject::ID = 0;
 
@@ -30,11 +30,11 @@ void GameObject::Update()
 	if (!pealentIsActive || !isActive) return;
 
 	// コンポーネントの削除
-	auto &itr = componentList.begin();
-	while (itr != componentList.end()) {
+	auto &itr = component_list_.begin();
+	while (itr != component_list_.end()) {
 		if ((*itr)->GetIsRemove()) {
 			itr->reset();
-			itr = componentList.erase(itr);
+			itr = component_list_.erase(itr);
 		}
 		else {
 			itr++;
@@ -42,8 +42,8 @@ void GameObject::Update()
 	}
 
 	// 全てのコンポーネントを更新
-	for (auto &component : componentList) {
-		component->Update();
+	for (auto &component : component_list_) {
+		component->CheckUpdate();
 	}
 }
 
@@ -51,8 +51,8 @@ void GameObject::LastUpdate()
 {
 	//アクティブでなければ描画しない
 	if (!isActive) return;
-	for (auto &component : componentList) {
-		component->LustUpdate();
+	for (auto &component : component_list_) {
+		component->CheckLustUpdate();
 	}
 }
 
@@ -64,8 +64,8 @@ void GameObject::Draw()
 	if (!isActive) return;
 
 	//全てのコンポーネントを描画
-	for (auto &component : componentList) {
-		component->Draw();
+	for (auto &component : component_list_) {
+		component->CheckDraw();
 	}
 }
 
@@ -83,7 +83,7 @@ void GameObject::DrawInspector()
 
 	//コンポーネントの表示
 	int i = 0;
-	for (auto &component : componentList) {
+	for (auto &component : component_list_) {
 		ImGui::PushID(i);
 		component->ImGuiDraw();
 		ImGui::Separator();
@@ -91,5 +91,22 @@ void GameObject::DrawInspector()
 		i++;
 	}
 
+
+}
+
+void GameObject::AddCollider(std::weak_ptr<BaseCollider> collider)
+{
+	// タグ名で管理
+	colliders_.emplace_back(collider);
+}
+
+void GameObject::RemoveCollider(std::weak_ptr<BaseCollider> collider)
+{
+	for (auto col = colliders_.begin(); col != colliders_.end();++col) {
+		if (col->lock() = collider.lock()) {
+			colliders_.erase(col);
+			break;
+		}
+	}
 
 }

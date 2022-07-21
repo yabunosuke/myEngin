@@ -22,6 +22,7 @@
 #include "TransformComponent.h"
 #include "ColliderComponent.h"
 #include "Player.h"
+#include "PlayerTest.h"
 
 TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
@@ -34,7 +35,8 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	house.lock().get()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/UNIT/plantune.fbx");
-	
+	house.lock().get()->AddComponent<ColliderComponent>(this);
+
 
 	auto player = game_object_manager_.CreateObject("human");
 	player.lock().get()->AddComponent<Object3dComponent>(
@@ -45,6 +47,7 @@ TitleScene::TitleScene(IoChangedListener *impl)
 
 	player.lock().get()->AddComponent<Player>();
 	player.lock().get()->AddComponent<ColliderComponent>(this);
+	player.lock().get()->AddComponent<PlayerTest>();
 }
 
 void TitleScene::Initialize()

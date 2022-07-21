@@ -168,6 +168,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\DirectX\AudioManager\AudioManager.cpp" />
+    <ClCompile Include="..\DirectX\Collision\BaseCollider.cpp" />
     <ClCompile Include="..\DirectX\Collision\Collision.cpp" />
     <ClCompile Include="..\DirectX\Collision\CollisionManager.cpp" />
     <ClCompile Include="..\DirectX\Collision\CollisionPrimitive.cpp" />
@@ -213,6 +214,9 @@
     <ClCompile Include="Object3dComponent.cpp" />
     <ClCompile Include="PipelineManager.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerTest.cpp" />
+    <ClCompile Include="RigidbodyComponent.cpp" />
+    <ClCompile Include="ScriptComponent.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
@@ -365,6 +369,9 @@
     <ClInclude Include="Object3dComponent.h" />
     <ClInclude Include="PipelineManager.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerTest.h" />
+    <ClInclude Include="RigidbodyComponent.h" />
+    <ClInclude Include="ScriptComponent.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TransformComponent.h" />
   </ItemGroup>

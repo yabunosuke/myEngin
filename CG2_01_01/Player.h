@@ -13,21 +13,21 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void VirtualInitialize() override;
+	void ComponentInitialize() override;
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void VirtualUpdate() override;
+	void ComponentUpdate() override;
 
-	void VirtualLustUpdate() override;
+	void ComponentLustUpdate() override;
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void VirtualDraw() override;
+	void ComponentDraw() override;
 	/// <summary>
 	/// 終了処理
 	/// </summary>
-	void VirtualFinalize() override;
+	void ComponentFinalize() override;
 
 	/// <summary>
 	/// 情報
@@ -35,7 +35,7 @@ public:
 	void Infomation() override;
 
 private:
-	TransformComponent::Transform *transform_;
+	Transform *transform_;
 	void Move();
 
 	// アニメーションステート

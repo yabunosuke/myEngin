@@ -39,27 +39,38 @@ ColliderComponent::ColliderComponent(AbstractScene *scene, CollisionShapeType ty
 	default:
 		break;
 	}
-	collider->SetObject(parent);
 	scene->GetCollisionManager()->AddCollider(collider);
 }
 
-void ColliderComponent::VirtualInitialize()
+ColliderComponent::~ColliderComponent()
 {
+	parent->RemoveCollider(collider);
 }
 
-void ColliderComponent::VirtualUpdate()
+void ColliderComponent::ComponentInitialize()
+{
+	// コライダーにオブジェクトを紐づけ
+	collider->SetObject(parent);
+	// オブジェクトにコライダーwaek_ptr渡す
+	parent->AddCollider(collider);
+	collider->Update();
+
+}
+
+void ColliderComponent::ComponentUpdate()
 {
 	collider->Update();
 }
 
-void ColliderComponent::VirtualDraw()
+void ColliderComponent::ComponentDraw()
 {
 }
 
-void ColliderComponent::VirtualFinalize()
+void ColliderComponent::ComponentFinalize()
 {
 }
 
 void ColliderComponent::Infomation()
 {
+	collider->Infomation();
 }

@@ -157,6 +157,16 @@
     <ClCompile Include="ColliderComponent.cpp">
       <Filter>Engin\Object\GameObject\Component\Collider</Filter>
     </ClCompile>
+    <ClCompile Include="..\DirectX\Collision\BaseCollider.cpp" />
+    <ClCompile Include="RigidbodyComponent.cpp">
+      <Filter>Engin\Object\GameObject\Component\Rigidbody</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptComponent.cpp">
+      <Filter>Engin\Object\GameObject\Component\ScriptComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerTest.cpp">
+      <Filter>Game\Scene\Title\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\DirectXCommon\DirectXCommon.h" />
@@ -315,6 +325,15 @@
     <ClInclude Include="..\DirectX\Math\Quaternion.h">
       <Filter>Engin\Math</Filter>
     </ClInclude>
+    <ClInclude Include="RigidbodyComponent.h">
+      <Filter>Engin\Object\GameObject\Component\Rigidbody</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptComponent.h">
+      <Filter>Engin\Object\GameObject\Component\ScriptComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTest.h">
+      <Filter>Game\Scene\Title\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Basic.hlsli" />
@@ -333,9 +352,6 @@
   <ItemGroup>
     <Filter Include="Shader">
       <UniqueIdentifier>{5d47e165-d90b-4d56-9ae2-16a3a828d29c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="script">
-      <UniqueIdentifier>{f06035ce-ed09-4e6d-b0a9-5b4215077d56}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engin">
       <UniqueIdentifier>{a27eb1d3-22c4-4432-9edd-4db81ee11bf5}</UniqueIdentifier>
@@ -432,6 +448,12 @@
     </Filter>
     <Filter Include="Engin\Object\GameObject\Component\Collider">
       <UniqueIdentifier>{bc73365e-4036-4ffd-9c7c-0802e2937e41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engin\Object\GameObject\Component\Rigidbody">
+      <UniqueIdentifier>{252cc80b-5369-42fa-bcb7-67d02a2adda5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engin\Object\GameObject\Component\ScriptComponent">
+      <UniqueIdentifier>{2b24a952-796a-41fb-99cd-cb1830ae3f7e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

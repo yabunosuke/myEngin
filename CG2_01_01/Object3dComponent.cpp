@@ -13,11 +13,11 @@ Object3dComponent::Object3dComponent(ComPtr<ID3D12Device> dev, ComPtr<ID3D12Grap
 
 }
 
-void Object3dComponent::VirtualInitialize()
+void Object3dComponent::ComponentInitialize()
 {
 }
 
-void Object3dComponent::VirtualUpdate()
+void Object3dComponent::ComponentUpdate()
 {
 	XMFLOAT4X4 world;
 	DirectX::XMStoreFloat4x4(&world, parent->GetComponent<TransformComponent>()->GetMatrix());
@@ -29,12 +29,12 @@ void Object3dComponent::VirtualUpdate()
 	object_fbx->UpdateTransform(world);
 }
 
-void Object3dComponent::VirtualDraw()
+void Object3dComponent::ComponentDraw()
 {
 	object_fbx->Draw(dev.Get(), cmd_list.Get());
 }
 
-void Object3dComponent::VirtualFinalize()
+void Object3dComponent::ComponentFinalize()
 {
 }
 

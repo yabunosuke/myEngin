@@ -5,7 +5,3 @@ CameraComponent::CameraComponent() :
 	clearFlag(ClearFlag::SKY_BOX)
 {
 }
-
-void CameraComponent::VirtualUpdate()
-{
-}

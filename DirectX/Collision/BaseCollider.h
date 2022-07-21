@@ -42,6 +42,12 @@ public:
 
 	//更新
 	virtual void Update() = 0;
+
+	/// <summary>
+	/// ImGui用
+	/// </summary>
+	virtual void Infomation();
+
 	//形状タイプ取得
 	inline CollisionShapeType GetShapeType() { return shapeType; }
 	inline std::string GetCollisionName() { return collisionName; }
@@ -53,9 +59,9 @@ public:
 	}
 
 	// 当たり判定属性をセット
-	inline void SetAttribute(std::string tag)
+	inline void SetAttribute(std::string collision_name)
 	{
-		this->collisionName = tag;
+		this->collisionName = collision_name;
 	}
 
 	// 当たり判定属性を削除

@@ -9,23 +9,23 @@ class ColliderComponent :
 {
 public:
 	ColliderComponent(AbstractScene *scene, CollisionShapeType type = SHAPE_SPHERE);
-
+	~ColliderComponent();
 	/// <summary>
 	/// ‰Šú‰»
 	/// </summary>
-	void VirtualInitialize() override;
+	void ComponentInitialize() override;
 	/// <summary>
 	/// XV
 	/// </summary>
-	void VirtualUpdate() override;
+	void ComponentUpdate() override;
 	/// <summary>
 	/// •`‰æ
 	/// </summary>
-	void VirtualDraw() override;
+	void ComponentDraw() override;
 	/// <summary>
 	/// I—¹ˆ—
 	/// </summary>
-	void VirtualFinalize() override;
+	void ComponentFinalize() override;
 
 	/// <summary>
 	/// î•ñ
