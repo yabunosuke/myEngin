@@ -4,7 +4,6 @@
 #include <DirectXMath.h>
 #include <vector>
 #include <d3dcompiler.h>
-#include <DirectXTex.h>
 #include <wrl.h>
 
 #pragma comment(lib, "d3dcompiler.lib")
@@ -14,7 +13,7 @@
 
 class Sprite
 {
-private:	//記述省略
+protected:	//記述省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -39,18 +38,15 @@ public:		//静的メンバ関数
 	//静的初期化
 	static bool StaticInitialize(ID3D12Device *dev, int window_width, int window_height);	//スプライト用パイプライン生成	
 	//テクスチャ読み込み
-	static bool LoadTexture(UINT texnumber, const wchar_t *filename, ID3D12Device *dev);
-	//描画前処理
-	static void PreDraw(ID3D12GraphicsCommandList *cmdList);
-	//描画後処理
-	static void PostDraw();
+	//static bool LoadTexture(UINT texnumber, const wchar_t *filename, ID3D12Device *dev);
+
 	//スプライト生成
-	static Sprite *Create(UINT texNumber,XMFLOAT2 anchorpoint = { 0.5f,0.5f },bool isFlipX = false, bool isFlipY = false);
+	static Sprite *Create(ComPtr<ID3D12Device> dev,int texture_num,XMFLOAT2 anchorpoint = { 0.5f,0.5f },bool isFlipX = false, bool isFlipY = false);
 
 public:		//メンバ関数
 	Sprite(UINT texNumber, XMFLOAT2 position, XMFLOAT2 size, XMFLOAT4 color, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY);
 	//初期化
-	bool Initialize();
+	bool Initialize(ComPtr<ID3D12Device> dev);
 	//回転
 	void SetRotation(float rotation);
 	//座標
@@ -86,7 +82,7 @@ public:		//メンバ関数
 	//テクスチャ範囲指定
 	void SetTextureRect(XMFLOAT2 texBase, XMFLOAT2 texSize);
 	//描画
-	void Draw();
+	void Draw(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cmd_list, std::string pipeline_name);
 
 
 	//修正予定
@@ -95,18 +91,13 @@ public:		//メンバ関数
 	//倍率
 	void SetScale(float scale);
 
-private:	//静的メンバ変数
-	static const int SRVCount = 512;				//テクスチャの最大数
-	static ID3D12Device *dev;					//デバイス
-	static ID3D12GraphicsCommandList *cmdList;		//コマンドリスト
-	static ComPtr<ID3D12RootSignature> rootSignature;	//ルートシグネチャ
-	static ComPtr<ID3D12PipelineState> pipelineState;	//パイプラインステート
+protected:
+	void TransferVertices();
+protected:	//静的メンバ変数
 	static XMMATRIX matProjection;						//射影行列
-	static ComPtr<ID3D12DescriptorHeap> descHeap;		//デスクリプタヒープ
-	static ComPtr<ID3D12Resource> texBuff[SRVCount];	//テクスチャバッファ
 
 
-private:
+protected:
 	ComPtr<ID3D12Resource> vertBuff;		//頂点バッファ
 	ComPtr<ID3D12Resource> constBuff;		//定数バッファ
 	D3D12_VERTEX_BUFFER_VIEW vbView{};		//頂点バッファビュー
@@ -123,6 +114,4 @@ private:
 	XMFLOAT2 texSize = { 100,100 };		//切り取り範囲
 	bool isInvisible = false;
 
-private:
-	void TransferVertices();
 };

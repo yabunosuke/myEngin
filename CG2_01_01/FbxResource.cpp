@@ -586,15 +586,24 @@ void FbxResource::CreateComObjects(ID3D12Device *dev)
 			if (std::filesystem::exists(path)) {
 				// マテリアルのみの場合はダミーを貼る
 				if (texture_path.c_str()[0] == 0) {
-					material.shader_resource_views[i] = Texture::MakeDummyTexture(dev);
+					material.texture_id = Texture::MakeTexture(dev);
+					
+						
+						
 				}
 				else {
-					material.shader_resource_views[i] = Texture::LoadTextureFromFile(dev, path.c_str());
+					material.texture_id = Texture::LoadTextureFromFile(dev, path.c_str());
+					
 				}
 			}
 			else {
-				material.shader_resource_views[i] = Texture::MakeDummyTexture(dev);
+				material.texture_id = Texture::MakeTexture(dev);
 			}
+
+			material.shader_resource_views[i] = CD3DX12_GPU_DESCRIPTOR_HANDLE(
+				Texture::descriptor_heap_->GetGPUDescriptorHandleForHeapStart(),
+				material.texture_id,
+				dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
 		}
 	}
 }

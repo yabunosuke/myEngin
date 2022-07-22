@@ -20,12 +20,14 @@ private:	// シングルトン
 
 public:
 	static PipelineManager *GetInstance();		//取得用
-
-public:
+	
 
 	void CreateAllPiplines();
 	void CreatePipline(ComPtr<ID3D12Device> dev, const std::string &pipline_name);
-	
+	void CreateSpriutePipline(ComPtr<ID3D12Device> dev, const std::string &pipline_name);
+	void CreatePostEffectPipline(ComPtr<ID3D12Device> dev, const std::string &pipline_name);
+
+	//パイプラインセット
 	void SetPipline(ComPtr<ID3D12GraphicsCommandList> cmd_list, std::string pipline_name);
 
 private:

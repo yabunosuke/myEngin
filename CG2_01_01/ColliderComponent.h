@@ -4,7 +4,7 @@
 
 class AbstractScene;
 
-class ColliderComponent :
+class ColliderComponent final :
 	public Component
 {
 public:

@@ -23,6 +23,7 @@ protected: // エイリアス
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
+	virtual ~Component() = default;
 	/// <summary>
 	/// アクティブなときだけ初期化
 	/// </summary>

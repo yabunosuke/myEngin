@@ -2,7 +2,7 @@
 #include <d3dx12.h>
 #include <wrl.h>
 #include <vector>
-#include <string>
+#include <DirectXMath.h>
 
 class Texture
 {
@@ -23,7 +23,7 @@ public:
 	/// <param name="filename">ファイル名</param>
 	/// <param name="shader_resource_view"></param>
 	/// <returns></returns>
-	static D3D12_GPU_DESCRIPTOR_HANDLE LoadTextureFromFile(ID3D12Device *dev,const wchar_t *filename);
+	static int LoadTextureFromFile(ID3D12Device *dev,const wchar_t *filename);
 
 	/// <summary>
 	/// 単色ダミーテクスチャ生成
@@ -32,15 +32,15 @@ public:
 	/// <param name="color">色 AABBGGRR</param>
 	/// <param name="dimension"></param>
 	/// <returns></returns>
-	static D3D12_GPU_DESCRIPTOR_HANDLE MakeDummyTexture(ID3D12Device *dev, DWORD color = 0xffffffff, UINT dimension = 8);
-
-public:
+	static int MakeTexture(ID3D12Device *dev, DWORD color = 0xffffffff, DirectX::XMFLOAT2 size ={8,8});
+	
 	// テクスチャの最大数
 	static const int srv_count_ = 512;
-	// テクスチャバッファ
-	static std::vector<ComPtr<ID3D12Resource>> texture_buffer_;
 	// シェーダーリソース
 	static ComPtr<ID3D12DescriptorHeap> descriptor_heap_;
+	// テクスチャバッファ
+	static std::vector<ComPtr<ID3D12Resource>> texture_buffer_;
+
 
 	
 };

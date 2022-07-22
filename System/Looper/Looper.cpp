@@ -1,10 +1,8 @@
 #include "Looper.h"
 #include "DirectXCommon.h"
 #include "AudioManager.h"	//音声管理
-#include "ModelManager.h"
 #include "KeyboardInput.h"
 
-#include "FileManager.h"
 #include "ComponentList.h"
 
 //シーン
@@ -30,14 +28,22 @@ bool Looper::Loop()
 	KeyboardInput::GetIns()->Update();
 	//シーンの更新
 	sceneStack.top()->Update();
-	//シーンの描画コマンドを発行
-	sceneStack.top()->Draw();
 
-	
+	//シーンの描画コマンドを発行
+	sceneStack.top()->PreDrawScene(DirectXCommon::cmdList);
+	sceneStack.top()->Draw();
+	sceneStack.top()->PostDrawScene(DirectXCommon::cmdList);
+	// ここまでの描画はポストエフェクトの対象
 	// エディタ描画
 	editor.Draw();
-	imguiManager::GetIns()->Draw();
 	//描画コマンド実行
+	DirectXCommon::ResourceBarrierWriting();
+	DirectXCommon::ScreenClear();
+	// ポストエフェクト
+	sceneStack.top()->DrawPostEffect();
+
+	imguiManager::GetIns()->Draw();
+	// 全コマンド実行
 	DirectXCommon::PlayCommandList();
 
 	//ESCが押されたらゲームを終了

@@ -4,8 +4,7 @@
 #include "WinApp.h"			//ウィンドウの表示等
 #include "DirectXCommon.h"	//DirectX初期化等
 //#include "Object3d.h"		//オブジェクト
-#include "Sprite.h"
-#include "ImageManager.h"
+#include "2d/Sprite.h"
 #include "AudioManager.h"
 #include "ModelManager.h"			//モデル
 #include "imguiManager.h"
@@ -34,7 +33,6 @@ bool SystemMain::Initialize() const
 	Sprite::StaticInitialize(						//スプライト共通データ生成
 		DirectXCommon::dev.Get(),
 		WinApp::windowWidth, WinApp::windowHeight);
-	ImageManager::GetIns()->LoadImagALL(DirectXCommon::dev.Get());				//画像読み込み
 
 	AudioManager::Initialize();
 	//ModelLoader::GetInstance()->Initialize(DirectXCommon::dev.Get());
@@ -52,7 +50,7 @@ void SystemMain::Finalize() const
 void SystemMain::main() const
 {
 	Looper looper;
-	while (DirectXCommon::ResourceBarrierWriting() && DirectXCommon::ScreenClear() && !!WinApp::WindowsMessage()) {
+	while ( !!WinApp::WindowsMessage()) {
 		//ウィンドウサイズの変更チェック
 		if (!looper.Loop()) {
 			break;

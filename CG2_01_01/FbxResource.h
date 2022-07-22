@@ -139,6 +139,7 @@ public:
 
 		DirectX::XMFLOAT4		color = { 0.8f,0.8f,0.8f,1.0f };
 
+		int						texture_id;
 		D3D12_GPU_DESCRIPTOR_HANDLE shader_resource_views[static_cast<int>(TextureType::MAX)];
 
 		template < class T>

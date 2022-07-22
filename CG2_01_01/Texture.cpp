@@ -23,7 +23,7 @@ void Texture::CreateDescriptorHeap(ID3D12Device *dev)
 	}
 }
 
-D3D12_GPU_DESCRIPTOR_HANDLE Texture::LoadTextureFromFile(ID3D12Device *dev, const wchar_t *filename)
+int Texture::LoadTextureFromFile(ID3D12Device *dev, const wchar_t *filename)
 {
     HRESULT result = S_OK;
 
@@ -88,19 +88,15 @@ D3D12_GPU_DESCRIPTOR_HANDLE Texture::LoadTextureFromFile(ID3D12Device *dev, cons
 			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV))
 	);
 
-	
-	return CD3DX12_GPU_DESCRIPTOR_HANDLE(
-		descriptor_heap_->GetGPUDescriptorHandleForHeapStart(),
-		texture_buffer_.size() - 1,
-		dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
+	return texture_buffer_.size() - 1;
 }
 
-D3D12_GPU_DESCRIPTOR_HANDLE Texture::MakeDummyTexture(ID3D12Device *dev, DWORD color, UINT dimension)
+int Texture::MakeTexture(ID3D12Device *dev, DWORD color, XMFLOAT2 size)
 {
 	HRESULT result = S_OK;
 	
 	// 塗りつぶした画像生成
-	size_t texels = dimension * dimension;
+	size_t texels = size.x * size.y;
 	UINT *img = new UINT[texels];
 	for (size_t i = 0; i < texels; ++i) {
 		img[i] = color;
@@ -111,8 +107,8 @@ D3D12_GPU_DESCRIPTOR_HANDLE Texture::MakeDummyTexture(ID3D12Device *dev, DWORD c
 	CD3DX12_RESOURCE_DESC texres_desc =
 		CD3DX12_RESOURCE_DESC::Tex2D(
 			DXGI_FORMAT_R8G8B8A8_UNORM,
-			dimension,
-			(UINT)dimension,
+			size.x,
+			static_cast<UINT>(size.y),
 			1,0,1,0,
 			D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
 
@@ -128,7 +124,7 @@ D3D12_GPU_DESCRIPTOR_HANDLE Texture::MakeDummyTexture(ID3D12Device *dev, DWORD c
 	// テクスチャバッファへのデータ転送
 	result = texture_buffer_.back()->WriteToSubresource(
 		0, nullptr,
-		img, dimension, dimension
+		img, size.x, size.y
 		);
 	assert(SUCCEEDED(result));
 	delete[] img;
@@ -151,9 +147,6 @@ D3D12_GPU_DESCRIPTOR_HANDLE Texture::MakeDummyTexture(ID3D12Device *dev, DWORD c
 			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV))
 	);
 
-	return CD3DX12_GPU_DESCRIPTOR_HANDLE(
-		descriptor_heap_->GetGPUDescriptorHandleForHeapStart(),
-		texture_buffer_.size() - 1,
-		dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
+	return texture_buffer_.size() - 1;
 	;
 }

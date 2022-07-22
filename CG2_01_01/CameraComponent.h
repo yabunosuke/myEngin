@@ -32,7 +32,7 @@ public:
 private:
 	ClearFlag clearFlag;
 
-	XMFLOAT3 eye_;
-	XMFLOAT3 target_;
-	XMFLOAT3 up_;
+	XMFLOAT3 eye_{0,0,0};
+	XMFLOAT3 target_{};
+	XMFLOAT3 up_{0,1,0};
 };

@@ -25,14 +25,42 @@
     <FxCompile Include="LambertVS.hlsl">
       <Filter>Engin\Object\FBX\Shader\Lambert</Filter>
     </FxCompile>
+    <FxCompile Include="Assets\Shaders\PostEffectPS.hlsl">
+      <Filter>Engin\Sprite\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\PostEffectVS.hlsl">
+      <Filter>Engin\Sprite\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\UvScrollPS.hlsl">
+      <Filter>Engin\Sprite\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\TilingPS.hlsl">
+      <Filter>Engin\Sprite\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\ScanLinePS.hlsl">
+      <Filter>Engin\Sprite\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\RGBShiftPS.hlsl">
+      <Filter>Engin\Sprite\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\InverseColorPS.hlsl">
+      <Filter>Engin\Sprite\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\BlurPS.hlsl">
+      <Filter>Engin\Sprite\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\GrayScalePS.hlsl">
+      <Filter>Engin\Sprite\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\SepiaPS.hlsl">
+      <Filter>Engin\Sprite\shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\DirectX\DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="..\DirectX\WinApp\WinApp.cpp" />
     <ClCompile Include="..\System\Looper\Looper.cpp" />
     <ClCompile Include="..\System\SystemMain\SystemMain.cpp" />
-    <ClCompile Include="DebugText.cpp" />
-    <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="..\DirectX\Collision\Collision.cpp">
       <Filter>Engin\Collision</Filter>
@@ -66,9 +94,6 @@
     </ClCompile>
     <ClCompile Include="..\DirectX\Input\ControllerInput.cpp">
       <Filter>Engin\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="..\DirectX\Sprite\Sprite.cpp">
-      <Filter>Engin\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="..\DirectX\AudioManager\AudioManager.cpp">
       <Filter>Engin\Audio</Filter>
@@ -140,7 +165,7 @@
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
     </ClCompile>
     <ClCompile Include="PipelineManager.cpp">
-      <Filter>Engin\Object\GameObject\Component\3dObject\Pipline</Filter>
+      <Filter>Engin\Object\GameObject\Pipline</Filter>
     </ClCompile>
     <ClCompile Include="Fbx.cpp">
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
@@ -164,6 +189,12 @@
     <ClCompile Include="PlayerTest.cpp">
       <Filter>Game\Scene\Title\Player</Filter>
     </ClCompile>
+    <ClCompile Include="2d\PostEffect.cpp">
+      <Filter>Engin\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="2d\Sprite.cpp">
+      <Filter>Engin\Sprite</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\DirectXCommon\DirectXCommon.h" />
@@ -171,7 +202,6 @@
     <ClInclude Include="..\System\IoChangedListener\IoChangedListener.h" />
     <ClInclude Include="..\System\Looper\Looper.h" />
     <ClInclude Include="..\System\SystemMain\SystemMain.h" />
-    <ClInclude Include="DebugText.h" />
     <ClInclude Include="..\DirectX\Collision\BaseCollider.h">
       <Filter>Engin\Collision</Filter>
     </ClInclude>
@@ -219,9 +249,6 @@
     </ClInclude>
     <ClInclude Include="..\DirectX\Input\ControllerInput.h">
       <Filter>Engin\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\DirectX\Sprite\Sprite.h">
-      <Filter>Engin\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h">
       <Filter>Engin\Audio</Filter>
@@ -271,9 +298,6 @@
     <ClInclude Include="GameObjectManager.h">
       <Filter>Engin\Object\GameObjectManager</Filter>
     </ClInclude>
-    <ClInclude Include="ImageManager.h">
-      <Filter>Engin</Filter>
-    </ClInclude>
     <ClInclude Include="FileManager.h">
       <Filter>Engin\File</Filter>
     </ClInclude>
@@ -305,7 +329,7 @@
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
     </ClInclude>
     <ClInclude Include="PipelineManager.h">
-      <Filter>Engin\Object\GameObject\Component\3dObject\Pipline</Filter>
+      <Filter>Engin\Object\GameObject\Pipline</Filter>
     </ClInclude>
     <ClInclude Include="Fbx.h">
       <Filter>Engin\Object\GameObject\Component\3dObject</Filter>
@@ -328,6 +352,12 @@
     <ClInclude Include="PlayerTest.h">
       <Filter>Game\Scene\Title\Player</Filter>
     </ClInclude>
+    <ClInclude Include="2d\PostEffect.h">
+      <Filter>Engin\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="2d\Sprite.h">
+      <Filter>Engin\Sprite</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Basic.hlsli" />
@@ -341,6 +371,9 @@
     </None>
     <None Include="Lambert.hlsli">
       <Filter>Engin\Object\FBX\Shader\Lambert</Filter>
+    </None>
+    <None Include="Assets\Shaders\PostEffect.hlsli">
+      <Filter>Engin\Sprite\shader</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -437,9 +470,6 @@
     <Filter Include="Engin\Object\GameObject\Component\Transform">
       <UniqueIdentifier>{9efb7f7c-0dcf-47de-91f3-87c1df4d67e2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engin\Object\GameObject\Component\3dObject\Pipline">
-      <UniqueIdentifier>{f17c122e-2c6e-4b6e-a4fd-d48b7f4b66ca}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engin\Object\GameObject\Component\Collider">
       <UniqueIdentifier>{bc73365e-4036-4ffd-9c7c-0802e2937e41}</UniqueIdentifier>
     </Filter>
@@ -448,6 +478,12 @@
     </Filter>
     <Filter Include="Engin\Object\GameObject\Component\ScriptComponent">
       <UniqueIdentifier>{2b24a952-796a-41fb-99cd-cb1830ae3f7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engin\Object\GameObject\Pipline">
+      <UniqueIdentifier>{f17c122e-2c6e-4b6e-a4fd-d48b7f4b66ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engin\Sprite\shader">
+      <UniqueIdentifier>{58e39de7-5354-4db9-92e0-054b76b5d78a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

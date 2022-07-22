@@ -25,7 +25,7 @@ public:	//関数
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="name">オブジェクト名</param>
-	GameObject(std::string name);
+	GameObject(const std::string &name);
 
 	//初期化
 	void Initialize();
@@ -87,7 +87,7 @@ public:	//関数
 	// 親オブジェクトの取得
 	std::weak_ptr<GameObject> &GetPearent() { return pearent_game_object_; }
 	// このオブジェクトコンテナの取得
-	std::vector<std::shared_ptr<GameObject>> &GetChildren() { return childGameObject; }
+	std::vector<std::shared_ptr<GameObject>> &GetChildren() { return child_game_object_; }
 
 	/// <summary>
 	/// コンポーネントリストの取得
@@ -131,7 +131,7 @@ private://変数
 	// 親オブジェクト
 	std::weak_ptr<GameObject> pearent_game_object_;
 	// 子オブジェクトのコンテナ
-	std::vector<std::shared_ptr<GameObject>> childGameObject;
+	std::vector<std::shared_ptr<GameObject>> child_game_object_;
 	// コンポーネント
 	std::list<std::shared_ptr<Component>> component_list_;
 	// コライダーリスト

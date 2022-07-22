@@ -1,41 +1,39 @@
 #include "TitleScene.h"
-#include "KeyboardInput.h"
-#include "ModelManager.h"
-#include "ImageManager.h"
 #include "DirectXCommon.h"
 #include "SphereCollider.h"
 #include "CollisionManager.h"
-
-#include "Collision.h"
-
-
 
 #include "Easing.h"
 #include "yMath.h"
 //#include "Quaternion.h"
 
-
+#include "Texture.h"
 #include "PipelineManager.h"
 
 // コンポーネント
 #include "Object3dComponent.h"
-#include "TransformComponent.h"
 #include "ColliderComponent.h"
 #include "PlayerTest.h"
 
 TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
-	PipelineManager::GetInstance()->CreatePipline(DirectXCommon::dev.Get(), "Lambert");
-	//test[0] = std::make_shared<Fbx>(DirectXCommon::dev.Get(), "Assets/3d/UNIT/plantune.fbx");
+	PipelineManager::GetInstance()->CreateSpriutePipline(DirectXCommon::dev.Get(), "Sprite");
+
+	// ポストエフェクトパイプライン
+	for(int i = 0; i < _countof(posteffect_shader_list_);++i)
+	{
+		PipelineManager::GetInstance()->CreatePostEffectPipline(DirectXCommon::dev.Get(), posteffect_shader_list_[i]);
+
+	}
 
 
-	auto house = game_object_manager_.CreateObject("house");
-	house.lock().get()->AddComponent<Object3dComponent>(
+	auto cube = game_object_manager_.CreateObject("cube");
+	cube.lock().get()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/UNIT/plantune.fbx");
-	house.lock().get()->AddComponent<ColliderComponent>(this);
-
+		"Assets/3d/UNIT/cube.004.fbx");
+	cube.lock().get()->AddComponent<ColliderComponent>(this);
+	
 
 	auto player = game_object_manager_.CreateObject("human");
 	player.lock().get()->AddComponent<Object3dComponent>(
@@ -46,13 +44,18 @@ TitleScene::TitleScene(IoChangedListener *impl)
 
 	player.lock().get()->AddComponent<ColliderComponent>(this);
 	player.lock().get()->AddComponent<PlayerTest>();
+
+
+	//画像読み込みテスト
+	int test_tex = Texture::LoadTextureFromFile(DirectXCommon::dev.Get(), L"Assets/2d/circle.png");
+	test_sprite = Sprite::Create(DirectXCommon::dev, test_tex);
 }
 
 void TitleScene::Initialize()
 {
-	cam = new Camera({ 0,50,-50 });
-	cam->eye = { 0,50,0 };
-	Camera::SetCam(cam);
+	cam_ = new Camera({ 0,50,-50 });
+	cam_->eye = { 0,50,0 };
+	Camera::SetCam(cam_);
 
 	game_object_manager_.Initialize();
 }
@@ -75,17 +78,56 @@ void TitleScene::Update()
 
 	Camera::GetCam()->UpdateViewMatrix();
 	Camera::GetCam()->UpdateProjectionMatrix();
-
-
  	
 }
 
 void TitleScene::Draw() const
 {
+	// 背景スプライト
+
 	game_object_manager_.Draw();
+	//test_sprite->Draw(DirectXCommon::dev, DirectXCommon::cmdList, "Sprite");
 
+	//ウィンドウ名定義
+	ImGui::Begin("PostEffectShader");
+	ImGui::SetWindowSize(
+		ImVec2(400, 500),
+		ImGuiCond_::ImGuiCond_FirstUseEver
+	);
+	for (int i = 0; i < _countof(posteffect_shader_list_); ++i)
+	{
+		if (ImGui::Button(posteffect_shader_list_[i].c_str())) {
+			post_effect_->shader_name_ = posteffect_shader_list_[i];
+		}
+		if(i % 4 != 0 || i == 0)
+		{
+			ImGui::SameLine();
 
-	Sprite::PreDraw(DirectXCommon::cmdList.Get());
-	Sprite::PostDraw();
+		}
+	}
+
+	//終了
+	ImGui::End();
+
+	////ウィンドウ名定義
+	//ImGui::Begin("ObjectShader");
+	//ImGui::SetWindowSize(
+	//	ImVec2(400, 500),
+	//	ImGuiCond_::ImGuiCond_FirstUseEver
+	//);
+	//for (int i = 0; i < _countof(object_shader_list_); ++i)
+	//{
+	//	if (ImGui::Button(object_shader_list_[i].c_str())) {
+	//		//post_effect_->shader_name_ = posteffect_shader_list_[i];
+	//	}
+	//	if (i % 4 != 0 || i == 0)
+	//	{
+	//		ImGui::SameLine();
+
+	//	}
+	//}
+
+	////終了
+	//ImGui::End();
 }
 

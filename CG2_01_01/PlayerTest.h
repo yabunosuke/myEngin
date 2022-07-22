@@ -53,9 +53,9 @@ private:
 		MAX
 	};
 	AnimationState state = AnimationState::IDLE;
-	bool isRifle = false;
-	bool isDead = false;
+	bool isRifle{ false };
+	bool isDead{ false };
 
-	Fbx *game_object;
+	Fbx *game_object{ nullptr };
 };
 

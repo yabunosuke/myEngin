@@ -7,11 +7,11 @@
 uint64_t GameObject::ID = 0;
 
 
-GameObject::GameObject(std::string name) :
+GameObject::GameObject(const std::string &name) :
 	isActive(true),
 	isBlind(false),
 	isRemove(false),
-	name_(name),
+	name_(std::move(name)),
 	id_(++ID)
 {
 	//std::shared_ptr<TransformComponent> t = std::make_shared<TransformComponent>();
@@ -44,12 +44,12 @@ void GameObject::Update()
 			itr = component_list_.erase(itr);
 		}
 		else {
-			itr++;
+			++itr;
 		}
 	}
 
 	// 全てのコンポーネントを更新
-	for (auto &component : component_list_) {
+	for (const auto &component : component_list_) {
 		component->CheckUpdate();
 	}
 }

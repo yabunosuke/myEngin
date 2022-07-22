@@ -123,7 +123,7 @@ void Editor::DrawHierarchy()
 		ImGuiCond_::ImGuiCond_FirstUseEver
 	);
 
-	ImGui::Text(nowScene.get()->name.c_str());
+	ImGui::Text(nowScene.get()->GetName().c_str());
 	nowScene.get()->GetObjectManager()->DrawHierarchy(selectedObjectNum);
 
 	//’Ç‰Á
