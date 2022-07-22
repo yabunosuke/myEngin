@@ -55,6 +55,12 @@
     <FxCompile Include="Assets\Shaders\SepiaPS.hlsl">
       <Filter>Engin\Sprite\shader</Filter>
     </FxCompile>
+    <FxCompile Include="LinerVS.hlsl">
+      <Filter>Engin\Object\FBX\Shader\Line</Filter>
+    </FxCompile>
+    <FxCompile Include="LinerPS.hlsl">
+      <Filter>Engin\Object\FBX\Shader\Line</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\DirectX\DirectXCommon\DirectXCommon.cpp" />
@@ -194,6 +200,9 @@
     </ClCompile>
     <ClCompile Include="2d\Sprite.cpp">
       <Filter>Engin\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="PrimitiveRenderer.cpp">
+      <Filter>Engin\PrimitiveRenderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -358,6 +367,9 @@
     <ClInclude Include="2d\Sprite.h">
       <Filter>Engin\Sprite</Filter>
     </ClInclude>
+    <ClInclude Include="PrimitiveRenderer.h">
+      <Filter>Engin\PrimitiveRenderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Basic.hlsli" />
@@ -374,6 +386,9 @@
     </None>
     <None Include="Assets\Shaders\PostEffect.hlsli">
       <Filter>Engin\Sprite\shader</Filter>
+    </None>
+    <None Include="Liner.hlsli">
+      <Filter>Engin\Object\FBX\Shader\Line</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -484,6 +499,12 @@
     </Filter>
     <Filter Include="Engin\Sprite\shader">
       <UniqueIdentifier>{58e39de7-5354-4db9-92e0-054b76b5d78a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engin\Object\FBX\Shader\Line">
+      <UniqueIdentifier>{6888091d-c377-432b-b842-bb2d2c27af78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engin\PrimitiveRenderer">
+      <UniqueIdentifier>{08928713-2a31-4589-8e08-6acad9fc6af6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

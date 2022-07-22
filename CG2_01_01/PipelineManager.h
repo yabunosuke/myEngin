@@ -26,6 +26,7 @@ public:
 	void CreatePipline(ComPtr<ID3D12Device> dev, const std::string &pipline_name);
 	void CreateSpriutePipline(ComPtr<ID3D12Device> dev, const std::string &pipline_name);
 	void CreatePostEffectPipline(ComPtr<ID3D12Device> dev, const std::string &pipline_name);
+	void CreatePrimitivePipeline(ComPtr<ID3D12Device> dev);
 
 	//パイプラインセット
 	void SetPipline(ComPtr<ID3D12GraphicsCommandList> cmd_list, std::string pipline_name);

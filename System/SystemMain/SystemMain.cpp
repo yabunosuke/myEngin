@@ -9,7 +9,8 @@
 #include "ModelManager.h"			//モデル
 #include "imguiManager.h"
 #include "Texture.h"
-
+#include  "PrimitiveRenderer.h"
+#include "PipelineManager.h"
 //imgui
 #include "imgui.h"
 #include "imgui_impl_win32.h"
@@ -29,6 +30,8 @@ bool SystemMain::Initialize() const
 	//Object3d::StaticInitialize(DirectXCommon::dev.Get());//オブジェクト共通データ生成
 	//Model::StaticInitialize(DirectXCommon::dev.Get());	//モデル姿勢的初期化
 
+	PipelineManager::GetInstance()->CreatePrimitivePipeline(DirectXCommon::dev);
+	PrimitiveRenderer::GetInstance().Initialize(DirectXCommon::dev,DirectXCommon::cmdList);
 
 	Sprite::StaticInitialize(						//スプライト共通データ生成
 		DirectXCommon::dev.Get(),

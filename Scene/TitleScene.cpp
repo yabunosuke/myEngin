@@ -19,6 +19,7 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
 	PipelineManager::GetInstance()->CreateSpriutePipline(DirectXCommon::dev.Get(), "Sprite");
+	PipelineManager::GetInstance()->CreatePipline(DirectXCommon::dev.Get(), "Lambert");
 
 	// ポストエフェクトパイプライン
 	for(int i = 0; i < _countof(posteffect_shader_list_);++i)
