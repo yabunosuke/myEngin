@@ -506,5 +506,8 @@
     <Filter Include="Engin\PrimitiveRenderer">
       <UniqueIdentifier>{08928713-2a31-4589-8e08-6acad9fc6af6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engin\Object\GameObject\Component\Transform2D">
+      <UniqueIdentifier>{0d8006fb-4378-4311-80e4-c9bb311d43db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

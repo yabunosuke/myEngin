@@ -39,6 +39,8 @@ public:
 	struct Box
 	{
 		DirectX::XMFLOAT3 positon;
+		DirectX::XMFLOAT3 rotate;
+		DirectX::XMFLOAT3 scale;
 
 	};
 
@@ -62,13 +64,14 @@ public:
 	void DrawLine(ComPtr<ID3D12GraphicsCommandList> cmd_list,Line line);
 	// ラインプリミティブ生成
 private:
+	// メッシュデータ生成
 	void CreateLine(ComPtr<ID3D12Device> dev);
-
+	void CreateBox(ComPtr<ID3D12Device> dev);
 
 	// コマンドリスト
 
-	ComPtr<ID3D12Resource> vertex_buffer_[static_cast<int>(PrimitiveType::MAX)];			// 頂点バッファ
-	ComPtr<ID3D12Resource> constant_buffer_;		// 定数バッファ
+	ComPtr<ID3D12Resource> vertex_buffer_[static_cast<int>(PrimitiveType::MAX)];		// 頂点バッファ
 	D3D12_VERTEX_BUFFER_VIEW vbView[static_cast<int>(PrimitiveType::MAX)] = {};			// 頂点ビュー
+	ComPtr<ID3D12Resource> constant_buffer_;											// 定数バッファ
 };
 

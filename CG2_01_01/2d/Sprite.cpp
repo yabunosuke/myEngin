@@ -6,14 +6,7 @@
 using namespace Microsoft::WRL;
 
 //静的メンバの実態
-//ID3D12Device *Sprite::dev = nullptr;
-//ID3D12GraphicsCommandList *Sprite::cmdList = nullptr;
-//ComPtr<ID3D12RootSignature> Sprite::rootSignature;	//ルートシグネチャ
-//ComPtr<ID3D12PipelineState> Sprite::pipelineState;	//パイプラインステート
 XMMATRIX Sprite::matProjection;						//射影行列
-//ComPtr<ID3D12DescriptorHeap> Sprite::descHeap;		//テクスチャ用
-//ComPtr<ID3D12Resource> Sprite::texBuff[SRVCount];	//テクスチャ用
-
 
 bool Sprite::StaticInitialize(ID3D12Device *dev,int window_width, int window_height)
 {

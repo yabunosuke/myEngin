@@ -546,11 +546,11 @@ void PipelineManager::CreatePrimitivePipeline(ComPtr<ID3D12Device> dev)
 	//
 	std::string pipeline_name = "Liner";
 
-	//パイプライン生成処理
+	// パイプライン生成処理
 	HRESULT result = S_FALSE;
-	ComPtr<ID3DBlob> vsBlob; //頂点シェーダオブジェクト
-	ComPtr<ID3DBlob> psBlob;    //ピクセルシェーダオブジェクト
-	ComPtr<ID3DBlob> errorBlob; //エラーオブジェクト
+	ComPtr<ID3DBlob> vsBlob;	// 頂点シェーダオブジェクト
+	ComPtr<ID3DBlob> psBlob;    // ピクセルシェーダオブジェクト
+	ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
 
 
 	// 頂点シェーダの読み込みとコンパイル

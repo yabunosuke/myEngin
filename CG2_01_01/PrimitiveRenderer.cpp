@@ -13,7 +13,9 @@ void PrimitiveRenderer::Initialize(ComPtr<ID3D12Device> dev, ComPtr<ID3D12Graphi
 {
 	HRESULT result = S_OK;
 
+	// メッシュデータ生成
 	CreateLine(dev);
+	CreateBox(dev);
 
 
 
@@ -27,6 +29,7 @@ void PrimitiveRenderer::Initialize(ComPtr<ID3D12Device> dev, ComPtr<ID3D12Graphi
 		nullptr,
 		IID_PPV_ARGS(&constant_buffer_)
 	);
+
 }
 
 void PrimitiveRenderer::DrawLine(ComPtr<ID3D12GraphicsCommandList> cmd_list,Line line)
@@ -124,4 +127,8 @@ void PrimitiveRenderer::CreateLine(ComPtr<ID3D12Device> dev)
 	vbView[static_cast<int>(PrimitiveType::LINE)].BufferLocation = vertex_buffer_[static_cast<int>(PrimitiveType::LINE)]->GetGPUVirtualAddress();
 	vbView[static_cast<int>(PrimitiveType::LINE)].SizeInBytes = sizeVB;
 	vbView[static_cast<int>(PrimitiveType::LINE)].StrideInBytes = sizeof(vertices[0]);
+}
+
+void PrimitiveRenderer::CreateBox(ComPtr<ID3D12Device> dev)
+{
 }

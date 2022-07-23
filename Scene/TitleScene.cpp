@@ -30,12 +30,20 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	}
 
 
-	auto cube = game_object_manager_.CreateObject("cube");
+	/*auto cube = game_object_manager_.CreateObject("cube");
 	cube.lock().get()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/UNIT/cube.004.fbx");
 	cube.lock().get()->AddComponent<ColliderComponent>(this);
-	
+	*/
+	auto test = game_object_manager_.CreateObject("human");
+	test.lock().get()->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		//"Assets/3d/UNIT/cube.000.fbx");
+		"Assets/3d/test/human.fbx");
+	//"Assets/3d/Test/stage.fbx");
+
+
 
 	auto player = game_object_manager_.CreateObject("human");
 	player.lock().get()->AddComponent<Object3dComponent>(
@@ -87,11 +95,17 @@ void TitleScene::Draw() const
 {
 	// ”wŒiƒXƒvƒ‰ƒCƒg
 
-	PrimitiveRenderer::Line line = {
+	PrimitiveRenderer::Line line_1 = {
 		{-10,0,0},
 		{10,0,0}
 	};
-	PrimitiveRenderer::GetInstance().DrawLine(DirectXCommon::cmdList,line);
+	PrimitiveRenderer::Line line_2 = {
+		{30,-10,0},
+		{30,10,0}
+	};
+
+	PrimitiveRenderer::GetInstance().DrawLine(DirectXCommon::cmdList,line_1);
+	PrimitiveRenderer::GetInstance().DrawLine(DirectXCommon::cmdList,line_2);
 	game_object_manager_.Draw();
 	//test_sprite->Draw(DirectXCommon::dev, DirectXCommon::cmdList, "Sprite");
 
