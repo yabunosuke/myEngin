@@ -9,6 +9,7 @@
 
 #include "Texture.h"
 #include "PipelineManager.h"
+#include "PrimitiveRenderer.h"
 
 // コンポーネント
 #include "Object3dComponent.h"
@@ -86,6 +87,11 @@ void TitleScene::Draw() const
 {
 	// 背景スプライト
 
+	PrimitiveRenderer::Line line = {
+		{-10,0,0},
+		{10,0,0}
+	};
+	PrimitiveRenderer::GetInstance().DrawLine(DirectXCommon::cmdList,line);
 	game_object_manager_.Draw();
 	//test_sprite->Draw(DirectXCommon::dev, DirectXCommon::cmdList, "Sprite");
 

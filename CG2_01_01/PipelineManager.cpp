@@ -662,7 +662,7 @@ void PipelineManager::CreatePrimitivePipeline(ComPtr<ID3D12Device> dev)
 	CD3DX12_ROOT_PARAMETER rootparams;
 	// オブジェクトのコンスタントバッファ
 	rootparams.InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
-
+	
 	// スタティックサンプラー
 	CD3DX12_STATIC_SAMPLER_DESC sampler_desc = CD3DX12_STATIC_SAMPLER_DESC(0, D3D12_FILTER_MIN_MAG_MIP_LINEAR);
 	
