@@ -22,14 +22,34 @@ public:
 	static PipelineManager *GetInstance();		//取得用
 	
 
-	void CreateAllPiplines();
+	void CreateAllPiplines(ComPtr<ID3D12Device> dev);
+	// オブジェクト用パイプライン
 	void CreatePipline(ComPtr<ID3D12Device> dev, const std::string &pipline_name);
+	// スプライト用パイプライン
 	void CreateSpriutePipline(ComPtr<ID3D12Device> dev, const std::string &pipline_name);
+	// ポストエフェクト用パイプライン
 	void CreatePostEffectPipline(ComPtr<ID3D12Device> dev, const std::string &pipline_name);
+	// マルチレンダーターゲット用パイプライン
+	void CreateMultiRenderTargetPipline(ComPtr<ID3D12Device> dev, const std::string &pipline_name);
+
+	// コライダー用のパイプライン
 	void CreatePrimitivePipeline(ComPtr<ID3D12Device> dev);
 
 	//パイプラインセット
 	void SetPipline(ComPtr<ID3D12GraphicsCommandList> cmd_list, std::string pipline_name);
+
+
+	const std::string posteffect_shader_list_[9] = {
+		"PostEffect",
+		"Blur",
+		"GrayScale",
+		"Sepia",
+		"UvScroll",
+		"Tiling",
+		"ScanLine",
+		"RGBShift",
+		"InverseColor"
+	};
 
 private:
 	// パイプラインコンテナ（後々シリアライズする）

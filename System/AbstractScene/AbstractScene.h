@@ -4,6 +4,7 @@
 #include "GameObjectManager.h"
 #include "CollisionManager.h"
 #include "2d/PostEffect.h"
+#include "MultiRenderTarget/MulutiRenderTarget.h"
 #include <wrl.h>
 
 class AbstractScene
@@ -29,11 +30,11 @@ public:
 	/// <summary>
 	/// 描画コマンド発行
 	/// </summary>
-	void PreDrawScene(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list) { post_effect_->PreDrawScene(cmd_list); }
+	void PreDrawScene(Microsoft::WRL::ComPtr<ID3D12Device>dev,Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list);
 	virtual void Draw() const = 0;
-	void PostDrawScene(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list) { post_effect_->PostDrawScene(cmd_list); }
+	void PostDrawScene(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list);
 
-	virtual void DrawPostEffect();
+	virtual void DrawPostEffect(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list);
 	/// <summary>
 	/// 終了
 	/// </summary>
@@ -52,6 +53,7 @@ protected:
 	CollisionManager collision_manager_;
 	// ポストエフェクト
 	std::unique_ptr<PostEffect> post_effect_;
+	std::unique_ptr<MulutiRenderTarget> muluti_render_target_;
 
 private:
 	// シーン名

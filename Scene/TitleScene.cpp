@@ -19,15 +19,8 @@
 TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
-	PipelineManager::GetInstance()->CreateSpriutePipline(DirectXCommon::dev.Get(), "Sprite");
-	PipelineManager::GetInstance()->CreatePipline(DirectXCommon::dev.Get(), "Lambert");
+	
 
-	// ポストエフェクトパイプライン
-	for(int i = 0; i < _countof(posteffect_shader_list_);++i)
-	{
-		PipelineManager::GetInstance()->CreatePostEffectPipline(DirectXCommon::dev.Get(), posteffect_shader_list_[i]);
-
-	}
 
 
 	auto cube = game_object_manager_.CreateObject("cube");
@@ -122,10 +115,10 @@ void TitleScene::Draw() const
 		ImVec2(400, 500),
 		ImGuiCond_::ImGuiCond_FirstUseEver
 	);
-	for (int i = 0; i < _countof(posteffect_shader_list_); ++i)
+	for (int i = 0; i < _countof(PipelineManager::GetInstance()->posteffect_shader_list_); ++i)
 	{
-		if (ImGui::Button(posteffect_shader_list_[i].c_str())) {
-			post_effect_->shader_name_ = posteffect_shader_list_[i];
+		if (ImGui::Button(PipelineManager::GetInstance()->posteffect_shader_list_[i].c_str())) {
+			post_effect_->shader_name_ = PipelineManager::GetInstance()->posteffect_shader_list_[i];
 		}
 		if(i % 4 != 0 || i == 0)
 		{

@@ -35,7 +35,7 @@ bool Looper::Loop()
 	sceneStack.top()->Update();
 
 	//シーンの描画コマンドを発行
-	sceneStack.top()->PreDrawScene(DirectXCommon::cmdList);
+	sceneStack.top()->PreDrawScene(DirectXCommon::dev,DirectXCommon::cmdList);
 	sceneStack.top()->Draw();
 	sceneStack.top()->PostDrawScene(DirectXCommon::cmdList);
 	// ここまでの描画はポストエフェクトの対象
@@ -46,7 +46,7 @@ bool Looper::Loop()
 	DirectXCommon::ResourceBarrierWriting();
 	DirectXCommon::ScreenClear();
 	// ポストエフェクト
-	sceneStack.top()->DrawPostEffect();
+	sceneStack.top()->DrawPostEffect(DirectXCommon::cmdList);
 
 	imguiManager::GetIns()->Draw();
 	// 全コマンド実行

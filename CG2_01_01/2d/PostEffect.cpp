@@ -140,7 +140,7 @@ void PostEffect::InitializePostEffect(ComPtr<ID3D12Device> dev)
 	dev->CreateRenderTargetView(texture_buffer_.Get(), nullptr, descriputor_heap_RTV_->GetCPUDescriptorHandleForHeapStart());
 #pragma endregion  
 
-#pragma region 震度バッファ
+#pragma region 深度バッファ
 	// 震度バッファ
 	CD3DX12_RESOURCE_DESC depth_resource_desc =
 		CD3DX12_RESOURCE_DESC::Tex2D(
@@ -248,7 +248,7 @@ void PostEffect::PreDrawScene(ComPtr<ID3D12GraphicsCommandList> cmd_list)
 
 }
 
-void PostEffect::DrawPostEffect(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cmd_list)
+void PostEffect::DrawPostEffect(ComPtr<ID3D12GraphicsCommandList> cmd_list)
 {
 	static float time = 0.0f;
 	time += 1.0f / 60.0f;
@@ -324,7 +324,7 @@ void PostEffect::DrawPostEffect(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsC
 
 void PostEffect::PostDrawScene(ComPtr<ID3D12GraphicsCommandList> cmd_list)
 {
+	// リソースバリアの変更
 	cmd_list->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(texture_buffer_.Get(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
-
 }

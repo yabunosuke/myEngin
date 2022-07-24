@@ -21,19 +21,6 @@ private:
 
 	Camera *cam_;
 	Sprite *test_sprite;
-
-	
-	std::string posteffect_shader_list_[9] = {
-		"PostEffect",
-		"Blur",
-		"GrayScale",
-		"Sepia",
-		"UvScroll",
-		"Tiling",
-		"ScanLine",
-		"RGBShift",
-		"InverseColor"
-	};
 	
 };
 

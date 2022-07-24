@@ -19,11 +19,11 @@ private:	//エイリアス
 	using XMFLOAT4X4 = DirectX::XMFLOAT4X4;
 
 public:
-	MulutiRenderTarget() {};
+	MulutiRenderTarget();
 	void InitializeMulutiRenderTarget(ComPtr<ID3D12Device> dev);
-	void PreDrawScene(ComPtr<ID3D12Device> cmd_list);
-	void Draw(ComPtr<ID3D12Device> cmd_list);
-	void PostDrawScene(ComPtr<ID3D12Device> cmd_list);
+	void PreDrawScene(ComPtr<ID3D12Device> dev,ComPtr<ID3D12GraphicsCommandList> cmd_list);
+	void DrawRenderTarget(ComPtr<ID3D12GraphicsCommandList> cmd_list);
+	void PostDrawScene(ComPtr<ID3D12GraphicsCommandList> cmd_list);
 
 private:
 	// サブクラス
@@ -39,6 +39,8 @@ private:
 	};
 
 
+	// 仮に二個で実装する
+	static const int buffer_count_ = 2;
 
 	// 定数バッファ
 	ComPtr<ID3D12Resource> constant_buffer_;
@@ -49,7 +51,7 @@ private:
 	// 深度バッファ
 	ComPtr<ID3D12Resource> depth_buffer_;
 	// テクスチャバッファ
-	ComPtr<ID3D12Resource> texture_buffer_;
+	ComPtr<ID3D12Resource> texture_buffer_[buffer_count_];
 	// STVデスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descriputor_heap_SRV_;
 	// RTVデスクリプタヒープ

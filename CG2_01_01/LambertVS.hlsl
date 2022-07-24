@@ -1,7 +1,7 @@
 
 #include "Lambert.hlsli"
 
-VS_OUT main(
+VSOutput main(
 	float4 position     : POSITION,
 	float3 normal		: NORMAL,
 	float3 tangent		: TANGENT,
@@ -20,7 +20,7 @@ VS_OUT main(
 		n += (boneWeights[i] * mul(float4(normal.xyz, 0), boneTransforms[boneIndices[i]])).xyz;
 	}
 
-	VS_OUT vout;
+	VSOutput vout;
 	vout.position = mul(float4(p, 1.0f), viewProjection);
 
 	float3 N = normalize(n);

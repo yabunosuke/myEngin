@@ -14,7 +14,7 @@ public:
     void InitializePostEffect(ComPtr<ID3D12Device> dev);
 
     void PreDrawScene(ComPtr<ID3D12GraphicsCommandList> cmd_list);
-    void DrawPostEffect(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cmd_list);
+	void DrawPostEffect(ComPtr<ID3D12GraphicsCommandList> cmd_list);
     void PostDrawScene(ComPtr<ID3D12GraphicsCommandList> cmd_list);
 
 

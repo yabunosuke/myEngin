@@ -30,7 +30,7 @@ bool SystemMain::Initialize() const
 	//Object3d::StaticInitialize(DirectXCommon::dev.Get());//オブジェクト共通データ生成
 	//Model::StaticInitialize(DirectXCommon::dev.Get());	//モデル姿勢的初期化
 
-	PipelineManager::GetInstance()->CreatePrimitivePipeline(DirectXCommon::dev);
+	PipelineManager::GetInstance()->CreateAllPiplines(DirectXCommon::dev);
 	PrimitiveRenderer::GetInstance().CreatePrimitivAll(DirectXCommon::dev,DirectXCommon::cmdList);
 
 	Sprite::StaticInitialize(						//スプライト共通データ生成
