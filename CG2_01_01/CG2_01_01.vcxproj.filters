@@ -204,7 +204,13 @@
     <ClCompile Include="PrimitiveRenderer.cpp">
       <Filter>Engin\PrimitiveRenderer</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="OBBCollider.cpp" />
+=======
+    <ClCompile Include="MultiRenderTarget\MulutiRenderTarget.cpp">
+      <Filter>Engin\MultiRenderTarget</Filter>
+    </ClCompile>
+>>>>>>> origin/main
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\DirectXCommon\DirectXCommon.h" />
@@ -371,7 +377,13 @@
     <ClInclude Include="PrimitiveRenderer.h">
       <Filter>Engin\PrimitiveRenderer</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Collider\OBBCollider.h" />
+=======
+    <ClInclude Include="MultiRenderTarget\MulutiRenderTarget.h">
+      <Filter>Engin\MultiRenderTarget</Filter>
+    </ClInclude>
+>>>>>>> origin/main
   </ItemGroup>
   <ItemGroup>
     <None Include="Basic.hlsli" />
@@ -510,6 +522,9 @@
     </Filter>
     <Filter Include="Engin\Object\GameObject\Component\Transform2D">
       <UniqueIdentifier>{0d8006fb-4378-4311-80e4-c9bb311d43db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engin\MultiRenderTarget">
+      <UniqueIdentifier>{efab98b8-f9ed-42ae-96d8-79737420dfb2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
