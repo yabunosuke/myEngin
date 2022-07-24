@@ -25,8 +25,6 @@ void PostEffect::InitializePostEffect(ComPtr<ID3D12Device> dev)
 {
 	HRESULT result;
 
-#pragma region 頂点バッファ
-
 	//頂点バッファ生成
 	result = dev->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
@@ -35,7 +33,7 @@ void PostEffect::InitializePostEffect(ComPtr<ID3D12Device> dev)
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&vertBuff));
-#pragma endregion
+
 
 
 	//頂点データ
@@ -97,7 +95,6 @@ void PostEffect::InitializePostEffect(ComPtr<ID3D12Device> dev)
 		img[i] = 0xffffffff;
 	}
 
-
 	// テクスチャバッファへのデータ転送
 	result = texture_buffer_->WriteToSubresource(
 		0, nullptr,
@@ -116,8 +113,6 @@ void PostEffect::InitializePostEffect(ComPtr<ID3D12Device> dev)
 	//SRVデスクリプタヒープ生成
 	result = dev->CreateDescriptorHeap(&srvDescHeapDesc, IID_PPV_ARGS(&descriputor_heap_SRV_));
 	assert(SUCCEEDED(result));
-
-
 
 	//シェーダリソースビュー設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srv_desc{};	//設定構造体
@@ -185,7 +180,6 @@ void PostEffect::InitializePostEffect(ComPtr<ID3D12Device> dev)
 		descriputor_heap_DSV_->GetCPUDescriptorHandleForHeapStart());
 #pragma endregion  
 
-	//Spriteのイニシャライズ
 	// 頂点バッファ生成
 	result = dev->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),

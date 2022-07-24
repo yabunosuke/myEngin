@@ -210,6 +210,7 @@
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="LightComponent.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MultiRenderTarget\MulutiRenderTarget.cpp" />
     <ClCompile Include="Object3dComponent.cpp" />
     <ClCompile Include="PipelineManager.cpp" />
     <ClCompile Include="PlayerTest.cpp" />
@@ -444,6 +445,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="LightComponent.h" />
+    <ClInclude Include="MultiRenderTarget\MulutiRenderTarget.h" />
     <ClInclude Include="Object3dComponent.h" />
     <ClInclude Include="PipelineManager.h" />
     <ClInclude Include="PlayerTest.h" />
