@@ -29,9 +29,9 @@ public:
 	//球とカプセルの当たり判定
 	static bool CheckSphere2Capsule(const Sphere& sphere, const Capsule& capsule);
 	//球とボックスの当たり判定
-	static bool CheckSphere2Box(const Sphere& sphere, const Box& box);
+	static bool CheckSphere2Box(const Sphere& sphere, const OBB& box);
 	//球とAABBの当たり判定
 	static bool CheckSphere2AABB(const Sphere &sphere, const AABB &aabb, DirectX::XMVECTOR *inter= nullptr);
 	//カプセルとボックスの当たり判定
-	static bool CheckCapsule2Box(const Capsule& capsule, const Box& box);
+	static bool CheckCapsule2Box(const Capsule& capsule, const OBB& box);
 };

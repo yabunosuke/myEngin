@@ -2,7 +2,7 @@
 #include "DirectXCommon.h"
 #include "AudioManager.h"	//音声管理
 #include "KeyboardInput.h"
-
+#include "PrimitiveRenderer.h"
 #include "ComponentList.h"
 
 //シーン
@@ -24,6 +24,11 @@ bool Looper::Loop()
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
+	
+	// 各種初期化
+	PrimitiveRenderer::GetInstance().FrameInitialize();	// プリミティブのバッファインデックス初期化
+
+
 	//キーボード更新
 	KeyboardInput::GetIns()->Update();
 	//シーンの更新
@@ -34,6 +39,7 @@ bool Looper::Loop()
 	sceneStack.top()->Draw();
 	sceneStack.top()->PostDrawScene(DirectXCommon::cmdList);
 	// ここまでの描画はポストエフェクトの対象
+
 	// エディタ描画
 	editor.Draw();
 	//描画コマンド実行

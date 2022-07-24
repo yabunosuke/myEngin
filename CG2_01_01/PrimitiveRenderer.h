@@ -38,7 +38,7 @@ public:
 	};
 	struct Box
 	{
-		DirectX::XMFLOAT3 positon;
+		DirectX::XMFLOAT3 translate;
 		DirectX::XMFLOAT3 rotate;
 		DirectX::XMFLOAT3 scale;
 
@@ -58,20 +58,24 @@ public:
 	static PrimitiveRenderer &GetInstance();
 
 	// 全プリミティブ生成
-	void Initialize(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cmd_list);
+	void CreatePrimitivAll(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cmd_list);
+	void FrameInitialize() { buffer_index_ = 0; }
 
+	void DrawLine(ComPtr<ID3D12GraphicsCommandList> cmd_list,Line line,XMFLOAT4 color = {0,1,0,1});
+	void DrawBox(ComPtr<ID3D12GraphicsCommandList> cmd_list,Box box, XMFLOAT4 color = { 0,1,0,1 });
 
-	void DrawLine(ComPtr<ID3D12GraphicsCommandList> cmd_list,Line line);
 	// ラインプリミティブ生成
 private:
 	// メッシュデータ生成
 	void CreateLine(ComPtr<ID3D12Device> dev);
 	void CreateBox(ComPtr<ID3D12Device> dev);
+	void CreateSphere(ComPtr<ID3D12Device> dev);
 
 	// コマンドリスト
-
 	ComPtr<ID3D12Resource> vertex_buffer_[static_cast<int>(PrimitiveType::MAX)];		// 頂点バッファ
 	D3D12_VERTEX_BUFFER_VIEW vbView[static_cast<int>(PrimitiveType::MAX)] = {};			// 頂点ビュー
-	ComPtr<ID3D12Resource> constant_buffer_;											// 定数バッファ
+	static const int kBufferNum = 256;													// 定数バッファの数
+	ComPtr<ID3D12Resource> constant_buffer_[kBufferNum];								// 定数バッファ
+	int buffer_index_;																	// バッファインデックス
 };
 

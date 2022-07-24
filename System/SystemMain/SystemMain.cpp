@@ -31,14 +31,14 @@ bool SystemMain::Initialize() const
 	//Model::StaticInitialize(DirectXCommon::dev.Get());	//モデル姿勢的初期化
 
 	PipelineManager::GetInstance()->CreatePrimitivePipeline(DirectXCommon::dev);
-	PrimitiveRenderer::GetInstance().Initialize(DirectXCommon::dev,DirectXCommon::cmdList);
+	PrimitiveRenderer::GetInstance().CreatePrimitivAll(DirectXCommon::dev,DirectXCommon::cmdList);
 
 	Sprite::StaticInitialize(						//スプライト共通データ生成
 		DirectXCommon::dev.Get(),
 		WinApp::windowWidth, WinApp::windowHeight);
 
 	AudioManager::Initialize();
-	//ModelLoader::GetInstance()->Initialize(DirectXCommon::dev.Get());
+	//ModelLoader::GetInstance()->CreatePrimitivAll(DirectXCommon::dev.Get());
 	ModelManager::GetIns()->AllLoad();			//モデル読み込み
 
 	return true;

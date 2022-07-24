@@ -5,7 +5,8 @@
 #include "SphereCollider.h"
 
 ColliderComponent::ColliderComponent(AbstractScene *scene, CollisionShapeType type):
-	Component("Collider")
+	Component("Collider"),
+	type_(type)
 {
 	switch (type)
 	{

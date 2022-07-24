@@ -55,11 +55,11 @@ struct Capsule //カプセル
 //
 //後でAABBに修正する。
 //
-struct Box //箱
+struct OBB //箱
 {
-	//中心座標
+	// 中心座標
 	DirectX::XMVECTOR center = { 0,0,0,1 };
-	//半径
+	// 直径
 	DirectX::XMFLOAT3 scale = { 1.0f, 1.0f, 1.0f };
 };
 

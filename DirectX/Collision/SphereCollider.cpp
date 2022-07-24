@@ -1,5 +1,6 @@
 #include "SphereCollider.h"
 #include "TransformComponent.h"
+#include "PrimitiveRenderer.h"
 
 using namespace DirectX;
 
@@ -14,6 +15,11 @@ void SphereCollider::Update()
 	// ‹…‚Ìƒƒ“ƒo•Ï”‚ğXV
 	Sphere::center = matWorld.r[3] + offset;
 	Sphere::radius = radius;
+}
+
+void SphereCollider::Draw()
+{
+
 }
 
 void SphereCollider::Infomation()

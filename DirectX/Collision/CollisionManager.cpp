@@ -15,8 +15,6 @@ void CollisionManager::CheckBroadCollisions(const std::vector<std::shared_ptr<Ga
 	// コライダーのイテレーター
 	std::vector<std::weak_ptr<BaseCollider>>::const_iterator collider_it_a;
 	std::vector<std::weak_ptr<BaseCollider>>::const_iterator collider_it_b;
-	//std::forward_list<std::weak_ptr<BaseCollider>>::iterator itA;
-	//std::forward_list<std::weak_ptr<BaseCollider>>::iterator itB;
 
 	// 全てのオブジェクトをチェック
 	for (game_object_it_a = game_objects.begin(); game_object_it_a != game_objects.end(); ++game_object_it_a) {
@@ -230,15 +228,15 @@ bool CollisionManager::CheckHitCollision(BaseCollider *colA, BaseCollider *colB,
 	//カプセルとAABB
 	else if (collisions == (SHAPE_CAPSULE | SHAPE_AABB)) {
 		Capsule *capsuleCollider;
-		Box *boxCollider;
+		OBB *boxCollider;
 		//引数様に変換合わせる
 		if (colA->GetShapeType() == SHAPE_CAPSULE) {
 			capsuleCollider = dynamic_cast<Capsule *>(colA);
-			boxCollider = dynamic_cast<Box *>(colB);
+			boxCollider = dynamic_cast<OBB *>(colB);
 		}
 		else {
 			capsuleCollider = dynamic_cast<Capsule *>(colB);
-			boxCollider = dynamic_cast<Box *>(colA);
+			boxCollider = dynamic_cast<OBB *>(colA);
 		}
 		DirectX::XMVECTOR inter;
 		//判定

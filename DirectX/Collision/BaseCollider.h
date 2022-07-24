@@ -43,6 +43,9 @@ public:
 	//更新
 	virtual void Update() = 0;
 
+	// コライダー描画用
+	virtual void Draw() = 0;
+
 	/// <summary>
 	/// ImGui用
 	/// </summary>

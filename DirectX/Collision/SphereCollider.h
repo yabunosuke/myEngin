@@ -24,6 +24,11 @@ public:
 	void Update() override;
 
 	/// <summary>
+	/// •`‰æ—p
+	/// </summary>
+	void Draw() override;
+
+	/// <summary>
 	/// ImGui—p
 	/// </summary>
 	void Infomation() override;

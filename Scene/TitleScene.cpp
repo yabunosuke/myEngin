@@ -30,18 +30,18 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	}
 
 
-	/*auto cube = game_object_manager_.CreateObject("cube");
+	auto cube = game_object_manager_.CreateObject("cube");
 	cube.lock().get()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/UNIT/cube.004.fbx");
 	cube.lock().get()->AddComponent<ColliderComponent>(this);
-	*/
-	auto test = game_object_manager_.CreateObject("human");
-	test.lock().get()->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		//"Assets/3d/UNIT/cube.000.fbx");
-		"Assets/3d/test/human.fbx");
-	//"Assets/3d/Test/stage.fbx");
+	
+	//auto test = game_object_manager_.CreateObject("human");
+	//test.lock().get()->AddComponent<Object3dComponent>(
+	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+	//	//"Assets/3d/UNIT/cube.000.fbx");
+	//	"Assets/3d/test/human.fbx");
+	////"Assets/3d/Test/stage.fbx");
 
 
 
@@ -95,19 +95,26 @@ void TitleScene::Draw() const
 {
 	// 背景スプライト
 
-	PrimitiveRenderer::Line line_1 = {
-		{-10,0,0},
+	PrimitiveRenderer::Line line = {
+		{0,0,0},
 		{10,0,0}
 	};
-	PrimitiveRenderer::Line line_2 = {
-		{30,-10,0},
-		{30,10,0}
+	static PrimitiveRenderer::Box box = {
+		{0,0,0},
+		{0,0,0},
+		{1,1,1},
 	};
+	ImGui::Begin("test");
+	ImGui::DragFloat3("tra", &box.translate.x);
+	ImGui::DragFloat3("rot", &box.rotate.x);
+	ImGui::DragFloat3("sca", &box.scale.x);
+	ImGui::End();
 
-	PrimitiveRenderer::GetInstance().DrawLine(DirectXCommon::cmdList,line_1);
-	PrimitiveRenderer::GetInstance().DrawLine(DirectXCommon::cmdList,line_2);
+	//PrimitiveRenderer::GetInstance().DrawLine(DirectXCommon::cmdList,line);
+	PrimitiveRenderer::GetInstance().DrawBox(DirectXCommon::cmdList, box);
 	game_object_manager_.Draw();
 	//test_sprite->Draw(DirectXCommon::dev, DirectXCommon::cmdList, "Sprite");
+
 
 	//ウィンドウ名定義
 	ImGui::Begin("PostEffectShader");

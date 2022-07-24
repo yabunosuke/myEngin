@@ -36,6 +36,6 @@ public:
 private:
 	// コライダー
 	std::shared_ptr<BaseCollider> collider;
-
+	CollisionShapeType type_;
 };
 

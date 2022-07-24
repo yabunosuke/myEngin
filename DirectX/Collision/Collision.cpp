@@ -328,7 +328,7 @@ bool Collision::CheckSphere2Capsule(const Sphere& sphere, const Capsule& capsule
 	return distance < sphere.radius;
 }
 
-bool Collision::CheckSphere2Box(const Sphere& sphere, const Box& box)
+bool Collision::CheckSphere2Box(const Sphere& sphere, const OBB& box)
 {
 	float sqDistance = 0.0f;
 	float pos;
@@ -421,7 +421,7 @@ bool Collision::CheckSphere2AABB(const Sphere &sphere, const AABB &aabb, DirectX
 	return false;
 }
 
-bool Collision::CheckCapsule2Box(const Capsule& capsule, const Box& box)
+bool Collision::CheckCapsule2Box(const Capsule& capsule, const OBB& box)
 {
 	Vector3 vStartToEnd = capsule.endPosition - capsule.startPosition;
 

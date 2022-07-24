@@ -204,6 +204,7 @@
     <ClCompile Include="PrimitiveRenderer.cpp">
       <Filter>Engin\PrimitiveRenderer</Filter>
     </ClCompile>
+    <ClCompile Include="OBBCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\DirectXCommon\DirectXCommon.h" />
@@ -370,6 +371,7 @@
     <ClInclude Include="PrimitiveRenderer.h">
       <Filter>Engin\PrimitiveRenderer</Filter>
     </ClInclude>
+    <ClInclude Include="Collider\OBBCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Basic.hlsli" />
