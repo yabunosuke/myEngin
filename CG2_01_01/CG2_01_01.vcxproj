@@ -78,7 +78,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)DirectX\Math;$(SolutionDir)DirectX\Collision;$(ProjectDir);$(SolutionDir)DirectX\AudioManager;$(SolutionDir)DirectX\DirectXCommon;$(SolutionDir)DirectX\Input;$(SolutionDir)DirectX\Model;$(SolutionDir)DirectX\ModelManager;$(SolutionDir)DirectX\Object3d;$(SolutionDir)DirectX\Sprite;$(SolutionDir)DirectX\WinApp;$(SolutionDir)System\AbstractScene;$(SolutionDir)System\IoChangedListener;$(SolutionDir)System\Looper;$(SolutionDir)System\SystemMain;$(SolutionDir)Scene;$(SolutionDir)lib\fbx_sdk\include;$(SolutionDir)imgui;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)DirectX\Math;$(SolutionDir)DirectX\Collision;$(ProjectDir);$(SolutionDir)DirectX\AudioManager;$(SolutionDir)DirectX\DirectXCommon;$(SolutionDir)DirectX\Input;$(SolutionDir)DirectX\Model;$(SolutionDir)DirectX\ModelManager;$(SolutionDir)DirectX\Object3d;$(SolutionDir)DirectX\Sprite;$(SolutionDir)DirectX\WinApp;$(SolutionDir)System\AbstractScene;$(SolutionDir)System\IoChangedListener;$(SolutionDir)System\Looper;$(SolutionDir)System\SystemMain;$(SolutionDir)Scene;$(SolutionDir)lib\fbx_sdk\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib\fbx_sdk\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -88,7 +88,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)DirectX\Math;$(SolutionDir)DirectX\Collision;$(ProjectDir);$(SolutionDir)DirectX\AudioManager;$(SolutionDir)DirectX\DirectXCommon;$(SolutionDir)DirectX\Input;$(SolutionDir)DirectX\Model;$(SolutionDir)DirectX\ModelManager;$(SolutionDir)DirectX\Object3d;$(SolutionDir)DirectX\Sprite;$(SolutionDir)DirectX\WinApp;$(SolutionDir)System\AbstractScene;$(SolutionDir)System\IoChangedListener;$(SolutionDir)System\Looper;$(SolutionDir)System\SystemMain;$(SolutionDir)Scene;$(SolutionDir)lib\fbx_sdk\include;$(SolutionDir)imgui;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)DirectX\Math;$(SolutionDir)DirectX\Collision;$(ProjectDir);$(SolutionDir)DirectX\AudioManager;$(SolutionDir)DirectX\DirectXCommon;$(SolutionDir)DirectX\Input;$(SolutionDir)DirectX\Model;$(SolutionDir)DirectX\ModelManager;$(SolutionDir)DirectX\Object3d;$(SolutionDir)DirectX\Sprite;$(SolutionDir)DirectX\WinApp;$(SolutionDir)System\AbstractScene;$(SolutionDir)System\IoChangedListener;$(SolutionDir)System\Looper;$(SolutionDir)System\SystemMain;$(SolutionDir)Scene;$(SolutionDir)lib\fbx_sdk\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib\fbx_sdk\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -182,33 +182,33 @@
     <ClCompile Include="..\DirectX\Object3d\ModelLoader.cpp" />
     <ClCompile Include="..\DirectX\Object3d\ModelManager.cpp" />
     <ClCompile Include="..\DirectX\WinApp\WinApp.cpp" />
-    <ClCompile Include="..\imgui\imgui.cpp" />
-    <ClCompile Include="..\imgui\imguiManager.cpp" />
-    <ClCompile Include="..\imgui\imgui_demo.cpp" />
-    <ClCompile Include="..\imgui\imgui_draw.cpp" />
-    <ClCompile Include="..\imgui\imgui_impl_dx12.cpp" />
-    <ClCompile Include="..\imgui\imgui_impl_win32.cpp" />
-    <ClCompile Include="..\imgui\imgui_tables.cpp" />
-    <ClCompile Include="..\imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\Scene\GameScene.cpp" />
     <ClCompile Include="..\Scene\TitleScene.cpp" />
-    <ClCompile Include="..\System\AbstractScene\AbstractScene.cpp" />
     <ClCompile Include="..\System\Looper\Looper.cpp" />
     <ClCompile Include="..\System\SystemMain\SystemMain.cpp" />
     <ClCompile Include="2d\PostEffect.cpp" />
     <ClCompile Include="2d\Sprite.cpp" />
+    <ClCompile Include="3d\Fbx\Fbx.cpp" />
+    <ClCompile Include="3d\Fbx\FbxResource.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="CameraComponent.cpp" />
-    <ClCompile Include="ColliderComponent.cpp" />
-    <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentList.cpp" />
+    <ClCompile Include="Component\CameraComponent.cpp" />
+    <ClCompile Include="Component\ColliderComponent.cpp" />
+    <ClCompile Include="Component\Component.cpp" />
+    <ClCompile Include="Component\LightComponent.cpp" />
+    <ClCompile Include="Component\ScriptComponent.cpp" />
     <ClCompile Include="Editor.cpp" />
-    <ClCompile Include="Fbx.cpp" />
-    <ClCompile Include="FbxResource.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
-    <ClCompile Include="LightComponent.cpp" />
+    <ClCompile Include="ImGui\imgui.cpp" />
+    <ClCompile Include="ImGui\imguiManager.cpp" />
+    <ClCompile Include="ImGui\imgui_demo.cpp" />
+    <ClCompile Include="ImGui\imgui_draw.cpp" />
+    <ClCompile Include="ImGui\imgui_impl_dx12.cpp" />
+    <ClCompile Include="ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="ImGui\imgui_tables.cpp" />
+    <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="OBBCollider.cpp" />
     <ClCompile Include="MultiRenderTarget\MulutiRenderTarget.cpp" />
@@ -217,7 +217,7 @@
     <ClCompile Include="PlayerTest.cpp" />
     <ClCompile Include="PrimitiveRenderer.cpp" />
     <ClCompile Include="RigidbodyComponent.cpp" />
-    <ClCompile Include="ScriptComponent.cpp" />
+    <ClCompile Include="Scene\AbstractScene\AbstractScene.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
@@ -417,43 +417,43 @@
     <ClInclude Include="..\DirectX\Object3d\ModelLoader.h" />
     <ClInclude Include="..\DirectX\Object3d\ModelManager.h" />
     <ClInclude Include="..\DirectX\WinApp\WinApp.h" />
-    <ClInclude Include="..\imgui\imconfig.h" />
-    <ClInclude Include="..\imgui\imgui.h" />
-    <ClInclude Include="..\imgui\imguiManager.h" />
-    <ClInclude Include="..\imgui\imgui_impl_dx12.h" />
-    <ClInclude Include="..\imgui\imgui_impl_win32.h" />
-    <ClInclude Include="..\imgui\imgui_internal.h" />
-    <ClInclude Include="..\imgui\imstb_rectpack.h" />
-    <ClInclude Include="..\imgui\imstb_textedit.h" />
-    <ClInclude Include="..\imgui\imstb_truetype.h" />
     <ClInclude Include="..\Scene\GameScene.h" />
     <ClInclude Include="..\Scene\TitleScene.h" />
-    <ClInclude Include="..\System\AbstractScene\AbstractScene.h" />
     <ClInclude Include="..\System\IoChangedListener\IoChangedListener.h" />
     <ClInclude Include="..\System\Looper\Looper.h" />
     <ClInclude Include="..\System\SystemMain\SystemMain.h" />
     <ClInclude Include="2d\PostEffect.h" />
     <ClInclude Include="2d\Sprite.h" />
+    <ClInclude Include="3d\Fbx\Fbx.h" />
+    <ClInclude Include="3d\Fbx\FbxResource.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="CameraComponent.h" />
-    <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="Collider\OBBCollider.h" />
-    <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentList.h" />
+    <ClInclude Include="Component\CameraComponent.h" />
+    <ClInclude Include="Component\ColliderComponent.h" />
+    <ClInclude Include="Component\Component.h" />
+    <ClInclude Include="Component\LightComponent.h" />
+    <ClInclude Include="Component\ScriptComponent.h" />
     <ClInclude Include="Editor.h" />
-    <ClInclude Include="Fbx.h" />
-    <ClInclude Include="FbxResource.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectManager.h" />
-    <ClInclude Include="LightComponent.h" />
+    <ClInclude Include="ImGui\imconfig.h" />
+    <ClInclude Include="ImGui\imgui.h" />
+    <ClInclude Include="ImGui\imguiManager.h" />
+    <ClInclude Include="ImGui\imgui_impl_dx12.h" />
+    <ClInclude Include="ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="ImGui\imgui_internal.h" />
+    <ClInclude Include="ImGui\imstb_rectpack.h" />
+    <ClInclude Include="ImGui\imstb_textedit.h" />
+    <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="MultiRenderTarget\MulutiRenderTarget.h" />
     <ClInclude Include="Object3dComponent.h" />
     <ClInclude Include="PipelineManager.h" />
     <ClInclude Include="PlayerTest.h" />
     <ClInclude Include="PrimitiveRenderer.h" />
     <ClInclude Include="RigidbodyComponent.h" />
-    <ClInclude Include="ScriptComponent.h" />
+    <ClInclude Include="Scene\AbstractScene\AbstractScene.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TransformComponent.h" />
   </ItemGroup>

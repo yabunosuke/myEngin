@@ -1,9 +1,9 @@
 #pragma once
-#include "AbstractScene.h"
+#include "Scene/AbstractScene/AbstractScene.h"
 #include "IoChangedListener.h"
 #include <stack>
 #include <memory>
-#include "imguiManager.h"
+#include "ImGui/imguiManager.h"
 #include "Editor.h"
 
 using namespace std;

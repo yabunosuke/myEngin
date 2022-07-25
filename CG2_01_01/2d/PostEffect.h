@@ -13,9 +13,9 @@ public:
     PostEffect();
     void InitializePostEffect(ComPtr<ID3D12Device> dev);
 
-    void PreDrawScene(ComPtr<ID3D12GraphicsCommandList> cmd_list);
+    void PreDraw(ComPtr<ID3D12GraphicsCommandList> cmd_list);
 	void DrawPostEffect(ComPtr<ID3D12GraphicsCommandList> cmd_list);
-    void PostDrawScene(ComPtr<ID3D12GraphicsCommandList> cmd_list);
+    void PostDraw(ComPtr<ID3D12GraphicsCommandList> cmd_list);
 
 
 	static const float clear_color[4];

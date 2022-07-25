@@ -6,8 +6,8 @@
 #include <map>
 
 //コンポーネント基底クラス
-#include "Component.h"
-#include "ScriptComponent.h"
+#include "Component/Component.h"
+#include "Component/ScriptComponent.h"
 
 // コライダー
 class BaseCollider;

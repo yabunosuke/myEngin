@@ -35,18 +35,29 @@ bool Looper::Loop()
 	sceneStack.top()->Update();
 
 	//シーンの描画コマンドを発行
-	sceneStack.top()->PreDrawScene(DirectXCommon::dev,DirectXCommon::cmdList);
+	sceneStack.top()->PreDrawMultiRenderTarget(DirectXCommon::dev,DirectXCommon::cmdList);
 	sceneStack.top()->Draw();
-	sceneStack.top()->PostDrawScene(DirectXCommon::cmdList);
-	// ここまでの描画はポストエフェクトの対象
+	sceneStack.top()->PostDrawMultiRenderTarget(DirectXCommon::cmdList);
+	// ここまでの描画はマルチレンダーターゲットの対象
+
+	//バッファクリア
+	DirectXCommon::ResourceBarrierWriting();
+	DirectXCommon::ScreenClear();
+
+	sceneStack.top()->PreDrawPostEffect(DirectXCommon::dev,DirectXCommon::cmdList);
+	// マルチレンダーターゲットの描画
+	sceneStack.top()->DrawMulutiRenderTarget(DirectXCommon::cmdList);
+	sceneStack.top()->PostDrawPoseEffect(DirectXCommon::cmdList);
+
+	//バッファクリア
+	DirectXCommon::ResourceBarrierWriting();
+	DirectXCommon::ScreenClear();
+
+	// ポストエフェクトの描画
+	sceneStack.top()->DrawPostEffect(DirectXCommon::cmdList);
 
 	// エディタ描画
 	editor.Draw();
-	//描画コマンド実行
-	DirectXCommon::ResourceBarrierWriting();
-	DirectXCommon::ScreenClear();
-	// ポストエフェクト
-	sceneStack.top()->DrawPostEffect(DirectXCommon::cmdList);
 
 	imguiManager::GetIns()->Draw();
 	// 全コマンド実行

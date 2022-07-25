@@ -2,11 +2,11 @@
 #include <map>
 #include <memory>
 #include <functional>
-#include "Component.h"
+#include "Component/Component.h"
 
 #include "TransformComponent.h"
-#include "LightComponent.h"
-#include "CameraComponent.h"
+#include "Component/LightComponent.h"
+#include "Component/CameraComponent.h"
 
 #include "GameObject.h"
 
@@ -45,6 +45,7 @@ public:
 	std::map<std::string, void(*)(GameObject *)> &GetComponentList() { return components_; }
 private:
 	static void ComponentGroupSet(Group group, std::string name);
+
 
 	void addDummy(GameObject *object) {};
 	//トランスフォームコンポーネント追加

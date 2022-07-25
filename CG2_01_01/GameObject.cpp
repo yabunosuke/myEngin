@@ -1,7 +1,7 @@
 
 #include "GameObject.h"
 #include "TransformComponent.h"
-#include "imguiManager.h"
+#include "ImGui/imguiManager.h"
 #include "BaseCollider.h"
 
 uint64_t GameObject::ID = 0;

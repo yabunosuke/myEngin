@@ -2,7 +2,7 @@
 #include "BaseCollider.h"
 #include "Collision.h"
 #include "MeshCollider.h"
-#include "ScriptComponent.h"
+#include "Component/ScriptComponent.h"
 
 using namespace DirectX;
 

@@ -220,7 +220,7 @@ void PostEffect::InitializePostEffect(ComPtr<ID3D12Device> dev)
 
 }
 
-void PostEffect::PreDrawScene(ComPtr<ID3D12GraphicsCommandList> cmd_list)
+void PostEffect::PreDraw(ComPtr<ID3D12GraphicsCommandList> cmd_list)
 {
 	//リソースバリアを変更(シェーダーリソースを描画可能に)
 	cmd_list->ResourceBarrier(
@@ -322,7 +322,7 @@ void PostEffect::DrawPostEffect(ComPtr<ID3D12GraphicsCommandList> cmd_list)
 
 }
 
-void PostEffect::PostDrawScene(ComPtr<ID3D12GraphicsCommandList> cmd_list)
+void PostEffect::PostDraw(ComPtr<ID3D12GraphicsCommandList> cmd_list)
 {
 	// リソースバリアの変更
 	cmd_list->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(texture_buffer_.Get(),

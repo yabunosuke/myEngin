@@ -1,7 +1,7 @@
 #pragma once
-#include "ScriptComponent.h"
+#include "Component/ScriptComponent.h"
 
-#include "Fbx.h"
+#include "3d/Fbx/Fbx.h"
 
 class PlayerTest :
 	public ScriptComponent

@@ -1,6 +1,6 @@
 #pragma once
 #include <DirectXMath.h>
-#include "Component.h"
+#include "Component/Component.h"
 #include "Vector3.h"
 
 struct Transform {

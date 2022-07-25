@@ -20,7 +20,6 @@ void ComponentList::Initialize()
 
 
     component_group_[Group::Rendering].emplace_back("Camera");
-    component_group_[Group::Rendering].emplace_back("Camera");
     component_group_[Group::Rendering].emplace_back("Light");
 }
 
@@ -28,4 +27,3 @@ void ComponentList::ComponentGroupSet(Group group, std::string name)
 {
     component_group_[group].emplace_back(name);
 }
-

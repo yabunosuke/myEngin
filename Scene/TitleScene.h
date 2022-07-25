@@ -2,7 +2,7 @@
 #include "2d/Sprite.h"
 #include "GameObject.h"
 #include "GameObjCommon.h"
-#include "AbstractScene.h"
+#include "Scene/AbstractScene/AbstractScene.h"
 #include "CollisionPrimitive.h"
 #include "Camera.h"
 #include <vector>

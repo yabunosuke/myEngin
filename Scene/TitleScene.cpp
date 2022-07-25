@@ -13,28 +13,26 @@
 
 // コンポーネント
 #include "Object3dComponent.h"
-#include "ColliderComponent.h"
+#include "Component/ColliderComponent.h"
 #include "PlayerTest.h"
 
 TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
-	
 
-
-
-	auto cube = game_object_manager_.CreateObject("cube");
-	cube.lock().get()->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/UNIT/cube.004.fbx");
-	cube.lock().get()->AddComponent<ColliderComponent>(this);
-	
-	//auto test = game_object_manager_.CreateObject("human");
-	//test.lock().get()->AddComponent<Object3dComponent>(
+	//auto cube = game_object_manager_.CreateObject("cube");
+	//cube.lock().get()->AddComponent<Object3dComponent>(
 	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-	//	//"Assets/3d/UNIT/cube.000.fbx");
-	//	"Assets/3d/test/human.fbx");
-	////"Assets/3d/Test/stage.fbx");
+	//	"Assets/3d/UNIT/cube.004.fbx");
+	//cube.lock().get()->AddComponent<ColliderComponent>(this);
+	//
+	auto test = game_object_manager_.CreateObject("plantune");
+	test.lock().get()->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/UNIT/plantune.fbx");
+	//"Assets/3d/test/human.fbx");
+	//"Assets/3d/Test/stage.fbx");
+	test.lock().get()->GetComponent<TransformComponent>()->SetScale({ 0.05f,0.05f ,0.05f });
 
 
 

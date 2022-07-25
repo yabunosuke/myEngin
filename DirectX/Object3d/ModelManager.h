@@ -1,7 +1,7 @@
 #pragma once
 #include <map>
 #include <string>
-#include "FbxResource.h"
+#include "3d/Fbx/FbxResource.h"
 
 class ModelManager final
 {

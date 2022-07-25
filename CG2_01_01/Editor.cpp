@@ -1,7 +1,6 @@
 #include "Editor.h"
-#include "imguiManager.h"
+#include "ImGui/imguiManager.h"
 #include "FileManager.h"
-#include "ColliderComponent.h"
 
 #include "TransformComponent.h"
 
@@ -198,7 +197,7 @@ void Editor::DrawInspector()
 					for (auto &component : component_group.second) {
 						if (ImGui::Button(component.c_str())) {
 							// コンポーネント追加
-							component_list[component];
+							///selectObject->AddComponent<LightComponent>();
 						}
 					}
 					ImGui::TreePop();

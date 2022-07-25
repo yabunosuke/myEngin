@@ -367,7 +367,7 @@ void MulutiRenderTarget::DrawRenderTarget(ComPtr<ID3D12GraphicsCommandList> cmd_
 
 }
 
-void MulutiRenderTarget::PostDrawScene(ComPtr<ID3D12GraphicsCommandList> cmd_list)
+void MulutiRenderTarget::PostDraw(ComPtr<ID3D12GraphicsCommandList> cmd_list)
 {
 	for (int i = 0; i < buffer_count_; ++i)
 	{

@@ -1,6 +1,6 @@
 #pragma once
-#include "Component.h"
-#include "Fbx.h"
+#include "Component/Component.h"
+#include "3d/Fbx/Fbx.h"
 
 class Object3dComponent :
     public Component

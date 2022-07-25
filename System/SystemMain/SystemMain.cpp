@@ -7,14 +7,11 @@
 #include "2d/Sprite.h"
 #include "AudioManager.h"
 #include "ModelManager.h"			//ƒ‚ƒfƒ‹
-#include "imguiManager.h"
+#include "ImGui/imguiManager.h"
 #include "Texture.h"
 #include  "PrimitiveRenderer.h"
 #include "PipelineManager.h"
-//imgui
-#include "imgui.h"
-#include "imgui_impl_win32.h"
-#include "imgui_impl_dx12.h"
+
 
 bool SystemMain::Initialize() const
 {
