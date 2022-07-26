@@ -18,11 +18,8 @@ VSOutput main(VSinput input)
 
 	// ボーンの影響を考慮したノーマルを返す
 	vout.normal = normalize(n);
-	float3 N = normalize(n);
-	float3 L = normalize(-lightDirection.xyz);
-	float d = dot(L, N);
-	float power = max(0, d) * 0.5f + 0.5f;
-	vout.color.rgb = input.color.rgb * materialColor.rgb * power;
+
+	vout.color.rgb = input.color.rgb * materialColor.rgb;
 	vout.color.a = input.color.a * materialColor.a;
 	vout.texcoord = input.texcoord.xy;
 

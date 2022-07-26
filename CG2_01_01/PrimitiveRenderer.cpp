@@ -183,7 +183,9 @@ void PrimitiveRenderer::CreateLine(ComPtr<ID3D12Device> dev)
 void PrimitiveRenderer::CreateBox(ComPtr<ID3D12Device> dev)
 {
 	float tabel[2] = { -0.5f,0.5f };	// 頂点の位置
-	std::vector<XMFLOAT4> vertices;
+	const int vertex_num = 24;
+	XMFLOAT4 vertices[vertex_num];
+	int vertices_index = 0;
 	for (int x = 0; x < 2; ++x)
 	{
 		for (int y = 0; y < 2; ++y)
@@ -211,8 +213,10 @@ void PrimitiveRenderer::CreateBox(ComPtr<ID3D12Device> dev)
 						tabel[edge != 2 ? z : !z],
 						1 };
 					
-					vertices.emplace_back(vertex);
-					vertices.emplace_back(vertex_next);
+					vertices[vertices_index]=vertex;
+					++vertices_index;
+					vertices[vertices_index]=vertex_next;
+					++vertices_index;
 				}
 			}
 		}
@@ -221,7 +225,7 @@ void PrimitiveRenderer::CreateBox(ComPtr<ID3D12Device> dev)
 	HRESULT result = S_OK;
 
 	// 頂点データ全体のサイズ
-	UINT sizeVB = static_cast<UINT>(sizeof(XMFLOAT4) * vertices.size());
+	UINT sizeVB = static_cast<UINT>(sizeof(XMFLOAT4) * _countof(vertices));
 	// 頂点バッファの生成
 	result = dev->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
@@ -235,7 +239,7 @@ void PrimitiveRenderer::CreateBox(ComPtr<ID3D12Device> dev)
 	XMFLOAT4 *vertMap = nullptr;
 	result = vertex_buffer_[static_cast<int>(PrimitiveType::BOX)]->Map(0, nullptr, (void **)&vertMap);
 	if (SUCCEEDED(result)) {
-		std::copy(vertices.begin(), vertices.end(), vertMap);
+		std::copy(vertices, vertices+ vertex_num, vertMap);
 		vertex_buffer_[static_cast<int>(PrimitiveType::BOX)]->Unmap(0, nullptr);
 	}
 	// 頂点バッファビュー(VBV)の作成
@@ -246,5 +250,4 @@ void PrimitiveRenderer::CreateBox(ComPtr<ID3D12Device> dev)
 
 void PrimitiveRenderer::CreateSphere(ComPtr<ID3D12Device> dev)
 {
-
 }

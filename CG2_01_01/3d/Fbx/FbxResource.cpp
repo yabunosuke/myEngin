@@ -296,6 +296,7 @@ void FbxResource::FetchMeshes(FbxScene *fbx_scene, std::vector<Mesh> &meshes)
 					vertex.tangent.z = static_cast<float>(tangent->GetDirectArray().GetAt(vertex_index)[2]);
 				}
 
+
 				mesh.vertices.at(vertex_index) = std::move(vertex);
 				mesh.indices.at(static_cast<size_t>(offset) + position_in_polygon) = vertex_index;
 				subset.index_count++;

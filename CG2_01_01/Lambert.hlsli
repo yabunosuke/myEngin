@@ -1,3 +1,4 @@
+// 頂点シェーダーに入力される値
 struct VSinput
 {
 	float4 position     : POSITION;
@@ -9,6 +10,7 @@ struct VSinput
 	uint4  boneIndices : BONES;
 };
 
+// 頂点シェーダーからピクセルシェーダーに受け渡される値
 struct VSOutput
 {
 	float4 position : SV_POSITION;
@@ -18,7 +20,7 @@ struct VSOutput
 
 };
 
-// マルチレンダリング
+// マルチレンダリング用構造体
 struct PSOutput
 {
 	float4 target0 : SV_TARGET0;

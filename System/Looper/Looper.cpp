@@ -38,14 +38,14 @@ bool Looper::Loop()
 	sceneStack.top()->PreDrawMultiRenderTarget(DirectXCommon::dev,DirectXCommon::cmdList);
 	sceneStack.top()->Draw();
 	sceneStack.top()->PostDrawMultiRenderTarget(DirectXCommon::cmdList);
-	// ここまでの描画はマルチレンダーターゲットの対象
+	//// ここまでの描画はマルチレンダーターゲットの対象
 
-	//バッファクリア
+	////バッファクリア
 	DirectXCommon::ResourceBarrierWriting();
 	DirectXCommon::ScreenClear();
 
 	sceneStack.top()->PreDrawPostEffect(DirectXCommon::dev,DirectXCommon::cmdList);
-	// マルチレンダーターゲットの描画
+	//// マルチレンダーターゲットの描画
 	sceneStack.top()->DrawMulutiRenderTarget(DirectXCommon::cmdList);
 	sceneStack.top()->PostDrawPoseEffect(DirectXCommon::cmdList);
 
@@ -56,9 +56,9 @@ bool Looper::Loop()
 	// ポストエフェクトの描画
 	sceneStack.top()->DrawPostEffect(DirectXCommon::cmdList);
 
+
 	// エディタ描画
 	editor.Draw();
-
 	imguiManager::GetIns()->Draw();
 	// 全コマンド実行
 	DirectXCommon::PlayCommandList();

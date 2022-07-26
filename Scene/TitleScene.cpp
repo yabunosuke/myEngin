@@ -33,7 +33,7 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	//"Assets/3d/test/human.fbx");
 	//"Assets/3d/Test/stage.fbx");
 	test.lock().get()->GetComponent<TransformComponent>()->SetScale({ 0.05f,0.05f ,0.05f });
-
+	test.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_OBB);
 
 
 	auto player = game_object_manager_.CreateObject("human");
@@ -55,7 +55,6 @@ TitleScene::TitleScene(IoChangedListener *impl)
 void TitleScene::Initialize()
 {
 	cam_ = new Camera({ 0,50,-50 });
-	cam_->eye = { 0,50,0 };
 	Camera::SetCam(cam_);
 
 	game_object_manager_.Initialize();
@@ -77,6 +76,22 @@ void TitleScene::Update()
 
 	game_object_manager_.LastUpdate();
 
+	if(KeyboardInput::GetIns()->GetKeyPress(DIK_UPARROW))
+	{
+		Camera::GetCam()->eye.z++;
+	}
+	if(KeyboardInput::GetIns()->GetKeyPress(DIK_DOWNARROW))
+	{
+		Camera::GetCam()->eye.z--;
+	}
+	if (KeyboardInput::GetIns()->GetKeyPress(DIK_RIGHTARROW))
+	{
+		Camera::GetCam()->eye.x++;
+	}
+	if (KeyboardInput::GetIns()->GetKeyPress(DIK_LEFTARROW))
+	{
+		Camera::GetCam()->eye.x--;
+	}
 	Camera::GetCam()->UpdateViewMatrix();
 	Camera::GetCam()->UpdateProjectionMatrix();
  	

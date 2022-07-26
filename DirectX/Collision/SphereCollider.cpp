@@ -14,7 +14,7 @@ void SphereCollider::Update()
 	
 	// ‹…‚Ìƒƒ“ƒo•Ï”‚ğXV
 	Sphere::center = matWorld.r[3] + offset;
-	Sphere::radius = radius;
+	Sphere::radius = radius_;
 }
 
 void SphereCollider::Draw()
@@ -25,6 +25,6 @@ void SphereCollider::Draw()
 void SphereCollider::Infomation()
 {
 	ImGui::Text("offset"); ImGui::SameLine(100); ImGui::DragFloat3("##Pos", (float *)&offset);
-	ImGui::Text("radius"); ImGui::SameLine(100); ImGui::DragFloat("##Rot", (float *)&radius);
+	ImGui::Text("radius"); ImGui::SameLine(100); ImGui::DragFloat("##Rot", (float *)&radius_);
 
 }

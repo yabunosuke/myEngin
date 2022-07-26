@@ -60,7 +60,7 @@ struct OBB //箱
 	// 中心座標
 	DirectX::XMVECTOR center = { 0,0,0,1 };
 	// 各軸の傾きを表すベクトル
-	XMVECTOR rotation[3];
+	XMVECTOR rotation;
 	// 各軸の大きさ
 	DirectX::XMFLOAT3 scale = { 1.0f, 1.0f, 1.0f };
 };

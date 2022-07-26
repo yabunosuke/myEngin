@@ -308,7 +308,7 @@ bool CollisionManager::CheckHitCollision(BaseCollider *colA, BaseCollider *colB,
 //	//ÅI“I‚É‚È‚É‚©‚É“–‚½‚Á‚Ä‚¢‚½‚çŒ‹‰Ê‚ð‘‚«ž‚Þ
 //	if (result && hitInfo)
 //	{
-//		hitInfo->distance = distance;
+//		hitInfo->distance = distance; 
 //		hitInfo->inter = inter;
 //		hitInfo->collider = *it_hit;
 //		hitInfo->object = hitInfo->collider->GetObject3d();

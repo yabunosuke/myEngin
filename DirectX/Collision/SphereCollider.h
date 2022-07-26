@@ -13,7 +13,7 @@ private: // エイリアス
 public:
 	SphereCollider(std::string name = "Sphere", XMVECTOR offset = {0,0,0,0}, float radius = 1.0f) :
 		offset(offset),
-		radius(radius)
+		radius_(radius)
 	{
 		// 球形状をセット
 		shapeType = SHAPE_SPHERE;
@@ -37,13 +37,13 @@ public:
 
 	inline void SetOffset(const XMVECTOR& offset) { this->offset = offset; }
 
-	inline float GetRadius() { return radius; }
+	inline float GetRadius() { return radius_; }
 
-	inline void SetRadius(float radius) { this->radius = radius; }
+	inline void SetRadius(float radius) { this->radius_ = radius; }
 
 private:
 	// オブジェクト中心からのオフセット
 	XMVECTOR offset;
 	// 半径
-	float radius;
+	float radius_;
 };

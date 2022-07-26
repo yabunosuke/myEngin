@@ -3,6 +3,7 @@
 
 // コライダー
 #include "SphereCollider.h"
+#include "Collider/OBBCollider.h"
 
 ColliderComponent::ColliderComponent(AbstractScene *scene, CollisionShapeType type):
 	Component("Collider"),
@@ -28,6 +29,7 @@ ColliderComponent::ColliderComponent(AbstractScene *scene, CollisionShapeType ty
 	case SHAPE_AABB:
 		break;
 	case SHAPE_OBB:
+		collider = std::make_shared<OBBCollider>();
 		break;
 	case SHAPE_CAPSULE:
 		break;
@@ -65,6 +67,7 @@ void ColliderComponent::ComponentUpdate()
 
 void ColliderComponent::ComponentDraw()
 {
+	collider->Draw();
 }
 
 void ColliderComponent::ComponentFinalize()

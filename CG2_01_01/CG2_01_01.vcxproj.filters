@@ -25,6 +25,12 @@
     <FxCompile Include="SkinnedMeshVS.hlsl" />
     <FxCompile Include="SpriteVS.hlsl" />
     <FxCompile Include="SpritePS.hlsl" />
+    <FxCompile Include="Assets\Shaders\3d\AdsVS.hlsl">
+      <Filter>Shader\3d\ADS</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\3d\AdsPS.hlsl">
+      <Filter>Shader\3d\ADS</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\DirectX\AudioManager\AudioManager.cpp" />
@@ -218,6 +224,12 @@
     <None Include="OBJShaderHeader.hlsli" />
     <None Include="SkinnedMesh.hlsli" />
     <None Include="Sprite.hlsli" />
+    <None Include="Assets\Shaders\3d\Ads.hlsli">
+      <Filter>Shader\3d\ADS</Filter>
+    </None>
+    <None Include="Assets\Shaders\3d\BumpMap.hlsli">
+      <Filter>Shader\3d\BumpMap</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="FBX">
@@ -237,6 +249,18 @@
     </Filter>
     <Filter Include="ImGui">
       <UniqueIdentifier>{357a0535-ec4c-419d-b10b-1d80c80d6beb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\3d">
+      <UniqueIdentifier>{f02458ce-32e4-4282-9b26-ee732223987c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\3d\ADS">
+      <UniqueIdentifier>{8f3c4422-936e-471e-9230-b715439af322}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\3d\NewFilter1">
+      <UniqueIdentifier>{78e17c48-f1f1-4d1a-a8e3-c11914db4dd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\3d\BumpMap">
+      <UniqueIdentifier>{3353e02c-15e0-4ef5-9e88-328ee1b72907}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
