@@ -24,13 +24,17 @@ public:
 
 	void CreateAllPiplines(ComPtr<ID3D12Device> dev);
 	// オブジェクト用パイプライン
-	void CreatePipline(ComPtr<ID3D12Device> dev, const std::string &pipline_name);
+	void CreateGBufferPipline(ComPtr<ID3D12Device> dev);
 	// スプライト用パイプライン
 	void CreateSpriutePipline(ComPtr<ID3D12Device> dev, const std::string &pipline_name);
+
 	// ポストエフェクト用パイプライン
 	void CreatePostEffectPipline(ComPtr<ID3D12Device> dev, const std::string &pipline_name);
 	// マルチレンダーターゲット用パイプライン
 	void CreateMultiRenderTargetPipline(ComPtr<ID3D12Device> dev, const std::string &pipline_name);
+	// ディファード用パイプライン
+	void CreateDeferredPpline(ComPtr<ID3D12Device> dev);
+
 
 	// コライダー用のパイプライン
 	void CreatePrimitivePipeline(ComPtr<ID3D12Device> dev);

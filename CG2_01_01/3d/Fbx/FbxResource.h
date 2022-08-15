@@ -90,7 +90,7 @@ public:
 
 	// サブセットバッファ
 	struct SubsetConstantBuffer {
-		XMFLOAT4 color = { 1,1,1,1 };
+		XMFLOAT4 material_color = { 1,1,1,1 };
 	};
 
 
@@ -228,7 +228,7 @@ public:
 		}
 
 		// 使うパイプラインの名前
-		std::string pipline_name = "Lambert";
+		std::string pipline_name = "GBuffer";
 
 		template < class T>
 		void serialize(T &archive) {

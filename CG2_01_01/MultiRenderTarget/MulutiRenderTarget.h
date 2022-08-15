@@ -4,6 +4,17 @@
 #include <DirectXMath.h>
 #include <wrl.h>
 
+// サブクラス
+enum class RenderName
+{
+	color,	//	0.色情報
+	normal,	//	1.法線情報
+	metal_roughness,		//	2.メタリック・ラフネス情報
+	depth,	//	3.深度情報
+	world_position,	//	4.ワールド情報
+	id,		//	5.処理分割用のID
+	MAX
+};
 
 class MulutiRenderTarget
 {
@@ -19,7 +30,10 @@ private:	//エイリアス
 	using XMFLOAT4X4 = DirectX::XMFLOAT4X4;
 
 public:
+	
+
 	MulutiRenderTarget();
+
 	void InitializeMulutiRenderTarget(ComPtr<ID3D12Device> dev);
 	void PreDrawScene(ComPtr<ID3D12Device> dev,ComPtr<ID3D12GraphicsCommandList> cmd_list);
 	void DrawRenderTarget(ComPtr<ID3D12GraphicsCommandList> cmd_list);
@@ -39,8 +53,11 @@ private:
 	};
 
 
-	// 仮に二個で実装する
-	static const int buffer_count_ = 2;
+	/// <summary>
+	/// マルチレンダーの数
+	/// </summary>
+	static const int buffer_count_ = 6;
+
 
 	// 定数バッファ
 	ComPtr<ID3D12Resource> constant_buffer_;
@@ -52,8 +69,8 @@ private:
 	ComPtr<ID3D12Resource> depth_buffer_;
 	// テクスチャバッファ
 	ComPtr<ID3D12Resource> texture_buffer_[buffer_count_];
-	// STVデスクリプタヒープ
-	ComPtr<ID3D12DescriptorHeap> descriputor_heap_SRV_;
+	// SRVデスクリプタヒープ
+	ComPtr<ID3D12DescriptorHeap> descriputor_heap_SRV_[buffer_count_];
 	// RTVデスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descriputor_heap_RTV_;
 	// DSVデスクリプタヒープ

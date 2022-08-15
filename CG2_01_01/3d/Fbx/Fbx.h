@@ -32,10 +32,16 @@ public:
 	};
 
 	// シーンバッファ用
-	struct SceneConstantBuffer {
+	//struct SceneConstantBuffer {
+	//	XMFLOAT4X4 view_projection;
+	//	XMFLOAT4 light_direction;
+	//};
+
+	// カメラバッファ
+	struct CameraConstantBuffer {
+		XMFLOAT4 view_position;
 		XMFLOAT4X4 view_projection;
-		XMFLOAT4 light_direction;
-		//XMFLOAT4 camera_position;
+		XMFLOAT4X4 inv_view_projection;
 	};
 
 
@@ -99,6 +105,7 @@ private:
 	XMFLOAT4 color_ = { 1,1,1,1 };	//カラー
 
 	// 描画用
-	ComPtr<ID3D12Resource> scene_constant_buffer_;	// シーン定数バッファ
+	//ComPtr<ID3D12Resource> scene_constant_buffer_;	// シーン定数バッファ
+	ComPtr<ID3D12Resource> camera_constant_buffer_;	// カメラ定数バッファ
 };
 

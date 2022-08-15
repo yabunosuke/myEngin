@@ -103,7 +103,10 @@ void MulutiRenderTarget::InitializeMulutiRenderTarget(ComPtr<ID3D12Device> dev)
 	srvDescHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	srvDescHeapDesc.NumDescriptors = 1;
 	//SRVデスクリプタヒープ生成
-	result = dev->CreateDescriptorHeap(&srvDescHeapDesc, IID_PPV_ARGS(&descriputor_heap_SRV_));
+	for (int i = 0; i < buffer_count_; ++i)
+	{
+		result = dev->CreateDescriptorHeap(&srvDescHeapDesc, IID_PPV_ARGS(&descriputor_heap_SRV_[i]));
+	}
 	assert(SUCCEEDED(result));
 
 	//シェーダリソースビュー設定
@@ -114,11 +117,20 @@ void MulutiRenderTarget::InitializeMulutiRenderTarget(ComPtr<ID3D12Device> dev)
 	srv_desc.Texture1D.MipLevels = 1;
 
 	//シェーダーリソースビュー作成
-	dev->CreateShaderResourceView(
-		texture_buffer_[0].Get(),	//ビューと関連付けるバッファ
-		&srv_desc,						//テクスチャ設定情報
-		descriputor_heap_SRV_->GetCPUDescriptorHandleForHeapStart()
-	);
+	//dev->CreateShaderResourceView(
+	//	texture_buffer_[0].Get(),	//ビューと関連付けるバッファ
+	//	&srv_desc,						//テクスチャ設定情報
+	//	descriputor_heap_SRV_->GetCPUDescriptorHandleForHeapStart()
+	//);
+	for (int i = 0; i < buffer_count_; ++i)
+	{
+		//シェーダーリソースビュー作成
+		dev->CreateShaderResourceView(
+			texture_buffer_[i].Get(),	//ビューと関連付けるバッファ
+			&srv_desc,						//テクスチャ設定情報
+			descriputor_heap_SRV_[i]->GetCPUDescriptorHandleForHeapStart()
+		);
+	}
 
 #pragma endregion  
 
@@ -126,11 +138,11 @@ void MulutiRenderTarget::InitializeMulutiRenderTarget(ComPtr<ID3D12Device> dev)
 	// RTV
 	D3D12_DESCRIPTOR_HEAP_DESC rtv_descriptor_heap_desc{};
 	rtv_descriptor_heap_desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
-	rtv_descriptor_heap_desc.NumDescriptors = 2;	// 容量を二つ分に
+	rtv_descriptor_heap_desc.NumDescriptors = buffer_count_;	// 容量を二つ分に
 	result = dev->CreateDescriptorHeap(&rtv_descriptor_heap_desc, IID_PPV_ARGS(&descriputor_heap_RTV_));
 	assert(SUCCEEDED((result)));
 
-	for(int i =0; i<2;++i)
+	for (int i = 0; i < buffer_count_; ++i)
 	{
 		dev->CreateRenderTargetView(
 			texture_buffer_[i].Get(),
@@ -251,13 +263,13 @@ void MulutiRenderTarget::PreDrawScene(ComPtr<ID3D12Device> dev,ComPtr<ID3D12Grap
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvH = descriputor_heap_DSV_->GetCPUDescriptorHandleForHeapStart();
 
 	//レンダーターゲットをセット
-	cmd_list->OMSetRenderTargets(2, rtvHs, false, &dsvH);
+	cmd_list->OMSetRenderTargets(buffer_count_, rtvHs, false, &dsvH);
 
 	CD3DX12_VIEWPORT viewports[buffer_count_];
 	CD3DX12_RECT scissor_rects[buffer_count_];
 	for (int i = 0; i < buffer_count_; ++i)
 	{
-		viewports[i] = CD3DX12_VIEWPORT(0.0f, 0.0f, WinApp::windowWidth, WinApp::windowHeight);
+		viewports[i] = CD3DX12_VIEWPORT(0.0f, 0.0f, static_cast<float>(WinApp::windowWidth), static_cast<float>(WinApp::windowHeight));
 		scissor_rects[i] = CD3DX12_RECT(0, 0, WinApp::windowWidth, WinApp::windowHeight);
 	}
 
@@ -279,25 +291,11 @@ void MulutiRenderTarget::PreDrawScene(ComPtr<ID3D12Device> dev,ComPtr<ID3D12Grap
 
 void MulutiRenderTarget::DrawRenderTarget(ComPtr<ID3D12GraphicsCommandList> cmd_list)
 {
-	if(KeyboardInput::GetIns()->GetKeyPressT(DIK_SPACE))
+	static int tex = 0;
+	if(KeyboardInput::GetIns()->GetKeyPressT(DIK_1))
 	{
-		static int tex = 0;
-		tex = (tex + 1) % 2;
-
-
-		//シェーダリソースビュー設定
-		D3D12_SHADER_RESOURCE_VIEW_DESC srv_desc{};	//設定構造体
-		srv_desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;	//RGBA
-		srv_desc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-		srv_desc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
-		srv_desc.Texture1D.MipLevels = 1;
-
-		//シェーダーリソースビュー作成
-		DirectXCommon::dev->CreateShaderResourceView(
-			texture_buffer_[tex].Get(),	//ビューと関連付けるバッファ
-			&srv_desc,						//テクスチャ設定情報
-			descriputor_heap_SRV_->GetCPUDescriptorHandleForHeapStart()
-		);
+		tex = (tex + 1) % 6;
+		
 	}
 
 
@@ -348,20 +346,37 @@ void MulutiRenderTarget::DrawRenderTarget(ComPtr<ID3D12GraphicsCommandList> cmd_
 		this->constant_buffer_->Unmap(0, nullptr);
 	}
 
+	//// パイプラインセット
+	//PipelineManager::GetInstance()->SetPipline(cmd_list, "muluti");
+	//// プリミティブ形状を設定
+	//cmd_list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	//// 頂点バッファの設定
+	//cmd_list->IASetVertexBuffers(0, 1, &vertex_buffer_view_);
+	//ID3D12DescriptorHeap *ppHeaps[] = { descriputor_heap_SRV_[tex].Get()};
+	//// デスクリプタヒープをセット
+	//cmd_list->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	//// 定数バッファビューをセット
+	//cmd_list->SetGraphicsRootConstantBufferView(0, this->constant_buffer_->GetGPUVirtualAddress());
+	//// シェーダリソースビューをセット
+	//cmd_list->SetGraphicsRootDescriptorTable(
+	//	1, descriputor_heap_SRV_[tex]->GetGPUDescriptorHandleForHeapStart());
+	//// 描画コマンド
+	//cmd_list->DrawInstanced(4, 1, 0, 0);
+
 	// パイプラインセット
-	PipelineManager::GetInstance()->SetPipline(cmd_list, "muluti");
+	PipelineManager::GetInstance()->SetPipline(cmd_list, "Deferred");
 	// プリミティブ形状を設定
 	cmd_list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 	// 頂点バッファの設定
 	cmd_list->IASetVertexBuffers(0, 1, &vertex_buffer_view_);
-	ID3D12DescriptorHeap *ppHeaps[] = { descriputor_heap_SRV_.Get() };
+	ID3D12DescriptorHeap *ppHeaps[] = { descriputor_heap_SRV_[tex].Get() };
 	// デスクリプタヒープをセット
 	cmd_list->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	// 定数バッファビューをセット
 	cmd_list->SetGraphicsRootConstantBufferView(0, this->constant_buffer_->GetGPUVirtualAddress());
 	// シェーダリソースビューをセット
 	cmd_list->SetGraphicsRootDescriptorTable(
-		1, descriputor_heap_SRV_->GetGPUDescriptorHandleForHeapStart());
+		1, descriputor_heap_SRV_[0]->GetGPUDescriptorHandleForHeapStart());
 	// 描画コマンド
 	cmd_list->DrawInstanced(4, 1, 0, 0);
 

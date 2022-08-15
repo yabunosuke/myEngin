@@ -40,7 +40,7 @@ Fbx::Fbx(ID3D12Device *dev, const char *file_path)
 
 	// シーン定数バッファの生成
 	HRESULT result;
-	result = dev->CreateCommittedResource
+	/*result = dev->CreateCommittedResource
 	(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
 		D3D12_HEAP_FLAG_NONE,
@@ -48,6 +48,17 @@ Fbx::Fbx(ID3D12Device *dev, const char *file_path)
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&scene_constant_buffer_)
+	);*/
+
+	// カメラ定数バッファの生成
+	result = dev->CreateCommittedResource
+	(
+		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+		D3D12_HEAP_FLAG_NONE,
+		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(CameraConstantBuffer) + 0xff) & ~0xff),
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&camera_constant_buffer_)
 	);
 
 }
@@ -90,17 +101,36 @@ void Fbx::Draw(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cmd_l
 		// パイプラインステートとルートシグネチャ設定
 		PipelineManager::GetInstance()->SetPipline(cmd_list,mesh.pipline_name);
 
-		// シーン定数バッファをセット
-		cmd_list->SetGraphicsRootConstantBufferView(0, scene_constant_buffer_->GetGPUVirtualAddress());
-		SceneConstantBuffer *scene_constant_buffer_map = nullptr;
-		result = scene_constant_buffer_->Map(0, nullptr, (void **)&scene_constant_buffer_map);
+		//// シーン定数バッファをセット
+		//cmd_list->SetGraphicsRootConstantBufferView(0, scene_constant_buffer_->GetGPUVirtualAddress());
+		//SceneConstantBuffer *scene_constant_buffer_map = nullptr;
+		//result = scene_constant_buffer_->Map(0, nullptr, (void **)&scene_constant_buffer_map);
+		//if (SUCCEEDED(result))
+		//{
+		//	//仮で古いカメラクラスを使用する
+		//	DirectX::XMStoreFloat4x4(&scene_constant_buffer_map->view_projection, Camera::GetCam()->GetViewProjectionMatrix());
+		//	scene_constant_buffer_map->light_direction = { 0,0.5,0.5, 0 };
+		//	scene_constant_buffer_->Unmap(0, nullptr);
+		//}
+
+		//カメラバッファをセット
+		cmd_list->SetGraphicsRootConstantBufferView(0, camera_constant_buffer_->GetGPUVirtualAddress());
+		CameraConstantBuffer *camera_constant_buffer_map = nullptr;
+		result = camera_constant_buffer_->Map(0, nullptr, (void **)&camera_constant_buffer_map);
 		if (SUCCEEDED(result))
 		{
-			//仮で古いカメラクラスを使用する
-			DirectX::XMStoreFloat4x4(&scene_constant_buffer_map->view_projection, Camera::GetCam()->GetViewProjectionMatrix());
-			scene_constant_buffer_map->light_direction = { 0,0.5,0.5, 0 };
-			scene_constant_buffer_->Unmap(0, nullptr);
+			camera_constant_buffer_map->view_position = {
+				Camera::GetCam()->eye.x,
+				Camera::GetCam()->eye.y,
+				Camera::GetCam()->eye.z,
+				1.0f
+			};
+			DirectX::XMStoreFloat4x4(&camera_constant_buffer_map->view_projection, Camera::GetCam()->GetViewProjectionMatrix());
+			DirectX::XMStoreFloat4x4(&camera_constant_buffer_map->inv_view_projection, XMMatrixInverse(nullptr, Camera::GetCam()->GetViewProjectionMatrix()));
+
+			camera_constant_buffer_->Unmap(0, nullptr);
 		}
+
 
 		// メッシュ定数バッファをセット
 		cmd_list->SetGraphicsRootConstantBufferView(1, mesh.mesh_constant_buffer_->GetGPUVirtualAddress());
@@ -147,7 +177,7 @@ void Fbx::Draw(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cmd_l
 			result = subset.subset_constant_buffer_->Map(0, nullptr, (void **)&subset_constant_buffer_map);
 			if (SUCCEEDED(result))
 			{
-				subset_constant_buffer_map->color = {
+				subset_constant_buffer_map->material_color = {
 					subset.material->color.x * color_.x,
 					subset.material->color.y * color_.y,
 					subset.material->color.z * color_.z,

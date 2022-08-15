@@ -34,20 +34,20 @@ bool Looper::Loop()
 	//シーンの更新
 	sceneStack.top()->Update();
 
-	//シーンの描画コマンドを発行
-	sceneStack.top()->PreDrawMultiRenderTarget(DirectXCommon::dev,DirectXCommon::cmdList);
-	sceneStack.top()->Draw();
-	sceneStack.top()->PostDrawMultiRenderTarget(DirectXCommon::cmdList);
-	//// ここまでの描画はマルチレンダーターゲットの対象
 
-	////バッファクリア
+	//シーンの描画コマンドを発行
+	sceneStack.top()->PreDrawMultiRenderTarget(DirectXCommon::dev,DirectXCommon::cmdList);	// マルチレンダーターゲットの設定
+	sceneStack.top()->Draw();																	// 描画コマンド発行
+	sceneStack.top()->PostDrawMultiRenderTarget(DirectXCommon::cmdList);						// 設定終了
+	// ここまでの描画はマルチレンダーターゲットの対象
+
+	//バッファクリア
 	DirectXCommon::ResourceBarrierWriting();
 	DirectXCommon::ScreenClear();
 
-	sceneStack.top()->PreDrawPostEffect(DirectXCommon::dev,DirectXCommon::cmdList);
-	//// マルチレンダーターゲットの描画
-	sceneStack.top()->DrawMulutiRenderTarget(DirectXCommon::cmdList);
-	sceneStack.top()->PostDrawPoseEffect(DirectXCommon::cmdList);
+	sceneStack.top()->PreDrawPostEffect(DirectXCommon::dev,DirectXCommon::cmdList);			// ポストエフェクトの設定
+	sceneStack.top()->DrawMulutiRenderTarget(DirectXCommon::cmdList);							// マルチレンダーターゲットの描画
+	sceneStack.top()->PostDrawPoseEffect(DirectXCommon::cmdList);								// 設定終了
 
 	//バッファクリア
 	DirectXCommon::ResourceBarrierWriting();

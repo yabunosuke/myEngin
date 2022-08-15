@@ -31,6 +31,18 @@
     <FxCompile Include="Assets\Shaders\3d\AdsPS.hlsl">
       <Filter>Shader\3d\ADS</Filter>
     </FxCompile>
+    <FxCompile Include="Assets\Shaders\3d\GBufferVS.hlsl">
+      <Filter>Shader\3d\GBuffer</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\3d\GbufferPS.hlsl">
+      <Filter>Shader\3d\GBuffer</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\3d\DeferredShaderPS.hlsl">
+      <Filter>Shader\3d\GBuffer</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\3d\DeferredShaderVS.hlsl">
+      <Filter>Shader\3d\GBuffer</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\DirectX\AudioManager\AudioManager.cpp" />
@@ -62,7 +74,6 @@
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="OBBCollider.cpp" />
-    <ClCompile Include="MultiRenderTarget\MulutiRenderTarget.cpp" />
     <ClCompile Include="Object3dComponent.cpp" />
     <ClCompile Include="PipelineManager.cpp" />
     <ClCompile Include="PlayerTest.cpp" />
@@ -118,6 +129,9 @@
     <ClCompile Include="ImGui\imguiManager.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="MultiRenderTarget\MulutiRenderTarget.cpp">
+      <Filter>Shader\3d\GBuffer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -155,7 +169,6 @@
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectManager.h" />
-    <ClInclude Include="MultiRenderTarget\MulutiRenderTarget.h" />
     <ClInclude Include="Object3dComponent.h" />
     <ClInclude Include="PipelineManager.h" />
     <ClInclude Include="PlayerTest.h" />
@@ -214,6 +227,9 @@
     <ClInclude Include="ImGui\imstb_truetype.h">
       <Filter>ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="MultiRenderTarget\MulutiRenderTarget.h">
+      <Filter>Shader\3d\GBuffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\FBX.hlsli" />
@@ -227,8 +243,11 @@
     <None Include="Assets\Shaders\3d\Ads.hlsli">
       <Filter>Shader\3d\ADS</Filter>
     </None>
-    <None Include="Assets\Shaders\3d\BumpMap.hlsli">
-      <Filter>Shader\3d\BumpMap</Filter>
+    <None Include="Assets\Shaders\3d\GBuffer.hlsli">
+      <Filter>Shader\3d\GBuffer</Filter>
+    </None>
+    <None Include="Assets\Shaders\3d\DeferredShader.hlsli">
+      <Filter>Shader\3d\GBuffer</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -256,11 +275,14 @@
     <Filter Include="Shader\3d\ADS">
       <UniqueIdentifier>{8f3c4422-936e-471e-9230-b715439af322}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shader\3d\NewFilter1">
-      <UniqueIdentifier>{78e17c48-f1f1-4d1a-a8e3-c11914db4dd1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shader\3d\BumpMap">
       <UniqueIdentifier>{3353e02c-15e0-4ef5-9e88-328ee1b72907}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\3d\NewFilter2">
+      <UniqueIdentifier>{0628c83e-2193-4e75-86c3-c0372e26b97f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\3d\GBuffer">
+      <UniqueIdentifier>{78e17c48-f1f1-4d1a-a8e3-c11914db4dd1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

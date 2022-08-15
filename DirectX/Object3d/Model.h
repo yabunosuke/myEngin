@@ -133,7 +133,4 @@ private:
 	//SRV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
 
-
-	// メッシュコンテナ
-	//std::vector<std::unique_ptr<Mesh>> meshes;
 };

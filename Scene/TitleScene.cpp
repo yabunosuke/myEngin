@@ -20,11 +20,11 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
 
-	//auto cube = game_object_manager_.CreateObject("cube");
-	//cube.lock().get()->AddComponent<Object3dComponent>(
-	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-	//	"Assets/3d/UNIT/cube.004.fbx");
-	//cube.lock().get()->AddComponent<ColliderComponent>(this);
+	auto cube = game_object_manager_.CreateObject("cube");
+	cube.lock().get()->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/UNIT/cube.004.fbx");
+	cube.lock().get()->AddComponent<ColliderComponent>(this);
 	//
 	auto test = game_object_manager_.CreateObject("plantune");
 	test.lock().get()->AddComponent<Object3dComponent>(
