@@ -287,14 +287,5 @@ void Editor::DrawMulutiRender()
 		ImGuiCond_::ImGuiCond_FirstUseEver
 	);
 
-	D3D12_GPU_DESCRIPTOR_HANDLE my_texture_gpu_handle = 
-		nowScene->GetMulutiRenderTarget()->get()->descriputor_heap_SRV_->GetGPUDescriptorHandleForHeapStart();
-	UINT handle_increment = DirectXCommon::dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	//my_texture_gpu_handle.ptr += (handle_increment * 1);
-	ImGui::Image(
-		(ImTextureID)my_texture_gpu_handle.ptr,
-		ImVec2((float)100, (float)100)
-	);
-	//èIóπ
 	ImGui::End();
 }

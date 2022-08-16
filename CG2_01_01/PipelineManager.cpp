@@ -665,7 +665,7 @@ void PipelineManager::CreateMultiRenderTargetPipline(ComPtr<ID3D12Device> dev, c
 	// 図形の形状設定（三角形）
 	gpipeline.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
-	gpipeline.NumRenderTargets = 6;	// 描画対象は2つ
+	gpipeline.NumRenderTargets = 6;	// 描画対象は6つ
 	// カラー
 	gpipeline.RTVFormats[static_cast<int>(RenderName::color)] = DXGI_FORMAT_R8G8B8A8_UNORM;
 	// ノーマル

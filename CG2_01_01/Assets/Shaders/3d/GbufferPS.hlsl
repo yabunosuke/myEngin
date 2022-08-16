@@ -15,7 +15,7 @@ PSOutput main(VSOutput input)
 	// メタルなめらかさ
 	float2 ms = metal_roughness_t.Sample(texture_sampler, input.texcoord).ra;
 	// 法線
-	float3 normal = normal_t.Sample(texture_sampler, input.normal).rgb;
+	float3 normal = normal_t.Sample(texture_sampler, input.texcoord).rgb;
 
 	// テクスチャなしの画像が来たらマテリアルカラーに変更
 	if(0 == albedo.r + albedo.g + albedo.b+albedo.a)

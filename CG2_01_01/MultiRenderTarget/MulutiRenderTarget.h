@@ -44,7 +44,6 @@ public:
 	/// </summary>
 	static const int buffer_count_ = 6;
 
-	ComPtr<ID3D12DescriptorHeap> descriputor_heap_SRV_;
 
 private:
 	// サブクラス
@@ -73,7 +72,7 @@ private:
 	// テクスチャバッファ
 	ComPtr<ID3D12Resource> texture_buffer_[buffer_count_];
 	// SRVデスクリプタヒープ
-	//ComPtr<ID3D12DescriptorHeap> descriputor_heap_SRV_;
+	ComPtr<ID3D12DescriptorHeap> descriputor_heap_SRV_;
 	// RTVデスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descriputor_heap_RTV_;
 	// DSVデスクリプタヒープ

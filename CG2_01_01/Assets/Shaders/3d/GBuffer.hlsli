@@ -26,12 +26,12 @@ struct VSOutput
 // マルチレンダリング用構造体
 struct PSOutput
 {
-	float4 color				: SV_TARGET0;	// 色
-	float4 normal				: SV_TARGET1;	// 法線
-	float4 metal_roughness		: SV_TARGET2;	// メタルとラフネス
-	float4 depth				: SV_TARGET3;	// 深度
-	float4 position				: SV_TARGET4;	// ワールド座標
-	float4 id					: SV_TARGET5;	// 処理変更用
+	float4 color				: SV_TARGET0;	// 色画像
+	float4 normal				: SV_TARGET1;	// 法線画像
+	float4 metal_roughness		: SV_TARGET2;	// メタルとラフネス画像
+	float4 depth				: SV_TARGET3;	// 深度画像
+	float4 position				: SV_TARGET4;	// ワールド座標画像
+	float4 id					: SV_TARGET5;	// 処理変更用画像
 };
 
 // カメラバッファ

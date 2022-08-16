@@ -23,17 +23,17 @@ float4 main(VSOutput input) : SV_TARGET
 
 	/// 仮計算
 	if (id_tex.r != 0) {
-		//// 仮のライト
-		//float3 dir_light = normalize(-float3(1, -1, 0));
-		//// 外積
-		//float d = dot(dir_light, normalize(normal_tex.rgb));
-		//float power = max(0, d) * 0.8f + 0.2f;
+		// 仮のライト
+		float3 dir_light = normalize(-float3(1, -1, 0));
+		// 外積
+		float d = dot(dir_light, normalize(normal_tex.rgb));
+		float power = max(0, d) * 0.8f + 0.2f;
 
-		//float3 diffuse = float3(0.8, 0.8, 0.8) * float3(1, 1, 1) * saturate(power);
+		float3 diffuse = float3(0.8, 0.8, 0.8) * float3(1, 1, 1) * saturate(power);
 
-		//output_color = float4(color_tex.rgb * diffuse, 1);
+		output_color = float4(color_tex.rgb * diffuse, 1);
 
-		return /*pow(output_color, 1.0f / 2.2f)*/color_tex;
+		return pow(output_color, 1.0f / 2.2f);
 	}
 
 	return float4(0, 1, 0, 1);
