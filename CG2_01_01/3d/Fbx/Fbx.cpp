@@ -101,18 +101,6 @@ void Fbx::Draw(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cmd_l
 		// パイプラインステートとルートシグネチャ設定
 		PipelineManager::GetInstance()->SetPipline(cmd_list,mesh.pipline_name);
 
-		//// シーン定数バッファをセット
-		//cmd_list->SetGraphicsRootConstantBufferView(0, scene_constant_buffer_->GetGPUVirtualAddress());
-		//SceneConstantBuffer *scene_constant_buffer_map = nullptr;
-		//result = scene_constant_buffer_->Map(0, nullptr, (void **)&scene_constant_buffer_map);
-		//if (SUCCEEDED(result))
-		//{
-		//	//仮で古いカメラクラスを使用する
-		//	DirectX::XMStoreFloat4x4(&scene_constant_buffer_map->view_projection, Camera::GetCam()->GetViewProjectionMatrix());
-		//	scene_constant_buffer_map->light_direction = { 0,0.5,0.5, 0 };
-		//	scene_constant_buffer_->Unmap(0, nullptr);
-		//}
-
 		//カメラバッファをセット
 		cmd_list->SetGraphicsRootConstantBufferView(0, camera_constant_buffer_->GetGPUVirtualAddress());
 		CameraConstantBuffer *camera_constant_buffer_map = nullptr;

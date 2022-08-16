@@ -8,6 +8,8 @@
 
 #include <algorithm>
 
+#include "DirectXCommon.h"
+
 void Editor::Draw()
 {
 	//プルダウンメニュー
@@ -20,6 +22,12 @@ void Editor::Draw()
 	if (isHierarchy) {
 		DrawInspector();
 	}
+	// 出力
+	if(true)
+	{
+		DrawMulutiRender();
+	}
+
 	//デモ
 	if (isDemo) {
 		ImGui::ShowDemoWindow();
@@ -84,7 +92,7 @@ void Editor::FileMenu()
 	ImGui::Separator();
 	//終了処理
 	if (ImGui::MenuItem("Exit")) {
-		exit(0);
+		
 	}
 }
 
@@ -267,4 +275,26 @@ void Editor::DrawInspector()
 	ImGui::End();
 
 
+}
+
+void Editor::DrawMulutiRender()
+{
+	//ウィンドウ名定義
+	ImGui::Begin("MulutiRender");
+
+	ImGui::SetWindowSize(
+		ImVec2(400, 500),
+		ImGuiCond_::ImGuiCond_FirstUseEver
+	);
+
+	D3D12_GPU_DESCRIPTOR_HANDLE my_texture_gpu_handle = 
+		nowScene->GetMulutiRenderTarget()->get()->descriputor_heap_SRV_->GetGPUDescriptorHandleForHeapStart();
+	UINT handle_increment = DirectXCommon::dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	//my_texture_gpu_handle.ptr += (handle_increment * 1);
+	ImGui::Image(
+		(ImTextureID)my_texture_gpu_handle.ptr,
+		ImVec2((float)100, (float)100)
+	);
+	//終了
+	ImGui::End();
 }

@@ -51,7 +51,7 @@ public:
 	/// <summary>
 	/// マルチレンダーターゲット描画
 	/// </summary>
-	virtual void DrawMulutiRenderTarget(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list);
+	virtual void DrawMulutiRenderTarget(Microsoft::WRL::ComPtr<ID3D12Device>dev, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list);
 
 	void PostDrawPoseEffect(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list);
 
@@ -66,6 +66,7 @@ public:
 	GameObjectManager *GetObjectManager() { return &game_object_manager_; }	// オブジェクトマネージャー
 	CollisionManager *GetCollisionManager() { return &collision_manager_; }			// 子リジョンマネージャー
 	std::string GetName() { return name; }
+	std::unique_ptr<MulutiRenderTarget> *GetMulutiRenderTarget() { return &muluti_render_target_; }
 
 protected:
 	// オブジェクトマネージャー

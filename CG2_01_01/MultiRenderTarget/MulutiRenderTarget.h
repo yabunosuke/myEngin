@@ -36,8 +36,15 @@ public:
 
 	void InitializeMulutiRenderTarget(ComPtr<ID3D12Device> dev);
 	void PreDrawScene(ComPtr<ID3D12Device> dev,ComPtr<ID3D12GraphicsCommandList> cmd_list);
-	void DrawRenderTarget(ComPtr<ID3D12GraphicsCommandList> cmd_list);
+	void DrawRenderTarget(ComPtr<ID3D12GraphicsCommandList> cmd_list, ComPtr<ID3D12Device> dev);
 	void PostDraw(ComPtr<ID3D12GraphicsCommandList> cmd_list);
+
+	/// <summary>
+	/// マルチレンダーの数
+	/// </summary>
+	static const int buffer_count_ = 6;
+
+	ComPtr<ID3D12DescriptorHeap> descriputor_heap_SRV_;
 
 private:
 	// サブクラス
@@ -53,10 +60,6 @@ private:
 	};
 
 
-	/// <summary>
-	/// マルチレンダーの数
-	/// </summary>
-	static const int buffer_count_ = 6;
 
 
 	// 定数バッファ
@@ -70,7 +73,7 @@ private:
 	// テクスチャバッファ
 	ComPtr<ID3D12Resource> texture_buffer_[buffer_count_];
 	// SRVデスクリプタヒープ
-	ComPtr<ID3D12DescriptorHeap> descriputor_heap_SRV_[buffer_count_];
+	//ComPtr<ID3D12DescriptorHeap> descriputor_heap_SRV_;
 	// RTVデスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descriputor_heap_RTV_;
 	// DSVデスクリプタヒープ

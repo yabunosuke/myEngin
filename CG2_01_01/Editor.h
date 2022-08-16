@@ -34,6 +34,10 @@ public:
 	/// インスペクター描画
 	/// </summary>
 	void DrawInspector();
+	/// <summary>
+	/// インスペクター描画
+	/// </summary>
+	void DrawMulutiRender();
 
 private:	//メニュー
 	bool isDemo = true;			//デモウィンドウ

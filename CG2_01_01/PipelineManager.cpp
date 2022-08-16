@@ -14,6 +14,8 @@ void PipelineManager::CreateAllPiplines(ComPtr<ID3D12Device> dev)
 	CreateSpriutePipline(dev, "Sprite");
 	// オブジェクトパイプライン生成
 	CreateGBufferPipline(dev);
+
+	CreateMultiRenderTargetPipline(dev,"muluti");
 	// ディファードパイプライン生成
 	CreateDeferredPpline(dev);
 
@@ -22,7 +24,6 @@ void PipelineManager::CreateAllPiplines(ComPtr<ID3D12Device> dev)
 	{
 		CreatePostEffectPipline(dev, posteffect_shader_list_[i]);
 	}
-	CreateMultiRenderTargetPipline(dev,"muluti");
 	CreatePrimitivePipeline(dev);
 
 }
@@ -173,9 +174,9 @@ void PipelineManager::CreateGBufferPipline(ComPtr<ID3D12Device> dev)
 
 	// デスクリプタレンジ(テクスチャを四枚まで)
 	CD3DX12_DESCRIPTOR_RANGE desc_range_srv[3] = {};
-	desc_range_srv[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
-	desc_range_srv[1].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1); // t1 レジスタ
-	desc_range_srv[2].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2); // t2 レジスタ
+	desc_range_srv[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 ベースカラー
+	desc_range_srv[1].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1); // t1 ノーマル
+	desc_range_srv[2].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 2); // t2 メタルとラフネス
 
 
 	// ルートパラメータ
@@ -783,7 +784,7 @@ void PipelineManager::CreateDeferredPpline(ComPtr<ID3D12Device> dev)
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
 		{
-			"TEXCORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
+			"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		}

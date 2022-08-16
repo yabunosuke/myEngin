@@ -39,9 +39,9 @@ void AbstractScene::PreDrawPostEffect(Microsoft::WRL::ComPtr<ID3D12Device>dev, M
 	post_effect_->PreDraw(cmd_list);
 }
 
-void AbstractScene::DrawMulutiRenderTarget(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list)
+void AbstractScene::DrawMulutiRenderTarget(Microsoft::WRL::ComPtr<ID3D12Device>dev, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list)
 {
-	muluti_render_target_->DrawRenderTarget(cmd_list);
+	muluti_render_target_->DrawRenderTarget(cmd_list,dev);
 }
 
 void AbstractScene::PostDrawPoseEffect(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list)
