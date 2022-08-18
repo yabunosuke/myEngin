@@ -139,7 +139,7 @@ void MulutiRenderTarget::InitializeMulutiRenderTarget(ComPtr<ID3D12Device> dev)
 	// RTV
 	D3D12_DESCRIPTOR_HEAP_DESC rtv_descriptor_heap_desc{};
 	rtv_descriptor_heap_desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
-	rtv_descriptor_heap_desc.NumDescriptors = buffer_count_;	// —e—Ê‚ð“ñ‚Â•ª‚É
+	rtv_descriptor_heap_desc.NumDescriptors = buffer_count_;	// —e—Ê‚ð6‚Â•ª‚É
 	result = dev->CreateDescriptorHeap(&rtv_descriptor_heap_desc, IID_PPV_ARGS(&descriputor_heap_RTV_));
 	assert(SUCCEEDED((result)));
 

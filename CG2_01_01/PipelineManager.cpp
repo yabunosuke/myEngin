@@ -168,8 +168,21 @@ void PipelineManager::CreateGBufferPipline(ComPtr<ID3D12Device> dev)
 	// 図形の形状設定（三角形）
 	gpipeline.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
-	gpipeline.NumRenderTargets = 1;    // 描画対象は1つ
-	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0～255指定のRGBA
+	
+	gpipeline.NumRenderTargets = 6;	// 描画対象は6つ
+	// カラー
+	gpipeline.RTVFormats[static_cast<int>(RenderName::color)] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	// ノーマル
+	gpipeline.RTVFormats[static_cast<int>(RenderName::normal)] = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	// メタルラフネス
+	gpipeline.RTVFormats[static_cast<int>(RenderName::metal_roughness)] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	// 深度
+	gpipeline.RTVFormats[static_cast<int>(RenderName::depth)] = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	// ワールド座標
+	gpipeline.RTVFormats[static_cast<int>(RenderName::world_position)] = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	// id
+	gpipeline.RTVFormats[static_cast<int>(RenderName::id)] = DXGI_FORMAT_R16G16B16A16_FLOAT;
+
 	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
 
 	// デスクリプタレンジ(テクスチャを四枚まで)

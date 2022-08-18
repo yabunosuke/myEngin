@@ -32,9 +32,10 @@ float4 main(VSOutput input) : SV_TARGET
 		float3 diffuse = float3(0.8, 0.8, 0.8) * float3(1, 1, 1) * saturate(power);
 
 		output_color = float4(color_tex.rgb * diffuse, 1);
+		
 
 		return pow(output_color, 1.0f / 2.2f);
 	}
 
-	return float4(0, 1, 0, 1);
+	return float4(1, 1, 0, 1);
 }

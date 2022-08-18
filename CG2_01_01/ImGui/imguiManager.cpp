@@ -37,6 +37,8 @@ bool imguiManager::Initialize()
 		assert(0);
 		return false;
 	}
+	auto &io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 	//ウィンドウズ用初期化
 	bool blnResult = ImGui_ImplWin32_Init(WinApp::GetHwnd());
