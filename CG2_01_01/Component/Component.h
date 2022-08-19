@@ -10,6 +10,16 @@
 
 class GameObject;
 
+enum class ComponentID
+{
+	RigitBody,	
+	None,
+	Sqript,
+	TRANSFORM,
+	LIGHT,
+	Mesh,
+};
+
 class Component
 {
 protected: // エイリアス
@@ -49,6 +59,18 @@ public:
 	/// </summary>
 	void ImGuiDraw();
 
+
+	// コンポーネント比較演算子
+	bool operator <(const Component &component) const{
+		return static_cast<int>(component_id_) < static_cast<int>(component.component_id_);
+	}
+	bool operator == (const Component &component) const {
+		return static_cast<int>(component_id_) == static_cast<int>(component.component_id_);
+	}
+	bool operator != (const Component &component) const {
+		return static_cast<int>(component_id_) != static_cast<int>(component.component_id_);
+	}
+
 	void SetParent(GameObject *obj) { parent = obj; }
 
 
@@ -64,7 +86,7 @@ public:	//ゲッター＆セッタ
 	std::string GetTag() { return tag; }
 
 protected:	//関数
-	Component(std::string name,bool dontRemove = false);
+	Component(std::string name, ComponentID component_id,bool dontRemove = false);
 
 	/// <summary>
 	/// 初期化
@@ -107,6 +129,8 @@ private:
 	std::string tag = "";
 	// 削除不可
 	bool isDontRemove;
+	//
+	ComponentID component_id_ = ComponentID::None;
 	
 };
 

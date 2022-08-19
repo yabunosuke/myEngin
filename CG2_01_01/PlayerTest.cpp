@@ -95,13 +95,13 @@ void PlayerTest::Update()
 
 
 	// 回転デバッグ
-	if (KeyboardInput::GetIns()->GetKeyPress(DIK_Q)) {
+	/*if (KeyboardInput::GetIns()->GetKeyPress(DIK_Q)) {
 		transform_->rotate.y -= 1.0f;
 	}
 	if (KeyboardInput::GetIns()->GetKeyPress(DIK_E)) {
 		transform_->rotate.y += 1.0f;
 
-	}
+	}*/
 
 	if (KeyboardInput::GetIns()->GetKeyPressT(DIK_SPACE)) {
 		isRifle = !isRifle;

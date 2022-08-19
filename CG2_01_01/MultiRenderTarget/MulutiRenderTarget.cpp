@@ -1,8 +1,7 @@
 #include "MulutiRenderTarget.h"
 #include "WinAPP.h"
 #include  "PipelineManager.h"
-
-#include "KeyboardInput.h"
+#include "ConstantBufferLapper/ConstantBufferManager.h"
 #include "DirectXCommon.h"
 
 const int MulutiRenderTarget::buffer_count_;
@@ -43,16 +42,6 @@ void MulutiRenderTarget::InitializeMulutiRenderTarget(ComPtr<ID3D12Device> dev)
 	vertex_buffer_view_.SizeInBytes = sizeof(VertexPosUv) * 4;
 	vertex_buffer_view_.StrideInBytes = sizeof(VertexPosUv);
 
-
-	// 定数バッファの生成
-	result = dev->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), 	// アップロード可能
-		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff) & ~0xff),
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&constant_buffer_));
-	assert(SUCCEEDED(result));
 
 #pragma region 画像生成
 
@@ -101,7 +90,7 @@ void MulutiRenderTarget::InitializeMulutiRenderTarget(ComPtr<ID3D12Device> dev)
 	D3D12_DESCRIPTOR_HEAP_DESC srvDescHeapDesc{};
 	srvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	srvDescHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	srvDescHeapDesc.NumDescriptors = 6;
+	srvDescHeapDesc.NumDescriptors = buffer_count_;
 	//SRVデスクリプタヒープ生成
 	result = dev->CreateDescriptorHeap(&srvDescHeapDesc, IID_PPV_ARGS(&descriputor_heap_SRV_));
 	
@@ -114,12 +103,7 @@ void MulutiRenderTarget::InitializeMulutiRenderTarget(ComPtr<ID3D12Device> dev)
 	srv_desc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
 	srv_desc.Texture1D.MipLevels = 1;
 
-	//シェーダーリソースビュー作成
-	//dev->CreateShaderResourceView(
-	//	texture_buffer_[0].Get(),	//ビューと関連付けるバッファ
-	//	&srv_desc,						//テクスチャ設定情報
-	//	descriputor_heap_SRV_->GetCPUDescriptorHandleForHeapStart()
-	//);
+	
 	for (int i = 0; i < buffer_count_; ++i)
 	{
 		//シェーダーリソースビュー作成
@@ -215,27 +199,6 @@ void MulutiRenderTarget::InitializeMulutiRenderTarget(ComPtr<ID3D12Device> dev)
 	vertex_buffer_view_.SizeInBytes = sizeof(VertexPosUv) * 4;
 	vertex_buffer_view_.StrideInBytes = sizeof(VertexPosUv);
 
-	// 定数バッファの生成
-	result = dev->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), 	// アップロード可能
-		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff) & ~0xff),
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&constant_buffer_));
-	if (FAILED(result)) {
-		assert(0);
-	}
-
-	// 定数バッファにデータ転送
-	ConstBufferData *constMap = nullptr;
-	result = constant_buffer_->Map(0, nullptr, (void **)&constMap);
-	if (SUCCEEDED(result)) {
-		constMap->color = {1,1,1,1};
-		//constMap->mat = matProjection;
-		constant_buffer_->Unmap(0, nullptr);
-	}
-
 }
 
 void MulutiRenderTarget::PreDrawScene(ComPtr<ID3D12Device> dev,ComPtr<ID3D12GraphicsCommandList> cmd_list)
@@ -292,18 +255,7 @@ void MulutiRenderTarget::PreDrawScene(ComPtr<ID3D12Device> dev,ComPtr<ID3D12Grap
 
 void MulutiRenderTarget::DrawRenderTarget(ComPtr<ID3D12GraphicsCommandList> cmd_list, ComPtr<ID3D12Device> dev)
 {
-	static int tex = 0;
-	if(KeyboardInput::GetIns()->GetKeyPressT(DIK_1))
-	{
-		tex = (tex + 1) % 6;
-		
-	}
-
-
-	static float time = 0.0f;
-	time += 1.0f / 60.0f;
-	if (time > 2.0f)time = 0.0f;
-
+	
 	//頂点バッファへのデータ転送
 	HRESULT result = S_FALSE;
 	// 左下、左上、右下、右上
@@ -329,6 +281,9 @@ void MulutiRenderTarget::DrawRenderTarget(ComPtr<ID3D12GraphicsCommandList> cmd_
 	vertices[RT].uv = { 1,	0 }; // 右上
 
 
+	// パイプラインセット
+	PipelineManager::GetInstance()->SetPipline(cmd_list, "Deferred");
+
 	// 頂点バッファへのデータ転送
 	VertexPosUv *vertMap = nullptr;
 	result = vertex_buffer_->Map(0, nullptr, (void **)&vertMap);
@@ -338,18 +293,14 @@ void MulutiRenderTarget::DrawRenderTarget(ComPtr<ID3D12GraphicsCommandList> cmd_
 	}
 
 	// 定数バッファにデータ転送
-	ConstBufferData *constMap = nullptr;
-	result = this->constant_buffer_->Map(0, nullptr, (void **)&constMap);
-	if (SUCCEEDED(result)) {
-		constMap->color = {1,1,1,1};
-		constMap->mat = DirectX::XMMatrixOrthographicOffCenterLH(
-			0.0f, static_cast<float>(WinApp::windowWidth), static_cast<float>(WinApp::windowHeight), 0.0f, 0.0f, 1.0f);	// 行列の合成
-		this->constant_buffer_->Unmap(0, nullptr);
-	}
-
+	TestBuffer constMap;
+	constMap.mat = DirectX::XMMatrixOrthographicOffCenterLH(
+		0.0f,
+		static_cast<float>(WinApp::windowWidth),
+		static_cast<float>(WinApp::windowHeight), 0.0f, 0.0f, 1.0f);	// 行列の合成
+	ConstantBufferManager::GetInstance()->BufferTransfer<TestBuffer>(cmd_list,0,1, BufferName::Test, &constMap);
 	
-	// パイプラインセット
-	PipelineManager::GetInstance()->SetPipline(cmd_list, "Deferred");
+	
 	// プリミティブ形状を設定
 	cmd_list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 	// 頂点バッファの設定
@@ -360,10 +311,12 @@ void MulutiRenderTarget::DrawRenderTarget(ComPtr<ID3D12GraphicsCommandList> cmd_
 	};
 	cmd_list->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	// 定数バッファビューをセット
-	cmd_list->SetGraphicsRootConstantBufferView(0, this->constant_buffer_->GetGPUVirtualAddress());
+	//ConstantBufferManager::GetInstance()->SetBuffer(cmd_list, 1, BufferName::Test);
+	//cmd_list->SetGraphicsRootConstantBufferView(1, this->constant_buffer_->GetGPUVirtualAddress());
 	// シェーダリソースビューをセット
 
-	cmd_list->SetGraphicsRootDescriptorTable(1,
+	cmd_list->SetGraphicsRootDescriptorTable(
+		0,
 		CD3DX12_GPU_DESCRIPTOR_HANDLE(
 			descriputor_heap_SRV_->GetGPUDescriptorHandleForHeapStart(), 0,
 			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV))

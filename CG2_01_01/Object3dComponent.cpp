@@ -4,7 +4,7 @@
 #include "yMath.h"
 
 Object3dComponent::Object3dComponent(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cmd_list, const char *file_path):
-	Component("Object3d", true)
+	Component("Object3d", ComponentID::Mesh, true)
 {
 	this->dev = dev;
 	this->cmd_list = cmd_list;

@@ -13,7 +13,7 @@
 #include "PipelineManager.h"
 
 
-bool SystemMain::Initialize() const
+bool SystemMain::Initialize()
 {
 	WinApp::WindowCreate();				//ウィンドウ生成
 	DirectXCommon::Initialize();		//DirectX初期化
@@ -36,7 +36,10 @@ bool SystemMain::Initialize() const
 
 	AudioManager::Initialize();
 	//ModelLoader::GetInstance()->CreatePrimitivAll(DirectXCommon::dev.Get());
-	ModelManager::GetIns()->AllLoad();			//モデル読み込み
+	//ModelManager::GetIns()->AllLoad();			//モデル読み込み
+
+	// バッファマネージャ生成
+	constant_buffer_manager_ = new ConstantBufferManager(DirectXCommon::dev);
 
 	return true;
 }

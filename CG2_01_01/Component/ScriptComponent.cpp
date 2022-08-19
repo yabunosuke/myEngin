@@ -3,7 +3,7 @@
 
 
 ScriptComponent::ScriptComponent(std::string script_name) :
-	Component("Script", true),
+	Component("Script", ComponentID::Sqript),
 	script_name_(script_name)
 {
 }

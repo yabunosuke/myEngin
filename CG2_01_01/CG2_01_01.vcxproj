@@ -196,13 +196,17 @@
     <ClCompile Include="Component\ColliderComponent.cpp" />
     <ClCompile Include="Component\Component.cpp" />
     <ClCompile Include="Component\LightComponent.cpp" />
+    <ClCompile Include="Component\Light\LightManager.cpp" />
     <ClCompile Include="Component\ScriptComponent.cpp" />
+    <ClCompile Include="ConstantBufferLapper\ConstantBufferLapper.cpp" />
+    <ClCompile Include="ConstantBufferLapper\ConstantBufferManager.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imguiManager.cpp" />
+    <ClCompile Include="ImGui\ImGuizmo.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
     <ClCompile Include="ImGui\imgui_draw.cpp" />
     <ClCompile Include="ImGui\imgui_impl_dx12.cpp" />
@@ -477,7 +481,10 @@
     <ClInclude Include="Component\ColliderComponent.h" />
     <ClInclude Include="Component\Component.h" />
     <ClInclude Include="Component\LightComponent.h" />
+    <ClInclude Include="Component\Light\LightManager.h" />
     <ClInclude Include="Component\ScriptComponent.h" />
+    <ClInclude Include="ConstantBufferLapper\ConstantBufferLapper.h" />
+    <ClInclude Include="ConstantBufferLapper\ConstantBufferManager.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="GameObject.h" />
@@ -485,6 +492,7 @@
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
     <ClInclude Include="ImGui\imguiManager.h" />
+    <ClInclude Include="ImGui\ImGuizmo.h" />
     <ClInclude Include="ImGui\imgui_impl_dx12.h" />
     <ClInclude Include="ImGui\imgui_impl_win32.h" />
     <ClInclude Include="ImGui\imgui_internal.h" />
@@ -500,6 +508,7 @@
     <ClInclude Include="Scene\AbstractScene\AbstractScene.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TransformComponent.h" />
+    <ClInclude Include="ConstantBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\3d\Ads.hlsli" />

@@ -6,7 +6,7 @@
 #include "Collider/OBBCollider.h"
 
 ColliderComponent::ColliderComponent(AbstractScene *scene, CollisionShapeType type):
-	Component("Collider"),
+	Component("Collider", ComponentID::None),
 	type_(type)
 {
 	switch (type)

@@ -35,7 +35,7 @@ public:
 	/// </summary>
 	void DrawInspector();
 	/// <summary>
-	/// インスペクター描画
+	/// マルチレンダー描画
 	/// </summary>
 	void DrawMulutiRender();
 

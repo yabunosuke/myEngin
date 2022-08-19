@@ -18,10 +18,98 @@ static float ChangeDegree360(float deg) {
 static float RadToDeg(float rad) {
 	return rad * (180.0f / XM_PI);
 }
+static XMFLOAT3 RadToDeg(const DirectX::XMFLOAT3 &rad) {
+	XMFLOAT3 deg = {
+		rad.x *(180.0f / XM_PI),
+		rad.y *(180.0f / XM_PI),
+		rad.z *(180.0f / XM_PI),
+	};
+
+	return deg;
+}
+
 //度→ラジアン
 static float DegToRad(float deg) {
 	return deg * (XM_PI / 180.0f);
 }
+static XMFLOAT3 DegToRad(const DirectX::XMFLOAT3 &deg) {
+	XMFLOAT3 rad = {
+		deg.x *(XM_PI / 180.0f),
+		deg.y *(XM_PI / 180.0f),
+		deg.z *(XM_PI / 180.0f)
+	};
+
+	return rad;
+}
+
+// 近似かどうかチェック
+static bool Approximately(float a, float b, float tolerance = 0.01f)
+{
+	float difference = a - b;
+	if (fabsf(difference) < tolerance)
+	{
+		return true;
+	}
+	return false;
+}
+
+// クオータニオン→オイラー
+static XMFLOAT3 QuaternionToEuler(const XMFLOAT4 &quaternion)
+{
+	XMFLOAT4 q = quaternion;
+	float x = q.x;
+	float y = q.y;
+	float z = q.z;
+	float w = q.w;
+
+	float x2 = x * x;
+	float y2 = y * y;
+	float z2 = z * z;
+
+	float xy = x * y;
+	float xz = x * z;
+	float yz = y * z;
+	float wx = w * x;
+	float wy = w * y;
+	float wz = w * z;
+
+	float m00 = 1.0f - (2.0f * y2) - (2.0f * z2);
+	float m01 = (2.0f * xy) + (2.0f * wz);
+	float m10 = (2.0f * xy) - (2.0f * wz);
+	float m11 = 1.0f - (2.0f * x2) - (2.0f * z2);
+	float m20 = (2.0f * xz) + (2.0f * wy);
+	float m21 = (2.0f * yz) - (2.0f * wx);
+	float m22 = 1.0f - (2.0f * x2) - (2.0f * y2);
+
+	float tx, ty, tz;
+
+	if (Approximately(m21, 1.0f))
+	{
+		tx = XM_PI / 2.0f;
+		ty = 0;
+		tz = atan2(m10, m00);
+	}
+	else if (Approximately(m21, -1.0f))
+	{
+		tx = -XM_PI / 2.0f;
+		ty = 0;
+		tz = atan2(m10, m00);
+	}
+	else
+	{
+		tx = asin(-m21);
+		ty = atan2(m20, m22);
+		tz = atan2(m01, m11);
+	}
+
+	tx = RadToDeg(tx);
+	ty = RadToDeg(ty);
+	tz = RadToDeg(tz);
+	
+	return XMFLOAT3(tx, ty, tz);
+}
+
+
 
 //向きベクトルから壁ずりベクトルへ変換
 static Vector3 CalcWallScratchVector(const Vector3 &moveVec, const Vector3 &normal, Vector3 *scratchNormalVec = nullptr) {

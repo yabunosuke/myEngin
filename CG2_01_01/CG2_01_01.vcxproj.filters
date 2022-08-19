@@ -93,9 +93,6 @@
     <ClCompile Include="Component\Component.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="Component\LightComponent.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="Component\ColliderComponent.cpp">
       <Filter>Component</Filter>
     </ClCompile>
@@ -129,8 +126,19 @@
     <ClCompile Include="ImGui\imguiManager.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="MultiRenderTarget\MulutiRenderTarget.cpp">
-      <Filter>Shader\3d\GBuffer</Filter>
+    <ClCompile Include="ImGui\ImGuizmo.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\LightComponent.cpp">
+      <Filter>Component\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\Light\LightManager.cpp" />
+    <ClCompile Include="MultiRenderTarget\MulutiRenderTarget.cpp" />
+    <ClCompile Include="ConstantBufferLapper\ConstantBufferLapper.cpp">
+      <Filter>ConstantBufferManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBufferLapper\ConstantBufferManager.cpp">
+      <Filter>ConstantBufferManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,9 +196,6 @@
     <ClInclude Include="Component\Component.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="Component\LightComponent.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="Component\ColliderComponent.h">
       <Filter>Component</Filter>
     </ClInclude>
@@ -227,8 +232,22 @@
     <ClInclude Include="ImGui\imstb_truetype.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="MultiRenderTarget\MulutiRenderTarget.h">
-      <Filter>Shader\3d\GBuffer</Filter>
+    <ClInclude Include="ImGui\ImGuizmo.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\LightComponent.h">
+      <Filter>Component\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Light\LightManager.h" />
+    <ClInclude Include="MultiRenderTarget\MulutiRenderTarget.h" />
+    <ClInclude Include="ConstantBufferLapper\ConstantBufferLapper.h">
+      <Filter>ConstantBufferManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBufferLapper\ConstantBufferManager.h">
+      <Filter>ConstantBufferManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffer.h">
+      <Filter>ConstantBufferManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -283,6 +302,12 @@
     </Filter>
     <Filter Include="Shader\3d\GBuffer">
       <UniqueIdentifier>{78e17c48-f1f1-4d1a-a8e3-c11914db4dd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Light">
+      <UniqueIdentifier>{4d82daf8-73cd-4bca-b2e5-3b7ca64206ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ConstantBufferManager">
+      <UniqueIdentifier>{4b06ebc0-7122-4445-ae2a-40faa339a3a0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

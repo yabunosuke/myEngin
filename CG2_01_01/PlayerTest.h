@@ -8,7 +8,7 @@ class PlayerTest :
 {
 public:
 	PlayerTest();
-
+	
 	void OnCollisionEnter() override;
 private:
 	/// <summary>

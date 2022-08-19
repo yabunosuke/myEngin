@@ -51,7 +51,7 @@ private:
 	//トランスフォームコンポーネント追加
 	void addTransform(GameObject *object) {object->AddComponent<TransformComponent>();}
 	//ライトコンポーネント追加
-	void addLight(GameObject *object) { object->AddComponent<LightComponent>(); }
+	//void addLight(GameObject *object) { object->AddComponent<LightComponent>(); }
 	//トランスフォームコンポーネント追加
 	void addColision(GameObject *object) { object->AddComponent<TransformComponent>(); }
 	//トランスフォームコンポーネント追加

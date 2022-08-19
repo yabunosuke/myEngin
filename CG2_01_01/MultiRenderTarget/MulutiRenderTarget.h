@@ -52,17 +52,18 @@ private:
 		XMFLOAT2 uv;	//uv座標
 	};
 
-	// 定数バッファ用データ構造体
-	struct ConstBufferData {
-		XMFLOAT4 color; //色(RGBA)
-		XMMATRIX mat;	//3D変換行列
-	};
+	//// 定数バッファ用データ構造体
+	//struct ConstBufferData {
+	//	XMMATRIX mat;	//3D変換行列
+	//};
+
 
 
 
 
 	// 定数バッファ
-	ComPtr<ID3D12Resource> constant_buffer_;
+	//ComPtr<ID3D12Resource> constant_buffer_;
+
 	// 頂点バッファ
 	ComPtr<ID3D12Resource> vertex_buffer_;
 	// 頂点バッファビュー

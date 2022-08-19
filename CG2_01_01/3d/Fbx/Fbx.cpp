@@ -2,6 +2,7 @@
 #include "PipelineManager.h"
 #include "Camera.h"
 #include "Texture.h"
+#include "ConstantBufferLapper/ConstantBufferManager.h"
 
 Fbx::Fbx(ID3D12Device *dev, const char *file_path)
 {
@@ -37,30 +38,6 @@ Fbx::Fbx(ID3D12Device *dev, const char *file_path)
 	};
 
 	UpdateTransform(transform);
-
-	// シーン定数バッファの生成
-	HRESULT result;
-	/*result = dev->CreateCommittedResource
-	(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
-		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(SceneConstantBuffer) + 0xff) & ~0xff),
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&scene_constant_buffer_)
-	);*/
-
-	// カメラ定数バッファの生成
-	result = dev->CreateCommittedResource
-	(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
-		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(CameraConstantBuffer) + 0xff) & ~0xff),
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&camera_constant_buffer_)
-	);
-
 }
 
 void Fbx::UpdateTransform(const XMFLOAT4X4 &transform)
@@ -101,23 +78,17 @@ void Fbx::Draw(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cmd_l
 		// パイプラインステートとルートシグネチャ設定
 		PipelineManager::GetInstance()->SetPipline(cmd_list,mesh.pipline_name);
 
-		//カメラバッファをセット
-		cmd_list->SetGraphicsRootConstantBufferView(0, camera_constant_buffer_->GetGPUVirtualAddress());
-		CameraConstantBuffer *camera_constant_buffer_map = nullptr;
-		result = camera_constant_buffer_->Map(0, nullptr, (void **)&camera_constant_buffer_map);
-		if (SUCCEEDED(result))
-		{
-			camera_constant_buffer_map->view_position = {
+		//カメラバッファを転送、セット
+		CameraConstantBuffer camera_constant_buffer_map;
+		camera_constant_buffer_map.view_position = {
 				Camera::GetCam()->eye.x,
 				Camera::GetCam()->eye.y,
 				Camera::GetCam()->eye.z,
 				1.0f
-			};
-			DirectX::XMStoreFloat4x4(&camera_constant_buffer_map->view_projection, Camera::GetCam()->GetViewProjectionMatrix());
-			DirectX::XMStoreFloat4x4(&camera_constant_buffer_map->inv_view_projection, XMMatrixInverse(nullptr, Camera::GetCam()->GetViewProjectionMatrix()));
-
-			camera_constant_buffer_->Unmap(0, nullptr);
-		}
+		};
+		DirectX::XMStoreFloat4x4(&camera_constant_buffer_map.view_projection, Camera::GetCam()->GetViewProjectionMatrix());
+		DirectX::XMStoreFloat4x4(&camera_constant_buffer_map.inv_view_projection, XMMatrixInverse(nullptr, Camera::GetCam()->GetViewProjectionMatrix()));
+		ConstantBufferManager::GetInstance()->BufferTransfer<CameraConstantBuffer>(cmd_list, 0, 0, BufferName::Camera, &camera_constant_buffer_map);
 
 
 		// メッシュ定数バッファをセット

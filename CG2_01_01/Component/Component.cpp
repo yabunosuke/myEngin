@@ -30,11 +30,12 @@ void Component::CheckFinalize()
 	ComponentFinalize();
 }
 
-Component::Component(std::string name, bool dontRemove):
+Component::Component(std::string name, ComponentID component_id, bool dontRemove):
 	name(name),
 	isActive(true),
 	isDontRemove(dontRemove),
-	isRemove(false)
+	isRemove(false),
+	component_id_(component_id)
 {
 }
 

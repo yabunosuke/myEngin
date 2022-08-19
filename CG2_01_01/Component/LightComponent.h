@@ -1,23 +1,34 @@
 #pragma once
 #include "Component/Component.h"
 
+enum class TYPE
+{
+	DIRECTIONAL,	// 平行光源
+	POINT,			// ポイントライト
+	SPOT,			// スポットライト
+};
+
 class LightComponent :
     public Component
 {
-private: // サブクラス
-	enum class TYPE
-	{
-		SPOT,
-		DIRECTIONAL,
-		POINT
-	};
 public:
-	LightComponent(XMFLOAT4 color = {1,1,1,1});
+	LightComponent(
+		const TYPE &type,
+		const XMFLOAT3 &color,
+		const float &power,
+		const float &range
+		);
 	void Infomation() override;
 
 
 private:
-	XMFLOAT4 color;
-	TYPE type;
+	// ライトの種類
+	TYPE type_;
+	// 色
+	XMFLOAT3 color_;
+	// 強さ
+	float power_;
+	// 長さ
+	float range_;
 };
 

@@ -854,9 +854,13 @@ void PipelineManager::CreateDeferredPpline(ComPtr<ID3D12Device> dev)
 	}
 
 	// ルートパラメータ
-	CD3DX12_ROOT_PARAMETER rootparams[2] = {};
-	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
-	rootparams[1].InitAsDescriptorTable(_countof(descRangeSRV), descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
+	CD3DX12_ROOT_PARAMETER rootparams[3] = {};
+	// 画像データ
+	rootparams[0].InitAsDescriptorTable(_countof(descRangeSRV), descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
+	// いらないバッファ、後で消す
+	rootparams[1].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
+	// ライト用バッファ
+	rootparams[2].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
 
 	// スタティックサンプラー
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0, D3D12_FILTER_MIN_MAG_MIP_POINT); // s0 レジスタ

@@ -4,6 +4,7 @@
 #include <stack>
 #include <memory>
 #include "ImGui/imguiManager.h"
+#include "ImGui/ImGuizmo.h"
 #include "Editor.h"
 
 using namespace std;

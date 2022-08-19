@@ -15,9 +15,13 @@ public:
 	/// “–‚½‚Á‚½uŠÔ‚¾‚¯ˆ—
 	/// </summary>
 	virtual void OnCollisionEnter() {};
-	// ‚·‚è”²‚¯‚½‚Æ‚«—p
+	/// <summary>
+	/// “–‚½‚Á‚½uŠÔ‚¾‚¯ˆ—
+	/// </summary>
 	virtual void OnTriggerEnter() {};
-	// “–‚½‚Á‚Ä‚¢‚é‚Æ‚«—p
+	/// <summary>
+	/// “–‚½‚Á‚½uŠÔ‚¾‚¯ˆ—
+	/// </summary>
 	virtual void OnCollisionStay() {};
 
 

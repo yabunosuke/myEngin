@@ -175,6 +175,7 @@ inline T *GameObject::AddComponent(Args ...args)
 	component_list_.emplace_back(buff);
 	buff->CheckInitialize();
 
+	component_list_.sort();
 
 	return buff;
 }

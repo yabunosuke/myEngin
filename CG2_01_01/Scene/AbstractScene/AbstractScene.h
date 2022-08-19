@@ -75,6 +75,7 @@ protected:
 	CollisionManager collision_manager_;
 	// ポストエフェクト
 	std::unique_ptr<PostEffect> post_effect_;
+	// マルチレンダーターゲット
 	std::unique_ptr<MulutiRenderTarget> muluti_render_target_;
 
 private:
