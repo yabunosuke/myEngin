@@ -1,5 +1,6 @@
 #pragma once
 #include "Component/ScriptComponent.h"
+#include "Component/Transform.h"
 
 #include "3d/Fbx/Fbx.h"
 
@@ -32,7 +33,8 @@ private:
 	/// </summary>
 	void Finalize() override;
 
-
+	// 座標
+	Transform *transform_;
 
 	// アニメーションステート
 	enum class AnimationState {

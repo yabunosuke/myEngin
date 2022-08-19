@@ -1,5 +1,5 @@
 #include "SphereCollider.h"
-#include "TransformComponent.h"
+#include "Component/Transform.h"
 #include "PrimitiveRenderer.h"
 
 using namespace DirectX;
@@ -8,8 +8,8 @@ void SphereCollider::Update()
 {
 	// ワールド行列から座標を抽出
 	XMMATRIX matWorld = XMMatrixIdentity();
-	if (object->GetComponent<TransformComponent>() != nullptr) {
-		matWorld = object->GetComponent<TransformComponent>()->GetMatrix();
+	if (object->GetComponent<Transform>() != nullptr) {
+		matWorld = object->GetComponent<Transform>()->GetMatrix();
 	}
 	
 	// 球のメンバ変数を更新

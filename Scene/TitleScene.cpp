@@ -14,6 +14,8 @@
 // コンポーネント
 #include "Object3dComponent.h"
 #include "Component/ColliderComponent.h"
+#include "Component/LightComponent.h"
+#include "Component/Rigidbody.h"
 #include "PlayerTest.h"
 
 TitleScene::TitleScene(IoChangedListener *impl)
@@ -25,15 +27,17 @@ TitleScene::TitleScene(IoChangedListener *impl)
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/UNIT/cube.004.fbx");
 	cube.lock().get()->AddComponent<ColliderComponent>(this);
-	//
-	auto test = game_object_manager_.CreateObject("plantune");
-	test.lock().get()->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/UNIT/plantune.fbx");
-	//"Assets/3d/test/human.fbx");
-	//"Assets/3d/Test/stage.fbx");
-	test.lock().get()->GetComponent<TransformComponent>()->SetScale({ 0.05f,0.05f ,0.05f });
-	test.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_OBB);
+	cube.lock().get()->AddComponent<LightComponent>();
+	cube.lock().get()->AddComponent<Rigidbody>();
+
+	//auto test = game_object_manager_.CreateObject("plantune");
+	//test.lock().get()->AddComponent<Object3dComponent>(
+	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+	//	"Assets/3d/UNIT/plantune.fbx");
+	////"Assets/3d/test/human.fbx");
+	////"Assets/3d/Test/stage.fbx");
+	//test.lock().get()->GetComponent<TransformComponent>()->SetScale({ 0.05f,0.05f ,0.05f });
+	//test.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_OBB);
 
 
 	auto player = game_object_manager_.CreateObject("human");
@@ -105,21 +109,10 @@ void TitleScene::Draw() const
 		{0,0,0},
 		{10,0,0}
 	};
-	static PrimitiveRenderer::Box box = {
-		{0,0,0},
-		{0,0,0},
-		{1,1,1},
-	};
-	ImGui::Begin("test");
-	ImGui::DragFloat3("tra", &box.translate.x);
-	ImGui::DragFloat3("rot", &box.rotate.x);
-	ImGui::DragFloat3("sca", &box.scale.x);
-	ImGui::End();
 
 	//PrimitiveRenderer::GetInstance().DrawLine(DirectXCommon::cmdList,line);
-	PrimitiveRenderer::GetInstance().DrawBox(DirectXCommon::cmdList, box);
+	//PrimitiveRenderer::GetInstance().DrawBox(DirectXCommon::cmdList, box);
 	game_object_manager_.Draw();
-	//test_sprite->Draw(DirectXCommon::dev, DirectXCommon::cmdList, "Sprite");
 
 
 	//ウィンドウ名定義
@@ -142,26 +135,5 @@ void TitleScene::Draw() const
 
 	//終了
 	ImGui::End();
-
-	////ウィンドウ名定義
-	//ImGui::Begin("ObjectShader");
-	//ImGui::SetWindowSize(
-	//	ImVec2(400, 500),
-	//	ImGuiCond_::ImGuiCond_FirstUseEver
-	//);
-	//for (int i = 0; i < _countof(object_shader_list_); ++i)
-	//{
-	//	if (ImGui::Button(object_shader_list_[i].c_str())) {
-	//		//post_effect_->shader_name_ = posteffect_shader_list_[i];
-	//	}
-	//	if (i % 4 != 0 || i == 0)
-	//	{
-	//		ImGui::SameLine();
-
-	//	}
-	//}
-
-	////終了
-	//ImGui::End();
 }
 

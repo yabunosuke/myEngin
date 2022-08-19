@@ -1,5 +1,5 @@
 #pragma once
-#include "ConstantBufferLapper/ConstantBufferManager.h"
+#include "ConstantBufferManager/ConstantBufferManager.h"
 class SystemMain final
 {
 public:

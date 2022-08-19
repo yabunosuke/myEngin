@@ -4,8 +4,8 @@
 void OBBCollider::Update()
 {
 	XMMATRIX matWorld = XMMatrixIdentity();
-	if (object->GetComponent<TransformComponent>() != nullptr) {
-		matWorld = object->GetComponent<TransformComponent>()->GetMatrix();
+	if (object->GetComponent<Transform>() != nullptr) {
+		matWorld = object->GetComponent<Transform>()->GetMatrix();
 	}
 
 	OBB::center = matWorld.r[3] + XMLoadFloat3(&offset_);

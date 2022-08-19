@@ -37,6 +37,7 @@ struct Vector3 : public XMFLOAT3 {
 		return *this;
 	}
 
+
 	Vector3 operator*=(const Vector3 &r) {
 		*this = *this * r;
 		return *this;

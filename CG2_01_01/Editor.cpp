@@ -1,8 +1,10 @@
 #include "Editor.h"
 #include "ImGui/imguiManager.h"
+#include "ImGui/ImGuizmo.h"
+#include "Camera.h"
 #include "FileManager.h"
 
-#include "TransformComponent.h"
+#include "Component/Transform.h"
 
 #include "ComponentList.h"
 
@@ -26,6 +28,7 @@ void Editor::Draw()
 	if(true)
 	{
 		DrawMulutiRender();
+
 	}
 
 	//ƒfƒ‚
@@ -286,6 +289,19 @@ void Editor::DrawMulutiRender()
 		ImVec2(400, 500),
 		ImGuiCond_::ImGuiCond_FirstUseEver
 	);
+
+
+	/*XMMATRIX test = XMMatrixIdentity();
+	ImGuizmo::DrawGrid(
+		Camera::GetCam()->GetViewMatrix().r->m128_f32,
+		Camera::GetCam()->GetProjectionMatrix().r->m128_f32,
+		test.r->m128_f32, 100);
+	*/
+
+	//ImGuizmo::DrawCubes(
+	//	Camera::GetCam()->GetViewMatrix().r->m128_f32,
+	//	Camera::GetCam()->GetProjectionMatrix().r->m128_f32,
+	//	test.r->m128_f32, 20);
 
 	ImGui::End();
 }

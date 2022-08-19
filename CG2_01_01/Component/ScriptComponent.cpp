@@ -10,8 +10,6 @@ ScriptComponent::ScriptComponent(std::string script_name) :
 
 void ScriptComponent::ComponentInitialize()
 {
-	// トランスフォーム取得
-	transform_ = parent->GetComponent<TransformComponent>()->GetTransform();
 	// キーボード取得
 	keybord = KeyboardInput::GetIns();
 

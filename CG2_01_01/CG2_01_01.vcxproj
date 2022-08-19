@@ -197,9 +197,11 @@
     <ClCompile Include="Component\Component.cpp" />
     <ClCompile Include="Component\LightComponent.cpp" />
     <ClCompile Include="Component\Light\LightManager.cpp" />
+    <ClCompile Include="Component\Rigidbody.cpp" />
     <ClCompile Include="Component\ScriptComponent.cpp" />
-    <ClCompile Include="ConstantBufferLapper\ConstantBufferLapper.cpp" />
-    <ClCompile Include="ConstantBufferLapper\ConstantBufferManager.cpp" />
+    <ClCompile Include="Component\Transform.cpp" />
+    <ClCompile Include="ConstantBufferManager\ConstantBufferLapper.cpp" />
+    <ClCompile Include="ConstantBufferManager\ConstantBufferManager.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -220,10 +222,8 @@
     <ClCompile Include="PipelineManager.cpp" />
     <ClCompile Include="PlayerTest.cpp" />
     <ClCompile Include="PrimitiveRenderer.cpp" />
-    <ClCompile Include="RigidbodyComponent.cpp" />
     <ClCompile Include="Scene\AbstractScene\AbstractScene.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shaders\3d\AdsPS.hlsl">
@@ -482,9 +482,11 @@
     <ClInclude Include="Component\Component.h" />
     <ClInclude Include="Component\LightComponent.h" />
     <ClInclude Include="Component\Light\LightManager.h" />
+    <ClInclude Include="Component\Rigidbody.h" />
     <ClInclude Include="Component\ScriptComponent.h" />
-    <ClInclude Include="ConstantBufferLapper\ConstantBufferLapper.h" />
-    <ClInclude Include="ConstantBufferLapper\ConstantBufferManager.h" />
+    <ClInclude Include="Component\Transform.h" />
+    <ClInclude Include="ConstantBufferManager\ConstantBufferLapper.h" />
+    <ClInclude Include="ConstantBufferManager\ConstantBufferManager.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="GameObject.h" />
@@ -504,10 +506,8 @@
     <ClInclude Include="PipelineManager.h" />
     <ClInclude Include="PlayerTest.h" />
     <ClInclude Include="PrimitiveRenderer.h" />
-    <ClInclude Include="RigidbodyComponent.h" />
     <ClInclude Include="Scene\AbstractScene\AbstractScene.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="ConstantBuffer.h" />
   </ItemGroup>
   <ItemGroup>

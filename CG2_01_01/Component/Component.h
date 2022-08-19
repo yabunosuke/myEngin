@@ -12,9 +12,9 @@ class GameObject;
 
 enum class ComponentID
 {
-	RigitBody,	
 	None,
 	Sqript,
+	RigitBody,	
 	TRANSFORM,
 	LIGHT,
 	Mesh,

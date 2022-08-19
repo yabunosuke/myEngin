@@ -1,6 +1,6 @@
 
 #include "GameObject.h"
-#include "TransformComponent.h"
+#include "Component/Transform.h"
 #include "ImGui/imguiManager.h"
 #include "BaseCollider.h"
 
@@ -16,7 +16,7 @@ GameObject::GameObject(const std::string &name) :
 {
 	//std::shared_ptr<TransformComponent> t = std::make_shared<TransformComponent>();
 	//AddComponent(t);
-	AddComponent<TransformComponent>();
+	AddComponent<Transform>();
 }
 
 void GameObject::Initialize()

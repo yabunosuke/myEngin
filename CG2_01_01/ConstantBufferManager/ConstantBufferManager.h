@@ -1,5 +1,5 @@
 #pragma once
-#include "ConstantBufferLapper/ConstantBufferLapper.h"
+#include "ConstantBufferManager/ConstantBufferLapper.h"
 #include <wrl.h>
 #include <vector>
 #include "ConstantBuffer.h"

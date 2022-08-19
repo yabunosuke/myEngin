@@ -1,7 +1,7 @@
 #include "MulutiRenderTarget.h"
 #include "WinAPP.h"
-#include  "PipelineManager.h"
-#include "ConstantBufferLapper/ConstantBufferManager.h"
+#include "PipelineManager.h"
+#include "ConstantBufferManager/ConstantBufferManager.h"
 #include "DirectXCommon.h"
 
 const int MulutiRenderTarget::buffer_count_;

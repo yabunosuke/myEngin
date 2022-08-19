@@ -2,7 +2,7 @@
 #include "Component/Component.h"
 
 #include "KeyboardInput.h"
-#include "TransformComponent.h"
+#include "Transform.h"
 
 
 class ScriptComponent :
@@ -52,7 +52,6 @@ protected:
 
 
 	// 継承先で直に使える数値
-	Transform *transform_;		// トランスフォーム
 	KeyboardInput *keybord;		// キーボード入力
 
 

@@ -1,5 +1,4 @@
 #include "GameObjectManager.h"
-
 void GameObjectManager::Initialize()
 {
 	//XV

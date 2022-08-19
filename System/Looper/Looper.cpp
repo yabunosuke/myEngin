@@ -25,6 +25,7 @@ bool Looper::Loop()
 	ImGui::NewFrame();
 	ImGuizmo::BeginFrame();
 	
+	
 	// 各種初期化
 	PrimitiveRenderer::GetInstance().FrameInitialize();	// プリミティブのバッファインデックス初期化
 

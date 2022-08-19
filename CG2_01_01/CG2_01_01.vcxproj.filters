@@ -78,9 +78,7 @@
     <ClCompile Include="PipelineManager.cpp" />
     <ClCompile Include="PlayerTest.cpp" />
     <ClCompile Include="PrimitiveRenderer.cpp" />
-    <ClCompile Include="RigidbodyComponent.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TransformComponent.cpp" />
     <ClCompile Include="3d\Fbx\Fbx.cpp">
       <Filter>FBX</Filter>
     </ClCompile>
@@ -134,11 +132,17 @@
     </ClCompile>
     <ClCompile Include="Component\Light\LightManager.cpp" />
     <ClCompile Include="MultiRenderTarget\MulutiRenderTarget.cpp" />
-    <ClCompile Include="ConstantBufferLapper\ConstantBufferLapper.cpp">
+    <ClCompile Include="ConstantBufferManager\ConstantBufferLapper.cpp">
       <Filter>ConstantBufferManager</Filter>
     </ClCompile>
-    <ClCompile Include="ConstantBufferLapper\ConstantBufferManager.cpp">
+    <ClCompile Include="ConstantBufferManager\ConstantBufferManager.cpp">
       <Filter>ConstantBufferManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\Transform.cpp">
+      <Filter>Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\Rigidbody.cpp">
+      <Filter>Component\Rigidbody</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -181,9 +185,7 @@
     <ClInclude Include="PipelineManager.h" />
     <ClInclude Include="PlayerTest.h" />
     <ClInclude Include="PrimitiveRenderer.h" />
-    <ClInclude Include="RigidbodyComponent.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="3d\Fbx\Fbx.h">
       <Filter>FBX</Filter>
     </ClInclude>
@@ -240,14 +242,20 @@
     </ClInclude>
     <ClInclude Include="Component\Light\LightManager.h" />
     <ClInclude Include="MultiRenderTarget\MulutiRenderTarget.h" />
-    <ClInclude Include="ConstantBufferLapper\ConstantBufferLapper.h">
-      <Filter>ConstantBufferManager</Filter>
-    </ClInclude>
-    <ClInclude Include="ConstantBufferLapper\ConstantBufferManager.h">
-      <Filter>ConstantBufferManager</Filter>
-    </ClInclude>
     <ClInclude Include="ConstantBuffer.h">
       <Filter>ConstantBufferManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBufferManager\ConstantBufferLapper.h">
+      <Filter>ConstantBufferManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBufferManager\ConstantBufferManager.h">
+      <Filter>ConstantBufferManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Transform.h">
+      <Filter>Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Rigidbody.h">
+      <Filter>Component\Rigidbody</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -308,6 +316,12 @@
     </Filter>
     <Filter Include="ConstantBufferManager">
       <UniqueIdentifier>{4b06ebc0-7122-4445-ae2a-40faa339a3a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Rigidbody">
+      <UniqueIdentifier>{f59d614d-d1fb-48a4-9e4e-fd847a29aeaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Transform">
+      <UniqueIdentifier>{e07596c2-9c32-458f-9501-dc4c7567705f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

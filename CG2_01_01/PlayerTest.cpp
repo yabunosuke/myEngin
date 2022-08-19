@@ -10,11 +10,14 @@ PlayerTest::PlayerTest():
 void PlayerTest::OnCollisionEnter()
 {
 	game_object->SetColor({1,0,0,1});
+
 }
 
 void PlayerTest::Initialize()
 {
-	transform_->scale = 0.2f;
+	// トランスフォーム
+	transform_ = parent->GetComponent<Transform>();
+	transform_->scale_ = {0.1f,0.1f ,0.1f};
 
 	game_object = parent->GetComponent<Object3dComponent>()->GetObjectData();
 
@@ -52,7 +55,7 @@ void PlayerTest::Update()
 	}
 	else {
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_W)) {
-			transform_->Translate(0, 0, 0.7f);
+			transform_->position_ += { 0, 0, 0.7f };
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK;
 			}
@@ -62,7 +65,7 @@ void PlayerTest::Update()
 			game_object->PlayAnimation(static_cast<int>(state));
 		}
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_S)) {
-			transform_->Translate(0, 0, -0.5f);
+			transform_->position_ += { 0, 0, -0.5f };
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_BACK;
 			}
@@ -72,7 +75,7 @@ void PlayerTest::Update()
 			game_object->PlayAnimation(static_cast<int>(state));
 		}
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_D)) {
-			transform_->Translate(1.8f, 0, 0);
+			transform_->position_ += { 1.8f, 0, 0 };
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_RIGHT;
 			}
@@ -82,7 +85,7 @@ void PlayerTest::Update()
 			game_object->PlayAnimation(static_cast<int>(state));
 		}
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_A)) {
-			transform_->Translate(-1.8f, 0, 0);
+			transform_->position_ += { -1.8f, 0, 0 };
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_LEFT;
 			}

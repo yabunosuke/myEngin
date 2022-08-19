@@ -1,5 +1,5 @@
 #include "Object3dComponent.h"
-#include "TransformComponent.h"
+#include "Component/Transform.h"
 #include "GameObject.h"
 #include "yMath.h"
 
@@ -19,7 +19,7 @@ void Object3dComponent::ComponentInitialize()
 void Object3dComponent::ComponentUpdate()
 {
 	XMFLOAT4X4 world;
-	DirectX::XMStoreFloat4x4(&world, parent->GetComponent<TransformComponent>()->GetMatrix());
+	DirectX::XMStoreFloat4x4(&world, parent->GetComponent<Transform>()->GetMatrix());
 
 	// アニメーション再生
 	object_fbx->UpdateAnimation();

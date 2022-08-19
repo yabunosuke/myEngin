@@ -38,7 +38,8 @@ bool imguiManager::Initialize()
 		return false;
 	}
 	auto &io = ImGui::GetIO();
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;	// ドッキング有効化
+	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;	// マルチウィンドウ有効化
 
 	//ウィンドウズ用初期化
 	bool blnResult = ImGui_ImplWin32_Init(WinApp::GetHwnd());
@@ -71,4 +72,9 @@ void imguiManager::Draw()
 		ImGui::GetDrawData(),
 		DirectXCommon::cmdList.Get()
 	);
+	if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
+	}
 }

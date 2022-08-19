@@ -1,36 +1,36 @@
-#include "TransformComponent.h"
+#include "Component/Transform.h"
 #include "yMath.h"
 #include "ImGui/ImGuizmo.h"
 #include  "Camera.h"
 
-TransformComponent::TransformComponent() :
-	Component("TRANSFORM",  ComponentID::TRANSFORM)
+Transform::Transform() :
+	Component("Transform",  ComponentID::TRANSFORM)
 {
 }
 
-void TransformComponent::Infomation()
+void Transform::Infomation()
 {
     // リセットボタン
     if(ImGui::Button("Reset"))
     {
-        transform_.position = { 0,0,0 };		// 座標
-        transform_.quaternion = { 0,1,0,0, };		// クオータニオン回転
-        transform_.scale = { 1,1,1 };		// 拡大
+        position_ = { 0,0,0 };		// 座標
+        quaternion_ = { 0,1,0,0, };		// クオータニオン回転
+        scale_ = { 1,1,1 };		// 拡大
 
         // 座標変換行列
         XMMATRIX S = DirectX::XMMatrixScaling(
-            transform_.scale.x,
-            transform_.scale.y,
-            transform_.scale.z
+            scale_.x,
+            scale_.y,
+            scale_.z
         );
         XMMATRIX R = DirectX::XMMatrixRotationQuaternion(
-            XMLoadFloat4(&transform_.quaternion)
+            XMLoadFloat4(&quaternion_)
         );
 
         XMMATRIX T = DirectX::XMMatrixTranslation(
-            transform_.position.x,
-            transform_.position.y,
-            transform_.position.z
+            position_.x,
+            position_.y,
+            position_.z
         );
         matrix_ = S * R * T;
     }
@@ -90,16 +90,16 @@ void TransformComponent::Infomation()
     //
     XMVECTOR scale, rotate, position;
     XMMatrixDecompose(&scale, &rotate, &position, matrix_);
-    transform_.scale = scale;
-    XMStoreFloat4(&transform_.quaternion,rotate);
-    transform_.position = position;
+    XMStoreFloat3(&scale_, scale);
+    XMStoreFloat4(&quaternion_,rotate);
+    XMStoreFloat3(&position_, position);
 
     // 座標
-    ImGui::DragFloat3("Position", (float *)&transform_.position);
+    ImGui::DragFloat3("Position", (float *)&position_);
     // 回転
-	XMFLOAT3 euler = QuaternionToEuler(transform_.quaternion);
+	XMFLOAT3 euler = QuaternionToEuler(quaternion_);
     ImGui::DragFloat3("Rotation", &euler.x);
-    XMStoreFloat4(&transform_.quaternion,
+    XMStoreFloat4(&quaternion_,
         XMQuaternionRotationRollPitchYaw(
             DegToRad(euler.x),
             DegToRad(euler.y),
@@ -107,27 +107,33 @@ void TransformComponent::Infomation()
         )
     );
     // スケール
-	ImGui::DragFloat3("Scale", (float *)&transform_.scale);
+	ImGui::DragFloat3("Scale", (float *)&scale_);
 
-
+    
 }
 
-void TransformComponent::ComponentUpdate()
+void Transform::ComponentUpdate()
 {
 	// 座標変換行列
 	XMMATRIX S = DirectX::XMMatrixScaling(
-		transform_.scale.x,
-		transform_.scale.y, 
-		transform_.scale.z
+		scale_.x,
+		scale_.y, 
+		scale_.z
 	);
 	XMMATRIX R = DirectX::XMMatrixRotationQuaternion(
-		XMLoadFloat4(&transform_.quaternion)
+		XMLoadFloat4(&quaternion_)
 	);
 
 	XMMATRIX T = DirectX::XMMatrixTranslation(
-		transform_.position.x, 
-		transform_.position.y,
-		transform_.position.z
+		position_.x, 
+		position_.y,
+		position_.z
 	);
 	matrix_ = S * R * T;
+}
+
+void Transform::ComponentDraw()
+{
+    XMMATRIX test = XMMatrixIdentity();
+    
 }

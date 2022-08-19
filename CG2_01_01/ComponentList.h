@@ -4,7 +4,7 @@
 #include <functional>
 #include "Component/Component.h"
 
-#include "TransformComponent.h"
+#include "Component/Transform.h"
 #include "Component/LightComponent.h"
 #include "Component/CameraComponent.h"
 
@@ -49,11 +49,11 @@ private:
 
 	void addDummy(GameObject *object) {};
 	//トランスフォームコンポーネント追加
-	void addTransform(GameObject *object) {object->AddComponent<TransformComponent>();}
+	void addTransform(GameObject *object) {object->AddComponent<Transform>();}
 	//ライトコンポーネント追加
 	//void addLight(GameObject *object) { object->AddComponent<LightComponent>(); }
 	//トランスフォームコンポーネント追加
-	void addColision(GameObject *object) { object->AddComponent<TransformComponent>(); }
+	void addColision(GameObject *object) { object->AddComponent<Transform>(); }
 	//トランスフォームコンポーネント追加
 	void addCamera(GameObject *object) { object->AddComponent<CameraComponent>(); }
 
