@@ -1,5 +1,5 @@
 #pragma once
-#include "Vector3.h"
+#include "Math/Vector3.h"
 #include "ModelManager.h"
 #include "Object3d.h"
 #include "CollisionInfo.h"

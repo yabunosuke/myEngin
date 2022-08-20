@@ -26,6 +26,7 @@ void Camera::UpdateViewMatrix()
 		XMLoadFloat3(&target), 
 		XMLoadFloat3(&up));
 	matViewProjection = matView * matProjection;
+
 }
 
 void Camera::UpdateProjectionMatrix()

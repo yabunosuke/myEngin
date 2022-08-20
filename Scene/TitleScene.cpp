@@ -4,7 +4,7 @@
 #include "CollisionManager.h"
 
 #include "Easing.h"
-#include "yMath.h"
+#include "Math/Mathf.h"
 //#include "Quaternion.h"
 
 #include "Texture.h"
@@ -39,7 +39,7 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	//test.lock().get()->GetComponent<TransformComponent>()->SetScale({ 0.05f,0.05f ,0.05f });
 	//test.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_OBB);
 
-
+	float a = Mathf::Max(1.0f, 6.0f, 2.0f, 3.0f);
 	auto player = game_object_manager_.CreateObject("human");
 	player.lock().get()->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(), 

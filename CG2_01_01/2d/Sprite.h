@@ -8,7 +8,7 @@
 
 #pragma comment(lib, "d3dcompiler.lib")
 
-#include "Vector3.h"
+#include "Math/Vector3.h"
 
 
 class Sprite

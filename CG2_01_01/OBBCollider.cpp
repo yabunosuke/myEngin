@@ -8,9 +8,9 @@ void OBBCollider::Update()
 		matWorld = object->GetComponent<Transform>()->GetMatrix();
 	}
 
-	OBB::center = matWorld.r[3] + XMLoadFloat3(&offset_);
+	center = matWorld.r[3] + XMLoadFloat3(&offset_);
 	
-	OBB::scale = scale_;
+	scale = scale_;
 }
 
 void OBBCollider::Draw()

@@ -1,5 +1,5 @@
 #pragma once
-#include "Vector3.h"
+#include "Math/Vector3.h"
 #include <DirectXMath.h>
 
 struct Sphere //球
@@ -52,9 +52,7 @@ struct Capsule //カプセル
 };
 
 
-//
-//後でAABBに修正する。
-//
+
 struct OBB //箱
 {
 	// 中心座標
@@ -62,7 +60,15 @@ struct OBB //箱
 	// 各軸の傾きを表すベクトル
 	XMVECTOR rotation;
 	// 各軸の大きさ
-	DirectX::XMFLOAT3 scale = { 1.0f, 1.0f, 1.0f };
+	XMFLOAT3 scale = { 1.0f, 1.0f, 1.0f };
+	
+	////中心座標
+	//DirectX::XMVECTOR centor = { 0,0,0 };
+	////方向ベクトル
+	//DirectX::XMVECTOR normalDirect[3];
+	////各軸方向の長さ
+	//XMFLOAT3 length;
+	
 };
 
 //軸並行境界ボックス

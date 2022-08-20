@@ -33,13 +33,13 @@ public:
 	/// </summary>
 	void Infomation() override;
 
-	inline const XMVECTOR& GetOffset() { return offset; }
+	const XMVECTOR& GetOffset() { return offset; }
 
-	inline void SetOffset(const XMVECTOR& offset) { this->offset = offset; }
+	void SetOffset(const XMVECTOR& offset) { this->offset = offset; }
 
-	inline float GetRadius() { return radius_; }
+	float GetRadius() { return radius_; }
 
-	inline void SetRadius(float radius) { this->radius_ = radius; }
+	void SetRadius(float radius) { this->radius_ = radius; }
 
 private:
 	// オブジェクト中心からのオフセット

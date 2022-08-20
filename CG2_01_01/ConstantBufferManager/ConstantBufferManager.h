@@ -1,8 +1,8 @@
 #pragma once
 #include "ConstantBufferManager/ConstantBufferLapper.h"
+#include "ConstantBufferManager/ConstantBuffer.h"
 #include <wrl.h>
 #include <vector>
-#include "ConstantBuffer.h"
 
 enum class BufferName
 {

@@ -216,6 +216,8 @@
     <ClCompile Include="ImGui\imgui_tables.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Math\Mathf.h" />
+    <ClCompile Include="Math\Vector3.cpp" />
     <ClCompile Include="OBBCollider.cpp" />
     <ClCompile Include="MultiRenderTarget\MulutiRenderTarget.cpp" />
     <ClCompile Include="Object3dComponent.cpp" />
@@ -226,18 +228,6 @@
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Assets\Shaders\3d\AdsPS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Assets\Shaders\3d\AdsVS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </FxCompile>
     <FxCompile Include="Assets\Shaders\3d\DeferredShaderPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -451,7 +441,6 @@
     <ClInclude Include="..\DirectX\Collision\CollisionManager.h" />
     <ClInclude Include="..\DirectX\Collision\CollisionPrimitive.h" />
     <ClInclude Include="..\DirectX\Collision\MeshCollider.h" />
-    <ClInclude Include="..\DirectX\Collision\QueryCallback.h" />
     <ClInclude Include="..\DirectX\Collision\RaycastHit.h" />
     <ClInclude Include="..\DirectX\Collision\SphereCollider.h" />
     <ClInclude Include="..\DirectX\DirectXCommon\DirectXCommon.h" />
@@ -459,7 +448,6 @@
     <ClInclude Include="..\DirectX\Input\KeyboardInput.h" />
     <ClInclude Include="..\DirectX\Math\Easing.h" />
     <ClInclude Include="..\DirectX\Math\Quaternion.h" />
-    <ClInclude Include="..\DirectX\Math\Vector3.h" />
     <ClInclude Include="..\DirectX\Math\yMath.h" />
     <ClInclude Include="..\DirectX\Object3d\Model.h" />
     <ClInclude Include="..\DirectX\Object3d\ModelLoader.h" />
@@ -485,6 +473,7 @@
     <ClInclude Include="Component\Rigidbody.h" />
     <ClInclude Include="Component\ScriptComponent.h" />
     <ClInclude Include="Component\Transform.h" />
+    <ClInclude Include="ConstantBufferManager\ConstantBuffer.h" />
     <ClInclude Include="ConstantBufferManager\ConstantBufferLapper.h" />
     <ClInclude Include="ConstantBufferManager\ConstantBufferManager.h" />
     <ClInclude Include="Editor.h" />
@@ -501,6 +490,7 @@
     <ClInclude Include="ImGui\imstb_rectpack.h" />
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
+    <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="MultiRenderTarget\MulutiRenderTarget.h" />
     <ClInclude Include="Object3dComponent.h" />
     <ClInclude Include="PipelineManager.h" />
@@ -508,10 +498,8 @@
     <ClInclude Include="PrimitiveRenderer.h" />
     <ClInclude Include="Scene\AbstractScene\AbstractScene.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="ConstantBuffer.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Shaders\3d\Ads.hlsli" />
     <None Include="Assets\Shaders\3d\DeferredShader.hlsli" />
     <None Include="Assets\Shaders\3d\GBuffer.hlsli" />
     <None Include="Assets\Shaders\FBX.hlsli" />

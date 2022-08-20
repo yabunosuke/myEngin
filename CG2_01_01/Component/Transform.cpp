@@ -4,7 +4,7 @@
 #include  "Camera.h"
 
 Transform::Transform() :
-	Component("Transform",  ComponentID::TRANSFORM)
+	Component("Transform",  ComponentID::TRANSFORM,true)
 {
 }
 
@@ -101,9 +101,9 @@ void Transform::Infomation()
     ImGui::DragFloat3("Rotation", &euler.x);
     XMStoreFloat4(&quaternion_,
         XMQuaternionRotationRollPitchYaw(
-            DegToRad(euler.x),
-            DegToRad(euler.y),
-                DegToRad(euler.z)
+			euler.x * Mathf::deg_to_rad,
+			euler.y * Mathf::deg_to_rad,
+		euler.z * Mathf::deg_to_rad
         )
     );
     // ÉXÉPÅ[Éã

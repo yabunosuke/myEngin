@@ -11,12 +11,12 @@ GameObject::GameObject(const std::string &name) :
 	isActive(true),
 	isBlind(false),
 	isRemove(false),
-	name_(std::move(name)),
+	name_(name),
 	id_(++ID)
 {
-	//std::shared_ptr<TransformComponent> t = std::make_shared<TransformComponent>();
-	//AddComponent(t);
 	AddComponent<Transform>();
+	Vector3 a = Vector3::NegativeInfinity();
+
 }
 
 void GameObject::Initialize()

@@ -6,7 +6,6 @@ AudioManager::SoundData AudioManager::sound[MAX];
 
 AudioManager::AudioManager()
 {
-
 }
 
 AudioManager::~AudioManager()

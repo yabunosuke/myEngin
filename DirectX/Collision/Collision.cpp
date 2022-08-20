@@ -1,5 +1,5 @@
 #include "Collision.h"
-#include "Vector3.h"
+#include "Math/Vector3.h"
 using namespace DirectX;
 
 bool Collision::CheckSphere2Plane(const Sphere& sphere, const Plane& plane,
@@ -299,30 +299,30 @@ bool Collision::CheckSphere2Capsule(const Sphere& sphere, const Capsule& capsule
 {
 	Vector3 vStartToEnd = capsule.endPosition - capsule.startPosition;
 
-	Vector3 n = vStartToEnd;
-	n.Normalize();
+	Vector3 n = vStartToEnd.Normalized();
 
 	Vector3 sPos = { sphere.center.m128_f32[0], sphere.center.m128_f32[1], sphere.center.m128_f32[2] };
 
-	float t = n.VDot(Vector3(sPos - capsule.startPosition));
+	float t = Vector3::Dot(n, sPos - capsule.startPosition);
+	
 
 	Vector3 vPsPn = n * t;
 	Vector3 posPn = capsule.startPosition + vPsPn;
 
-	float lengthRate = t / vStartToEnd.Length();
+	float lengthRate = t / vStartToEnd.Magnitude();
 
 	float distance;
 	if (lengthRate < 0.0f)
 	{
-		distance = Vector3(sPos + capsule.startPosition).Length() - capsule.radius;
+		distance = Vector3(sPos + capsule.startPosition).Magnitude() - capsule.radius;
 	}
 	else if (lengthRate <= 1.0f)
 	{
-		distance = Vector3(posPn - sPos).Length() - capsule.radius;
+		distance = Vector3(posPn - sPos).Magnitude() - capsule.radius;
 	}
 	else
 	{
-		distance = Vector3(sPos + capsule.endPosition).Length() - capsule.radius;
+		distance = Vector3(sPos + capsule.endPosition).Magnitude() - capsule.radius;
 	}
 
 	return distance < sphere.radius;
@@ -425,18 +425,17 @@ bool Collision::CheckCapsule2Box(const Capsule& capsule, const OBB& box)
 {
 	Vector3 vStartToEnd = capsule.endPosition - capsule.startPosition;
 
-	Vector3 n = vStartToEnd;
-	n.Normalize();
+	Vector3 n = vStartToEnd.Normalized();
 
 	Vector3 boxMinPos = { box.center.m128_f32[0] - box.scale.x, box.center.m128_f32[1] - box.scale.y, box.center.m128_f32[2] - box.scale.z };
 	Vector3 boxMaxPos = { box.center.m128_f32[0] + box.scale.x, box.center.m128_f32[1] + box.scale.y, box.center.m128_f32[2] + box.scale.z };
 
-	float t = n.VDot(Vector3(boxMaxPos - capsule.startPosition));
+	float t = Vector3::Dot(n,boxMaxPos - capsule.startPosition);
 
 	Vector3 vPsPn = n * t;
 	Vector3 posPn = capsule.startPosition + vPsPn;
 
-	float lengthRate = t / vStartToEnd.Length();
+	float lengthRate = t / vStartToEnd.Magnitude();
 
 	float sqDistance = 0.0f;
 	float pos;

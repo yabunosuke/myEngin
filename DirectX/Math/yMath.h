@@ -1,7 +1,7 @@
 #pragma once
 #define _USE_MATH_DIFINES
 #include <cmath>
-#include "Vector3.h"
+#include "Math/Vector3.h"
 #include <DirectXMath.h>
 
 //0~360度の範囲に収める
@@ -15,28 +15,22 @@ static float ChangeDegree360(float deg) {
 }
 
 //ラジアン→度
-static float RadToDeg(float rad) {
-	return rad * (180.0f / XM_PI);
-}
 static XMFLOAT3 RadToDeg(const DirectX::XMFLOAT3 &rad) {
 	XMFLOAT3 deg = {
-		rad.x *(180.0f / XM_PI),
-		rad.y *(180.0f / XM_PI),
-		rad.z *(180.0f / XM_PI),
+		rad.x * (180.0f / XM_PI),
+		rad.y * (180.0f / XM_PI),
+		rad.z * (180.0f / XM_PI),
 	};
 
 	return deg;
 }
 
 //度→ラジアン
-static float DegToRad(float deg) {
-	return deg * (XM_PI / 180.0f);
-}
 static XMFLOAT3 DegToRad(const DirectX::XMFLOAT3 &deg) {
 	XMFLOAT3 rad = {
-		deg.x *(XM_PI / 180.0f),
-		deg.y *(XM_PI / 180.0f),
-		deg.z *(XM_PI / 180.0f)
+		deg.x * (XM_PI / 180.0f),
+		deg.y * (XM_PI / 180.0f),
+		deg.z * (XM_PI / 180.0f)
 	};
 
 	return rad;
@@ -102,10 +96,10 @@ static XMFLOAT3 QuaternionToEuler(const XMFLOAT4 &quaternion)
 		tz = atan2(m01, m11);
 	}
 
-	tx = RadToDeg(tx);
-	ty = RadToDeg(ty);
-	tz = RadToDeg(tz);
-	
+	tx *= 180.0f / DirectX::XM_PI;
+	ty *= 180.0f / DirectX::XM_PI;
+	tz *= 180.0f / DirectX::XM_PI;
+
 	return XMFLOAT3(tx, ty, tz);
 }
 
@@ -113,21 +107,13 @@ static XMFLOAT3 QuaternionToEuler(const XMFLOAT4 &quaternion)
 
 //向きベクトルから壁ずりベクトルへ変換
 static Vector3 CalcWallScratchVector(const Vector3 &moveVec, const Vector3 &normal, Vector3 *scratchNormalVec = nullptr) {
-	Vector3 nextVec = moveVec - moveVec.VDot(normal) * normal;
+	Vector3 nextVec = moveVec - Vector3::Dot(moveVec, normal) * normal;
 	if (scratchNormalVec != nullptr) {
-		*scratchNormalVec = nextVec.Normal();
+		*scratchNormalVec = nextVec.Normalized();
 	}
 	return nextVec;
 }
 
-//向きベクトルから反射ベクトル
-static Vector3 CalcReflectVector(const Vector3 &moveVec, const Vector3 &normal, Vector3 *reflectNormalVec = nullptr) {
-	Vector3 nextVec = moveVec - 2.0f * moveVec.VDot(normal) * normal;
-	if (reflectNormalVec != nullptr) {
-		*reflectNormalVec = nextVec.Normal();
-	}
-	return nextVec;
-}
 
 //線の補間
 static Vector3 sprinePosition(const std::vector<Vector3> &points, size_t &startIndex, float time, bool isLoop)

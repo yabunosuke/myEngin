@@ -25,12 +25,6 @@
     <FxCompile Include="SkinnedMeshVS.hlsl" />
     <FxCompile Include="SpriteVS.hlsl" />
     <FxCompile Include="SpritePS.hlsl" />
-    <FxCompile Include="Assets\Shaders\3d\AdsVS.hlsl">
-      <Filter>Shader\3d\ADS</Filter>
-    </FxCompile>
-    <FxCompile Include="Assets\Shaders\3d\AdsPS.hlsl">
-      <Filter>Shader\3d\ADS</Filter>
-    </FxCompile>
     <FxCompile Include="Assets\Shaders\3d\GBufferVS.hlsl">
       <Filter>Shader\3d\GBuffer</Filter>
     </FxCompile>
@@ -47,11 +41,7 @@
   <ItemGroup>
     <ClCompile Include="..\DirectX\AudioManager\AudioManager.cpp" />
     <ClCompile Include="..\DirectX\Collision\BaseCollider.cpp" />
-    <ClCompile Include="..\DirectX\Collision\Collision.cpp" />
-    <ClCompile Include="..\DirectX\Collision\CollisionManager.cpp" />
-    <ClCompile Include="..\DirectX\Collision\CollisionPrimitive.cpp" />
     <ClCompile Include="..\DirectX\Collision\MeshCollider.cpp" />
-    <ClCompile Include="..\DirectX\Collision\SphereCollider.cpp" />
     <ClCompile Include="..\DirectX\DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="..\DirectX\Input\ControllerInput.cpp" />
     <ClCompile Include="..\DirectX\Input\KeyboardInput.cpp" />
@@ -73,7 +63,6 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="OBBCollider.cpp" />
     <ClCompile Include="Object3dComponent.cpp" />
     <ClCompile Include="PipelineManager.cpp" />
     <ClCompile Include="PlayerTest.cpp" />
@@ -89,12 +78,6 @@
       <Filter>Scene\AbstractScene</Filter>
     </ClCompile>
     <ClCompile Include="Component\Component.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Component\ColliderComponent.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Component\CameraComponent.cpp">
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="Component\ScriptComponent.cpp">
@@ -144,24 +127,43 @@
     <ClCompile Include="Component\Rigidbody.cpp">
       <Filter>Component\Rigidbody</Filter>
     </ClCompile>
+    <ClCompile Include="Component\ColliderComponent.cpp">
+      <Filter>Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DirectX\Collision\CollisionManager.cpp">
+      <Filter>Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DirectX\Collision\CollisionPrimitive.cpp">
+      <Filter>Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DirectX\Collision\Collision.cpp">
+      <Filter>Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DirectX\Collision\SphereCollider.cpp">
+      <Filter>Component\Collider\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="OBBCollider.cpp">
+      <Filter>Component\Collider\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\CameraComponent.cpp">
+      <Filter>Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Mathf.h">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Vector3.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
     <ClInclude Include="..\DirectX\Collision\BaseCollider.h" />
-    <ClInclude Include="..\DirectX\Collision\Collision.h" />
-    <ClInclude Include="..\DirectX\Collision\CollisionInfo.h" />
-    <ClInclude Include="..\DirectX\Collision\CollisionManager.h" />
-    <ClInclude Include="..\DirectX\Collision\CollisionPrimitive.h" />
     <ClInclude Include="..\DirectX\Collision\MeshCollider.h" />
-    <ClInclude Include="..\DirectX\Collision\QueryCallback.h" />
     <ClInclude Include="..\DirectX\Collision\RaycastHit.h" />
-    <ClInclude Include="..\DirectX\Collision\SphereCollider.h" />
     <ClInclude Include="..\DirectX\DirectXCommon\DirectXCommon.h" />
     <ClInclude Include="..\DirectX\Input\ControllerInput.h" />
     <ClInclude Include="..\DirectX\Input\KeyboardInput.h" />
     <ClInclude Include="..\DirectX\Math\Easing.h" />
-    <ClInclude Include="..\DirectX\Math\Quaternion.h" />
-    <ClInclude Include="..\DirectX\Math\Vector3.h" />
     <ClInclude Include="..\DirectX\Math\yMath.h" />
     <ClInclude Include="..\DirectX\Object3d\Model.h" />
     <ClInclude Include="..\DirectX\Object3d\ModelLoader.h" />
@@ -175,7 +177,6 @@
     <ClInclude Include="2d\PostEffect.h" />
     <ClInclude Include="2d\Sprite.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="Collider\OBBCollider.h" />
     <ClInclude Include="ComponentList.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="FileManager.h" />
@@ -196,12 +197,6 @@
       <Filter>Scene\AbstractScene</Filter>
     </ClInclude>
     <ClInclude Include="Component\Component.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Component\ColliderComponent.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Component\CameraComponent.h">
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="Component\ScriptComponent.h">
@@ -242,9 +237,6 @@
     </ClInclude>
     <ClInclude Include="Component\Light\LightManager.h" />
     <ClInclude Include="MultiRenderTarget\MulutiRenderTarget.h" />
-    <ClInclude Include="ConstantBuffer.h">
-      <Filter>ConstantBufferManager</Filter>
-    </ClInclude>
     <ClInclude Include="ConstantBufferManager\ConstantBufferLapper.h">
       <Filter>ConstantBufferManager</Filter>
     </ClInclude>
@@ -257,6 +249,39 @@
     <ClInclude Include="Component\Rigidbody.h">
       <Filter>Component\Rigidbody</Filter>
     </ClInclude>
+    <ClInclude Include="Component\ColliderComponent.h">
+      <Filter>Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Collision\CollisionManager.h">
+      <Filter>Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Collision\CollisionPrimitive.h">
+      <Filter>Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Collision\CollisionInfo.h">
+      <Filter>Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Collision\Collision.h">
+      <Filter>Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Collision\SphereCollider.h">
+      <Filter>Component\Collider\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider\OBBCollider.h">
+      <Filter>Component\Collider\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\CameraComponent.h">
+      <Filter>Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBufferManager\ConstantBuffer.h">
+      <Filter>ConstantBufferManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Math\Quaternion.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector3.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\FBX.hlsli" />
@@ -267,9 +292,6 @@
     <None Include="OBJShaderHeader.hlsli" />
     <None Include="SkinnedMesh.hlsli" />
     <None Include="Sprite.hlsli" />
-    <None Include="Assets\Shaders\3d\Ads.hlsli">
-      <Filter>Shader\3d\ADS</Filter>
-    </None>
     <None Include="Assets\Shaders\3d\GBuffer.hlsli">
       <Filter>Shader\3d\GBuffer</Filter>
     </None>
@@ -305,9 +327,6 @@
     <Filter Include="Shader\3d\BumpMap">
       <UniqueIdentifier>{3353e02c-15e0-4ef5-9e88-328ee1b72907}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shader\3d\NewFilter2">
-      <UniqueIdentifier>{0628c83e-2193-4e75-86c3-c0372e26b97f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shader\3d\GBuffer">
       <UniqueIdentifier>{78e17c48-f1f1-4d1a-a8e3-c11914db4dd1}</UniqueIdentifier>
     </Filter>
@@ -322,6 +341,18 @@
     </Filter>
     <Filter Include="Component\Transform">
       <UniqueIdentifier>{e07596c2-9c32-458f-9501-dc4c7567705f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Collider">
+      <UniqueIdentifier>{778afdad-9737-46ff-9de8-f53a99422615}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Collider\Collider">
+      <UniqueIdentifier>{c3ab9510-02ca-4de1-9b21-10027db3d63d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Camera">
+      <UniqueIdentifier>{8629037c-d168-4720-b5cc-18ebc4d5aa22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{0628c83e-2193-4e75-86c3-c0372e26b97f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

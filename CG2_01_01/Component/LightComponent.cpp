@@ -35,8 +35,8 @@ void LightComponent::Infomation()
 		ImGui::DragFloat("Indirect Multiplier", &indirect_multiplier_);
 
 		// ’·‚³
-		if(type_ == LightType::Point &&
-			type_ == LightType::Spot)
+		if((type_ == LightType::Point) &&
+			(type_ == LightType::Spot))
 		{
 			ImGui::DragFloat("Range", &range_);
 
