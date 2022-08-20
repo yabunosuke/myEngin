@@ -26,14 +26,14 @@ public:// メンバ関数
 	// コライダーの追加
 	inline void AddCollider(std::shared_ptr<BaseCollider> collider)
 	{
-		colliders_.push_front(collider);
+		//colliders_.push_front(collider);
 	}
 
 	// コライダーの削除
 	inline void RemoveBroadCollider(std::shared_ptr<BaseCollider> collider)
 	{
-		for (auto &col : colliders_) {
-		}
+		/*for (auto &col : colliders_) {
+		}*/
 	}
 
 	//全てのブロードフェイズ衝突チェック
@@ -52,8 +52,5 @@ public:// メンバ関数
 	void QuerySphere(const Sphere &sphere, QueryCallback *callback);
 
 private:
-
-	// 全てのコライダー
-	std::forward_list<std::weak_ptr<BaseCollider>> colliders_;
 
 };

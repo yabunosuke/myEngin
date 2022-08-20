@@ -26,10 +26,6 @@ public:
 	/// </summary>
 	void Draw() const;
 
-
-	void DrawHierarchy(int &slect_id);
-
-
 	/// <summary>
 	/// IDからオブジェクトを取得
 	/// </summary>
@@ -40,6 +36,8 @@ public:
 	/// </summary>
 	void Finalize();
 
+	void SetPearentChild(std::weak_ptr<GameObject> pearent, std::weak_ptr<GameObject> child);
+
 	/// <summary>
 	/// オブジェクト生成
 	/// </summary>
@@ -48,6 +46,6 @@ public:
 	std::weak_ptr<GameObject> CreateObject(std::string object_name = "");
 
 	//オブジェクト
-	std::vector<std::shared_ptr<GameObject>> gameObjects;
+	std::vector<std::shared_ptr<GameObject>> game_objects_;
 };
 

@@ -97,11 +97,36 @@ void MulutiRenderTarget::InitializeMulutiRenderTarget(ComPtr<ID3D12Device> dev)
 	assert(SUCCEEDED(result));
 
 	//シェーダリソースビュー設定
-	D3D12_SHADER_RESOURCE_VIEW_DESC srv_desc{};	//設定構造体
-	srv_desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;	//RGBA
-	srv_desc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srv_desc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
-	srv_desc.Texture1D.MipLevels = 1;
+	D3D12_SHADER_RESOURCE_VIEW_DESC srv_desc[buffer_count_]{};	//設定構造体
+	srv_desc[0].Format = DXGI_FORMAT_R8G8B8A8_UNORM;	//RGBA
+	srv_desc[0].Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srv_desc[0].ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
+	srv_desc[0].Texture1D.MipLevels = 1;
+
+	//srv_desc[1].Format = DXGI_FORMAT_R16G16B16A16_FLOAT;	//RGBA
+	//srv_desc[1].Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	//srv_desc[1].ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
+	//srv_desc[1].Texture1D.MipLevels = 1;
+
+	//srv_desc[2].Format = DXGI_FORMAT_R8G8B8A8_UNORM;	//RGBA
+	//srv_desc[2].Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	//srv_desc[2].ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
+	//srv_desc[2].Texture1D.MipLevels = 1;
+
+	//srv_desc[3].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;	//RGBA
+	//srv_desc[3].Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	//srv_desc[3].ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
+	//srv_desc[3].Texture1D.MipLevels = 1;
+
+	//srv_desc[4].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;	//RGBA
+	//srv_desc[4].Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	//srv_desc[4].ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
+	//srv_desc[4].Texture1D.MipLevels = 1;
+
+	//srv_desc[5].Format = DXGI_FORMAT_R16G16B16A16_FLOAT;	//RGBA
+	//srv_desc[5].Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	//srv_desc[5].ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
+	//srv_desc[5].Texture1D.MipLevels = 1;
 
 	
 	for (int i = 0; i < buffer_count_; ++i)
@@ -109,7 +134,7 @@ void MulutiRenderTarget::InitializeMulutiRenderTarget(ComPtr<ID3D12Device> dev)
 		//シェーダーリソースビュー作成
 		dev->CreateShaderResourceView(
 			texture_buffer_[i].Get(),	//ビューと関連付けるバッファ
-			&srv_desc,						//テクスチャ設定情報
+			&srv_desc[0],						//テクスチャ設定情報
 			CD3DX12_CPU_DESCRIPTOR_HANDLE(
 				descriputor_heap_SRV_->GetCPUDescriptorHandleForHeapStart() ,i,
 				dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)

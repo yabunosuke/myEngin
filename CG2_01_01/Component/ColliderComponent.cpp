@@ -49,7 +49,6 @@ ColliderComponent::ColliderComponent(AbstractScene *scene, CollisionShapeType ty
 ColliderComponent::~ColliderComponent()
 {
 	parent->RemoveCollider(collider);
-
 }
 
 void ColliderComponent::ComponentInitialize()

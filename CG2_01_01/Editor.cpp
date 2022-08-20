@@ -18,7 +18,7 @@ void Editor::Draw()
 	MainMenu();
 	//ヒエラルキー
 	if (isHierarchy) {
-		DrawHierarchy();
+		HierarchyWindow();
 	}
 	//インスペクター
 	if (isHierarchy) {
@@ -123,7 +123,7 @@ void Editor::WindowMenu()
 	}
 }
 
-void Editor::DrawHierarchy()
+void Editor::HierarchyWindow()
 {
 	//ウィンドウ名定義
 	ImGui::Begin("Hierarchy");
@@ -134,7 +134,7 @@ void Editor::DrawHierarchy()
 	);
 
 	ImGui::Text(nowScene.get()->GetName().c_str());
-	nowScene.get()->GetObjectManager()->DrawHierarchy(selected_object_id);
+	Hierarchy(nowScene->GetObjectManager()->game_objects_);
 
 	//追加
 	if (ImGui::Button("add")) {
@@ -144,6 +144,125 @@ void Editor::DrawHierarchy()
 	//終了
 	ImGui::End();
 
+}
+
+void Editor::Hierarchy(std::vector<std::shared_ptr<GameObject>>& objects, bool is_child)
+{
+	int n = 0;
+	for (const auto &object : objects)
+	{
+		// 親以外は後で表示する
+		if ((object->GetPearent().lock() != nullptr) &&
+			!is_child)
+		{
+			continue;
+		}
+
+		ImGui::PushID(n);
+
+		// 非表示用チェックボックス
+		char bufB[16];
+		sprintf_s(bufB, "##bulind %d", object->GetID());
+		bool isBlind = object->GetIsBlind();
+		if (ImGui::Checkbox(bufB, &isBlind)) {
+			object->SetIsBlind(isBlind);
+		}
+		ImGui::SameLine();
+
+		// テーブル設定
+		char bufT[64];
+		sprintf_s(bufT, "##table %d", object->GetID());
+		if (ImGui::Selectable(bufT, selected_object_id == object->GetID()))
+		{
+			// 選択
+			selected_object_id = object->GetID();
+
+		}
+		// 入れ替え処理
+		if (ImGui::IsItemActive() && !ImGui::IsItemHovered())
+		{
+			int n_next = n + (ImGui::GetMouseDragDelta(0).y < 0.f ? -1 : 1);
+			if (n_next >= 0 && n_next < objects.size())
+			{
+				// iterator入れ替え
+				std::swap(objects[n], objects[n_next]);
+				ImGui::ResetMouseDragDelta();
+			}
+		}
+
+		// 子オブジェクト表示
+		if (ImGui::TreeNode(object->GetName().c_str()))
+		{
+			Hierarchy(object->GetChildren(), true);
+
+
+			ImGui::TreePop();
+		}
+
+
+		n++;
+		ImGui::PopID();
+	}
+}
+
+
+void Editor::Hierarchy(std::vector<std::weak_ptr<GameObject>> &objects, bool is_child)
+{
+	int n = 0;
+	for (const auto &object : objects)
+	{
+		// 親以外は後で表示する
+		if ((object.lock()->GetPearent().lock() != nullptr) &&
+			!is_child)
+		{
+			continue;
+		}
+
+		ImGui::PushID(n);
+
+		// 非表示用チェックボックス
+		char bufB[16];
+		sprintf_s(bufB, "##bulind %d", object.lock()->GetID());
+		bool isBlind = object.lock()->GetIsBlind();
+		if (ImGui::Checkbox(bufB, &isBlind)) {
+			object.lock()->SetIsBlind(isBlind);
+		}
+		ImGui::SameLine();
+
+		// テーブル設定
+		char bufT[64];
+		sprintf_s(bufT, "##table %d", object.lock()->GetID());
+		if (ImGui::Selectable(bufT, selected_object_id == object.lock()->GetID()))
+		{
+			// 選択
+			selected_object_id = object.lock()->GetID();
+
+		}
+		// 入れ替え処理
+		if (ImGui::IsItemActive() && !ImGui::IsItemHovered())
+		{
+			int n_next = n + (ImGui::GetMouseDragDelta(0).y < 0.f ? -1 : 1);
+			if (n_next >= 0 && n_next < objects.size())
+			{
+				// iterator入れ替え
+				std::swap(objects[n], objects[n_next]);
+				ImGui::ResetMouseDragDelta();
+			}
+		}
+
+		// 子オブジェクト表示
+		if (ImGui::TreeNode(object.lock()->GetName().c_str()))
+		{
+			Hierarchy(object.lock()->GetChildren(), true);
+			
+
+			ImGui::TreePop();
+		}
+
+
+		n++;
+		ImGui::PopID();
+	}
 }
 
 void Editor::DrawInspector()
@@ -306,3 +425,4 @@ void Editor::DrawMulutiRender()
 
 	ImGui::End();
 }
+

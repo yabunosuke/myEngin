@@ -14,15 +14,29 @@ public:
 	void ComponentUpdate() override;
 	void ComponentDraw() override;
 
-	XMMATRIX GetMatrix() { return  matrix_; }
-	
+	XMMATRIX GetWorldMatrix() { return  world_matrix_; }
+	//XMMATRIX GetLocalMatrix() { return  local_matrix_; }
+
+
+	// ワールド空間
 	Vector3 position_ = { 0,0,0 };			// 座標
 	XMFLOAT4 quaternion_ = { 0,1,0,0, };	// クオータニオン回転
-	Vector3 scale_ = { 1,1,1 };			// 拡大
+	Vector3 scale_ = { 1,1,1 };				// 拡大
+
+	// ローカル空間
+	Vector3 local_position_ = { 0,0,0 };				// 座標
+	XMFLOAT4 local_quaternion_ = { 0,1,0,0, };	// クオータニオン回転
+	Vector3 local_scale_ = { 1,1,1 };					// 拡大
+
+
+private:
+
+	void UpdateMatrix();
 
 	
-private:
-	XMMATRIX matrix_ = XMMatrixIdentity();		// 行列
+
+	XMMATRIX world_matrix_ = XMMatrixIdentity();		// ワールド空間行列
+	XMMATRIX local_matrix_ = XMMatrixIdentity();		// ローカル空間行列
 	
 };
 

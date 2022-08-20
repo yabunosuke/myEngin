@@ -30,11 +30,12 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	cube.lock().get()->AddComponent<LightComponent>();
 	cube.lock().get()->AddComponent<Rigidbody>();
 
-	auto test = game_object_manager_.CreateObject("plantune");
-	test.lock().get()->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/UNIT/plantune.fbx");
-	test.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_OBB);
+	//auto test = game_object_manager_.CreateObject("plantune");
+	//test.lock().get()->AddComponent<Object3dComponent>(
+	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+	//	"Assets/3d/UNIT/plantune.fbx");
+	//test.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_OBB);
+	//test.lock().get()->GetComponent<Transform>()->scale_ = { 0.05f, 0.05f, 0.05f };
 
 	auto player = game_object_manager_.CreateObject("human");
 	player.lock().get()->AddComponent<Object3dComponent>(
@@ -42,9 +43,9 @@ TitleScene::TitleScene(IoChangedListener *impl)
 			//"Assets/3d/UNIT/cube.000.fbx");
 			"Assets/3d/test/human.fbx");
 			//"Assets/3d/Test/stage.fbx");
-
 	player.lock().get()->AddComponent<ColliderComponent>(this);
 	player.lock().get()->AddComponent<PlayerTest>();
+	GetObjectManager()->SetPearentChild(player, cube);
 
 
 	//画像読み込みテスト
@@ -72,7 +73,7 @@ void TitleScene::Update()
 	game_object_manager_.Update();
 
 	//当たり判定チェック
-	collision_manager_.CheckBroadCollisions(game_object_manager_.gameObjects);
+	collision_manager_.CheckBroadCollisions(game_object_manager_.game_objects_);
 
 	game_object_manager_.LastUpdate();
 

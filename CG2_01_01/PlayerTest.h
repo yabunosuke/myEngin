@@ -11,7 +11,8 @@ public:
 	PlayerTest();
 	
 	void OnCollisionEnter() override;
-private:
+
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -33,8 +34,23 @@ private:
 	/// </summary>
 	void Finalize() override;
 
+
+	/// <summary>
+	/// ImGui用
+	/// </summary>
+	void Infomation() override;
+
+private:
+
+	// 移動速度
+	float flont_move_speed	= 1.2f;
+	float side_move_speed	= 1.0f;
+	float back_move_speed	= 0.8f;
+
 	// 座標
 	Transform *transform_;
+
+
 
 	// アニメーションステート
 	enum class AnimationState {

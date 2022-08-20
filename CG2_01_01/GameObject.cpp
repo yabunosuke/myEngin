@@ -20,6 +20,7 @@ GameObject::GameObject(const std::string &name) :
 }
 
 
+
 void GameObject::Initialize()
 {
 	scripts_.clear();
@@ -33,9 +34,9 @@ void GameObject::Initialize()
 void GameObject::Update()
 {
 	// 親オブジェクトのアクティブ（親が存在しないときはfalse）
-	bool pealentIsActive = !(pearent_game_object_.lock().get() && !pearent_game_object_.lock().get()->isActive);
+	bool pealent_is_active = !(pearent_game_object_.lock().get() && !pearent_game_object_.lock().get()->isActive);
 	// 親オブジェクトが非アクティブなときと、自身が非アクティブなときは更新しない
-	if (!pealentIsActive || !isActive) return;
+	if (!pealent_is_active || !isActive) return;
 
 	// コンポーネントの削除
 	auto &itr = component_list_.begin();

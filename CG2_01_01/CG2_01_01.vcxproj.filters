@@ -69,10 +69,10 @@
     <ClCompile Include="PrimitiveRenderer.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="3d\Fbx\Fbx.cpp">
-      <Filter>3dオブジェクト\FBX</Filter>
+      <Filter>Object3D\FBX</Filter>
     </ClCompile>
     <ClCompile Include="3d\Fbx\FbxResource.cpp">
-      <Filter>3dオブジェクト\FBX</Filter>
+      <Filter>Object3D\FBX</Filter>
     </ClCompile>
     <ClCompile Include="Scene\AbstractScene\AbstractScene.cpp">
       <Filter>Scene\AbstractScene</Filter>
@@ -154,7 +154,9 @@
     <ClCompile Include="Math\Vector3.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="3d\Mesh.cpp" />
+    <ClCompile Include="3d\Mesh.cpp">
+      <Filter>Object3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -189,10 +191,10 @@
     <ClInclude Include="PrimitiveRenderer.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="3d\Fbx\Fbx.h">
-      <Filter>3dオブジェクト\FBX</Filter>
+      <Filter>Object3D\FBX</Filter>
     </ClInclude>
     <ClInclude Include="3d\Fbx\FbxResource.h">
-      <Filter>3dオブジェクト\FBX</Filter>
+      <Filter>Object3D\FBX</Filter>
     </ClInclude>
     <ClInclude Include="Scene\AbstractScene\AbstractScene.h">
       <Filter>Scene\AbstractScene</Filter>
@@ -283,7 +285,9 @@
     <ClInclude Include="Math\Vector3.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="3d\Mesh.h" />
+    <ClInclude Include="3d\Mesh.h">
+      <Filter>Object3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\FBX.hlsli" />
@@ -320,12 +324,6 @@
     <Filter Include="Shader\3d">
       <UniqueIdentifier>{f02458ce-32e4-4282-9b26-ee732223987c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shader\3d\ADS">
-      <UniqueIdentifier>{8f3c4422-936e-471e-9230-b715439af322}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shader\3d\BumpMap">
-      <UniqueIdentifier>{3353e02c-15e0-4ef5-9e88-328ee1b72907}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shader\3d\GBuffer">
       <UniqueIdentifier>{78e17c48-f1f1-4d1a-a8e3-c11914db4dd1}</UniqueIdentifier>
     </Filter>
@@ -353,10 +351,10 @@
     <Filter Include="Math">
       <UniqueIdentifier>{0628c83e-2193-4e75-86c3-c0372e26b97f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3dオブジェクト">
+    <Filter Include="Object3D">
       <UniqueIdentifier>{91415ae9-e3ca-470e-a91b-e678c1952c18}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3dオブジェクト\FBX">
+    <Filter Include="Object3D\FBX">
       <UniqueIdentifier>{c8ac2e1d-f171-4050-b7ba-dc176938b264}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

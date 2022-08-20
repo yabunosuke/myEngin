@@ -9,6 +9,7 @@
 #include "Component/Component.h"
 #include "Component/ScriptComponent.h"
 
+class GameObjectManager;
 // コライダー
 class BaseCollider;
 
@@ -26,7 +27,6 @@ public:	//関数
 	/// </summary>
 	/// <param name="name">オブジェクト名</param>
 	GameObject(const std::string &name);
-
 	//初期化
 	void Initialize();
 
@@ -84,10 +84,19 @@ public:	//関数
 	// 削除
 	void Remove() { isRemove = true; }
 
-	// 親オブジェクトの取得
+	// 親オブジェクトのゲッタ、セッタ
+	void SetPearentObject(std::weak_ptr<GameObject> pearent)
+	{
+		pearent_game_object_ = pearent;
+		
+	}
 	std::weak_ptr<GameObject> &GetPearent() { return pearent_game_object_; }
-	// このオブジェクトコンテナの取得
-	std::vector<std::shared_ptr<GameObject>> &GetChildren() { return child_game_object_; }
+
+	// このオブジェクトコンテナのゲッタ、セッタ
+	void SetChildrenObject(std::weak_ptr<GameObject> children) { 
+		child_game_object_.emplace_back(children);
+	}
+	std::vector<std::weak_ptr<GameObject>> &GetChildren() { return child_game_object_; }
 
 	/// <summary>
 	/// コンポーネントリストの取得
@@ -122,7 +131,8 @@ private:	// 静的メンバ変数
 private://変数
 	// オブジェクトID（重複しない）
 	unsigned int id_;
-	
+
+
 	// 名前
 	std::string name_;
 	// タグ
@@ -131,7 +141,7 @@ private://変数
 	// 親オブジェクト
 	std::weak_ptr<GameObject> pearent_game_object_;
 	// 子オブジェクトのコンテナ
-	std::vector<std::shared_ptr<GameObject>> child_game_object_;
+	std::vector<std::weak_ptr<GameObject>> child_game_object_;
 	// コンポーネント
 	std::list<std::shared_ptr<Component>> component_list_;
 	// コライダーリスト
