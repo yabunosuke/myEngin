@@ -190,6 +190,7 @@
     <ClCompile Include="2d\Sprite.cpp" />
     <ClCompile Include="3d\Fbx\Fbx.cpp" />
     <ClCompile Include="3d\Fbx\FbxResource.cpp" />
+    <ClCompile Include="3d\Mesh.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ComponentList.cpp" />
     <ClCompile Include="Component\CameraComponent.cpp" />
@@ -462,6 +463,7 @@
     <ClInclude Include="2d\Sprite.h" />
     <ClInclude Include="3d\Fbx\Fbx.h" />
     <ClInclude Include="3d\Fbx\FbxResource.h" />
+    <ClInclude Include="3d\Mesh.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider\OBBCollider.h" />
     <ClInclude Include="ComponentList.h" />

@@ -32,7 +32,8 @@ public:// メンバ関数
 	// コライダーの削除
 	inline void RemoveBroadCollider(std::shared_ptr<BaseCollider> collider)
 	{
-		//colliders_.remove(collider);
+		for (auto &col : colliders_) {
+		}
 	}
 
 	//全てのブロードフェイズ衝突チェック
@@ -54,4 +55,5 @@ private:
 
 	// 全てのコライダー
 	std::forward_list<std::weak_ptr<BaseCollider>> colliders_;
+
 };

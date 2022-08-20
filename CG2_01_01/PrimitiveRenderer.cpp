@@ -2,7 +2,7 @@
 #include "PipelineManager.h"
 #include "Camera.h"
 #include "DirectXCommon.h"
-#include "yMath.h"
+#include "Math/Mathf.h"
 
 const int PrimitiveRenderer::kBufferNum;
 
@@ -107,9 +107,9 @@ void PrimitiveRenderer::DrawBox(ComPtr<ID3D12GraphicsCommandList> cmd_list, Box 
 
 	DirectX::XMMATRIX S = DirectX::XMMatrixScaling(box.scale.x, box.scale.y, box.scale.z);
 	DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(
-		DegToRad(box.rotate.x),
-		DegToRad(box.rotate.y),
-		DegToRad(box.rotate.z)
+		box.rotate.x * Mathf::deg_to_rad,
+		box.rotate.y * Mathf::deg_to_rad,
+		box.rotate.z * Mathf::deg_to_rad
 	);
 	DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(box.translate.x, box.translate.y, box.translate.z);
 

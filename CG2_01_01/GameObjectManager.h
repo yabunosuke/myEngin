@@ -27,7 +27,13 @@ public:
 	void Draw() const;
 
 
-	void DrawHierarchy(int &selectNum);
+	void DrawHierarchy(int &slect_id);
+
+
+	/// <summary>
+	/// IDからオブジェクトを取得
+	/// </summary>
+	GameObject *GetGameObject(int id);
 
 	/// <summary>
 	/// 有効なオブジェクトを全てファイナライズ

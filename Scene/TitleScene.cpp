@@ -30,16 +30,12 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	cube.lock().get()->AddComponent<LightComponent>();
 	cube.lock().get()->AddComponent<Rigidbody>();
 
-	//auto test = game_object_manager_.CreateObject("plantune");
-	//test.lock().get()->AddComponent<Object3dComponent>(
-	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-	//	"Assets/3d/UNIT/plantune.fbx");
-	////"Assets/3d/test/human.fbx");
-	////"Assets/3d/Test/stage.fbx");
-	//test.lock().get()->GetComponent<TransformComponent>()->SetScale({ 0.05f,0.05f ,0.05f });
-	//test.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_OBB);
+	auto test = game_object_manager_.CreateObject("plantune");
+	test.lock().get()->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/UNIT/plantune.fbx");
+	test.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_OBB);
 
-	float a = Mathf::Max(1.0f, 6.0f, 2.0f, 3.0f);
 	auto player = game_object_manager_.CreateObject("human");
 	player.lock().get()->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(), 

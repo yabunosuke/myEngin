@@ -42,12 +42,14 @@ ColliderComponent::ColliderComponent(AbstractScene *scene, CollisionShapeType ty
 	default:
 		break;
 	}
-	scene->GetCollisionManager()->AddCollider(collider);
+	collision_manager_ = std::make_shared<CollisionManager>(*scene->GetCollisionManager());
+	collision_manager_->AddCollider(collider);
 }
 
 ColliderComponent::~ColliderComponent()
 {
 	parent->RemoveCollider(collider);
+
 }
 
 void ColliderComponent::ComponentInitialize()

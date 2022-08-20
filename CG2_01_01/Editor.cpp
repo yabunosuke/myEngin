@@ -134,7 +134,7 @@ void Editor::DrawHierarchy()
 	);
 
 	ImGui::Text(nowScene.get()->GetName().c_str());
-	nowScene.get()->GetObjectManager()->DrawHierarchy(selectedObjectNum);
+	nowScene.get()->GetObjectManager()->DrawHierarchy(selected_object_id);
 
 	//追加
 	if (ImGui::Button("add")) {
@@ -149,16 +149,17 @@ void Editor::DrawHierarchy()
 void Editor::DrawInspector()
 {
 	ImGui::Begin("Inspector");
-	//未選択の場合は何も描画しない
-	if (selectedObjectNum < 0) {
+
+	auto *selectObject = nowScene->GetObjectManager()->GetGameObject(selected_object_id);
+
+	// ID似合う物がなければ未表示
+	if (selectObject == nullptr) {
 		ImGui::End();
 		return;
 	}
 
-	auto *selectObject = nowScene->GetObjectManager()->gameObjects[selectedObjectNum].get();
-
 	//インスペクター描画
-	ImGui::PushID(selectedObjectNum);
+	ImGui::PushID(selected_object_id);
 	selectObject->DrawInspector();
 	ImGui::PopID();
 

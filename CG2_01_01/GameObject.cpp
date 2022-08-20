@@ -19,6 +19,7 @@ GameObject::GameObject(const std::string &name) :
 
 }
 
+
 void GameObject::Initialize()
 {
 	scripts_.clear();

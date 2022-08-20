@@ -32,36 +32,82 @@ void GameObjectManager::Draw() const
 	}
 }
 
-void GameObjectManager::DrawHierarchy(int &selectNum)
+void GameObjectManager::DrawHierarchy(int &select_id)
 {
+	int n = 0;
+	for (const auto &object : gameObjects) 
+	{
+		ImGui::PushID(n);
 
-	//オブジェクトを一覧表示
-	for (int i = 0; i < gameObjects.size(); i++) {
-		//非表示用チェックボックス
-		char bufB[16];
-		sprintf_s(bufB, "##ID %d", gameObjects[i].get()->GetID());
-		bool isBlind = gameObjects[i].get()->GetIsBlind();
-		if (ImGui::Checkbox(bufB, &isBlind)) {
-			gameObjects[i].get()->SetIsBlind(isBlind);
+		// 非表示用チェックボックス
+		bool isBlind = object->GetIsBlind();
+		if (ImGui::Checkbox("##bulind button", &isBlind)) {
+			object->SetIsBlind(isBlind);
 		}
 		ImGui::SameLine();
 
-		//名前の表示
-		char bufH[32];
-		sprintf_s(bufH, "##Hierarchy %d", gameObjects[i].get()->GetID());
-		if (ImGui::Selectable(bufH, selectNum == i)) {
-			selectNum = i;
+		// テーブル設定
+		if(ImGui::Selectable(object->GetName().c_str(), select_id == object->GetID()))
+		{
+			select_id = object->GetID();
 		}
-		ImGui::SameLine();
-		if (gameObjects[i].get()->GetIsActive()) {
-			ImGui::Text(gameObjects[i].get()->GetName().c_str());
+
+		// 入れ替え処理
+		if (ImGui::IsItemActive() && !ImGui::IsItemHovered())
+		{
+			int n_next = n + (ImGui::GetMouseDragDelta(0).y < 0.f ? -1 : 1);
+			if (n_next >= 0 && n_next < gameObjects.size())
+			{
+				// iterator入れ替え
+				gameObjects[n_next] = gameObjects[n];
+				//gameObjects[n_next].reset(&temp);
+				ImGui::ResetMouseDragDelta();
+			}
 		}
-		else {
-			ImGui::TextDisabled(gameObjects[i].get()->GetName().c_str());
-		}
+		n++;
+		ImGui::PopID();
 	}
+
+
+	////オブジェクトを一覧表示
+	//for (int i = 0; i < gameObjects.size(); i++) {
+	//	//非表示用チェックボックス
+	//	char bufB[16];
+	//	sprintf_s(bufB, "##ID %d", gameObjects[i].get()->GetID());
+	//	bool isBlind = gameObjects[i].get()->GetIsBlind();
+	//	if (ImGui::Checkbox(bufB, &isBlind)) {
+	//		gameObjects[i].get()->SetIsBlind(isBlind);
+	//	}
+	//	ImGui::SameLine();
+
+	//	//名前の表示
+	//	char bufH[32];
+	//	sprintf_s(bufH, "##Hierarchy %d", gameObjects[i].get()->GetID());
+	//	if (ImGui::Selectable(bufH, selectNum == i)) {
+	//		selectNum = i;
+	//	}
+	//	ImGui::SameLine();
+	//	if (gameObjects[i].get()->GetIsActive()) {
+	//		ImGui::Text(gameObjects[i].get()->GetName().c_str());
+	//	}
+	//	else {
+	//		ImGui::TextDisabled(gameObjects[i].get()->GetName().c_str());
+	//	}
+	//}
 }
 
+
+GameObject *GameObjectManager::GetGameObject(int id)
+{
+	for (const auto &object : gameObjects) 
+	{
+		if (id == object->GetID()) {
+			return object.get();
+		}
+	}
+
+	return nullptr;
+}
 
 void GameObjectManager::Finalize()
 {

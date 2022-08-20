@@ -44,7 +44,7 @@ private:	//メニュー
 	bool isHierarchy = true;	//ヒエラルキー
 	bool isInsupector = true;	//デモウィンドウ
 
-	int selectedObjectNum = -1;
+	int selected_object_id = -1;
 
 	std::shared_ptr<AbstractScene> nowScene;
 	
