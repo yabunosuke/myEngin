@@ -20,7 +20,6 @@ public:
 private:
 
 	Camera *cam_;
-	Sprite *test_sprite;
 	
 };
 

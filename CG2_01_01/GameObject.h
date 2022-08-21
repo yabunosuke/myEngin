@@ -9,7 +9,6 @@
 #include "Component/Component.h"
 #include "Component/ScriptComponent.h"
 
-class GameObjectManager;
 // コライダー
 class BaseCollider;
 
@@ -27,6 +26,7 @@ public:	//関数
 	/// </summary>
 	/// <param name="name">オブジェクト名</param>
 	GameObject(const std::string &name);
+
 	//初期化
 	void Initialize();
 
@@ -84,18 +84,11 @@ public:	//関数
 	// 削除
 	void Remove() { isRemove = true; }
 
-	// 親オブジェクトのゲッタ、セッタ
-	void SetPearentObject(std::weak_ptr<GameObject> pearent)
-	{
-		pearent_game_object_ = pearent;
-		
-	}
+	// 親オブジェクトの取得
+	void SetPearentObject(std::weak_ptr<GameObject> pearent) { pearent_game_object_ = pearent; }
 	std::weak_ptr<GameObject> &GetPearent() { return pearent_game_object_; }
-
-	// このオブジェクトコンテナのゲッタ、セッタ
-	void SetChildrenObject(std::weak_ptr<GameObject> children) { 
-		child_game_object_.emplace_back(children);
-	}
+	// 子のオブジェクトコンテナの取得
+	void SetCildrenObject(std::weak_ptr<GameObject> children) { child_game_object_.emplace_back(children); }
 	std::vector<std::weak_ptr<GameObject>> &GetChildren() { return child_game_object_; }
 
 	/// <summary>
@@ -131,8 +124,7 @@ private:	// 静的メンバ変数
 private://変数
 	// オブジェクトID（重複しない）
 	unsigned int id_;
-
-
+	
 	// 名前
 	std::string name_;
 	// タグ
@@ -168,10 +160,7 @@ inline T *GameObject::GetComponent(std::string tag)
 	for (auto &component : component_list_) {
 		T *temp = dynamic_cast<T *>(component.get());
 		if (temp != nullptr) {
-			if (temp->GetTag() == tag) {
-
-				return temp;
-			}
+			return temp;
 		}
 	}
 
@@ -182,7 +171,7 @@ template<class T, class ...Args>
 inline T *GameObject::AddComponent(Args ...args)
 {
 	T *buff = new T(args...);
-	buff->SetParent(this);
+	buff->SetObject(this);
 	component_list_.emplace_back(buff);
 	buff->CheckInitialize();
 

@@ -13,6 +13,7 @@ void GameObjectManager::Update()
 	//XV
 	for (auto &e : game_objects_) {
 		e->Update();
+		
 	}
 }
 
@@ -32,6 +33,11 @@ void GameObjectManager::Draw() const
 	}
 }
 
+void GameObjectManager::SetPearentChild(std::weak_ptr<GameObject> pearent, std::weak_ptr<GameObject> child)
+{
+	pearent.lock()->SetCildrenObject(child);
+	child.lock()->SetPearentObject(pearent);
+}
 
 
 GameObject *GameObjectManager::GetGameObject(int id)
@@ -48,12 +54,6 @@ GameObject *GameObjectManager::GetGameObject(int id)
 
 void GameObjectManager::Finalize()
 {
-}
-
-void GameObjectManager::SetPearentChild(std::weak_ptr<GameObject> pearent, std::weak_ptr<GameObject> child)
-{
-	pearent.lock()->SetChildrenObject(child);
-	child.lock()->SetPearentObject(pearent);
 }
 
 

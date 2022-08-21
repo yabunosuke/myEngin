@@ -15,11 +15,11 @@ enum class ShadowType
 	SoftShadows,	// ソフトシャドウ
 };
 
-class LightComponent :
+class Light :
     public Component
 {
 public:
-	LightComponent(
+	Light(
 		const LightType &type = LightType::Point,
 		const float &range = 10.0f,
 		const XMFLOAT2 &spot_angle = { 21.80208f , 30.0f},
@@ -32,12 +32,9 @@ public:
 
 private:
 	// ライトの設定
-	// ライトの種類
-	LightType type_;
-	// 長さ
-	float range_;
-	// スポットライトの底の角度
-	XMFLOAT2 spot_angle_;
+	LightType type_;		// ライトの種類
+	float range_;			// 長さ
+	XMFLOAT2 spot_angle_;	// スポットライトの底の角度
 	// ライトの色
 	XMFLOAT4 color_;
 	// 輝度

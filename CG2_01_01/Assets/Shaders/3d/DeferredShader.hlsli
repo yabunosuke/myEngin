@@ -5,14 +5,11 @@ cbuffer CONSTANT_BUFFER : register(b0)
 
 // ライトの最大数
 #define LIGHT_MAX 128
-// 平行光源の構造体
-//struct DirectionalLight
-//{
-//
-//};
-// ポイントライトの構造体
-struct PointLight
+
+struct Light
 {
+
+	// ポイントライト用のデータ
 	float4 position;	// ライトの座標
 	float4 color;		// ライトの色
 	float power;		// 強さ
@@ -20,15 +17,10 @@ struct PointLight
 	bool is_active;		// 有効
 	float PADING;		// パディング
 };
-// スポットライトの構造体
-//struct SpotLight
-//{
-//
-//};
-// ライト用のバッファ
+
 cbuffer LIGHT_CONSTANT_BUFFER : register(b1)
 {
-	PointLight point_light[LIGHT_MAX];	//ポイントライト128個
+	Light light[LIGHT_MAX];	//ポイントライト128個
 }
 
 // 頂点シェーダーからピクセルシェーダ―へのやり取りに使用する構造体

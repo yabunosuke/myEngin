@@ -48,15 +48,16 @@ ColliderComponent::ColliderComponent(AbstractScene *scene, CollisionShapeType ty
 
 ColliderComponent::~ColliderComponent()
 {
-	parent->RemoveCollider(collider);
+	object_->RemoveCollider(collider);
+
 }
 
 void ColliderComponent::ComponentInitialize()
 {
 	// コライダーにオブジェクトを紐づけ
-	collider->SetObject(parent);
+	collider->SetObject(object_);
 	// オブジェクトにコライダーwaek_ptr渡す
-	parent->AddCollider(collider);
+	object_->AddCollider(collider);
 	collider->Update();
 
 }

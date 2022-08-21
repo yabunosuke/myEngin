@@ -70,12 +70,10 @@ public:
 		return static_cast<int>(component_id_) != static_cast<int>(component.component_id_);
 	}
 
-	void SetParent(GameObject *obj) { parent = obj; }
-
 
 public:	//ゲッター＆セッタ
 	
-	void SetObject(GameObject *obj) { parent = obj; }
+	void SetObject(GameObject *obj) { object_ = obj; }
 
 	// isRemove
 	void Remove() { isRemove = true; }
@@ -114,9 +112,15 @@ protected:	//関数
 	virtual void Infomation() {};
 
 
+
+	bool operator >(std::shared_ptr<Component> rhs)
+	{
+		return static_cast<int>(this->component_id_) > static_cast<int>(rhs->component_id_);
+	}
+
 protected:
 	// オブジェクト
-	GameObject *parent = nullptr;
+	GameObject *object_ = nullptr;
 	// アクティブフラグ
 	bool isActive;
 	// リムーブフラグ

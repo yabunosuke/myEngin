@@ -1,5 +1,5 @@
 #include "LightManager.h"
-#include "Component/LightComponent.h"
+#include "Component/Light.h"
 
 void LightManager::AddLight(std::shared_ptr<LightComponent> light)
 {

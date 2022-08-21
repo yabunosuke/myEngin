@@ -8,14 +8,22 @@ struct TestBuffer {
 
 };
 
+// ライトデータ
+struct Light
+{
+	// ポイントライト用のデータ
+	DirectX::XMFLOAT4 position;	// ライトの座標
+	DirectX::XMFLOAT4 color;		// ライトの色
+
+	float power;		// 強さ
+	float range;		// 長さ
+	bool is_active;		// 有効
+	float PADING01;		// パディング
+};
+static const int LIGHT_MAX = 128;
 // ライトバッファ用データ構造体
 struct LightConstBufferData {
-	DirectX::XMFLOAT4 position;	// ライトの座標
-	DirectX::XMFLOAT4 color;	// ライトの色
-	float power;				// 強さ
-	float range;				// 長さ
-	bool is_active;				// 有効
-	float PADING;				// パディング
+	Light light[LIGHT_MAX];
 };
 
 // カメラ用構造体

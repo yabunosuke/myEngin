@@ -4,10 +4,7 @@
 class Editor
 {
 public:
-	void Initialize(std::shared_ptr<AbstractScene> nowScene)
-	{
-		this->nowScene = nowScene;
-	}
+	void Initialize(std::shared_ptr<AbstractScene> nowScene) { this->nowScene = nowScene; }
 	void Draw();
 
 	/// <summary>
@@ -34,9 +31,9 @@ public:
 	/// </summary>
 	void HierarchyWindow();
 	// 親用
-	void Hierarchy(std::vector<std::shared_ptr<GameObject>> &objects,bool is_child = false);
+	void Hierarchy(std::vector<std::shared_ptr<GameObject>> &objects, bool is_child = false);
 	// 子用
-	void Hierarchy(std::vector<std::weak_ptr<GameObject>> &objects,bool is_child = false);
+	void Hierarchy(std::vector<std::weak_ptr<GameObject>> &objects, bool is_child = false);
 
 	/// <summary>
 	/// インスペクター描画

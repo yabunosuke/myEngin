@@ -14,7 +14,7 @@
 // コンポーネント
 #include "Object3dComponent.h"
 #include "Component/ColliderComponent.h"
-#include "Component/LightComponent.h"
+#include "Component/Light.h"
 #include "Component/Rigidbody.h"
 #include "PlayerTest.h"
 
@@ -27,15 +27,14 @@ TitleScene::TitleScene(IoChangedListener *impl)
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/UNIT/cube.004.fbx");
 	cube.lock().get()->AddComponent<ColliderComponent>(this);
-	cube.lock().get()->AddComponent<LightComponent>();
 	cube.lock().get()->AddComponent<Rigidbody>();
 
-	//auto test = game_object_manager_.CreateObject("plantune");
-	//test.lock().get()->AddComponent<Object3dComponent>(
-	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-	//	"Assets/3d/UNIT/plantune.fbx");
-	//test.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_OBB);
-	//test.lock().get()->GetComponent<Transform>()->scale_ = { 0.05f, 0.05f, 0.05f };
+	auto test = game_object_manager_.CreateObject("plantune");
+	test.lock().get()->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/UNIT/plantune.fbx");
+	test.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_OBB);
+	test.lock().get()->GetComponent<Transform>()->local_scale_ = { 0.02f, 0.02f, 0.02f };
 
 	auto player = game_object_manager_.CreateObject("human");
 	player.lock().get()->AddComponent<Object3dComponent>(
@@ -43,14 +42,17 @@ TitleScene::TitleScene(IoChangedListener *impl)
 			//"Assets/3d/UNIT/cube.000.fbx");
 			"Assets/3d/test/human.fbx");
 			//"Assets/3d/Test/stage.fbx");
+
 	player.lock().get()->AddComponent<ColliderComponent>(this);
 	player.lock().get()->AddComponent<PlayerTest>();
-	GetObjectManager()->SetPearentChild(player, cube);
 
 
-	//画像読み込みテスト
-	int test_tex = Texture::LoadTextureFromFile(DirectXCommon::dev.Get(), L"Assets/2d/circle.png");
-	test_sprite = Sprite::Create(DirectXCommon::dev, test_tex);
+	auto light = game_object_manager_.CreateObject("Light");
+	light.lock()->AddComponent<Light>();
+
+	game_object_manager_.SetPearentChild(player, cube);
+
+
 }
 
 void TitleScene::Initialize()

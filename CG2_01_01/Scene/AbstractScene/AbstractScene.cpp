@@ -1,9 +1,9 @@
 #include "AbstractScene.h"
 #include  "DirectXCommon.h"
 AbstractScene::AbstractScene(IoChangedListener *impl,std::string sceneName)
-	:implSceneChanged(impl)
+	:implSceneChanged(impl),
+	name(sceneName)
 {
-	name = sceneName;
 	post_effect_ = std::make_unique<PostEffect>();
 	post_effect_->InitializePostEffect(DirectXCommon::dev);
 

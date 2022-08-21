@@ -736,7 +736,7 @@ bool    ImGui_ImplDX12_CreateDeviceObjects()
         desc.FrontFace.StencilFunc = D3D12_COMPARISON_FUNC_ALWAYS;
         desc.BackFace = desc.FrontFace;
     }
-    
+
     HRESULT result_pipeline_state = bd->pd3dDevice->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&bd->pPipelineState));
     vertexShaderBlob->Release();
     pixelShaderBlob->Release();

@@ -26,6 +26,9 @@ public:
 	/// </summary>
 	void Draw() const;
 
+	// 親子設定
+	void SetPearentChild(std::weak_ptr<GameObject> pearent, std::weak_ptr<GameObject> child);
+
 	/// <summary>
 	/// IDからオブジェクトを取得
 	/// </summary>
@@ -35,8 +38,6 @@ public:
 	/// 有効なオブジェクトを全てファイナライズ
 	/// </summary>
 	void Finalize();
-
-	void SetPearentChild(std::weak_ptr<GameObject> pearent, std::weak_ptr<GameObject> child);
 
 	/// <summary>
 	/// オブジェクト生成

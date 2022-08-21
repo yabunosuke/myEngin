@@ -16,10 +16,10 @@ void PlayerTest::OnCollisionEnter()
 void PlayerTest::Initialize()
 {
 	// トランスフォーム
-	transform_ = parent->GetComponent<Transform>();
-	transform_->scale_ = {0.1f,0.1f ,0.1f};
+	transform_ = object_->GetComponent<Transform>();
+	transform_->local_scale_ = {0.1f,0.1f ,0.1f};
 
-	game_object = parent->GetComponent<Object3dComponent>()->GetObjectData();
+	game_object = object_->GetComponent<Object3dComponent>()->GetObjectData();
 
 }
 
@@ -27,6 +27,8 @@ void PlayerTest::Update()
 {
 	// 白色に戻す
 	game_object->SetColor({ 1,1,1,1 });
+
+	// XMStoreFloat4(&transform_->local_quaternion_,XMQuaternionMultiply(XMLoadFloat4(&transform_->local_quaternion_), XMQuaternionRotationAxis({0,1,0},10 * Mathf::deg_to_rad)));
 
 	if (!(KeyboardInput::GetIns()->GetKeyPress(DIK_W) ||
 		KeyboardInput::GetIns()->GetKeyPress(DIK_A) ||
@@ -55,7 +57,7 @@ void PlayerTest::Update()
 	}
 	else {
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_W)) {
-			transform_->position_ += Vector3::Forward() * flont_move_speed;
+			transform_->local_position_ += { 0, 0, 0.7f };
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK;
 			}
@@ -65,7 +67,7 @@ void PlayerTest::Update()
 			game_object->PlayAnimation(static_cast<int>(state));
 		}
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_S)) {
-			transform_->position_ += Vector3::Back() * back_move_speed;
+			transform_->local_position_ += { 0, 0, -0.5f };
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_BACK;
 			}
@@ -75,7 +77,7 @@ void PlayerTest::Update()
 			game_object->PlayAnimation(static_cast<int>(state));
 		}
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_D)) {
-			transform_->position_ += Vector3::Right() * side_move_speed;
+			transform_->local_position_ += { 1.8f, 0, 0 };
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_RIGHT;
 			}
@@ -85,7 +87,7 @@ void PlayerTest::Update()
 			game_object->PlayAnimation(static_cast<int>(state));
 		}
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_A)) {
-			transform_->position_ += Vector3::Left() * side_move_speed;
+			transform_->local_position_ += { -1.8f, 0, 0 };
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_LEFT;
 			}
@@ -140,12 +142,5 @@ void PlayerTest::Draw()
 
 void PlayerTest::Finalize()
 {
-}
-
-void PlayerTest::Infomation()
-{
-	ImGui::DragFloat("Flont Move Speed",&flont_move_speed,0.05f);
-	ImGui::DragFloat("Side Move Speed",&side_move_speed,0.05f);
-	ImGui::DragFloat("Back Move Speed",&back_move_speed,0.05f);
 }
 

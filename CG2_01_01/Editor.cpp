@@ -134,8 +134,8 @@ void Editor::HierarchyWindow()
 	);
 
 	ImGui::Text(nowScene.get()->GetName().c_str());
-	Hierarchy(nowScene->GetObjectManager()->game_objects_);
-
+	/*nowScene.get()->GetObjectManager()->DrawHierarchy(selected_object_id);*/
+	Hierarchy(nowScene.get()->GetObjectManager()->game_objects_);
 	//’Ç‰Á
 	if (ImGui::Button("add")) {
 		nowScene->GetObjectManager()->CreateObject();
@@ -205,7 +205,6 @@ void Editor::Hierarchy(std::vector<std::shared_ptr<GameObject>>& objects, bool i
 	}
 }
 
-
 void Editor::Hierarchy(std::vector<std::weak_ptr<GameObject>> &objects, bool is_child)
 {
 	int n = 0;
@@ -254,7 +253,7 @@ void Editor::Hierarchy(std::vector<std::weak_ptr<GameObject>> &objects, bool is_
 		if (ImGui::TreeNode(object.lock()->GetName().c_str()))
 		{
 			Hierarchy(object.lock()->GetChildren(), true);
-			
+
 
 			ImGui::TreePop();
 		}
@@ -425,4 +424,3 @@ void Editor::DrawMulutiRender()
 
 	ImGui::End();
 }
-

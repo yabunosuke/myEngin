@@ -1,8 +1,8 @@
-#include "LightComponent.h"
+#include "Light.h"
 
 
 
-LightComponent::LightComponent(const LightType &type, const float &range, const XMFLOAT2 &spot_angle, const XMFLOAT4 &color, const float &intensity, const float &indirect_multiplier):
+Light::Light(const LightType &type, const float &range, const XMFLOAT2 &spot_angle, const XMFLOAT4 &color, const float &intensity, const float &indirect_multiplier):
 	Component("Light", ComponentID::LIGHT),
 	type_(type),
 	range_(range),
@@ -13,7 +13,7 @@ LightComponent::LightComponent(const LightType &type, const float &range, const 
 {
 }
 
-void LightComponent::Infomation()
+void Light::Infomation()
 {
 	// ÉâÉCÉgÇÃê›íË
 	if (ImGui::TreeNode("General")) {
