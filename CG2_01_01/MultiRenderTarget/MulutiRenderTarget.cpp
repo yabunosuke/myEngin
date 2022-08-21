@@ -3,6 +3,7 @@
 #include "PipelineManager.h"
 #include "ConstantBufferManager/ConstantBufferManager.h"
 #include "DirectXCommon.h"
+#include "ImGui/imgui.h"
 
 const int MulutiRenderTarget::buffer_count_;
 
@@ -45,25 +46,25 @@ void MulutiRenderTarget::InitializeMulutiRenderTarget(ComPtr<ID3D12Device> dev)
 
 #pragma region 画像生成
 
-	// リソース設定
-	CD3DX12_RESOURCE_DESC texres_desc =
-		CD3DX12_RESOURCE_DESC::Tex2D(
-			DXGI_FORMAT_R8G8B8A8_UNORM,
-			WinApp::windowWidth,
-			static_cast<UINT>(WinApp::windowHeight),
-			1, 0, 1, 0,
-			D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
-
+	
 	for(int i = 0;i < buffer_count_;++i)
 	{
-		
+		// リソース設定
+		CD3DX12_RESOURCE_DESC texres_desc =
+			CD3DX12_RESOURCE_DESC::Tex2D(
+				format_list_[i],
+				WinApp::windowWidth,
+				static_cast<UINT>(WinApp::windowHeight),
+				1, 0, 1, 0,
+				D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
+
 		// テクスチャバッファ生成
 		result = dev->CreateCommittedResource(	//GPUリソースの生成
 			&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
 			D3D12_HEAP_FLAG_NONE,
 			&texres_desc,
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,	//テクスチャ用指定
-			&CD3DX12_CLEAR_VALUE(DXGI_FORMAT_R8G8B8A8_UNORM, clear_color_),
+			&CD3DX12_CLEAR_VALUE(format_list_[i], clear_color_),
 			IID_PPV_ARGS(&texture_buffer_[i]));
 		assert(SUCCEEDED(result));
 
@@ -96,16 +97,18 @@ void MulutiRenderTarget::InitializeMulutiRenderTarget(ComPtr<ID3D12Device> dev)
 	
 	assert(SUCCEEDED(result));
 
-	//シェーダリソースビュー設定
-	D3D12_SHADER_RESOURCE_VIEW_DESC srv_desc{};	//設定構造体
-	srv_desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;	//RGBA
-	srv_desc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srv_desc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
-	srv_desc.Texture1D.MipLevels = 1;
-
+	
 	
 	for (int i = 0; i < buffer_count_; ++i)
 	{
+		//シェーダリソースビュー設定
+		D3D12_SHADER_RESOURCE_VIEW_DESC srv_desc{};	//設定構造体
+		srv_desc.Format = format_list_[i];	//RGBA
+		srv_desc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+		srv_desc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
+		srv_desc.Texture1D.MipLevels = 1;
+
+
 		//シェーダーリソースビュー作成
 		dev->CreateShaderResourceView(
 			texture_buffer_[i].Get(),	//ビューと関連付けるバッファ
@@ -253,7 +256,11 @@ void MulutiRenderTarget::PreDrawScene(ComPtr<ID3D12Device> dev,ComPtr<ID3D12Grap
 
 }
 
-void MulutiRenderTarget::DrawRenderTarget(ComPtr<ID3D12GraphicsCommandList> cmd_list, ComPtr<ID3D12Device> dev)
+void MulutiRenderTarget::DrawRenderTarget(
+	ComPtr<ID3D12GraphicsCommandList> cmd_list,
+	ComPtr<ID3D12Device> dev,
+	const std::weak_ptr<LightManager> light_manager
+)
 {
 	
 	//頂点バッファへのデータ転送
@@ -273,8 +280,6 @@ void MulutiRenderTarget::DrawRenderTarget(ComPtr<ID3D12GraphicsCommandList> cmd_
 	vertices[RB].pos = { right,	bottom,	0.0f }; // 右下
 	vertices[RT].pos = { right,	top,	0.0f }; // 右上
 
-	D3D12_RESOURCE_DESC resDesc = texture_buffer_[0]->GetDesc();
-	
 	vertices[LB].uv = { 0,	1 }; // 左下
 	vertices[LT].uv = { 0,	0 }; // 左上
 	vertices[RB].uv = { 1,	1 }; // 右下
@@ -300,31 +305,8 @@ void MulutiRenderTarget::DrawRenderTarget(ComPtr<ID3D12GraphicsCommandList> cmd_
 		static_cast<float>(WinApp::windowHeight), 0.0f, 0.0f, 1.0f);	// 行列の合成
 	ConstantBufferManager::GetInstance()->BufferTransfer<TestBuffer>(cmd_list,0,1, BufferName::Test, &constMap);
 
-	// ライト仮置き
-	Light light[128];
-	light[0] = {
-		{0,0,0,0},
-		{1.0f,0.8f,0.8f,1.0f},
-		1.0f,
-		10.0f,
-		true,
-		0.0f,
-	};
-	light[1] = {
-		{0,0,0,0},
-		{1.0f,0.8f,0.8f,1.0f},
-		1.0f,
-		10.0f,
-		false,
-		0.0f,
-	};
-	LightConstBufferData const_light_map;
-	for(int i = 0;i<LIGHT_MAX;++i)
-	{
-		const_light_map.light[i] = light[i];
-	}
-	ConstantBufferManager::GetInstance()->BufferTransfer<LightConstBufferData>(cmd_list, 0, 2, BufferName::Light, &const_light_map);
-
+	// ライト転送
+	light_manager.lock()->BufferTransfer(cmd_list, 0, 2);
 
 	// プリミティブ形状を設定
 	cmd_list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);

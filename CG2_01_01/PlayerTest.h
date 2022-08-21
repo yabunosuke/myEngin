@@ -3,6 +3,7 @@
 #include "Component/Transform.h"
 
 #include "3d/Fbx/Fbx.h"
+#include "Component/Light.h"
 
 class PlayerTest :
 	public ScriptComponent
@@ -59,5 +60,6 @@ private:
 	bool isDead{ false };
 
 	Fbx *game_object{ nullptr };
+
 };
 

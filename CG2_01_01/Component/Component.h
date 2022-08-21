@@ -15,7 +15,7 @@ enum class ComponentID
 	Sqript,
 	RigitBody,	
 	TRANSFORM,
-	LIGHT,
+	Light,
 	Mesh,
 };
 
@@ -116,6 +116,10 @@ protected:	//ŠÖ”
 	bool operator >(std::shared_ptr<Component> rhs)
 	{
 		return static_cast<int>(this->component_id_) > static_cast<int>(rhs->component_id_);
+	}
+	bool operator <(std::shared_ptr<Component> rhs)
+	{
+		return static_cast<int>(this->component_id_) < static_cast<int>(rhs->component_id_);
 	}
 
 protected:

@@ -32,25 +32,28 @@ float4 main(VSOutput input) : SV_TARGET
 	if (id_tex.r != 0) {
 
 		// Light‚ÌŒvŽZ
+
 		float3 diffuse, specular;
 		for(int i =0;i<LIGHT_MAX;++i)
 		{
-			if(!light[i].is_active)
+			if(light[i].is_active == 0.0f)
 			{
 				break;
 			}
+
+
 			// PointLight
-			if (true)
+			if (light[i].light_type.z != 0)
 			{
 				// Œõ‚Ì“üŽËŠp‚ð‹‚ß‚é
-				float3 light_dir = position_tex.rgb - light[i].position.xyz;
+				float3 light_dir = position_tex.xyz - light[i].position.xyz;
 				light_dir = normalize(light_dir);
 
 				// Œ¸Š‚È‚µ‚ÌLambertŠgŽUŒõ‚ðŒvŽZ
 				float3 diffuse_point = CalcLambertDiffuse(
 					light_dir,
 					light[i].color.xyz,
-					normal_tex.xyz
+					normalize(normal_tex.xyz)
 				);
 
 				// Œ¸Š‚È‚µ‚ÌPhon‹¾–Ê”½ŽËŒõ‚ðŒvŽZ
@@ -63,9 +66,9 @@ float4 main(VSOutput input) : SV_TARGET
 				);
 
 				// ƒ|ƒCƒ“ƒgƒ‰ƒCƒg‚Æ‚Ì‹——£‚ðŒvŽZ‚·‚é
-				float distance = length(position_tex.xyz- light[i].position.xyz);
+				float distance = length(position_tex. xyz - light[i].position.xyz);
 				// ‰e‹¿—¦‚ÌŒvŽZ
-				float affect = 1.0f - 1.0f / light[i].range * distance;
+				float affect = 1.0f - distance / light[i].range;
 				if (affect < 0.0f)
 				{
 					affect = 0.0f;
@@ -77,8 +80,8 @@ float4 main(VSOutput input) : SV_TARGET
 				specular_point *= affect;
 
 				// ‰ÁŽZ
-				diffuse += diffuse_point;
-				specular += specular_point;
+				diffuse += diffuse_point * light[i].intensity;
+				specular += specular_point * light[i].intensity;
 			}
 		}
 
@@ -100,7 +103,7 @@ float4 main(VSOutput input) : SV_TARGET
 
 
 
-		float3 light = dir_diffuse+diffuse + specular + float3(0.5f, 0.5f, 0.5f);
+		float3 light = dir_diffuse+diffuse + specular + float3(0.02f, 0.02f, 0.02f);
 
 		output_color = float4(color_tex.rgb * light, color_tex.w);
 		
@@ -118,7 +121,7 @@ float4 main(VSOutput input) : SV_TARGET
 float3 CalcLambertDiffuse(float3 light_direction, float3 light_color, float3 normal)
 {
 	// ƒsƒNƒZƒ‹‚Ì–@ü‚Æƒ‰ƒCƒg‚Ì•ûŒü‚Ì“àÏ‚ðŒvŽZ‚·‚é
-	float t = dot(normal, light_direction) * -1.0f;
+	float t = saturate(dot(normal, light_direction) * -1.0f);
 
 	// “àÏ‚Ì’l‚ð0ˆÈã‚Ì’l‚É‚·‚é
 	t = max(0.0f, t);

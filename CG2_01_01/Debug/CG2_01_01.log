@@ -1,0 +1,3 @@
+﻿C:\Users\yabun\Desktop\programming\CG2_01_01\Assets\Shaders\3d\DeferredShaderPS.hlsl(36,3-31): error X3511: unable to unroll loop, loop does not appear to terminate in a timely manner (26 iterations) or unrolled loop is too large, use the [unroll(n)] attribute to force an exact higher number
+  
+  compilation failed; no code produced

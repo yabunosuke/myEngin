@@ -143,6 +143,8 @@ void PipelineManager::CreateGBufferPipline(ComPtr<ID3D12Device> dev)
 	// デプスステンシルステート
 	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 
+	gpipeline.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;
+
 	// レンダーターゲットのブレンド設定
 	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;    // RBGA全てのチャンネルを描画

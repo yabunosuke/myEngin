@@ -18,7 +18,6 @@ void PlayerTest::Initialize()
 	// トランスフォーム
 	transform_ = object_->GetComponent<Transform>();
 	transform_->local_scale_ = {0.1f,0.1f ,0.1f};
-
 	game_object = object_->GetComponent<Object3dComponent>()->GetObjectData();
 
 }
@@ -26,7 +25,6 @@ void PlayerTest::Initialize()
 void PlayerTest::Update()
 {
 	// 白色に戻す
-	game_object->SetColor({ 1,1,1,1 });
 
 	// XMStoreFloat4(&transform_->local_quaternion_,XMQuaternionMultiply(XMLoadFloat4(&transform_->local_quaternion_), XMQuaternionRotationAxis({0,1,0},10 * Mathf::deg_to_rad)));
 

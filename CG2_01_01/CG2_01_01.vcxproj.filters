@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <FxCompile Include="Assets\Shaders\FBXPS.hlsl" />
-    <FxCompile Include="Assets\Shaders\FBXVS.hlsl" />
     <FxCompile Include="Assets\Shaders\GrayScalePS.hlsl" />
     <FxCompile Include="Assets\Shaders\InverseColorPS.hlsl" />
     <FxCompile Include="Assets\Shaders\BlurPS.hlsl" />
@@ -113,7 +111,6 @@
     <ClCompile Include="Component\Light.cpp">
       <Filter>Component\Light</Filter>
     </ClCompile>
-    <ClCompile Include="Component\Light\LightManager.cpp" />
     <ClCompile Include="MultiRenderTarget\MulutiRenderTarget.cpp" />
     <ClCompile Include="ConstantBufferManager\ConstantBufferLapper.cpp">
       <Filter>ConstantBufferManager</Filter>
@@ -155,6 +152,9 @@
       <Filter>Math</Filter>
     </ClCompile>
     <ClCompile Include="3d\Mesh.cpp" />
+    <ClCompile Include="Component\Manager\LightManager.cpp">
+      <Filter>Component\Light</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -236,7 +236,6 @@
     <ClInclude Include="Component\Light.h">
       <Filter>Component\Light</Filter>
     </ClInclude>
-    <ClInclude Include="Component\Light\LightManager.h" />
     <ClInclude Include="MultiRenderTarget\MulutiRenderTarget.h" />
     <ClInclude Include="ConstantBufferManager\ConstantBufferLapper.h">
       <Filter>ConstantBufferManager</Filter>
@@ -284,9 +283,11 @@
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="3d\Mesh.h" />
+    <ClInclude Include="Component\Manager\LightManager.h">
+      <Filter>Component\Light</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Shaders\FBX.hlsli" />
     <None Include="Assets\Shaders\PostEffect.hlsli" />
     <None Include="Basic.hlsli" />
     <None Include="Lambert.hlsli" />
@@ -322,9 +323,6 @@
     </Filter>
     <Filter Include="Shader\3d\ADS">
       <UniqueIdentifier>{8f3c4422-936e-471e-9230-b715439af322}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shader\3d\BumpMap">
-      <UniqueIdentifier>{3353e02c-15e0-4ef5-9e88-328ee1b72907}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shader\3d\GBuffer">
       <UniqueIdentifier>{78e17c48-f1f1-4d1a-a8e3-c11914db4dd1}</UniqueIdentifier>

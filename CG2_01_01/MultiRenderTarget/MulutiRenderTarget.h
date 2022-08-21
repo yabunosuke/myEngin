@@ -4,6 +4,8 @@
 #include <DirectXMath.h>
 #include <wrl.h>
 
+#include "Component/Manager/LightManager.h"
+
 // サブクラス
 enum class RenderName
 {
@@ -36,7 +38,11 @@ public:
 
 	void InitializeMulutiRenderTarget(ComPtr<ID3D12Device> dev);
 	void PreDrawScene(ComPtr<ID3D12Device> dev,ComPtr<ID3D12GraphicsCommandList> cmd_list);
-	void DrawRenderTarget(ComPtr<ID3D12GraphicsCommandList> cmd_list, ComPtr<ID3D12Device> dev);
+	void DrawRenderTarget(
+		ComPtr<ID3D12GraphicsCommandList> cmd_list,
+		ComPtr<ID3D12Device> dev,
+		const std::weak_ptr<LightManager> light_manager
+	);
 	void PostDraw(ComPtr<ID3D12GraphicsCommandList> cmd_list);
 
 	/// <summary>
@@ -52,18 +58,6 @@ private:
 		XMFLOAT2 uv;	//uv座標
 	};
 
-	//// 定数バッファ用データ構造体
-	//struct ConstBufferData {
-	//	XMMATRIX mat;	//3D変換行列
-	//};
-
-
-
-
-
-	// 定数バッファ
-	//ComPtr<ID3D12Resource> constant_buffer_;
-
 	// 頂点バッファ
 	ComPtr<ID3D12Resource> vertex_buffer_;
 	// 頂点バッファビュー
@@ -72,6 +66,14 @@ private:
 	ComPtr<ID3D12Resource> depth_buffer_;
 	// テクスチャバッファ
 	ComPtr<ID3D12Resource> texture_buffer_[buffer_count_];
+	DXGI_FORMAT format_list_[buffer_count_] = {
+		DXGI_FORMAT_R8G8B8A8_UNORM,
+		DXGI_FORMAT_R16G16B16A16_FLOAT,
+		DXGI_FORMAT_R8G8B8A8_UNORM,
+		DXGI_FORMAT_R32G32B32A32_FLOAT,
+		DXGI_FORMAT_R32G32B32A32_FLOAT,
+		DXGI_FORMAT_R16G16B16A16_FLOAT,
+	};
 	// SRVデスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descriputor_heap_SRV_;
 	// RTVデスクリプタヒープ

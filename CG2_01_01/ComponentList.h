@@ -5,7 +5,7 @@
 #include "Component/Component.h"
 
 #include "Component/Transform.h"
-#include "Component/LightComponent.h"
+#include "Component/Light.h"
 #include "Component/CameraComponent.h"
 
 #include "GameObject.h"

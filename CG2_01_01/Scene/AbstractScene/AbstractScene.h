@@ -5,6 +5,7 @@
 #include "CollisionManager.h"
 #include "2d/PostEffect.h"
 #include "MultiRenderTarget/MulutiRenderTarget.h"
+#include "Component/Manager/LightManager.h"
 #include <wrl.h>
 
 class AbstractScene
@@ -14,7 +15,7 @@ protected:
 	IoChangedListener *implSceneChanged;
 public:
 	AbstractScene(IoChangedListener *impl,std::string sceneName);
-	virtual ~AbstractScene() = default;
+	virtual ~AbstractScene() {};
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -73,6 +74,8 @@ protected:
 	GameObjectManager game_object_manager_;
 	// コリジョンマネージャー
 	CollisionManager collision_manager_;
+	// ライトマネージャー
+	std::shared_ptr<LightManager> light_manager_;
 	// ポストエフェクト
 	std::unique_ptr<PostEffect> post_effect_;
 	// マルチレンダーターゲット

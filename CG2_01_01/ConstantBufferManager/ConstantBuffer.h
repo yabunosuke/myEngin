@@ -9,21 +9,29 @@ struct TestBuffer {
 };
 
 // ライトデータ
-struct Light
+struct LightDate
 {
-	// ポイントライト用のデータ
-	DirectX::XMFLOAT4 position;	// ライトの座標
-	DirectX::XMFLOAT4 color;		// ライトの色
+	/// <summary>
+	/// ライトの種類
+	/// </summary>
+	/// <param name="x = 1">Spot Light</param>
+	/// <param name="y = 1">Directional Light</param>
+	/// <param name="z = 1">Point Light</param>
+	DirectX::XMFLOAT4 light_type	{ 0,0,1,0 };
 
-	float power;		// 強さ
-	float range;		// 長さ
-	bool is_active;		// 有効
-	float PADING01;		// パディング
+	// 共通項目
+	DirectX::XMFLOAT4 position		{ 0,0,0,0 };	// ライトの座標
+	DirectX::XMFLOAT4 color			{ 1,1,1,1 };	// ライトの色
+
+	float intensity					{ 5.0f };			// 輝度
+	float range						{ 50.0f};			// 影響距離
+	float is_active					{ 1.0f };			// 有効
+	float PADING01;										// パディング
 };
 static const int LIGHT_MAX = 128;
 // ライトバッファ用データ構造体
 struct LightConstBufferData {
-	Light light[LIGHT_MAX];
+	LightDate light[LIGHT_MAX];
 };
 
 // カメラ用構造体

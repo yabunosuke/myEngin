@@ -22,35 +22,41 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
 
-	auto cube = game_object_manager_.CreateObject("cube");
-	cube.lock().get()->AddComponent<Object3dComponent>(
+	/*auto dorone = game_object_manager_.CreateObject("Dorone");
+	dorone.lock().get()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/UNIT/cube.004.fbx");
-	cube.lock().get()->AddComponent<ColliderComponent>(this);
-	cube.lock().get()->AddComponent<Rigidbody>();
+		"Assets/3d/UNIT/Drone166/Drone166.1.fbx");*/
 
-	auto test = game_object_manager_.CreateObject("plantune");
-	test.lock().get()->AddComponent<Object3dComponent>(
+	auto castle = game_object_manager_.CreateObject("Castle");
+	castle.lock().get()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/UNIT/plantune.fbx");
-	test.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_OBB);
-	test.lock().get()->GetComponent<Transform>()->local_scale_ = { 0.02f, 0.02f, 0.02f };
+		"Assets/3d/Castle/Castle FBX.fbx");
 
-	auto player = game_object_manager_.CreateObject("human");
-	player.lock().get()->AddComponent<Object3dComponent>(
-			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(), 
-			//"Assets/3d/UNIT/cube.000.fbx");
-			"Assets/3d/test/human.fbx");
-			//"Assets/3d/Test/stage.fbx");
+	/*auto streat = game_object_manager_.CreateObject("streat");
+	streat.lock().get()->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/streat/Street environment_V01.FBX");*/
 
-	player.lock().get()->AddComponent<ColliderComponent>(this);
-	player.lock().get()->AddComponent<PlayerTest>();
+	//auto test = game_object_manager_.CreateObject("plantune");
+	//test.lock().get()->AddComponent<Object3dComponent>(
+	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+	//	"Assets/3d/UNIT/plantune.fbx");
+	//test.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_SPHERE);
+	//test.lock().get()->GetComponent<Transform>()->local_scale_ = { 0.02f, 0.02f, 0.02f };
 
+	//// ƒvƒŒƒCƒ„[
+	//auto player = game_object_manager_.CreateObject("human");
+	//player.lock().get()->AddComponent<Object3dComponent>(
+	//		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(), 
+	//		//"Assets/3d/UNIT/cube.000.fbx");
+	//		"Assets/3d/test/human.fbx");
+	//		//"Assets/3d/Test/stage.fbx");
+	//player.lock().get()->AddComponent<ColliderComponent>(this);
+	//player.lock().get()->AddComponent<PlayerTest>();
 
-	auto light = game_object_manager_.CreateObject("Light");
-	light.lock()->AddComponent<Light>();
-
-	game_object_manager_.SetPearentChild(player, cube);
+	//auto light = game_object_manager_.CreateObject("Light");
+	//light.lock()->AddComponent<Light>(light_manager_);
+	//game_object_manager_.SetPearentChild(player, light);
 
 
 }

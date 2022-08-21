@@ -1,11 +1,14 @@
 #pragma once
 #include "Component/Component.h"
+#include "ConstantBufferManager/ConstantBuffer.h"
+
+class LightManager;
 
 enum class LightType
 {
+	Spot,			// スポットライト
 	Directional,	// 平行光源
 	Point,			// ポイントライト
-	Spot,			// スポットライト
 };
 
 enum class ShadowType
@@ -20,6 +23,7 @@ class Light :
 {
 public:
 	Light(
+		std::weak_ptr<LightManager> light_manager,							// ライトマネージャ
 		const LightType &type = LightType::Point,
 		const float &range = 10.0f,
 		const XMFLOAT2 &spot_angle = { 21.80208f , 30.0f},
@@ -29,19 +33,26 @@ public:
 		);
 	void Infomation() override;
 
+	// 更新
+	void ComponentUpdate() override;
 
+	std::weak_ptr<LightDate> GetLightDate() { return light_date_; }
+
+
+
+	// 転送用のライトデータ
+	std::shared_ptr<LightDate> light_date_;
 private:
-	// ライトの設定
-	LightType type_;		// ライトの種類
-	float range_;			// 長さ
-	XMFLOAT2 spot_angle_;	// スポットライトの底の角度
-	// ライトの色
-	XMFLOAT4 color_;
-	// 輝度
-	float intensity_;
-	// 間接光の強さ
-	float indirect_multiplier_;
-	// 影の設定
 
+
+	// ライトの設定
+	LightType light_type_;		// ライトの種類
+
+
+	float indirect_multiplier_;		// 間接光の強さ
+	ShadowType shadow_type_;		// 影の種類
+
+	// ライト追加用のマネージャ
+	std::weak_ptr<LightManager> light_manager_;
 };
 

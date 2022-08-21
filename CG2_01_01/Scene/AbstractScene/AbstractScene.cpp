@@ -9,6 +9,8 @@ AbstractScene::AbstractScene(IoChangedListener *impl,std::string sceneName)
 
 	muluti_render_target_ = std::make_unique<MulutiRenderTarget>();
 	muluti_render_target_->InitializeMulutiRenderTarget(DirectXCommon::dev);
+
+	light_manager_ = std::make_shared<LightManager>();
 }
 
 void AbstractScene::Update()
@@ -21,6 +23,8 @@ void AbstractScene::Update()
 
 	// ç≈èIçXêV
 	game_object_manager_.LastUpdate();
+
+
 }
 
 void AbstractScene::PreDrawMultiRenderTarget(Microsoft::WRL::ComPtr<ID3D12Device> dev, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list)
@@ -41,7 +45,11 @@ void AbstractScene::PreDrawPostEffect(Microsoft::WRL::ComPtr<ID3D12Device>dev, M
 
 void AbstractScene::DrawMulutiRenderTarget(Microsoft::WRL::ComPtr<ID3D12Device>dev, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list)
 {
-	muluti_render_target_->DrawRenderTarget(cmd_list,dev);
+	muluti_render_target_->DrawRenderTarget(
+		cmd_list,
+		dev,
+		light_manager_
+		);
 }
 
 void AbstractScene::PostDrawPoseEffect(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list)

@@ -1,0 +1,3 @@
+﻿  'CompileShaders' は、内部コマンドまたは外部コマンド、
+  操作可能なプログラムまたはバッチ ファイルとして認識されていません。
+C:\Users\yabun\Desktop\programming\DirectXTex\DirectXTex_Desktop_2019_Win10.vcxproj(535,5): error MSB3073: コマンド "CompileShaders" はコード 9009 で終了しました。

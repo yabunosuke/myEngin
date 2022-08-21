@@ -120,6 +120,8 @@ void Transform::Infomation()
         XMStoreFloat4(&local_quaternion_, rotate);
         XMStoreFloat3(&local_position_, position);
 
+        //MatrixDecompose(world_matrix_, local_scale_, local_quaternion_, local_position_);
+
         // 座標
         ImGui::DragFloat3("Position", (float *)&local_position_);
         // 回転
@@ -183,4 +185,19 @@ void Transform::UpdateMatrix()
     {
         world_matrix_ = local_matrix_;
     }
+
+    // 取得用のワールドを再計算
+    {
+        MatrixDecompose(world_matrix_, world_scale_, world_quaternion_, world_position_);
+    }
+    
+}
+
+void Transform::MatrixDecompose(const XMMATRIX &matrix, XMFLOAT3 &scale, XMFLOAT4 &quaternion, XMFLOAT3 &position)
+{
+    XMVECTOR scale_v, rotate_v, position_v;
+    XMMatrixDecompose(&scale_v, &rotate_v, &position_v, matrix);
+    XMStoreFloat3(&scale, scale_v);
+    XMStoreFloat4(&quaternion, rotate_v);
+    XMStoreFloat3(&position, position_v);
 }

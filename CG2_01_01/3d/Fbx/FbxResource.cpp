@@ -594,14 +594,20 @@ void FbxResource::CreateComObjects(ID3D12Device *dev)
 			if (std::filesystem::exists(path)) {
 				// マテリアルのみの場合はダミーを貼る
 				if (texture_path.c_str()[0] == 0) {
-					material.texture_id = Texture::MakeTexture(dev);
-					
-						
-						
+					if (static_cast<TextureType>(i) == TextureType::BASE)
+					{
+						material.texture_id = Texture::MakeTexture(dev);
+
+					}
+					if(static_cast<TextureType>(i) == TextureType::NORMAL)
+					{
+						material.texture_id = Texture::MakeTexture(dev, 0xff000000);
+
+					}
+
 				}
 				else {
 					material.texture_id = Texture::LoadTextureFromFile(dev, path.c_str());
-					
 				}
 			}
 			else {

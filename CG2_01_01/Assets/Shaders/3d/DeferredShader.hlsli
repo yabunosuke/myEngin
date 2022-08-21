@@ -8,13 +8,21 @@ cbuffer CONSTANT_BUFFER : register(b0)
 
 struct Light
 {
+	/// <summary>
+	/// ライトの種類
+	/// </summary>
+	/// <param name="x = 1">Spot Light</param>
+	/// <param name="y = 1">Directional Light</param>
+	/// <param name="z = 1">Point Light</param>
+	float4 light_type;
 
-	// ポイントライト用のデータ
+	// 共通項目
 	float4 position;	// ライトの座標
 	float4 color;		// ライトの色
-	float power;		// 強さ
+
+	float intensity;		// 強さ
 	float range;		// 長さ
-	bool is_active;		// 有効
+	float is_active;	// 有効
 	float PADING;		// パディング
 };
 
