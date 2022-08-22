@@ -5,7 +5,10 @@
 #include "CollisionManager.h"
 #include "2d/PostEffect.h"
 #include "MultiRenderTarget/MulutiRenderTarget.h"
+
+
 #include "Component/Manager/LightManager.h"
+#include "Component/Manager/CameraManager.h"
 #include <wrl.h>
 
 class AbstractScene
@@ -37,7 +40,7 @@ public:
 	/// <summary>
 	/// 描画コマンド発行
 	/// </summary>
-	virtual void Draw() const = 0;
+	virtual void Draw() const;
 
 	/// <summary>
 	/// マルチレンダーターゲット描画後処理
@@ -74,6 +77,8 @@ protected:
 	GameObjectManager game_object_manager_;
 	// コリジョンマネージャー
 	CollisionManager collision_manager_;
+	// カメラマネージャ
+	std::shared_ptr<CameraManager> camera_manager_;
 	// ライトマネージャー
 	std::shared_ptr<LightManager> light_manager_;
 	// ポストエフェクト

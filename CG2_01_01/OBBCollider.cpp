@@ -20,7 +20,7 @@ void OBBCollider::Draw()
 		{ 0,0,0},
 		scale_
 	};
-	PrimitiveRenderer::GetInstance().DrawBox(DirectXCommon::cmdList, box);
+	//PrimitiveRenderer::GetInstance().DrawBox(DirectXCommon::cmdList, box);
 }
 
 

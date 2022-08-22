@@ -1,8 +1,9 @@
 #include "Fbx.h"
 #include "PipelineManager.h"
-#include "Camera.h"
+#include "Component/Manager/CameraManager.h"
 #include "Texture.h"
 #include "ConstantBufferManager/ConstantBufferManager.h"
+#include "3d/DrawFbx.h"
 
 Fbx::Fbx(ID3D12Device *dev, const char *file_path)
 {
@@ -71,94 +72,8 @@ void Fbx::UpdateTransform(const XMFLOAT4X4 &transform)
 
 void Fbx::Draw(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cmd_list)
 {
-	HRESULT result;
-	// メッシュ回数分処理する
-	for (const FbxResource::Mesh &mesh : resource_->GetMeshes()) {
-		
-		// パイプラインステートとルートシグネチャ設定
-		PipelineManager::GetInstance()->SetPipline(cmd_list,mesh.pipline_name);
-
-		//カメラバッファを転送、セット
-		CameraConstantBuffer camera_constant_buffer_map;
-		camera_constant_buffer_map.view_position = {
-				Camera::GetCam()->eye.x,
-				Camera::GetCam()->eye.y,
-				Camera::GetCam()->eye.z,
-				1.0f
-		};
-		DirectX::XMStoreFloat4x4(&camera_constant_buffer_map.view_projection, Camera::GetCam()->GetViewProjectionMatrix());
-		DirectX::XMStoreFloat4x4(&camera_constant_buffer_map.inv_view_projection, XMMatrixInverse(nullptr, Camera::GetCam()->GetViewProjectionMatrix()));
-		ConstantBufferManager::GetInstance()->BufferTransfer<CameraConstantBuffer>(cmd_list, 0, 0, BufferName::Camera, &camera_constant_buffer_map);
-
-
-		// メッシュ定数バッファをセット
-		cmd_list->SetGraphicsRootConstantBufferView(1, mesh.mesh_constant_buffer_->GetGPUVirtualAddress());
-		// メッシュ定数バッファ更新
-		FbxResource::MeshConstantBuffer *mesh_constant_buffer_map = nullptr;
-		result = mesh.mesh_constant_buffer_->Map(0, nullptr, (void **)&mesh_constant_buffer_map);
-		if (SUCCEEDED(result))
-		{
-			// 親の1つ以上あれば親から計算
-			if (mesh.node_indices.size() > 0)
-			{
-				for (size_t i = 0; i < mesh.node_indices.size(); ++i)
-				{
-					DirectX::XMMATRIX worldTransform = DirectX::XMLoadFloat4x4(&nodes_.at(mesh.node_indices.at(i)).world_transform);
-					DirectX::XMMATRIX offsetTransform = DirectX::XMLoadFloat4x4(&mesh.offset_transforms.at(i));
-					DirectX::XMMATRIX boneTransform = offsetTransform * worldTransform;
-					DirectX::XMStoreFloat4x4(&mesh_constant_buffer_map->bone_transforms[i], boneTransform);
-				}
-			}
-			// 親がいなければワールドトランスフォームを使う
-			else
-			{
-				mesh_constant_buffer_map->bone_transforms[0] = nodes_.at(mesh.id).world_transform;
-			}
-			
-			mesh.mesh_constant_buffer_->Unmap(0, nullptr);
-		}
-
-
-		// 頂点バッファをセット(VBV)
-		cmd_list->IASetVertexBuffers(0, 1, &mesh.vbView);
-		// インデックスバッファをセット(IBV)
-		cmd_list->IASetIndexBuffer(&mesh.ibView);
-		// プリミティブ形状を設定
-		cmd_list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-		// サブセット単位で描画
-		for (const FbxResource::Subset &subset : mesh.subsets) {
-			// サブセット定数バッファビューを0番にセット
-			cmd_list->SetGraphicsRootConstantBufferView(2, subset.subset_constant_buffer_->GetGPUVirtualAddress());
-
-			FbxResource::SubsetConstantBuffer *subset_constant_buffer_map = nullptr;
-			// メッシュ定数バッファ更新
-			result = subset.subset_constant_buffer_->Map(0, nullptr, (void **)&subset_constant_buffer_map);
-			if (SUCCEEDED(result))
-			{
-				subset_constant_buffer_map->material_color = {
-					subset.material->color.x * color_.x,
-					subset.material->color.y * color_.y,
-					subset.material->color.z * color_.z,
-					subset.material->color.w * color_.w
-				};
-				subset.subset_constant_buffer_->Unmap(0, nullptr);
-			}
-			
-			
-			// デスクリプタヒープのセット
-			ID3D12DescriptorHeap *ppHeaps[] = { Texture::descriptor_heap_.Get() };
-			cmd_list->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
-			// シェーダリソースビューをセット
-			cmd_list->SetGraphicsRootDescriptorTable(3, subset.material->shader_resource_views[0]);
-
-			//描画コマンド
-			cmd_list->DrawIndexedInstanced(subset.index_count, 1, subset.start_index, 0, 0);
-		}
-
-	}
-
+	// 後から描画
+	DrawFbx::GetIns()->SetDrawResource(resource_, nodes_);
 }
 
 Fbx::Node *Fbx::FindNode(const char *name)

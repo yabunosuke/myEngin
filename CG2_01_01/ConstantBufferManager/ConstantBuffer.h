@@ -34,13 +34,15 @@ struct LightConstBufferData {
 	LightDate light[LIGHT_MAX];
 };
 
+struct CameraDeta
+{
+	DirectX::XMFLOAT4 view_position;
+	DirectX::XMMATRIX mat_view;
+	DirectX::XMMATRIX mat_projection;
+};
 // ÉJÉÅÉâópç\ë¢ëÃ
 struct CameraConstantBuffer {
 	DirectX::XMFLOAT4 view_position;
 	DirectX::XMFLOAT4X4 view_projection;
 	DirectX::XMFLOAT4X4 inv_view_projection;
-};
-
-struct VertexPosUv
-{
 };

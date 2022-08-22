@@ -1,13 +1,10 @@
 #include "Component/Transform.h"
 #include "yMath.h"
 #include "ImGui/ImGuizmo.h"
-#include  "Camera.h"
 #include "GameObject.h"
+#include "Component/Manager/CameraManager.h"
 
-Vector3 Transform::TransformPoint(Vector3 position)
-{
-    return Vector3();
-}
+
 
 Transform::Transform() :
 	Component("Transform",  ComponentID::TRANSFORM,true)
@@ -16,8 +13,6 @@ Transform::Transform() :
 
 void Transform::Infomation()
 {
-
-
     // リセットボタン
     if(ImGui::Button("Reset"))
     {
@@ -76,7 +71,9 @@ void Transform::Infomation()
 
 	// 直前のマトリックス
     XMMATRIX old_matrix = world_matrix_;
-    ImGuizmo::Manipulate(Camera::GetCam()->GetViewMatrix().r->m128_f32, Camera::GetCam()->GetProjectionMatrix().r->m128_f32, mCurrentGizmoOperation, mCurrentGizmoMode, world_matrix_.r->m128_f32, NULL, useSnap ? &snap.x : NULL);
+    ImGuizmo::Manipulate(
+        CameraManager::GetView().r->m128_f32, 
+        CameraManager::GetProjection().r->m128_f32, mCurrentGizmoOperation, mCurrentGizmoMode, world_matrix_.r->m128_f32, NULL, useSnap ? &snap.x : NULL);
     
     // 親がいる場合はローカルに変換しなおす
     if(parent != nullptr)

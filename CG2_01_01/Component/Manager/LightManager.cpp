@@ -1,5 +1,4 @@
 #include "LightManager.h"
-#include "ConstantBufferManager/ConstantBufferManager.h"
 #include <algorithm>
 
 

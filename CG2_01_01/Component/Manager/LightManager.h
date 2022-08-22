@@ -3,8 +3,8 @@
 #include <memory>
 #include <wrl/client.h>
 #include <d3d12.h>
+#include "ConstantBufferManager/ConstantBufferManager.h"
 
-#include "Component/Light.h"
 
 class LightManager
 {

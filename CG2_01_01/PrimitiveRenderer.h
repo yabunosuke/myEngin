@@ -61,8 +61,8 @@ public:
 	void CreatePrimitivAll(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cmd_list);
 	void FrameInitialize() { buffer_index_ = 0; }
 
-	void DrawLine(ComPtr<ID3D12GraphicsCommandList> cmd_list,Line line,XMFLOAT4 color = {0,1,0,1});
-	void DrawBox(ComPtr<ID3D12GraphicsCommandList> cmd_list,Box box, XMFLOAT4 color = { 0,1,0,1 });
+	void DrawLine(ComPtr<ID3D12GraphicsCommandList> cmd_list,Line line, DirectX::XMMATRIX view_projection, XMFLOAT4 color = {0,1,0,1});
+	void DrawBox(ComPtr<ID3D12GraphicsCommandList> cmd_list, Box box, DirectX::XMMATRIX view_projection, XMFLOAT4 color = { 0,1,0,1 });
 
 	// ラインプリミティブ生成
 private:

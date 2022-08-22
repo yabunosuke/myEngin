@@ -44,14 +44,20 @@ public:
 	/// </summary>
 	void DrawMulutiRender();
 
+	/// <summary>
+	/// マルチレンダー描画
+	/// </summary>
+	void ProjectSettingsWindow();
+
 private:	//メニュー
 	bool isDemo = true;			//デモウィンドウ
 	bool isHierarchy = true;	//ヒエラルキー
 	bool isInsupector = true;	//デモウィンドウ
+	bool open_project_settings_window_ = false;
 
 	int selected_object_id = -1;
 
 	std::shared_ptr<AbstractScene> nowScene;
-	
+
 };
 

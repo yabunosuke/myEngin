@@ -16,11 +16,22 @@
 #include "Component/ColliderComponent.h"
 #include "Component/Light.h"
 #include "Component/Rigidbody.h"
+#include "Component/Camera.h"
 #include "PlayerTest.h"
 
 TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
+
+	// プレイヤー
+	auto player = game_object_manager_.CreateObject("human");
+	player.lock().get()->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/test/human.fbx");
+	player.lock().get()->AddComponent<ColliderComponent>(this);
+	player.lock().get()->AddComponent<Rigidbody>();
+	player.lock().get()->AddComponent<PlayerTest>();
+	player.lock().get()->AddComponent<Light>(light_manager_);
 
 	/*auto dorone = game_object_manager_.CreateObject("Dorone");
 	dorone.lock().get()->AddComponent<Object3dComponent>(
@@ -31,40 +42,31 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	castle.lock().get()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/Castle/Castle FBX.fbx");
-
+	castle.lock()->GetComponent<Transform>()->local_scale_ = { 20,20,20 };
+	castle.lock()->GetComponent<Transform>()->local_position_ = { 0,-7,0 };
 	/*auto streat = game_object_manager_.CreateObject("streat");
 	streat.lock().get()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/streat/Street environment_V01.FBX");*/
 
-	//auto test = game_object_manager_.CreateObject("plantune");
-	//test.lock().get()->AddComponent<Object3dComponent>(
-	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-	//	"Assets/3d/UNIT/plantune.fbx");
-	//test.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_SPHERE);
-	//test.lock().get()->GetComponent<Transform>()->local_scale_ = { 0.02f, 0.02f, 0.02f };
+	auto test = game_object_manager_.CreateObject("plantune");
+	test.lock().get()->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/UNIT/plantune.fbx");
+	test.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_SPHERE);
+	test.lock().get()->GetComponent<Transform>()->local_scale_ = { 0.02f, 0.02f, 0.02f };
 
-	//// プレイヤー
-	//auto player = game_object_manager_.CreateObject("human");
-	//player.lock().get()->AddComponent<Object3dComponent>(
-	//		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(), 
-	//		//"Assets/3d/UNIT/cube.000.fbx");
-	//		"Assets/3d/test/human.fbx");
-	//		//"Assets/3d/Test/stage.fbx");
-	//player.lock().get()->AddComponent<ColliderComponent>(this);
-	//player.lock().get()->AddComponent<PlayerTest>();
-
-	//auto light = game_object_manager_.CreateObject("Light");
-	//light.lock()->AddComponent<Light>(light_manager_);
-	//game_object_manager_.SetPearentChild(player, light);
+	auto camera = game_object_manager_.CreateObject("Camera");
+	camera.lock()->AddComponent<Camera>(camera_manager_);
+	camera.lock()->GetComponent<Transform>()->local_position_ = { 0,200,-400 };
+	XMStoreFloat4(&camera.lock()->GetComponent<Transform>()->local_quaternion_, XMQuaternionRotationRollPitchYaw(0, 0, 0));
+	game_object_manager_.SetPearentChild(player, camera);
 
 
 }
 
 void TitleScene::Initialize()
 {
-	cam_ = new Camera({ 0,50,-50 });
-	Camera::SetCam(cam_);
 
 	game_object_manager_.Initialize();
 }
@@ -84,61 +86,6 @@ void TitleScene::Update()
 	collision_manager_.CheckBroadCollisions(game_object_manager_.game_objects_);
 
 	game_object_manager_.LastUpdate();
-
-	if(KeyboardInput::GetIns()->GetKeyPress(DIK_UPARROW))
-	{
-		Camera::GetCam()->eye.z++;
-	}
-	if(KeyboardInput::GetIns()->GetKeyPress(DIK_DOWNARROW))
-	{
-		Camera::GetCam()->eye.z--;
-	}
-	if (KeyboardInput::GetIns()->GetKeyPress(DIK_RIGHTARROW))
-	{
-		Camera::GetCam()->eye.x++;
-	}
-	if (KeyboardInput::GetIns()->GetKeyPress(DIK_LEFTARROW))
-	{
-		Camera::GetCam()->eye.x--;
-	}
-	Camera::GetCam()->UpdateViewMatrix();
-	Camera::GetCam()->UpdateProjectionMatrix();
+	
  	
 }
-
-void TitleScene::Draw() const
-{
-	// 背景スプライト
-
-	PrimitiveRenderer::Line line = {
-		{0,0,0},
-		{10,0,0}
-	};
-
-	//PrimitiveRenderer::GetInstance().DrawLine(DirectXCommon::cmdList,line);
-	//PrimitiveRenderer::GetInstance().DrawBox(DirectXCommon::cmdList, box);
-	game_object_manager_.Draw();
-
-
-	//ウィンドウ名定義
-	ImGui::Begin("PostEffectShader");
-	ImGui::SetWindowSize(
-		ImVec2(400, 500),
-		ImGuiCond_::ImGuiCond_FirstUseEver
-	);
-	for (int i = 0; i < _countof(PipelineManager::GetInstance()->posteffect_shader_list_); ++i)
-	{
-		if (ImGui::Button(PipelineManager::GetInstance()->posteffect_shader_list_[i].c_str())) {
-			post_effect_->shader_name_ = PipelineManager::GetInstance()->posteffect_shader_list_[i];
-		}
-		if(i % 4 != 0 || i == 0)
-		{
-			ImGui::SameLine();
-
-		}
-	}
-
-	//終了
-	ImGui::End();
-}
-

@@ -1,4 +1,7 @@
 #pragma once
+
+
+#include "Component/Transform.h"
 #include "Component/Component.h"
 #include "ConstantBufferManager/ConstantBuffer.h"
 
@@ -33,16 +36,20 @@ public:
 		);
 	void Infomation() override;
 
-	// 更新
+	void ComponentInitialize() override;
 	void ComponentUpdate() override;
 
 	std::weak_ptr<LightDate> GetLightDate() { return light_date_; }
 
 
+private:
+	// 計算用トランスフォーム
+	Transform *transform_;
+
+
 
 	// 転送用のライトデータ
 	std::shared_ptr<LightDate> light_date_;
-private:
 
 
 	// ライトの設定
@@ -52,7 +59,5 @@ private:
 	float indirect_multiplier_;		// 間接光の強さ
 	ShadowType shadow_type_;		// 影の種類
 
-	// ライト追加用のマネージャ
-	std::weak_ptr<LightManager> light_manager_;
 };
 

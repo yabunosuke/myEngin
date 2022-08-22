@@ -1,5 +1,8 @@
 #include "AbstractScene.h"
 #include  "DirectXCommon.h"
+#include "PipelineManager.h"
+#include "3d/DrawFbx.h"
+
 AbstractScene::AbstractScene(IoChangedListener *impl,std::string sceneName)
 	:implSceneChanged(impl),
 	name(sceneName)
@@ -11,6 +14,7 @@ AbstractScene::AbstractScene(IoChangedListener *impl,std::string sceneName)
 	muluti_render_target_->InitializeMulutiRenderTarget(DirectXCommon::dev);
 
 	light_manager_ = std::make_shared<LightManager>();
+	camera_manager_ = std::make_shared<CameraManager>();
 }
 
 void AbstractScene::Update()
@@ -31,6 +35,39 @@ void AbstractScene::PreDrawMultiRenderTarget(Microsoft::WRL::ComPtr<ID3D12Device
 {
 	muluti_render_target_->PreDrawScene(dev,cmd_list);
 
+}
+
+void AbstractScene::Draw() const
+{
+	// マネージャー描画（最終的には削除）
+	game_object_manager_.Draw();
+
+	//カメラマネージャをセット
+	PipelineManager::GetInstance()->SetPipline(DirectXCommon::cmdList, "GBuffer");
+	camera_manager_->BufferTransfer(DirectXCommon::cmdList, 0, 0);
+	// モデルを描画
+	DrawFbx::GetIns()->AllDraw(DirectXCommon::dev,DirectXCommon::cmdList);
+
+	//ウィンドウ名定義
+	ImGui::Begin("PostEffectShader");
+	ImGui::SetWindowSize(
+		ImVec2(400, 500),
+		ImGuiCond_::ImGuiCond_FirstUseEver
+	);
+	for (int i = 0; i < _countof(PipelineManager::GetInstance()->posteffect_shader_list_); ++i)
+	{
+		if (ImGui::Button(PipelineManager::GetInstance()->posteffect_shader_list_[i].c_str())) {
+			post_effect_->shader_name_ = PipelineManager::GetInstance()->posteffect_shader_list_[i];
+		}
+		if (i % 4 != 0 || i == 0)
+		{
+			ImGui::SameLine();
+
+		}
+	}
+
+	//終了
+	ImGui::End();
 }
 
 void AbstractScene::PostDrawMultiRenderTarget(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list)

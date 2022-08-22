@@ -39,6 +39,7 @@ public:
 	/// </summary>
 	void Finalize();
 
+
 	/// <summary>
 	/// オブジェクト生成
 	/// </summary>

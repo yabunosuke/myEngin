@@ -1,7 +1,6 @@
 #include "Editor.h"
 #include "ImGui/imguiManager.h"
 #include "ImGui/ImGuizmo.h"
-#include "Camera.h"
 #include "FileManager.h"
 
 #include "Component/Transform.h"
@@ -24,6 +23,10 @@ void Editor::Draw()
 	if (isHierarchy) {
 		DrawInspector();
 	}
+
+	// 設定画面
+	ProjectSettingsWindow();
+
 	// 出力
 	if(true)
 	{
@@ -110,6 +113,22 @@ void Editor::EditMenu()
 	// ペースト
 	if (ImGui::MenuItem("Paste", "Ctrl+V")) {
 	}
+
+	ImGui::Separator();
+
+	// プロジェクトの設定
+	if (ImGui::MenuItem("Project Setting")) {
+		open_project_settings_window_ = true;
+	}
+	//if (ImGui::BeginMenu("Project Setting"))
+	//{
+	//	// ペースト
+	//	if (ImGui::MenuItem("Paste", "Ctrl+V")) {
+
+	//	}
+
+	//	ImGui::EndMenu();
+	//}
 
 }
 
@@ -411,19 +430,20 @@ void Editor::DrawMulutiRender()
 		ImVec2(400, 500),
 		ImGuiCond_::ImGuiCond_FirstUseEver
 	);
+	
+	ImGui::End();
+}
 
+void Editor::ProjectSettingsWindow()
+{
+	if (!open_project_settings_window_)return;
+	//ウィンドウ名定義
+	ImGui::Begin("Project Settings", &open_project_settings_window_);
 
-	/*XMMATRIX test = XMMatrixIdentity();
-	ImGuizmo::DrawGrid(
-		Camera::GetCam()->GetViewMatrix().r->m128_f32,
-		Camera::GetCam()->GetProjectionMatrix().r->m128_f32,
-		test.r->m128_f32, 100);
-	*/
-
-	//ImGuizmo::DrawCubes(
-	//	Camera::GetCam()->GetViewMatrix().r->m128_f32,
-	//	Camera::GetCam()->GetProjectionMatrix().r->m128_f32,
-	//	test.r->m128_f32, 20);
+	ImGui::SetWindowSize(
+		ImVec2(400, 500),
+		ImGuiCond_::ImGuiCond_FirstUseEver
+	);
 
 	ImGui::End();
 }

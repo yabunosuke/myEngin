@@ -13,7 +13,6 @@ public:
 	/// </summary>
 	/// <param name="position">変換したい座標</param>
 	/// <returns>Vector3 ワールド座標</returns>
-	static Vector3 TransformPoint(Vector3 position);
 
 public:
 	Transform();
@@ -36,7 +35,10 @@ public:
 	XMFLOAT4	world_quaternion_	= { 0,1,0,0, };	// ワールド回転（クオータニオン）
 	Vector3		world_scale_		 = { 1,1,1 };			// ワールド拡大
 
-	
+	Vector3 GetRight() {return Vector3(world_matrix_.r[0]).Normalized();}
+	Vector3 GetUp() {return Vector3(world_matrix_.r[1]).Normalized();}
+	Vector3 GetFront() {return Vector3(world_matrix_.r[2]).Normalized();}
+
 private:
 	XMMATRIX local_matrix_ = XMMatrixIdentity();		// ローカル行列
 	XMMATRIX world_matrix_ = XMMatrixIdentity();		// ワールド行列

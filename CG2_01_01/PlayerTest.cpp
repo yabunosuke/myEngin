@@ -18,6 +18,11 @@ void PlayerTest::Initialize()
 	// トランスフォーム
 	transform_ = object_->GetComponent<Transform>();
 	transform_->local_scale_ = {0.1f,0.1f ,0.1f};
+
+	// リジッド
+	regidbody_ = object_->GetComponent<Rigidbody>();
+
+	// オブジェクトデータ
 	game_object = object_->GetComponent<Object3dComponent>()->GetObjectData();
 
 }
@@ -25,8 +30,9 @@ void PlayerTest::Initialize()
 void PlayerTest::Update()
 {
 	// 白色に戻す
-
-	// XMStoreFloat4(&transform_->local_quaternion_,XMQuaternionMultiply(XMLoadFloat4(&transform_->local_quaternion_), XMQuaternionRotationAxis({0,1,0},10 * Mathf::deg_to_rad)));
+	static float spin = 180;
+	
+	
 
 	if (!(KeyboardInput::GetIns()->GetKeyPress(DIK_W) ||
 		KeyboardInput::GetIns()->GetKeyPress(DIK_A) ||
@@ -54,8 +60,11 @@ void PlayerTest::Update()
 
 	}
 	else {
+		// キー入力での移動処理
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_W)) {
-			transform_->local_position_ += { 0, 0, 0.7f };
+			// 移動
+			regidbody_->AddForce(transform_->GetFront());
+
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK;
 			}
@@ -65,7 +74,8 @@ void PlayerTest::Update()
 			game_object->PlayAnimation(static_cast<int>(state));
 		}
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_S)) {
-			transform_->local_position_ += { 0, 0, -0.5f };
+			// 移動
+			regidbody_->AddForce(-transform_->GetFront());
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_BACK;
 			}
@@ -75,7 +85,8 @@ void PlayerTest::Update()
 			game_object->PlayAnimation(static_cast<int>(state));
 		}
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_D)) {
-			transform_->local_position_ += { 1.8f, 0, 0 };
+			// 移動
+			regidbody_->AddForce(transform_->GetRight());
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_RIGHT;
 			}
@@ -85,7 +96,9 @@ void PlayerTest::Update()
 			game_object->PlayAnimation(static_cast<int>(state));
 		}
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_A)) {
-			transform_->local_position_ += { -1.8f, 0, 0 };
+			// 移動
+			regidbody_->AddForce(-transform_->GetRight());
+
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_LEFT;
 			}
@@ -95,8 +108,19 @@ void PlayerTest::Update()
 			game_object->PlayAnimation(static_cast<int>(state));
 		}
 	}
+	
+	
 
-
+	if (KeyboardInput::GetIns()->GetKeyPress(DIK_Q))
+	{
+		spin -= 2;
+		XMStoreFloat4(&transform_->local_quaternion_, XMQuaternionRotationRollPitchYaw(0,spin * Mathf::deg_to_rad,0));
+	}
+	if (KeyboardInput::GetIns()->GetKeyPress(DIK_E))
+	{
+		spin += 2;
+		XMStoreFloat4(&transform_->local_quaternion_, XMQuaternionRotationRollPitchYaw(0, spin * Mathf::deg_to_rad, 0));
+	}
 	// 回転デバッグ
 	/*if (KeyboardInput::GetIns()->GetKeyPress(DIK_Q)) {
 		transform_->rotate.y -= 1.0f;
@@ -127,6 +151,11 @@ void PlayerTest::Update()
 		else {
 			state = AnimationState::IDLE;
 		}
+	}
+
+	if(regidbody_->velocity_.Magnitude() > 3.0f)
+	{
+		regidbody_->velocity_ = regidbody_->velocity_.Normalized() * 3.0f;
 	}
 }
 

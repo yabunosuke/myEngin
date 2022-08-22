@@ -6,8 +6,6 @@
 
 #include "Component/Transform.h"
 #include "Component/Light.h"
-#include "Component/CameraComponent.h"
-
 #include "GameObject.h"
 
 
@@ -54,8 +52,6 @@ private:
 	//void addLight(GameObject *object) { object->AddComponent<LightComponent>(); }
 	//トランスフォームコンポーネント追加
 	void addColision(GameObject *object) { object->AddComponent<Transform>(); }
-	//トランスフォームコンポーネント追加
-	void addCamera(GameObject *object) { object->AddComponent<CameraComponent>(); }
 
 
 	//コンポーネントグループ

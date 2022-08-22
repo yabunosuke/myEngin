@@ -54,7 +54,6 @@
     <ClCompile Include="..\System\SystemMain\SystemMain.cpp" />
     <ClCompile Include="2d\PostEffect.cpp" />
     <ClCompile Include="2d\Sprite.cpp" />
-    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ComponentList.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="FileManager.cpp" />
@@ -63,7 +62,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object3dComponent.cpp" />
     <ClCompile Include="PipelineManager.cpp" />
-    <ClCompile Include="PlayerTest.cpp" />
     <ClCompile Include="PrimitiveRenderer.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="3d\Fbx\Fbx.cpp">
@@ -142,9 +140,6 @@
     <ClCompile Include="OBBCollider.cpp">
       <Filter>Component\Collider\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="Component\CameraComponent.cpp">
-      <Filter>Component\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="Math\Mathf.h">
       <Filter>Math</Filter>
     </ClCompile>
@@ -154,6 +149,19 @@
     <ClCompile Include="3d\Mesh.cpp" />
     <ClCompile Include="Component\Manager\LightManager.cpp">
       <Filter>Component\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\Camera.cpp">
+      <Filter>Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\Manager\CameraManager.cpp">
+      <Filter>Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="3d\DrawFbx.cpp" />
+    <ClCompile Include="PlayerTest.cpp">
+      <Filter>Component\UserComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\UserScript\Bullet.cpp">
+      <Filter>Component\UserComponent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -177,7 +185,6 @@
     <ClInclude Include="..\System\SystemMain\SystemMain.h" />
     <ClInclude Include="2d\PostEffect.h" />
     <ClInclude Include="2d\Sprite.h" />
-    <ClInclude Include="Camera.h" />
     <ClInclude Include="ComponentList.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="FileManager.h" />
@@ -185,7 +192,6 @@
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="Object3dComponent.h" />
     <ClInclude Include="PipelineManager.h" />
-    <ClInclude Include="PlayerTest.h" />
     <ClInclude Include="PrimitiveRenderer.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="3d\Fbx\Fbx.h">
@@ -270,9 +276,6 @@
     <ClInclude Include="Collider\OBBCollider.h">
       <Filter>Component\Collider\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Component\CameraComponent.h">
-      <Filter>Component\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="ConstantBufferManager\ConstantBuffer.h">
       <Filter>ConstantBufferManager</Filter>
     </ClInclude>
@@ -285,6 +288,19 @@
     <ClInclude Include="3d\Mesh.h" />
     <ClInclude Include="Component\Manager\LightManager.h">
       <Filter>Component\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Camera.h">
+      <Filter>Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Manager\CameraManager.h">
+      <Filter>Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="3d\DrawFbx.h" />
+    <ClInclude Include="PlayerTest.h">
+      <Filter>Component\UserComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\UserScript\Bullet.h">
+      <Filter>Component\UserComponent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -321,9 +337,6 @@
     <Filter Include="Shader\3d">
       <UniqueIdentifier>{f02458ce-32e4-4282-9b26-ee732223987c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shader\3d\ADS">
-      <UniqueIdentifier>{8f3c4422-936e-471e-9230-b715439af322}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shader\3d\GBuffer">
       <UniqueIdentifier>{78e17c48-f1f1-4d1a-a8e3-c11914db4dd1}</UniqueIdentifier>
     </Filter>
@@ -356,6 +369,9 @@
     </Filter>
     <Filter Include="3dオブジェクト\FBX">
       <UniqueIdentifier>{c8ac2e1d-f171-4050-b7ba-dc176938b264}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\UserComponent">
+      <UniqueIdentifier>{8d2edc7d-c0bb-44e0-b8cd-da5ccde7b80d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

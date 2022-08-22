@@ -9,14 +9,16 @@
 
 class GameObject;
 
+// 更新順
 enum class ComponentID
 {
 	None,
-	Sqript,
-	RigitBody,	
-	TRANSFORM,
-	Light,
-	Mesh,
+	Sqript,		// スクリプト
+	RigitBody,	// リジッドボディ
+	TRANSFORM,	// トランスフォーム
+	Light,		// ライト
+	Camera,		// カメラ
+	Mesh,		// メッシュ
 };
 
 class Component
@@ -122,7 +124,6 @@ protected:	//関数
 		return static_cast<int>(this->component_id_) < static_cast<int>(rhs->component_id_);
 	}
 
-protected:
 	// オブジェクト
 	GameObject *object_ = nullptr;
 	// アクティブフラグ

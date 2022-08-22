@@ -1,6 +1,5 @@
 #include "PrimitiveRenderer.h"
 #include "PipelineManager.h"
-#include "Camera.h"
 #include "DirectXCommon.h"
 #include "Math/Mathf.h"
 
@@ -39,7 +38,7 @@ void PrimitiveRenderer::CreatePrimitivAll(ComPtr<ID3D12Device> dev, ComPtr<ID3D1
 
 }
 
-void PrimitiveRenderer::DrawLine(ComPtr<ID3D12GraphicsCommandList> cmd_list,Line line, XMFLOAT4 color)
+void PrimitiveRenderer::DrawLine(ComPtr<ID3D12GraphicsCommandList> cmd_list,Line line, DirectX::XMMATRIX view_projection, XMFLOAT4 color)
 {
 	DirectX::XMVECTOR start;						// 始点
 	DirectX::XMVECTOR end;							// 終点
@@ -74,7 +73,7 @@ void PrimitiveRenderer::DrawLine(ComPtr<ID3D12GraphicsCommandList> cmd_list,Line
 	rotate = DirectX::XMMatrixRotationQuaternion(DirectX::XMQuaternionRotationNormal(normal_stert_cross_end, rad));
 	transform = DirectX::XMMatrixTranslation(line.start_positon.x, line.start_positon.y, line.start_positon.z);
 
-	world_view_projection = (scale * rotate * transform) * Camera::GetCam()->GetViewProjectionMatrix();
+	world_view_projection = (scale * rotate * transform) * view_projection;
 
 
 	// パイプラインステートとルートシグネチャ設定
@@ -102,7 +101,7 @@ void PrimitiveRenderer::DrawLine(ComPtr<ID3D12GraphicsCommandList> cmd_list,Line
 	++buffer_index_;
 }
 
-void PrimitiveRenderer::DrawBox(ComPtr<ID3D12GraphicsCommandList> cmd_list, Box box, XMFLOAT4 color)
+void PrimitiveRenderer::DrawBox(ComPtr<ID3D12GraphicsCommandList> cmd_list, Box box, DirectX::XMMATRIX view_projection, XMFLOAT4 color)
 {
 
 	DirectX::XMMATRIX S = DirectX::XMMatrixScaling(box.scale.x, box.scale.y, box.scale.z);
@@ -114,7 +113,7 @@ void PrimitiveRenderer::DrawBox(ComPtr<ID3D12GraphicsCommandList> cmd_list, Box 
 	DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(box.translate.x, box.translate.y, box.translate.z);
 
 	DirectX::XMMATRIX world = S * R * T;	// ワールドビュー行列
-	DirectX::XMMATRIX world_view_projection = world * Camera::GetCam()->GetViewProjectionMatrix();	// ワールドビュー行列
+	DirectX::XMMATRIX world_view_projection = world * view_projection;	// ワールドビュー行列
 
 
 		// パイプラインステートとルートシグネチャ設定

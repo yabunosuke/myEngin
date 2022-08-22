@@ -6,7 +6,12 @@
 
 Light::Light(
 	std::weak_ptr<LightManager> light_manager,							// ライトマネージャ
-	const LightType &type, const float &range, const XMFLOAT2 &spot_angle, const XMFLOAT4 &color, const float &intensity, const float &indirect_multiplier):
+	const LightType &type, 
+	const float &range,
+	const XMFLOAT2 &spot_angle,
+	const XMFLOAT4 &color,
+	const float &intensity,
+	const float &indirect_multiplier):
 	Component("Light", ComponentID::Light),
 	light_type_(type)
 {
@@ -14,9 +19,7 @@ Light::Light(
 	light_date_ = std::make_shared<LightDate>();
 
 	// マネージャをセット
-	light_manager_ = light_manager;
-	// マネージャにライトを登録
-	light_manager_.lock()->AddLight(light_date_);
+	light_manager.lock()->AddLight(light_date_);
 }
 
 void Light::Infomation()
@@ -67,16 +70,19 @@ void Light::Infomation()
 	}
 }
 
+void Light::ComponentInitialize()
+{
+	transform_ = object_->GetComponent<Transform>();
+}
+
 void Light::ComponentUpdate()
 {
 	// データを転送用に変換
 
-	// 座標取得
-	XMFLOAT3 object_pos = object_->GetComponent<Transform>()->world_position_;
 	light_date_->position = {
-		object_pos.x,
-		object_pos.y,
-		object_pos.z,
+		transform_->world_position_.x,
+		transform_->world_position_.y,
+		transform_->world_position_.z,
 		1.0f
 	};
 

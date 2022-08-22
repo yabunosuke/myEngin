@@ -4,6 +4,7 @@
 
 #include "3d/Fbx/Fbx.h"
 #include "Component/Light.h"
+#include "Component/Rigidbody.h"
 
 class PlayerTest :
 	public ScriptComponent
@@ -36,6 +37,7 @@ private:
 
 	// 座標
 	Transform *transform_;
+	Rigidbody *regidbody_;
 
 	// アニメーションステート
 	enum class AnimationState {
