@@ -1,7 +1,7 @@
 #include "PlayerTest.h"
 #include "GameObject.h"
 #include "Object3dComponent.h"
-
+#include "Quaternion.h"
 PlayerTest::PlayerTest():
 	ScriptComponent("Player")
 {
@@ -25,6 +25,7 @@ void PlayerTest::Initialize()
 	// オブジェクトデータ
 	game_object = object_->GetComponent<Object3dComponent>()->GetObjectData();
 
+	
 }
 
 void PlayerTest::Update()
@@ -64,6 +65,7 @@ void PlayerTest::Update()
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_W)) {
 			// 移動
 			regidbody_->AddForce(transform_->GetFront());
+			regidbody_->velocity_ = regidbody_->velocity_.Normalized() * 2.0f;
 
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK;
@@ -76,6 +78,7 @@ void PlayerTest::Update()
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_S)) {
 			// 移動
 			regidbody_->AddForce(-transform_->GetFront());
+			regidbody_->velocity_ = regidbody_->velocity_.Normalized() * 1.0f;
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_BACK;
 			}
@@ -87,6 +90,7 @@ void PlayerTest::Update()
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_D)) {
 			// 移動
 			regidbody_->AddForce(transform_->GetRight());
+			regidbody_->velocity_ = regidbody_->velocity_.Normalized() * 1.8f;
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_RIGHT;
 			}
@@ -99,6 +103,7 @@ void PlayerTest::Update()
 			// 移動
 			regidbody_->AddForce(-transform_->GetRight());
 
+			regidbody_->velocity_ = regidbody_->velocity_.Normalized() * 1.8f;
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_LEFT;
 			}
@@ -155,7 +160,6 @@ void PlayerTest::Update()
 
 	if(regidbody_->velocity_.Magnitude() > 3.0f)
 	{
-		regidbody_->velocity_ = regidbody_->velocity_.Normalized() * 3.0f;
 	}
 }
 

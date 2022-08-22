@@ -15,7 +15,6 @@ GameObject::GameObject(const std::string &name) :
 	id_(++ID)
 {
 	AddComponent<Transform>();
-	Vector3 a = Vector3::NegativeInfinity();
 
 }
 

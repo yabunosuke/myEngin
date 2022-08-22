@@ -44,7 +44,7 @@ void Camera::ComponentUpdate()
 	camera_date_ ->mat_view = XMMatrixLookAtLH(
 		XMLoadFloat3(&transform_->world_position_),
 		target,
-		XMLoadFloat3(&Vector3::Up())
+		XMLoadFloat3(&Vector3::up)
 	);
 
 	// プロジェクション行列計算

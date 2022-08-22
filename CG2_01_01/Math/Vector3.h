@@ -6,6 +6,12 @@ using namespace DirectX;
 
 struct Vector3 : XMFLOAT3
 {
+	//	**************
+	//
+	//	  静的メンバ関数
+	//
+	//	**************
+
 	Vector3() = default;
 	Vector3(float x, float y, float z) {
 		this->x = x;
@@ -21,6 +27,24 @@ struct Vector3 : XMFLOAT3
 		XMVECTOR temp = other;
 		XMStoreFloat3(this, temp);
 	}
+
+	//	**************
+	//
+	//	  静的メンバ関数
+	//
+	//	**************
+
+	static const Vector3 forward;	// (  0,  0,  1 )
+	static const Vector3 back;		// (  0,  0, -1 )
+	static const Vector3 up;		// (  0,  1,  0 )
+	static const Vector3 down;		// (  0, -1,  0 )
+	static const Vector3 right;		// (  1,  0,  0 )
+	static const Vector3 left;		// ( -1,  0,  0 )
+	static const Vector3 zero;		// (  0,  0,  0 )
+	static const Vector3 one;		// (  1,  1,  1 )
+	static const Vector3 positive_infinity;		// (  inf,  inf,  inf )
+	static const Vector3 negative_infinity;		// ( -inf, -inf, -inf )
+
 
 	//	**************
 	//
@@ -53,18 +77,6 @@ struct Vector3 : XMFLOAT3
 	//	  静的関数
 	//
 	//	************
-
-	static Vector3 Forward()			{ return { 0,0,1 }; };		// (  0,  0,  1 )
-	static Vector3 Back()				{ return { 0,0,-1 }; };		// (  0,  0, -1 )
-	static Vector3 Up()					{ return { 0,1,0 }; };		// (  0,  1,  0 )
-	static Vector3 Down()				{ return { 0,-1,0 }; };		// (  0, -1,  0 )
-	static Vector3 Right()				{ return { 1,0,0 }; };		// (  1,  0,  0 )
-	static Vector3 Left()				{ return { -1,0,0 }; };		// ( -1,  0,  0 )
-	static Vector3 Zero()				{ return { 0,0,0 }; };		// (  0,  0,  0 )
-	static Vector3 One()				{ return { 1,1,1}; };		// (  1,  1,  1 )
-	static Vector3 PositiveInfinity() { return { Mathf::infinity, Mathf::infinity, Mathf::infinity }; };		// (  inf,  inf,  inf )
-	static Vector3 NegativeInfinity()	{ return { -std::numeric_limits<float>::infinity(),-std::numeric_limits<float>::infinity(),-std::numeric_limits<float>::infinity() }; };	// ( -inf, -inf, -inf )
-
 
 	/// <summary>
 	/// 2つのベクトルの内積
@@ -179,10 +191,12 @@ struct Vector3 : XMFLOAT3
 		if (index == 2) return this->z;
 
 		// 範囲外参照
-		assert(0);
+		
 		return 0.0f;
 	}
 };
+
+
 
 inline Vector3 operator *(const Vector3 &vector,const float &num) 
 {

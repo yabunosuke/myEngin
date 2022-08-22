@@ -1,5 +1,17 @@
 #include "Vector3.h"
 
+const Vector3 Vector3::forward{ 0,0,1 };
+const Vector3 Vector3::back{ 0,0,-1 };		// (  0,  0, -1 )
+const Vector3 Vector3::up{ 0, 1, 0 };		// (  0,  1,  0 )
+const Vector3 Vector3::down{ 0,-1,0 };		// (  0, -1,  0 )
+const Vector3 Vector3::right{ 1,0,0 };		// (  1,  0,  0 )
+const Vector3 Vector3::left{ -1,0,0 };		// ( -1,  0,  0 )
+const Vector3 Vector3::zero{ 0,0,0 };		// (  0,  0,  0 )
+const Vector3 Vector3::one{ 1,1,1 };		// (  1,  1,  1 )
+const Vector3 Vector3::positive_infinity{ Mathf::infinity, Mathf::infinity, Mathf::infinity };		// (  inf,  inf,  inf )
+const Vector3 Vector3::negative_infinity{ -std::numeric_limits<float>::infinity(),-std::numeric_limits<float>::infinity(),-std::numeric_limits<float>::infinity() };// ( -inf, -inf, -inf )
+
+
 float Vector3::Magnitude() const
 {
 	float magnitude = XMVector3Length(XMLoadFloat3(this)).m128_f32[0];

@@ -52,9 +52,8 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	auto test = game_object_manager_.CreateObject("plantune");
 	test.lock().get()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/UNIT/plantune.fbx");
+		"Assets/3d/UNIT/danbo_fbx/danbo_taiki.fbx");
 	test.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_SPHERE);
-	test.lock().get()->GetComponent<Transform>()->local_scale_ = { 0.02f, 0.02f, 0.02f };
 
 	auto camera = game_object_manager_.CreateObject("Camera");
 	camera.lock()->AddComponent<Camera>(camera_manager_);

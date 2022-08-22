@@ -26,7 +26,7 @@ struct LightDate
 	float intensity					{ 5.0f };			// 輝度
 	float range						{ 50.0f};			// 影響距離
 	float is_active					{ 1.0f };			// 有効
-	float PADING01;										// パディング
+	float PADING01					{ 0.0f };			// パディング
 };
 static const int LIGHT_MAX = 128;
 // ライトバッファ用データ構造体
