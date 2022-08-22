@@ -1,7 +1,6 @@
 #include "PlayerTest.h"
 #include "GameObject.h"
 #include "Object3dComponent.h"
-#include "Quaternion.h"
 PlayerTest::PlayerTest():
 	ScriptComponent("Player")
 {
@@ -65,7 +64,7 @@ void PlayerTest::Update()
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_W)) {
 			// ˆÚ“®
 			regidbody_->AddForce(transform_->GetFront());
-			regidbody_->velocity_ = regidbody_->velocity_.Normalized() * 2.0f;
+			Vector3::ClampMagnitude(regidbody_->velocity_ , 1);
 
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK;

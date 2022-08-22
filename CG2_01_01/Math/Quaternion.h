@@ -4,18 +4,16 @@
 #include "DirectXCommon.h"
 #include "Math/Vector3.h"
 
-struct Quaternion : XMFLOAT4
+class Quaternion : public XMFLOAT4
 {
+public:
 	//	**************
 	//
 	//	  コンストラクタ
 	//
 	//	**************
-
-	// デフォルトコンストラクタ
-	Quaternion() = default;
-
-	// 成分を指定してクオータニオンを生成
+	
+	// 成分を指定してクオータニオンを生成（非推奨）
 	Quaternion(float x = 0.0f, float y = 0.0f, float z = 0.0f, float w = 1.0f) {
 		this->x = x;
 		this->y = y;
@@ -29,12 +27,64 @@ struct Quaternion : XMFLOAT4
 		Quaternion(_sin * axis_normal.x, _sin * axis_normal.y, _sin * axis_normal.z, cos(degree / 2.0f));
 	}
 
+	//	************
+	//
+	//	  静的関数
+	//
+	//	************
 
-	//	**********
+	/// <summary>
+	/// 2つの回転の間の角度を返す
+	/// </summary>
+	/// <param name="from">角度差の測定元となるクオータニオン</param>
+	/// <param name="to">角度差を測定するクオータニオン</param>
+	/// <returns>float 角度(degree)</returns>
+	static float Angle(const Quaternion &from, const Quaternion &to);
+
+	/// <summary>
+	/// 2つの回転の内積を返す
+	/// </summary>
+	/// <returns>float 内積(degree)</returns>
+	static float Dot(const Quaternion &lhs, const Quaternion &rhs);
+
+	/// <summary>
+	/// オイラーをクオータニオンに変換
+	/// </summary>
+	/// <returns>Quaternion 変換した値</returns>
+	static Quaternion Euler(const float &roll, const float &pitch, const float &yaw);
+	/// <summary>
+	/// オイラーをクオータニオンに変換
+	/// </summary>
+	/// <param name="rotation_vector">回転ベクトル（degree）</param>
+	/// <returns>Quaternion 変換した値</returns>
+	static Quaternion Euler(const Vector3 &rotation_vector);
+
+	/// <summary>
+	/// クオータニオンを正規化する（書き換えあり）
+	/// </summary>
+	/// <returns>Quaternion 正規化したクオータニオン</returns>
+	static Quaternion Normalize(Quaternion &quaternion);
+
+
+
+	//===========================================
+	//
+	//	  メンバ関数
+	//
+	//===========================================
+
+	/// <summary>
+	/// 正規化したクオータニオンを返す（書き換えなし）
+	/// </summary>
+	/// <returns>Quaternion 正規化したクオータニオン</returns>
+	Quaternion Normalized() const;
+
+
+	//===========================================
 	//
 	//	  演算子
 	//
-	//	**********
+	//===========================================
 
 
 	//　単項演算子オーバーロード
@@ -99,6 +149,24 @@ struct Quaternion : XMFLOAT4
 
 		return *this;
 	}
+
+	// 比較演算子
+	bool operator == (const Quaternion &quaternion)const
+	{
+		bool temp{
+			x == quaternion.x &&
+			y == quaternion.y &&
+			z == quaternion.z &&
+			w == quaternion.w
+		};
+		return temp;
+	}
+	bool operator != (const Quaternion &quaternion)const
+	{
+		return !(*this == quaternion);
+	}
+
+
 	// 添え字演算子
 	float operator [](const std::size_t &index) const
 	{
@@ -144,70 +212,3 @@ Quaternion operator/(const Quaternion &q, float s)
 	Quaternion result = q;
 	return result /= s;
 }
-
-
-//public:
-//	// デフォルトコンストラクタ
-//	Quaternion() {
-//		this->x = 0.0f;
-//		this->y = 0.0f;
-//		this->z = 0.0f;
-//		this->w = 1.0f;
-//	}
-//
-//	Quaternion(float x = 0.0f, float y = 0.0f, float z = 0.0f, float w = 1.0f) {
-//		this->x = x;
-//		this->y = y;
-//		this->z = z;
-//		this->w = w;
-//	}
-//
-//	Quaternion(const Vector3 &v, float angle) {
-//		float _sin = sin(angle / 2.0f);
-//		Quaternion(_sin * v.x, _sin * v.y, _sin * v.z, cos(angle / 2.0f));
-//	}
-////	Quaternion(const Vector3 &v, Quaternion &q) {
-////		Quaternion qq = { 1,1,1,1 };
-////		Quaternion qv = { 1,1,1,1 };
-////
-////	}
-////
-//};
-////
-////
-//////内積を求める
-////float dot(const Quaternion &q1, const Quaternion &q2);
-////
-//////ノルムを求める
-////float length(const Quaternion &q);
-////
-//////正規化する
-////Quaternion normalize(const Quaternion &q);
-////
-//////共役四次元数を求める
-////Quaternion conjugate(const Quaternion &q);
-////
-//////単項演算子オーバーロード
-////Quaternion operator + (const Quaternion &q);
-////Quaternion operator - (const Quaternion &q);
-////
-//////代入演算子オーバーロード
-////Quaternion &operator += (Quaternion &q1, const Quaternion &q2);
-////Quaternion &operator -= (Quaternion &q1, const Quaternion &q2);
-////Quaternion &operator *= (Quaternion &q, float s);
-////Quaternion &operator /= (Quaternion &q, float s);
-////Quaternion &operator *= (Quaternion &q1, const Quaternion &q2);
-////
-//////2項演算子オーバーロード
-////Quaternion operator + (const Quaternion &q1, const Quaternion &q2);
-////Quaternion operator - (const Quaternion &q1, const Quaternion &q2);
-////Quaternion operator * (const Quaternion &q1, const Quaternion &q2);
-////Quaternion operator * (const Quaternion &q, float s);
-////Quaternion operator * (float s, const Quaternion &q);
-////Quaternion operator / (const Quaternion &q, float s);
-////
-////Quaternion slerp(const Quaternion &q1, const Quaternion &q2, float t);
-////Quaternion lerp(const Quaternion &q1, const Quaternion &q2, float t);
-////Matrix4 rotate(const Quaternion &q);
-////Quaternion quaternion(const Matrix4 &m);
-////Vector3 getAxis(const Quaternion &q);

@@ -21,6 +21,12 @@ public:
 	void Infomation() override;
 
 private:
+	enum Projection
+	{
+		Perspective,
+		Orthographic
+	};
+	
 
 	Transform *transform_;
 

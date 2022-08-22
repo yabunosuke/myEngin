@@ -30,9 +30,6 @@ float Vector3::SqrMagnitude() const
 Vector3 Vector3::Normalized() const
 {
 	Vector3 normalized = XMVector3Normalize(XMLoadFloat3(this));
-	Vector3 a = { 1,1,1 };
-	Vector3 b = { 1,1,1 };
-	Vector3 c = (a - b);
 
 	return normalized;
 }
@@ -55,11 +52,11 @@ Vector3 Vector3::Cross(const Vector3& lhs, const Vector3& rhs)
 	return cross;
 }
 
-Vector3 Vector3::Normalize(const Vector3& valuse)
+Vector3 Vector3::Normalize(Vector3& valuse)
 {
-	Vector3 normalize = valuse.Normalized();
+	valuse = valuse.Normalized();
 
-	return normalize;
+	return valuse;
 }
 
 Vector3 Vector3::Max(const Vector3 &lhs, const Vector3 &rhs)

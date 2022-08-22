@@ -78,4 +78,9 @@ void Camera::Infomation()
 		ImGui::ColorEdit4("Color", &background_color_.x, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel);
 	}
 
+	// FOVê›íË
+	{
+		ImGui::SliderFloat("Field of View", &fov_of_view_, 0.01f, 179.0f);
+	}
+
 }

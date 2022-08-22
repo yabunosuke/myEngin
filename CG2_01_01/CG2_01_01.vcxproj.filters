@@ -163,6 +163,7 @@
     <ClCompile Include="Assets\UserScript\Bullet.cpp">
       <Filter>Component\UserComponent</Filter>
     </ClCompile>
+    <ClCompile Include="Math\Quaternion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -279,9 +280,6 @@
     <ClInclude Include="ConstantBufferManager\ConstantBuffer.h">
       <Filter>ConstantBufferManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX\Math\Quaternion.h">
-      <Filter>Math</Filter>
-    </ClInclude>
     <ClInclude Include="Math\Vector3.h">
       <Filter>Math</Filter>
     </ClInclude>
@@ -301,6 +299,9 @@
     </ClInclude>
     <ClInclude Include="Assets\UserScript\Bullet.h">
       <Filter>Component\UserComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Quaternion.h">
+      <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

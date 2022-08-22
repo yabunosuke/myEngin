@@ -220,6 +220,7 @@
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\Mathf.h" />
+    <ClCompile Include="Math\Quaternion.cpp" />
     <ClCompile Include="Math\Vector3.cpp" />
     <ClCompile Include="OBBCollider.cpp" />
     <ClCompile Include="MultiRenderTarget\MulutiRenderTarget.cpp" />
@@ -438,7 +439,6 @@
     <ClInclude Include="..\DirectX\Input\ControllerInput.h" />
     <ClInclude Include="..\DirectX\Input\KeyboardInput.h" />
     <ClInclude Include="..\DirectX\Math\Easing.h" />
-    <ClInclude Include="..\DirectX\Math\Quaternion.h" />
     <ClInclude Include="..\DirectX\Math\yMath.h" />
     <ClInclude Include="..\DirectX\Object3d\Model.h" />
     <ClInclude Include="..\DirectX\Object3d\ModelLoader.h" />
@@ -484,6 +484,7 @@
     <ClInclude Include="ImGui\imstb_rectpack.h" />
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
+    <ClInclude Include="Math\Quaternion.h" />
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="MultiRenderTarget\MulutiRenderTarget.h" />
     <ClInclude Include="Object3dComponent.h" />
