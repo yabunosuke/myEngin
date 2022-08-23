@@ -5,15 +5,14 @@
 
 
 Camera::Camera(
-	std::weak_ptr<CameraManager> light_manager
-
+	std::weak_ptr<CameraManager> camera_manager
 ):
 	Component("Camera", ComponentID::Camera)
 {
 
 	// 転送用のカメラデータ
 	camera_date_ = std::make_shared<CameraDeta>();
-	light_manager.lock()->AddCamera(camera_date_);
+	camera_manager.lock()->AddCamera(camera_date_);
 }
 
 void Camera::ComponentInitialize()
@@ -41,11 +40,31 @@ void Camera::ComponentUpdate()
 	};
 
 	// ビュー行列計算
-	camera_date_ ->mat_view = XMMatrixLookAtLH(
-		XMLoadFloat3(&transform_->world_position_),
-		target,
-		XMLoadFloat3(&Vector3::up)
-	);
+	switch (projection_type_)
+	{
+	case Camera::Perspective:
+		
+		camera_date_->mat_view = XMMatrixLookAtLH(
+			XMLoadFloat3(&transform_->world_position_),
+			target,
+			XMLoadFloat3(&Vector3::up)
+		);
+
+		break;
+
+	case Camera::Orthographic:
+
+		//camera_date_->mat_view = XMMatrixOrthographicLH(
+		//	WinApp::windowWidth,
+		//	WinApp::windowWidth,
+		//	60.0f,
+		//	60.0f
+		//);
+
+		break;
+	default:
+		break;
+	}
 
 	// プロジェクション行列計算
 	camera_date_-> mat_projection = XMMatrixPerspectiveFovLH(
@@ -69,7 +88,7 @@ void Camera::Infomation()
 			"Skybox", "Solid Color", "Depth only"
 		};
 		int select_light_type = static_cast<int>(clear_flag_);
-		ImGui::Combo("Type", &select_light_type, clear_flags_name, IM_ARRAYSIZE(clear_flags_name));
+		ImGui::Combo("Clear Flags", &select_light_type, clear_flags_name, IM_ARRAYSIZE(clear_flags_name));
 		clear_flag_ = static_cast<ClearFlag>(select_light_type);
 	}
 
@@ -78,9 +97,21 @@ void Camera::Infomation()
 		ImGui::ColorEdit4("Color", &background_color_.x, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel);
 	}
 
+	// プロジェクションタイプ設定
+	{
+		static const char *projection_type_name[] =
+		{
+			"Perspective", 	"Orthographic"
+		};
+		int select_projection_type = static_cast<int>(projection_type_);
+		ImGui::Combo("Projection", &select_projection_type, projection_type_name, IM_ARRAYSIZE(projection_type_name));
+		projection_type_ = static_cast<ProjectionType>(select_projection_type);
+	}
+
 	// FOV設定
 	{
 		ImGui::SliderFloat("Field of View", &fov_of_view_, 0.01f, 179.0f);
 	}
+
 
 }

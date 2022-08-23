@@ -11,7 +11,7 @@ class Camera :
 {
 public:
 	Camera(
-		std::weak_ptr<CameraManager> light_manager
+		std::weak_ptr<CameraManager> camera_manager
 	);
 
 	void ComponentInitialize() override;
@@ -21,11 +21,11 @@ public:
 	void Infomation() override;
 
 private:
-	enum Projection
+	enum ProjectionType
 	{
-		Perspective,
-		Orthographic
-	};
+		Perspective,			// “§‹“Š‰e•ÏŠ·
+		Orthographic			// •½t“Š‰e•ÏŠ·
+	}projection_type_;
 	
 
 	Transform *transform_;
