@@ -494,6 +494,7 @@
     <ClInclude Include="PipelineManager.h" />
     <ClInclude Include="PlayerTest.h" />
     <ClInclude Include="PrimitiveRenderer.h" />
+    <ClInclude Include="Property.h" />
     <ClInclude Include="Scene\AbstractScene\AbstractScene.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Text\Text.h" />

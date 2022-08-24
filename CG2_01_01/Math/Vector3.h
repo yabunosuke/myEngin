@@ -164,9 +164,9 @@ public:
 	{
 		Vector3 temp =
 		{
-			x + vector.x,
-			y + vector.y,
-			z + vector.z
+			this->x + vector.x,
+			this->y + vector.y,
+			this->z + vector.z
 		};
 		return temp;
 	}

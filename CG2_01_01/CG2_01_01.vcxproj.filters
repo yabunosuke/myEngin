@@ -319,6 +319,7 @@
     <ClInclude Include="Math\Easing.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="Property.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />

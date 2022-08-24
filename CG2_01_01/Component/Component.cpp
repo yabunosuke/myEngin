@@ -40,7 +40,7 @@ Component::Component(std::string name, ComponentID component_id, bool dontRemove
 
 
 	// Object—p
-	name_ = name;
+	this->name = name;
 	tag_ = "Notag";
 }
 
@@ -48,7 +48,7 @@ Component::Component(std::string name, ComponentID component_id, bool dontRemove
 void Component::ImGuiDraw()
 {
 	ImGui::Checkbox("##is_active_", &is_active_); ImGui::SameLine();
-	if (ImGui::TreeNode(name_.c_str())) {
+	if (ImGui::TreeNode(name->c_str())) {
 		ImGui::Separator();
 		Infomation();
 		if (!isDontRemove) {

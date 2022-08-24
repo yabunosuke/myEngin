@@ -16,6 +16,9 @@
 #include "Component/Component.h"
 #include "Component/ScriptComponent.h"
 
+
+#include "Property.h"
+
 // コライダー
 class BaseCollider;
 
@@ -117,21 +120,38 @@ public:	//関数
 	const std::vector<std::weak_ptr<BaseCollider>> &GetColliders() { return colliders_; }
 	void RemoveCollider(std::weak_ptr<BaseCollider> collider);
 
+
 	// Script
 	const std::vector<std::weak_ptr<Component>> &GetScripts() { return scripts_; }
 
-	// ゲームオブジェクトのタグ
-	std::string tag_ = "Notag";
+
+	/// <summary>
+	/// 所属しているシーン (get = true, set = false)
+	/// </summary>
+	//Property<std::weak_ptr<AbstractScene>> scene{ scene_ ,AccessorType::ReadOnly };
+	/// <summary>
+	/// オブジェクト識別タグ (get = true, set = true)
+	/// </summary>
+	Property<std::string> tag{ tag_ ,AccessorType::AllAccess };
+
 	// アタッチされているトランスフォーム
 	Transform *transform_ = nullptr;
+
+
 
 private:	// 静的メンバ変数
 	// オブジェクトIDの重複回避用
 	static uint64_t ID;
 
-private://変数
+
+	// 属しているシーン
+	//std::weak_ptr<AbstractScene> scene_;
+	// ゲームオブジェクトのタグ
+	std::string tag_ = "Notag";
+
 	// オブジェクトID（重複しない）
 	unsigned int id_;
+
 
 
 	// 親オブジェクト

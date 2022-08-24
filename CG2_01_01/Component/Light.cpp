@@ -20,6 +20,20 @@ Light::Light(
 
 	// マネージャをセット
 	light_manager.lock()->AddLight(light_date_);
+
+
+	switch (type)
+	{
+	case LightType::Spot:
+
+		break;
+	case LightType::Directional:
+
+
+	case LightType::Point:
+	default:
+		break;
+	}
 }
 
 void Light::Infomation()

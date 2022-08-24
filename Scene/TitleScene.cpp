@@ -19,6 +19,8 @@
 #include "Component/Camera.h"
 #include "PlayerTest.h"
 
+
+
 TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
@@ -61,7 +63,6 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	camera.lock()->transform_->local_position_= { 0,200,-400 };
 	XMStoreFloat4(&camera.lock()->GetComponent<Transform>()->local_quaternion_, XMQuaternionRotationRollPitchYaw(0, 0, 0));
 	game_object_manager_.SetPearentChild(player, camera);
-
 
 }
 

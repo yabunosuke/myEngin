@@ -7,14 +7,17 @@
 uint64_t GameObject::ID = 0;
 
 
+
+
 GameObject::GameObject(const std::string &name) :
+	Object(),
 	isActive(true),
 	isBlind(false),
 	isRemove(false),
 	id_(++ID)
 {
 	// 名前をセット
-	name_ = name;
+	this->name = name;
 	tag_ = "Notag";
 	transform_ = AddComponent<Transform>();
 
@@ -85,9 +88,9 @@ void GameObject::DrawInspector()
 	ImGui::Checkbox("##Active", &isActive); ImGui::SameLine();
 	//名前の変更と描画
 	char buf[64] = "";
-	sprintf_s(buf, name_.c_str());
+	sprintf_s(buf, name->c_str());
 	if (ImGui::InputText("##", buf, 64,ImGuiInputTextFlags_EnterReturnsTrue)) {
-		name_ = buf;
+		name = buf;
 	}
 	ImGui::Separator();
 

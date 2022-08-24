@@ -139,8 +139,6 @@ protected:	//関数
 	// リムーブフラグ
 	bool isRemove;
 private:
-	// コンポーネントの名前
-	std::string name;
 	// 削除不可
 	bool isDontRemove;
 	//
