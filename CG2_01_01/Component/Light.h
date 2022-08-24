@@ -43,10 +43,6 @@ public:
 
 
 private:
-	// 計算用トランスフォーム
-	Transform *transform_;
-
-
 
 	// 転送用のライトデータ
 	std::shared_ptr<LightDate> light_date_;

@@ -43,7 +43,6 @@
     <ClCompile Include="..\DirectX\DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="..\DirectX\Input\ControllerInput.cpp" />
     <ClCompile Include="..\DirectX\Input\KeyboardInput.cpp" />
-    <ClCompile Include="..\DirectX\Math\Easing.cpp" />
     <ClCompile Include="..\DirectX\Object3d\Model.cpp" />
     <ClCompile Include="..\DirectX\Object3d\ModelLoader.cpp" />
     <ClCompile Include="..\DirectX\Object3d\ModelManager.cpp" />
@@ -57,7 +56,6 @@
     <ClCompile Include="ComponentList.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="FileManager.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object3dComponent.cpp" />
@@ -164,6 +162,16 @@
       <Filter>Component\UserComponent</Filter>
     </ClCompile>
     <ClCompile Include="Math\Quaternion.cpp" />
+    <ClCompile Include="Object\Object.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Text\Text.cpp" />
+    <ClCompile Include="Object\GameObject\GameObject.cpp">
+      <Filter>Object\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Easing.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -173,7 +181,6 @@
     <ClInclude Include="..\DirectX\DirectXCommon\DirectXCommon.h" />
     <ClInclude Include="..\DirectX\Input\ControllerInput.h" />
     <ClInclude Include="..\DirectX\Input\KeyboardInput.h" />
-    <ClInclude Include="..\DirectX\Math\Easing.h" />
     <ClInclude Include="..\DirectX\Math\yMath.h" />
     <ClInclude Include="..\DirectX\Object3d\Model.h" />
     <ClInclude Include="..\DirectX\Object3d\ModelLoader.h" />
@@ -189,7 +196,6 @@
     <ClInclude Include="ComponentList.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="FileManager.h" />
-    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="Object3dComponent.h" />
     <ClInclude Include="PipelineManager.h" />
@@ -303,6 +309,16 @@
     <ClInclude Include="Math\Quaternion.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="Object\Object.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Text\Text.h" />
+    <ClInclude Include="Object\GameObject\GameObject.h">
+      <Filter>Object\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Easing.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
@@ -373,6 +389,18 @@
     </Filter>
     <Filter Include="Component\UserComponent">
       <UniqueIdentifier>{8d2edc7d-c0bb-44e0-b8cd-da5ccde7b80d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{58b65b59-e841-4d86-9aa3-b6c1a7a398f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\GameObject">
+      <UniqueIdentifier>{c0253acf-c08c-439e-86a2-09ef48cf0086}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component">
+      <UniqueIdentifier>{ee098992-f0f2-4839-bc3e-5883ff1534cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Text">
+      <UniqueIdentifier>{ab32ecff-7df1-40a5-9fe9-5ab33c06f2dd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

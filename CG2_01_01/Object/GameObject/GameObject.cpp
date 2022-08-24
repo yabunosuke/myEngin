@@ -11,11 +11,14 @@ GameObject::GameObject(const std::string &name) :
 	isActive(true),
 	isBlind(false),
 	isRemove(false),
-	name_(name),
 	id_(++ID)
 {
-	AddComponent<Transform>();
+	// 名前をセット
+	name_ = name;
+	tag_ = "Notag";
+	transform_ = AddComponent<Transform>();
 
+	
 }
 
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "2d/Sprite.h"
-#include "GameObject.h"
+#include "Object/GameObject/GameObject.h"
+
 #include "Scene/AbstractScene/AbstractScene.h"
 #include "CollisionPrimitive.h"
 #include <vector>

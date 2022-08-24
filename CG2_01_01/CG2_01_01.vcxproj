@@ -177,7 +177,6 @@
     <ClCompile Include="..\DirectX\DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="..\DirectX\Input\ControllerInput.cpp" />
     <ClCompile Include="..\DirectX\Input\KeyboardInput.cpp" />
-    <ClCompile Include="..\DirectX\Math\Easing.cpp" />
     <ClCompile Include="..\DirectX\Object3d\Model.cpp" />
     <ClCompile Include="..\DirectX\Object3d\ModelLoader.cpp" />
     <ClCompile Include="..\DirectX\Object3d\ModelManager.cpp" />
@@ -207,7 +206,6 @@
     <ClCompile Include="ConstantBufferManager\ConstantBufferManager.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="FileManager.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imguiManager.cpp" />
@@ -219,17 +217,21 @@
     <ClCompile Include="ImGui\imgui_tables.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Math\Easing.cpp" />
     <ClCompile Include="Math\Mathf.h" />
     <ClCompile Include="Math\Quaternion.cpp" />
     <ClCompile Include="Math\Vector3.cpp" />
     <ClCompile Include="OBBCollider.cpp" />
     <ClCompile Include="MultiRenderTarget\MulutiRenderTarget.cpp" />
     <ClCompile Include="Object3dComponent.cpp" />
+    <ClCompile Include="Object\GameObject\GameObject.cpp" />
+    <ClCompile Include="Object\Object.cpp" />
     <ClCompile Include="PipelineManager.cpp" />
     <ClCompile Include="PlayerTest.cpp" />
     <ClCompile Include="PrimitiveRenderer.cpp" />
     <ClCompile Include="Scene\AbstractScene\AbstractScene.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Text\Text.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shaders\3d\DeferredShaderPS.hlsl">
@@ -438,7 +440,6 @@
     <ClInclude Include="..\DirectX\DirectXCommon\DirectXCommon.h" />
     <ClInclude Include="..\DirectX\Input\ControllerInput.h" />
     <ClInclude Include="..\DirectX\Input\KeyboardInput.h" />
-    <ClInclude Include="..\DirectX\Math\Easing.h" />
     <ClInclude Include="..\DirectX\Math\yMath.h" />
     <ClInclude Include="..\DirectX\Object3d\Model.h" />
     <ClInclude Include="..\DirectX\Object3d\ModelLoader.h" />
@@ -472,7 +473,6 @@
     <ClInclude Include="ConstantBufferManager\ConstantBufferManager.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="FileManager.h" />
-    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
@@ -484,15 +484,19 @@
     <ClInclude Include="ImGui\imstb_rectpack.h" />
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
+    <ClInclude Include="Math\Easing.h" />
     <ClInclude Include="Math\Quaternion.h" />
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="MultiRenderTarget\MulutiRenderTarget.h" />
     <ClInclude Include="Object3dComponent.h" />
+    <ClInclude Include="Object\GameObject\GameObject.h" />
+    <ClInclude Include="Object\Object.h" />
     <ClInclude Include="PipelineManager.h" />
     <ClInclude Include="PlayerTest.h" />
     <ClInclude Include="PrimitiveRenderer.h" />
     <ClInclude Include="Scene\AbstractScene\AbstractScene.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Text\Text.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\3d\DeferredShader.hlsli" />

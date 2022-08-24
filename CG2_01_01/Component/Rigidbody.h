@@ -28,8 +28,6 @@ public:
 
 	Vector3 velocity_{ 0.0f,0.0f ,0.0f };		// 加速度（操作非推奨）
 private:
-	// 座標加工用
-	Transform *transform_;
 
 	// リジッドボディ
 	float mass_			{ 1.0f };			// 質量

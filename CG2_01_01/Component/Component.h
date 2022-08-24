@@ -6,8 +6,11 @@
 #include <vector>
 #include "ImGui/imgui.h"
 #include "Math/Mathf.h"
+#include "Object/Object.h"
+
 
 class GameObject;
+class Transform;
 
 // 更新順
 enum class ComponentID
@@ -21,7 +24,7 @@ enum class ComponentID
 	Mesh,		// メッシュ
 };
 
-class Component
+class Component : public Object
 {
 protected: // エイリアス
 	// Microsoft::WRL::を省略
@@ -75,14 +78,19 @@ public:
 
 public:	//ゲッター＆セッタ
 	
-	void SetObject(GameObject *obj) { object_ = obj; }
 
 	// isRemove
 	void Remove() { isRemove = true; }
 	bool GetIsRemove() { return isRemove; }
 
 
-	std::string GetTag() { return tag; }
+	// ゲームオブジェクト
+	GameObject *game_object_ = nullptr;
+	// 重複チェック用のタグ
+	std::string tag_ = "";
+	// ゲームオブジェクトが持つTransform
+	Transform *transform_ = nullptr;
+
 
 protected:	//関数
 	Component(std::string name, ComponentID component_id,bool dontRemove = false);
@@ -124,17 +132,15 @@ protected:	//関数
 		return static_cast<int>(this->component_id_) < static_cast<int>(rhs->component_id_);
 	}
 
-	// オブジェクト
-	GameObject *object_ = nullptr;
+	
+
 	// アクティブフラグ
-	bool isActive;
+	bool is_active_;
 	// リムーブフラグ
 	bool isRemove;
 private:
 	// コンポーネントの名前
 	std::string name;
-	// 重複チェック用のタグ
-	std::string tag = "";
 	// 削除不可
 	bool isDontRemove;
 	//

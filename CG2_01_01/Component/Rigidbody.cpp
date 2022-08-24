@@ -1,6 +1,6 @@
 #include "Component/Rigidbody.h"
 
-#include "GameObject.h"
+#include "Object/GameObject/GameObject.h"
 
 Rigidbody::Rigidbody() :
 	Component("Rigidbody", ComponentID::RigitBody),
@@ -65,7 +65,6 @@ void Rigidbody::Infomation()
 
 void Rigidbody::ComponentInitialize()
 {
-	transform_ = object_->GetComponent<Transform>();
 }
 
 void Rigidbody::ComponentUpdate()

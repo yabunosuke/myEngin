@@ -1,6 +1,5 @@
 #include "Camera.h"
-
-#include "GameObject.h"
+#include "Object/GameObject/GameObject.h"
 #include "Component/Manager/CameraManager.h"
 
 
@@ -17,7 +16,6 @@ Camera::Camera(
 
 void Camera::ComponentInitialize()
 {
-	transform_ = object_->GetComponent<Transform>();
 }
 
 void Camera::ComponentUpdate()
@@ -54,12 +52,12 @@ void Camera::ComponentUpdate()
 
 	case Camera::Orthographic:
 
-		//camera_date_->mat_view = XMMatrixOrthographicLH(
-		//	WinApp::windowWidth,
-		//	WinApp::windowWidth,
-		//	60.0f,
-		//	60.0f
-		//);
+		/*camera_date_->mat_view = XMMatrixOrthographicLH(
+			10 * view_point_size_,
+			10 * view_point_size_,
+			near_plane_,
+			far_plane_
+		);*/
 
 		break;
 	default:
@@ -70,7 +68,7 @@ void Camera::ComponentUpdate()
 	camera_date_-> mat_projection = XMMatrixPerspectiveFovLH(
 		fov_of_view_ * Mathf::deg_to_rad,
 		static_cast<float>(WinApp::windowWidth) / static_cast<float>(WinApp::windowHeight),
-		near_,far_
+		near_plane_,far_plane_
 	);
 
 }
@@ -108,10 +106,26 @@ void Camera::Infomation()
 		projection_type_ = static_cast<ProjectionType>(select_projection_type);
 	}
 
-	// FOV設定
+	
+	switch (projection_type_)
 	{
+	case Camera::Perspective:
+		// FOV設定
 		ImGui::SliderFloat("Field of View", &fov_of_view_, 0.01f, 179.0f);
+		break;
+	case Camera::Orthographic:
+		// Size設定
+		ImGui::DragFloat("Size", &view_point_size_);
+		break;
+	default:
+		break;
 	}
+	
+	// クリッピング距離
+	{
+		ImGui::Text("Clipping Planes");
+		ImGui::DragFloatRange2("range float", &near_plane_, &far_plane_, 0.03f, 0.01f, FLT_MAX, "Near: %.01f", "Far: %.01f", ImGuiSliderFlags_AlwaysClamp);
 
+	}
 
 }

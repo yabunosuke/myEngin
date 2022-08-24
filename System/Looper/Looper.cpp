@@ -32,6 +32,11 @@ bool Looper::Loop()
 
 	//キーボード更新
 	KeyboardInput::GetIns()->Update();
+
+
+	// エディタ描画
+	editor.Draw();
+
 	//シーンの更新
 	sceneStack.top()->Update();
 
@@ -58,8 +63,6 @@ bool Looper::Loop()
 	sceneStack.top()->DrawPostEffect(DirectXCommon::cmdList);
 
 
-	// エディタ描画
-	editor.Draw();
 	imguiManager::GetIns()->Draw();
 	// 全コマンド実行
 	DirectXCommon::PlayCommandList();

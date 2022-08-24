@@ -1,6 +1,6 @@
 #include "Light.h"
 
-#include "GameObject.h"
+#include "Object/GameObject/GameObject.h"
 #include "Component/Manager/LightManager.h"
 
 
@@ -72,7 +72,6 @@ void Light::Infomation()
 
 void Light::ComponentInitialize()
 {
-	transform_ = object_->GetComponent<Transform>();
 }
 
 void Light::ComponentUpdate()
@@ -94,6 +93,22 @@ void Light::ComponentUpdate()
 		static_cast<int>(light_type_) == 3 ? 1.0f : 0.0f
 	};
 
+	switch(light_type_)
+	{
+	case LightType::Directional:
+		light_date_->light_type = { 0.0f,1.0f,0.0f,0.0f };
+		Vector3 direction_v = transform_->world_quaternion_.EulerAngles().Normalized();
+		light_date_->direction = {
+			direction_v.x,
+			direction_v.y,
+			direction_v.z,
+			1.0f,
+		};
+		break;
+	case LightType::Point:
+		break;
+	}
+
 	//// バッファ転送用のデータに変換
 	//light_data_ ={
 	//	// 共通項目
@@ -101,7 +116,7 @@ void Light::ComponentUpdate()
 	//	color_,				// ライトの色
 
 	//	// 一部共通項目
-	//	object_->GetComponent<Transform>()
+	//	game_object_->GetComponent<Transform>()
 
 	//	// ポイントライト用項目
 

@@ -1,5 +1,5 @@
 #include "PlayerTest.h"
-#include "GameObject.h"
+#include "Object/GameObject/GameObject.h"
 #include "Object3dComponent.h"
 PlayerTest::PlayerTest():
 	ScriptComponent("Player")
@@ -15,16 +15,14 @@ void PlayerTest::OnCollisionEnter()
 void PlayerTest::Initialize()
 {
 	// トランスフォーム
-	transform_ = object_->GetComponent<Transform>();
-	transform_->local_scale_ = {0.1f,0.1f ,0.1f};
 
 	// リジッド
-	regidbody_ = object_->GetComponent<Rigidbody>();
+	regidbody_ = game_object_->GetComponent<Rigidbody>();
 
 	// オブジェクトデータ
-	game_object = object_->GetComponent<Object3dComponent>()->GetObjectData();
+	game_object = game_object_->GetComponent<Object3dComponent>()->GetObjectData();
 
-	
+
 }
 
 void PlayerTest::Update()

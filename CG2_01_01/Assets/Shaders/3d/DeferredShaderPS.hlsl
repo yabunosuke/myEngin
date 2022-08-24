@@ -41,6 +41,15 @@ float4 main(VSOutput input) : SV_TARGET
 				break;
 			}
 
+			// DirectionalLight
+			if (light[i].light_type.y != 0)
+			{
+				float t = max(0.0f,dot(normal_tex.xyz, light[i].direction_.xyz));
+				
+
+				float3 diffuse_dorectonal = light[i].color.rgb * t;
+				diffuse += diffuse_dorectonal * light[i].intensity;
+			}
 
 			// PointLight
 			if (light[i].light_type.z != 0)

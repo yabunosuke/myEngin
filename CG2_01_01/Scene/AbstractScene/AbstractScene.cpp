@@ -2,6 +2,7 @@
 #include  "DirectXCommon.h"
 #include "PipelineManager.h"
 #include "3d/DrawFbx.h"
+#include "Component/Light.h"
 
 AbstractScene::AbstractScene(IoChangedListener *impl,std::string sceneName)
 	:implSceneChanged(impl),
@@ -15,6 +16,10 @@ AbstractScene::AbstractScene(IoChangedListener *impl,std::string sceneName)
 
 	light_manager_ = std::make_shared<LightManager>();
 	camera_manager_ = std::make_shared<CameraManager>();
+
+
+	auto directional_light_ = game_object_manager_.CreateObject("Directional Light");
+	directional_light_.lock()->AddComponent<Light>(light_manager_,LightType::Directional);
 }
 
 void AbstractScene::Update()

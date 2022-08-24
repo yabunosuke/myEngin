@@ -190,7 +190,7 @@ void Editor::Hierarchy(std::vector<std::shared_ptr<GameObject>>& objects, bool i
 
 		// テーブル設定
 		char bufT[64];
-		sprintf_s(bufT, "%s ##table %d", object->GetName().c_str() ,object->GetID());
+		sprintf_s(bufT, "%s ##table %d", object->name_.c_str() ,object->GetID());
 		if (ImGui::Selectable(bufT, selected_object_id == object->GetID()))
 		{
 			// 選択
@@ -211,7 +211,7 @@ void Editor::Hierarchy(std::vector<std::shared_ptr<GameObject>>& objects, bool i
 
 		// 子オブジェクト表示
 		char bufC[64];
-		sprintf_s(bufC, "Child ##child %d", object->GetName().c_str(), object->GetID());
+		sprintf_s(bufC, "Child ##child %d", object->name_.c_str(), object->GetID());
 
 		if (ImGui::TreeNode(bufC))
 		{
@@ -272,7 +272,7 @@ void Editor::Hierarchy(std::vector<std::weak_ptr<GameObject>> &objects, bool is_
 		}
 
 		// 子オブジェクト表示
-		if (ImGui::TreeNode(object.lock()->GetName().c_str()))
+		if (ImGui::TreeNode(object.lock()->name_.c_str()))
 		{
 			Hierarchy(object.lock()->GetChildren(), true);
 

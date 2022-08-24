@@ -1,7 +1,7 @@
 #include "Component/Transform.h"
 #include "yMath.h"
 #include "ImGui/ImGuizmo.h"
-#include "GameObject.h"
+#include "Object/GameObject/GameObject.h"
 #include "Component/Manager/CameraManager.h"
 
 
@@ -151,10 +151,10 @@ void Transform::ComponentDraw()
 void Transform::UpdateMatrix()
 {
     //親の情報
-    if (object_->GetPearent().lock().use_count() > 0 &&
+    if (game_object_->GetPearent().lock().use_count() > 0 &&
         parent == nullptr)
     {
-        parent = object_->GetPearent().lock()->GetComponent<Transform>();
+        parent = game_object_->GetPearent().lock()->GetComponent<Transform>();
     }
     // ローカル行列を計算
     XMMATRIX S = DirectX::XMMatrixScaling(

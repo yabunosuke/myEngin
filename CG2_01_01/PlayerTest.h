@@ -36,7 +36,6 @@ private:
 	void Finalize() override;
 
 	// 座標
-	Transform *transform_;
 	Rigidbody *regidbody_;
 
 	// アニメーションステート

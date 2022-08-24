@@ -1,9 +1,16 @@
 #pragma once
+
+// 参考
+// https://docs.unity3d.com/ja/2018.4/ScriptReference/GameObject.html
+
 #include <list>
 #include <vector>
 #include <memory>
 #include <string>
 #include <map>
+
+// 基底クラス
+#include "Object/Object.h"
 
 //コンポーネント基底クラス
 #include "Component/Component.h"
@@ -12,7 +19,8 @@
 // コライダー
 class BaseCollider;
 
-class GameObject
+class GameObject :
+public Object
 {
 private:
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -21,6 +29,7 @@ private:
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:	//関数
+
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
@@ -65,13 +74,7 @@ public:	//関数
 
 	// ID
 	const int &GetID() const { return id_; }
-
-	// 名前
-	const std::string &GetName() { return name_; }
-
-	// タグ
-	void SetTag(const std::string &tag) { this->tags_.emplace_back(tag); }
-	const std::vector<std::string> &GetTag() { return tags_; }
+	
 
 	// isActive
 	void SetIsActive(bool active) { isActive = active; }
@@ -117,6 +120,11 @@ public:	//関数
 	// Script
 	const std::vector<std::weak_ptr<Component>> &GetScripts() { return scripts_; }
 
+	// ゲームオブジェクトのタグ
+	std::string tag_ = "Notag";
+	// アタッチされているトランスフォーム
+	Transform *transform_ = nullptr;
+
 private:	// 静的メンバ変数
 	// オブジェクトIDの重複回避用
 	static uint64_t ID;
@@ -124,11 +132,7 @@ private:	// 静的メンバ変数
 private://変数
 	// オブジェクトID（重複しない）
 	unsigned int id_;
-	
-	// 名前
-	std::string name_;
-	// タグ
-	std::vector<std::string> tags_;
+
 
 	// 親オブジェクト
 	std::weak_ptr<GameObject> pearent_game_object_;
@@ -171,9 +175,10 @@ template<class T, class ...Args>
 inline T *GameObject::AddComponent(Args ...args)
 {
 	T *buff = new T(args...);
-	buff->SetObject(this);
+	buff->game_object_=this;
 	component_list_.emplace_back(buff);
 	buff->CheckInitialize();
+	buff->transform_ = GetComponent<Transform>();
 
 	component_list_.sort();
 

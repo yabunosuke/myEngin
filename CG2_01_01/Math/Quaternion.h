@@ -1,7 +1,6 @@
 #pragma once
 #include <DirectXMath.h>
 
-#include "DirectXCommon.h"
 #include "Math/Vector3.h"
 
 class Quaternion : public XMFLOAT4
@@ -79,6 +78,12 @@ public:
 	/// <returns>Quaternion 正規化したクオータニオン</returns>
 	Quaternion Normalized() const;
 
+
+	/// <summary>
+	/// クオータニオンからオイラー角表現を返す
+	/// </summary>
+	/// <returns>Vector3 オイラー角表現</returns>
+	Vector3 EulerAngles() const;
 
 	//===========================================
 	//
@@ -182,32 +187,32 @@ public:
 };
 
 // 二項演算子オーバーロード
-Quaternion operator+(const Quaternion &q1, const Quaternion &q2)
+inline Quaternion operator+(const Quaternion &q1, const Quaternion &q2)
 {
 	Quaternion result = q1;
 	return result += q2;
 }
-Quaternion operator-(const Quaternion &q1, const Quaternion &q2)
+inline Quaternion operator-(const Quaternion &q1, const Quaternion &q2)
 {
 	Quaternion result = q1;
 	return result -= q2;
 }
-Quaternion operator*(const Quaternion &q1, const Quaternion &q2)
+inline Quaternion operator*(const Quaternion &q1, const Quaternion &q2)
 {
 	Quaternion result = q1;
 	return result *= q2;
 }
-Quaternion operator*(const Quaternion &q, float s)
+inline Quaternion operator*(const Quaternion &q, float s)
 {
 	Quaternion result = q;
 	return result *= s;
 }
-Quaternion operator*(float s, const Quaternion &q)
+inline Quaternion operator*(float s, const Quaternion &q)
 {
 	Quaternion result = q;
 	return result *= s;
 }
-Quaternion operator/(const Quaternion &q, float s)
+inline Quaternion operator/(const Quaternion &q, float s)
 {
 	Quaternion result = q;
 	return result /= s;

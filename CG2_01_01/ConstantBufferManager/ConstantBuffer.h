@@ -27,6 +27,10 @@ struct LightDate
 	float range						{ 50.0f};			// 影響距離
 	float is_active					{ 1.0f };			// 有効
 	float PADING01					{ 0.0f };			// パディング
+
+	
+	// ディレクションライト用
+	DirectX::XMFLOAT4 direction		{ 1.0f,1.0f,1.0f,1.0f};	// ライトの向き
 };
 static const int LIGHT_MAX = 128;
 // ライトバッファ用データ構造体

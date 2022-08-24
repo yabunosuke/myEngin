@@ -2,6 +2,7 @@
 #include <DirectXMath.h>
 #include "Component/Component.h"
 #include "Math/Vector3.h"
+#include "Math/Quaternion.h"
 
 class Transform :
 	public Component
@@ -27,12 +28,12 @@ public:
 
 	// ローカル座標
 	Vector3		local_position_		= { 0,0,0 };			// ローカル座標
-	XMFLOAT4	local_quaternion_	= { 0,1,0,0, };	// ローカル回転（クオータニオン）
+	Quaternion	local_quaternion_	= { 0,1,0,0, };	// ローカル回転（クオータニオン）
 	Vector3		local_scale_		= { 1,1,1 };			// ローカル拡大
 
 	// ワールド座標
 	Vector3		world_position_		= { 0,0,0 };			// ワールド座標
-	XMFLOAT4	world_quaternion_	= { 0,1,0,0, };	// ワールド回転（クオータニオン）
+	Quaternion	world_quaternion_	= { 0,1,0,0, };	// ワールド回転（クオータニオン）
 	Vector3		world_scale_		 = { 1,1,1 };			// ワールド拡大
 
 	Vector3 GetRight() {return Vector3(world_matrix_.r[0]).Normalized();}

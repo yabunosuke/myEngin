@@ -2,7 +2,7 @@
 
 #include "CollisionInfo.h"
 //#include "GameObjCommon.h"
-#include "GameObject.h"
+#include "Object/GameObject/GameObject.h"
 #include <string>
 
 

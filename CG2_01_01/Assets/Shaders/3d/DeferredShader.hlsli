@@ -20,10 +20,13 @@ struct Light
 	float4 position;	// ライトの座標
 	float4 color;		// ライトの色
 
-	float intensity;		// 強さ
+	float intensity;	// 強さ
 	float range;		// 長さ
 	float is_active;	// 有効
 	float PADING;		// パディング
+
+	// ディレクションライト用
+	float4 direction_;	// ライトの向き
 };
 
 cbuffer LIGHT_CONSTANT_BUFFER : register(b1)

@@ -6,7 +6,7 @@
 
 #include "Component/Transform.h"
 #include "Component/Light.h"
-#include "GameObject.h"
+#include "Object/GameObject/GameObject.h"
 
 
 class ComponentList

@@ -1,6 +1,6 @@
 #include "Object3dComponent.h"
 #include "Component/Transform.h"
-#include "GameObject.h"
+#include "Object/GameObject/GameObject.h"
 #include "yMath.h"
 
 Object3dComponent::Object3dComponent(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cmd_list, const char *file_path):
@@ -19,7 +19,7 @@ void Object3dComponent::ComponentInitialize()
 void Object3dComponent::ComponentUpdate()
 {
 	XMFLOAT4X4 world;
-	DirectX::XMStoreFloat4x4(&world, object_->GetComponent<Transform>()->GetWorldMatrix());
+	DirectX::XMStoreFloat4x4(&world, game_object_->GetComponent<Transform>()->GetWorldMatrix());
 
 	// アニメーション再生
 	object_fbx->UpdateAnimation();

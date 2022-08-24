@@ -32,6 +32,7 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	player.lock().get()->AddComponent<Rigidbody>();
 	player.lock().get()->AddComponent<PlayerTest>();
 	player.lock().get()->AddComponent<Light>(light_manager_);
+	player.lock()->transform_->local_scale_ = { 0.2f,0.2f,0.2f };
 
 	/*auto dorone = game_object_manager_.CreateObject("Dorone");
 	dorone.lock().get()->AddComponent<Object3dComponent>(
@@ -57,7 +58,7 @@ TitleScene::TitleScene(IoChangedListener *impl)
 
 	auto camera = game_object_manager_.CreateObject("Camera");
 	camera.lock()->AddComponent<Camera>(camera_manager_);
-	camera.lock()->GetComponent<Transform>()->local_position_ = { 0,200,-400 };
+	camera.lock()->transform_->local_position_= { 0,200,-400 };
 	XMStoreFloat4(&camera.lock()->GetComponent<Transform>()->local_quaternion_, XMQuaternionRotationRollPitchYaw(0, 0, 0));
 	game_object_manager_.SetPearentChild(player, camera);
 

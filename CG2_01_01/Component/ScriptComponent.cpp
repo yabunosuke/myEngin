@@ -1,5 +1,5 @@
 #include "ScriptComponent.h"
-#include "GameObject.h"
+#include "Object/GameObject/GameObject.h"
 
 
 ScriptComponent::ScriptComponent(std::string script_name) :

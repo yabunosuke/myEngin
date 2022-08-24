@@ -4,7 +4,7 @@
 #include "RaycastHit.h"
 #include "QueryCallback.h"
 #include "GameObjectManager.h"
-#include "GameObject.h"
+#include "Object/GameObject/GameObject.h"
 
 #include "Component/ColliderComponent.h"
 #include <memory>
