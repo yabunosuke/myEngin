@@ -181,7 +181,7 @@ void Editor::Hierarchy(std::vector<std::shared_ptr<GameObject>>& objects, bool i
 
 		// 非表示用チェックボックス
 		char bufB[16];
-		sprintf_s(bufB, "##bulind %d", object->GetID());
+		sprintf_s(bufB, "##bulind %d", object->GetInstanceID());
 		bool isBlind = object->GetIsBlind();
 		if (ImGui::Checkbox(bufB, &isBlind)) {
 			object->SetIsBlind(isBlind);
@@ -190,11 +190,11 @@ void Editor::Hierarchy(std::vector<std::shared_ptr<GameObject>>& objects, bool i
 
 		// テーブル設定
 		char bufT[64];
-		sprintf_s(bufT, "%s ##table %d", object->name->c_str(), object->GetID());
-		if (ImGui::Selectable(bufT, selected_object_id == object->GetID()))
+		sprintf_s(bufT, "%s ##table %d", object->name->c_str(), object->GetInstanceID());
+		if (ImGui::Selectable(bufT, selected_object_id == object->GetInstanceID()))
 		{
 			// 選択
-			selected_object_id = object->GetID();
+			selected_object_id = object->GetInstanceID();
 
 		}
 		// 入れ替え処理
@@ -211,7 +211,7 @@ void Editor::Hierarchy(std::vector<std::shared_ptr<GameObject>>& objects, bool i
 
 		// 子オブジェクト表示
 		char bufC[64];
-		sprintf_s(bufC, "Child ##child %d", object->name, object->GetID());
+		sprintf_s(bufC, "Child ##child %d", object->name, object->GetInstanceID());
 
 		if (ImGui::TreeNode(bufC))
 		{
@@ -243,7 +243,7 @@ void Editor::Hierarchy(std::vector<std::weak_ptr<GameObject>> &objects, bool is_
 
 		// 非表示用チェックボックス
 		char bufB[16];
-		sprintf_s(bufB, "##bulind %d", object.lock()->GetID());
+		sprintf_s(bufB, "##bulind %d", object.lock()->GetInstanceID());
 		bool isBlind = object.lock()->GetIsBlind();
 		if (ImGui::Checkbox(bufB, &isBlind)) {
 			object.lock()->SetIsBlind(isBlind);
@@ -252,11 +252,11 @@ void Editor::Hierarchy(std::vector<std::weak_ptr<GameObject>> &objects, bool is_
 
 		// テーブル設定
 		char bufT[64];
-		sprintf_s(bufT, "##table %d", object.lock()->GetID());
-		if (ImGui::Selectable(bufT, selected_object_id == object.lock()->GetID()))
+		sprintf_s(bufT, "##table %d", object.lock()->GetInstanceID());
+		if (ImGui::Selectable(bufT, selected_object_id == object.lock()->GetInstanceID()))
 		{
 			// 選択
-			selected_object_id = object.lock()->GetID();
+			selected_object_id = object.lock()->GetInstanceID();
 
 		}
 		// 入れ替え処理

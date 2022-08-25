@@ -143,6 +143,8 @@ private:
 	bool isDontRemove;
 	//
 	ComponentID component_id_ = ComponentID::None;
+
+public:	// アクセッサ
 	
 };
 

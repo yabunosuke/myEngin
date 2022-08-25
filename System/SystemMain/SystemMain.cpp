@@ -12,6 +12,7 @@
 #include  "PrimitiveRenderer.h"
 #include "PipelineManager.h"
 
+#include "Time/Time.h"
 
 bool SystemMain::Initialize()
 {
@@ -41,11 +42,17 @@ bool SystemMain::Initialize()
 	// バッファマネージャ生成
 	constant_buffer_manager_ = new ConstantBufferManager(DirectXCommon::dev);
 
+	// Timeクラスのシングルトン生成
+	Time::Create();
+
 	return true;
 }
 
 void SystemMain::Finalize() const
 {
+	// Timeクラスのシングルトン解放
+	Time::Destroy();
+
 	AudioManager::SoundUnLoad(AudioManager::sound);		//音声を開放
 	WinApp::WindowClassRelease();	// ウィンドウクラスを登録解除
 }

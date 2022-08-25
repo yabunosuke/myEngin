@@ -24,13 +24,13 @@ public:
 	/// </summary>
 	virtual void Initialize() = 0;
 	/// <summary>
+	/// 一定間隔で更新
+	/// </summary>
+	virtual void FixedUpdate();
+	/// <summary>
 	/// 毎フレーム更新
 	/// </summary>
 	virtual void Update();
-	/// <summary>
-	/// 一定間隔で更新
-	/// </summary>
-	//virtual void FixUpdate() = 0;
 
 	/// <summary>
 	/// マルチレンダーターゲット描画前処理

@@ -22,6 +22,11 @@ AbstractScene::AbstractScene(IoChangedListener *impl,std::string sceneName)
 	directional_light_.lock()->AddComponent<Light>(light_manager_,LightType::Directional);
 }
 
+
+void AbstractScene::FixedUpdate()
+{
+}
+
 void AbstractScene::Update()
 {
 	// オブジェクト更新
@@ -35,6 +40,7 @@ void AbstractScene::Update()
 
 
 }
+
 
 void AbstractScene::PreDrawMultiRenderTarget(Microsoft::WRL::ComPtr<ID3D12Device> dev, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list)
 {

@@ -1,9 +1,12 @@
 #pragma once
+#include "Object/Object.h"
+
 #include <DirectXMath.h>
+
 #include <vector>
 #include <wrl.h>
 
-class Mesh
+class Mesh : public Object
 {
 private: // エイリアス
 	// Microsoft::WRL::を省略
@@ -18,7 +21,12 @@ private: // エイリアス
 
 
 public:
-
+	//===========================================
+	//
+	//	  コンストラクタ
+	//
+	//===========================================
+	Mesh();
 
 	// 影響を受けるボーン数
 	static const int MAX_BONE_INFLUENCES = 4;
@@ -35,9 +43,10 @@ public:
 
 
 private:
-	uint64_t  id_ = 0;	// id
 	
 	
+	// 頂点情報
+	std::vector<Vertex> vertices_;
 	// メッシュコンテナ
 	static std::vector<Mesh> meshs_;
 };

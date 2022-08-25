@@ -44,7 +44,7 @@ GameObject *GameObjectManager::GetGameObject(int id)
 {
 	for (const auto &object : game_objects_) 
 	{
-		if (id == object->GetID()) {
+		if (id == object->GetInstanceID()) {
 			return object.get();
 		}
 	}

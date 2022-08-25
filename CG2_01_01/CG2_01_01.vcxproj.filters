@@ -144,7 +144,6 @@
     <ClCompile Include="Math\Vector3.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="3d\Mesh.cpp" />
     <ClCompile Include="Component\Manager\LightManager.cpp">
       <Filter>Component\Light</Filter>
     </ClCompile>
@@ -161,7 +160,6 @@
     <ClCompile Include="Assets\UserScript\Bullet.cpp">
       <Filter>Component\UserComponent</Filter>
     </ClCompile>
-    <ClCompile Include="Math\Quaternion.cpp" />
     <ClCompile Include="Object\Object.cpp">
       <Filter>Object</Filter>
     </ClCompile>
@@ -170,6 +168,19 @@
       <Filter>Object\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Math\Easing.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Time\Time.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\Behaviour\Behaviour.cpp">
+      <Filter>Component\Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\Behaviour\MonoBehaviour\MonoBehaviour.cpp" />
+    <ClCompile Include="Object\Mesh\Mesh.cpp">
+      <Filter>Object\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Quaternion.cpp">
       <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>
@@ -181,7 +192,6 @@
     <ClInclude Include="..\DirectX\DirectXCommon\DirectXCommon.h" />
     <ClInclude Include="..\DirectX\Input\ControllerInput.h" />
     <ClInclude Include="..\DirectX\Input\KeyboardInput.h" />
-    <ClInclude Include="..\DirectX\Math\yMath.h" />
     <ClInclude Include="..\DirectX\Object3d\Model.h" />
     <ClInclude Include="..\DirectX\Object3d\ModelLoader.h" />
     <ClInclude Include="..\DirectX\Object3d\ModelManager.h" />
@@ -289,7 +299,6 @@
     <ClInclude Include="Math\Vector3.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="3d\Mesh.h" />
     <ClInclude Include="Component\Manager\LightManager.h">
       <Filter>Component\Light</Filter>
     </ClInclude>
@@ -320,6 +329,16 @@
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Property.h" />
+    <ClInclude Include="Time\Time.h">
+      <Filter>Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Behaviour\Behaviour.h">
+      <Filter>Component\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Behaviour\MonoBehaviour\MonoBehaviour.h" />
+    <ClInclude Include="Object\Mesh\Mesh.h">
+      <Filter>Object\Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
@@ -402,6 +421,21 @@
     </Filter>
     <Filter Include="Text">
       <UniqueIdentifier>{ab32ecff-7df1-40a5-9fe9-5ab33c06f2dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Time">
+      <UniqueIdentifier>{086a8f6d-1484-4859-8da9-6fab5f0e4ef3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Behaviour">
+      <UniqueIdentifier>{abfce33d-d90e-49eb-bfb1-c9765cfd29c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Behaviour\MonoBehaviour">
+      <UniqueIdentifier>{15f98e68-8b42-4020-bd33-c1551ee0f5bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Behaviour\MonoBehaviour\NewFilter1">
+      <UniqueIdentifier>{c9acd4ef-11e1-41c6-a660-db8edd77a090}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Mesh">
+      <UniqueIdentifier>{f042ccec-23fe-472f-8936-e9c520ea0726}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

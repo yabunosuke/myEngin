@@ -4,8 +4,6 @@
 #include "ImGui/imguiManager.h"
 #include "BaseCollider.h"
 
-uint64_t GameObject::ID = 0;
-
 
 
 
@@ -13,8 +11,7 @@ GameObject::GameObject(const std::string &name) :
 	Object(),
 	isActive(true),
 	isBlind(false),
-	isRemove(false),
-	id_(++ID)
+	isRemove(false)
 {
 	// 名前をセット
 	this->name = name;

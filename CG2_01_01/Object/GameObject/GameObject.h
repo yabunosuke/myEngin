@@ -74,9 +74,6 @@ public:	//関数
 //ゲッタ&セッタ
 //
 ///////////////////
-
-	// ID
-	const int &GetID() const { return id_; }
 	
 
 	// isActive
@@ -140,8 +137,7 @@ public:	//関数
 
 
 private:	// 静的メンバ変数
-	// オブジェクトIDの重複回避用
-	static uint64_t ID;
+	
 
 
 	// 属しているシーン
@@ -149,8 +145,6 @@ private:	// 静的メンバ変数
 	// ゲームオブジェクトのタグ
 	std::string tag_ = "Notag";
 
-	// オブジェクトID（重複しない）
-	unsigned int id_;
 
 
 

@@ -1,4 +1,6 @@
 #pragma once
+// 参考ページ
+// https://takap-tech.com/entry/2018/07/28/215502
 #include <functional>
 #include <assert.h>
 

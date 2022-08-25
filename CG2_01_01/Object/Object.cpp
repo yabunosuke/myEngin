@@ -1,6 +1,9 @@
 #include "Object.h"
 
-Object::Object()
+int Object::static_id_ = 0;
+
+Object::Object():
+instance_id_(++static_id_)
 {
 }
 

@@ -4,6 +4,7 @@
 #include "KeyboardInput.h"
 #include "PrimitiveRenderer.h"
 #include "ComponentList.h"
+#include "Time/Time.h"
 
 //シーン
 #include "TitleScene.h"
@@ -19,12 +20,24 @@ Looper::Looper() {
 
 bool Looper::Loop()
 {
+	// 計測開始
+	Time::GetInstance()->InstrumentationStart();
 	// ImGui描画前処理
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 	ImGuizmo::BeginFrame();
-	
+
+	// 固定長更新
+	// 通常の更新に時間がかかりすぎていた場合はループさせて調整する
+	while(Time::GetInstance()->CheckFixedUpdate())
+	{
+		sceneStack.top()->FixedUpdate();
+		
+
+		// 経過時間を減少させる
+		Time::GetInstance()->SubFixedTimer();
+	}
 	
 	// 各種初期化
 	PrimitiveRenderer::GetInstance().FrameInitialize();	// プリミティブのバッファインデックス初期化
@@ -66,6 +79,9 @@ bool Looper::Loop()
 	imguiManager::GetIns()->Draw();
 	// 全コマンド実行
 	DirectXCommon::PlayCommandList();
+
+	// 計測開始
+	Time::GetInstance()->InstrumentationEnd();
 
 	//ESCが押されたらゲームを終了
 	if (KeyboardInput::GetIns()->GetKeyPressT(DIK_ESCAPE)) {

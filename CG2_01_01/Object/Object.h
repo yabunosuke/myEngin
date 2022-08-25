@@ -17,14 +17,24 @@ public:
 	/// <param name="object">削除対象のオブジェクト</param>
 	/// <param name="t">削除までのディレイ時間</param>
 	static void Destroy(Object *object, float t);
-	
 
 	/// <summary>
-	/// オブジェクト名 (get = true, set = true)
+	/// インスタンスIDを返す
+	/// </summary>
+	unsigned const int &GetInstanceID() { return instance_id_; }
+
+	/// <summary>
+	/// オブジェクト名 (AllAccess)
 	/// </summary>
 	Property<std::string> name{ name_ ,AccessorType::AllAccess };
 private:
+	// オブジェクトIDの重複回避用
+	static int static_id_;
+
+	// インスタンスID
+	unsigned const int instance_id_;
 	// オブジェクト名
 	std::string name_;
+
 };
 

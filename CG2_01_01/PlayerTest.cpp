@@ -27,7 +27,6 @@ void PlayerTest::Initialize()
 
 void PlayerTest::Update()
 {
-	// ”’F‚É–ß‚·
 	static float spin = 180;
 	
 	
@@ -61,9 +60,6 @@ void PlayerTest::Update()
 		// ƒL[“ü—Í‚Å‚ÌˆÚ“®ˆ—
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_W)) {
 			// ˆÚ“®
-			regidbody_->AddForce(transform_->GetFront());
-			Vector3::ClampMagnitude(regidbody_->velocity_ , 1);
-
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK;
 			}
