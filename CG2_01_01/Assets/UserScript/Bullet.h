@@ -10,7 +10,6 @@ public:
 private:
 
 
-	Transform *transform_;
 	Rigidbody *regidbody_;
 };
 

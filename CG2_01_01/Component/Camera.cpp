@@ -6,7 +6,7 @@
 Camera::Camera(
 	std::weak_ptr<CameraManager> camera_manager
 ):
-	Component("Camera", ComponentID::Camera)
+	Component("Camera", ComponentType::Camera)
 {
 
 	// 転送用のカメラデータ
@@ -22,18 +22,18 @@ void Camera::ComponentUpdate()
 {
 	// カメラの位置をセット
 	camera_date_->view_position = {
-		transform_->world_position_.x,
-		transform_->world_position_.y,
-		transform_->world_position_.z,
+		transform_->position->x,
+		transform_->position->y,
+		transform_->position->z,
 		1.0f
 	};
 
 	// 焦点計算
-	XMMATRIX temp = XMMatrixRotationQuaternion(XMLoadFloat4(&transform_->world_quaternion_));
+	XMMATRIX temp = XMMatrixRotationQuaternion(XMLoadFloat4(&transform_->quaternion));
 	XMVECTOR target = {
-		transform_->world_position_.x + temp.r[2].m128_f32[0] * focus_,
-		transform_->world_position_.y + temp.r[2].m128_f32[1] * focus_,
-		transform_->world_position_.z + temp.r[2].m128_f32[2] * focus_,
+		transform_->position->x + temp.r[2].m128_f32[0] * focus_,
+		transform_->position->y + temp.r[2].m128_f32[1] * focus_,
+		transform_->position->z + temp.r[2].m128_f32[2] * focus_,
 		1.0f
 	};
 
@@ -43,7 +43,7 @@ void Camera::ComponentUpdate()
 	case Camera::Perspective:
 		
 		camera_date_->mat_view = XMMatrixLookAtLH(
-			XMLoadFloat3(&transform_->world_position_),
+			XMLoadFloat3(&transform_->position),
 			target,
 			XMLoadFloat3(&Vector3::up)
 		);

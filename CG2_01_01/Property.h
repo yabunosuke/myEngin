@@ -11,25 +11,24 @@ enum class AccessorType // Accessタイプ
     AllAccess   = 0x03,
 };
 
-template<class T> class Property
+template<class ReferenceT> class Property
 {
 public:
     Property() = default;
     Property(const Property &other) { ; }
     Property(
-        T &r,
+        ReferenceT &r,
         AccessorType type = AccessorType::AllAccess,
-        std::function<T()> get = nullptr,
-        std::function<void(T value)> set = nullptr):
-        r_(r)
+        std::function<ReferenceT()> get = nullptr,
+        std::function<void(ReferenceT value)> set = nullptr):
+        r_(r),
+        access_type_(type),
+        get_(get),
+        set_(set)
     {
-        access_type_ = type;
-        get_ = get;
-        set_ = set;
-
     }
     // ゲッター
-    operator T() const
+    operator ReferenceT() const
     {
         // 書き込み専用ならエラーを返す
         assert(static_cast<int>(AccessorType::WriteOnly) & static_cast<int>(access_type_));
@@ -38,14 +37,21 @@ public:
     }
 
     // 直接中身を参照できるようにアロー演算子もオーバーロード
-    T *operator ->() const
+    ReferenceT *operator ->() const
     {
 
         return get_ ? &this->get_() : &this->r_;
     }
+    
+    // 参照渡しオーバーロード
+    const ReferenceT *operator &()const
+    {
+
+        return &r_;
+    }
 
     // セッター
-    void operator =(const T v)
+    void operator =(const ReferenceT v)
     {
         // 読み込み専用ならエラーを返す
         assert(static_cast<int>(AccessorType::ReadOnly) & static_cast<int>(access_type_));
@@ -60,8 +66,8 @@ public:
     }
 
 private:
-    T &r_;                                           // 値
+    ReferenceT &r_;                                           // 値
     AccessorType access_type_;                       // アクセスタイプ
-    std::function<T()> get_ = nullptr;               // ゲット時の処理
-    std::function<void(T value)> set_ = nullptr;     // セット時の処理
+    std::function<ReferenceT()> get_ = nullptr;               // ゲット時の処理
+    std::function<void(ReferenceT value)> set_ = nullptr;     // セット時の処理
 };

@@ -4,7 +4,7 @@
 #include "yMath.h"
 
 Object3dComponent::Object3dComponent(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cmd_list, const char *file_path):
-	Component("Object3d", ComponentID::Mesh, true)
+	Component("Object3d", ComponentType::Mesh, true)
 {
 	this->dev = dev;
 	this->cmd_list = cmd_list;
@@ -19,7 +19,7 @@ void Object3dComponent::ComponentInitialize()
 void Object3dComponent::ComponentUpdate()
 {
 	XMFLOAT4X4 world;
-	DirectX::XMStoreFloat4x4(&world, game_object_->GetComponent<Transform>()->GetWorldMatrix());
+	DirectX::XMStoreFloat4x4(&world, game_object_->GetComponent<Transform>().lock()->GetWorldMatrix());
 
 	// アニメーション再生
 	object_fbx->UpdateAnimation();

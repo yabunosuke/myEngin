@@ -12,7 +12,7 @@ Light::Light(
 	const XMFLOAT4 &color,
 	const float &intensity,
 	const float &indirect_multiplier):
-	Component("Light", ComponentID::Light),
+	Component("Light", ComponentType::Light),
 	light_type_(type)
 {
 	// 転送用のライトデータ
@@ -93,9 +93,9 @@ void Light::ComponentUpdate()
 	// データを転送用に変換
 
 	light_date_->position = {
-		transform_->world_position_.x,
-		transform_->world_position_.y,
-		transform_->world_position_.z,
+		transform_->position->x,
+		transform_->position->y,
+		transform_->position->z,
 		1.0f
 	};
 
@@ -111,7 +111,7 @@ void Light::ComponentUpdate()
 	{
 	case LightType::Directional:
 		light_date_->light_type = { 0.0f,1.0f,0.0f,0.0f };
-		Vector3 direction_v = transform_->world_quaternion_.EulerAngles().Normalized();
+		Vector3 direction_v = transform_->quaternion->EulerAngles().Normalized();
 		light_date_->direction = {
 			direction_v.x,
 			direction_v.y,

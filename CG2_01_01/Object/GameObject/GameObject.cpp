@@ -9,7 +9,7 @@
 
 GameObject::GameObject(const std::string &name) :
 	Object(),
-	isActive(true),
+	active_self_(true),
 	isBlind(false),
 	isRemove(false)
 {
@@ -19,6 +19,20 @@ GameObject::GameObject(const std::string &name) :
 	transform_ = AddComponent<Transform>();
 
 	
+}
+
+bool GameObject::CompareTag(const std::string &tag)
+{
+	return tag_ == tag;
+}
+
+
+void GameObject::SetActive(bool value)
+{
+}
+void GameObject::SetPearentObject(std::weak_ptr<GameObject> pearent) {
+	pearent_game_object_ = pearent;
+	transform_->parent_ = pearent.lock().get()->GetComponent<Transform>();
 }
 
 
@@ -35,9 +49,9 @@ void GameObject::Initialize()
 void GameObject::Update()
 {
 	// 親オブジェクトのアクティブ（親が存在しないときはfalse）
-	bool parent_is_active = !(pearent_game_object_.lock().get() && !pearent_game_object_.lock().get()->isActive);
+	bool parent_is_active = !(pearent_game_object_.lock().get() && !pearent_game_object_.lock().get()->active_self_);
 	// 親オブジェクトが非アクティブなときと、自身が非アクティブなときは更新しない
-	if (!parent_is_active || !isActive) return;
+	if (!parent_is_active || !active_self_) return;
 
 	// コンポーネントの削除
 	auto &itr = component_list_.begin();
@@ -60,7 +74,7 @@ void GameObject::Update()
 void GameObject::LastUpdate()
 {
 	//アクティブでなければ描画しない
-	if (!isActive) return;
+	if (!active_self_) return;
 	for (auto &component : component_list_) {
 		component->CheckLustUpdate();
 	}
@@ -71,7 +85,7 @@ void GameObject::Draw()
 	//非表示なら描画しない
 	if (isBlind) return;
 	//アクティブでなければ描画しない
-	if (!isActive) return;
+	if (!active_self_) return;
 
 	//全てのコンポーネントを描画
 	for (auto &component : component_list_) {
@@ -82,7 +96,7 @@ void GameObject::Draw()
 void GameObject::DrawInspector()
 {
 	//アクティブフラグ
-	ImGui::Checkbox("##Active", &isActive); ImGui::SameLine();
+	ImGui::Checkbox("##Active", &active_self_); ImGui::SameLine();
 	//名前の変更と描画
 	char buf[64] = "";
 	sprintf_s(buf, name->c_str());

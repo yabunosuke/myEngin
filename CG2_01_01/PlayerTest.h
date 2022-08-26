@@ -36,7 +36,7 @@ private:
 	void Finalize() override;
 
 	// 座標
-	Rigidbody *regidbody_;
+	std::weak_ptr<Rigidbody> regidbody_;
 
 	// アニメーションステート
 	enum class AnimationState {

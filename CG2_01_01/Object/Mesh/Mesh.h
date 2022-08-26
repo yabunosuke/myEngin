@@ -2,11 +2,19 @@
 #include "Object/Object.h"
 
 #include <DirectXMath.h>
+#include "Math/Vector3.h"
 
 #include <vector>
 #include <wrl.h>
 
-class Mesh : public Object
+// シリアライズ用
+#include <cereal/cereal.hpp>
+#include <cereal/archives/binary.hpp>
+#include <cereal/types/string.hpp>
+#include <cereal/types/vector.hpp>
+
+class Mesh :
+	public Object
 {
 private: // エイリアス
 	// Microsoft::WRL::を省略
@@ -23,10 +31,22 @@ private: // エイリアス
 public:
 	//===========================================
 	//
-	//	  コンストラクタ
+	//		サブクラス
 	//
 	//===========================================
-	Mesh();
+	struct BoneWeight {
+		// インデックス
+		int bone_index_0;
+		int bone_index_1;
+		int bone_index_2;
+		int bone_index_3;
+
+		// ウェイト
+		float weight0;
+		float weight1;
+		float weight2;
+		float weight3;
+	};
 
 	// 影響を受けるボーン数
 	static const int MAX_BONE_INFLUENCES = 4;
@@ -42,12 +62,46 @@ public:
 	};
 
 
+	//===========================================
+	//
+	//		コンストラクタ
+	//
+	//===========================================
+	Mesh();
+
+
+	//===========================================
+	//
+	//		メンバ関数
+	//
+	//===========================================
+
+
+	//===========================================
+	//
+	//		静的関数
+	//
+	//===========================================
+
+
+	//===========================================
+	//
+	//		アクセッサ
+	//
+	//===========================================
+
+	
 private:
 	
+	DirectX::XMMATRIX bindpose_;	// バインドポーズ
 	
 	// 頂点情報
-	std::vector<Vertex> vertices_;
-	// メッシュコンテナ
-	static std::vector<Mesh> meshs_;
+	std::vector<Vector3> vertices_;		// 頂点
+	std::vector<uint32_t> indices_;		// インデックス
+
+	std::vector<Vector3> normals_;		// メッシュの法線
+	std::vector<Vector3> tangents_;		// メッシュの接線
+
+
 };
 

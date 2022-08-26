@@ -261,7 +261,7 @@ bool DirectXCommon::ResourceBarrierWriting()
 {
     //レンダーターゲットを書き込み可能に
     bbIndex = swapchain->GetCurrentBackBufferIndex();
-    cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(backBuffers[bbIndex].Get(),
+	cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(backBuffers[bbIndex].Get(),
         D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
 
     //レンダーターゲット設定

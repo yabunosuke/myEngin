@@ -31,20 +31,85 @@ public:
 	Quaternion	local_quaternion_	= { 0,1,0,0, };	// ローカル回転（クオータニオン）
 	Vector3		local_scale_		= { 1,1,1 };			// ローカル拡大
 
-	// ワールド座標
-	Vector3		world_position_		= { 0,0,0 };			// ワールド座標
-	Quaternion	world_quaternion_	= { 0,1,0,0, };	// ワールド回転（クオータニオン）
-	Vector3		world_scale_		 = { 1,1,1 };			// ワールド拡大
-
 	Vector3 GetRight() {return Vector3(world_matrix_.r[0]).Normalized();}
 	Vector3 GetUp() {return Vector3(world_matrix_.r[1]).Normalized();}
 	Vector3 GetFront() {return Vector3(world_matrix_.r[2]).Normalized();}
 
+
+
+	//===========================================
+	//
+	//	アクセッサ
+	//
+	//===========================================
+
+
+	/// <summary>
+	/// ワールド空間の赤軸 
+	/// (get = true, set = false)
+	/// </summary>
+	
+	///// <summary>
+	///// ワールド空間の座標 (get = true, set = true)
+	///// </summary>
+	//Property<Vector3> position{
+	//	world_position_, AccessorType::AllAccess,
+	//	nullptr,
+	//	// ローカルの再計算処理
+	//	nullptr
+	//};
+	///// <summary>
+	///// ワールド空間の座標 (get = true, set = true)
+	///// </summary>
+	//Property<Vector3> position{
+	//	world_position_, AccessorType::AllAccess,
+	//	nullptr,
+	//	// ローカルの再計算処理
+	//	nullptr
+	//};
+
+
+	/// <summary>
+	/// ワールド空間の座標 (get = true, set = true)
+	/// </summary>
+	Property<Vector3> position{
+		world_position_, AccessorType::AllAccess,
+		nullptr,
+		// ローカルの再計算処理
+		nullptr
+	};
+	/// <summary>
+	/// ワールド空間の回転 (get = true, set = true)
+	/// </summary>
+	Property<Quaternion> quaternion{
+		world_quaternion_,AccessorType::AllAccess,
+		nullptr,
+		// ローカルの再計算処理
+		nullptr
+	};
+	/// <summary>
+	/// ワールド空間のスケール (get = true, set = true)
+	/// </summary>
+	Property<Vector3> scale{
+		world_scale_,AccessorType::AllAccess,
+		nullptr,
+		// ローカルの再計算処理
+		nullptr
+	};
+
+	std::weak_ptr<Transform> parent_;
+
+
 private:
 	XMMATRIX local_matrix_ = XMMatrixIdentity();		// ローカル行列
+
+
+	// ワールド座標
+	Vector3		world_position_ = { 0,0,0 };			// ワールド座標
+	Quaternion	world_quaternion_ = { 0,1,0,0, };		// ワールド回転（クオータニオン）
+	Vector3		world_scale_ = { 1,1,1 };				// ワールド拡大
 	XMMATRIX world_matrix_ = XMMatrixIdentity();		// ワールド行列
 
-	Transform *parent;
 
 	// 行列更新
 	void UpdateMatrix();

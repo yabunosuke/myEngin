@@ -20,7 +20,7 @@ void PlayerTest::Initialize()
 	regidbody_ = game_object_->GetComponent<Rigidbody>();
 
 	// オブジェクトデータ
-	game_object = game_object_->GetComponent<Object3dComponent>()->GetObjectData();
+	game_object = game_object_->GetComponent<Object3dComponent>().lock()->GetObjectData();
 
 
 }
@@ -70,8 +70,8 @@ void PlayerTest::Update()
 		}
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_S)) {
 			// 移動
-			regidbody_->AddForce(-transform_->GetFront());
-			regidbody_->velocity_ = regidbody_->velocity_.Normalized() * 1.0f;
+			regidbody_.lock()->AddForce(-transform_->GetFront());
+			regidbody_.lock()->velocity_ = regidbody_.lock()->velocity_.Normalized() * 1.0f;
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_BACK;
 			}
@@ -82,8 +82,8 @@ void PlayerTest::Update()
 		}
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_D)) {
 			// 移動
-			regidbody_->AddForce(transform_->GetRight());
-			regidbody_->velocity_ = regidbody_->velocity_.Normalized() * 1.8f;
+			regidbody_.lock()->AddForce(transform_->GetRight());
+			regidbody_.lock()->velocity_ = regidbody_.lock()->velocity_.Normalized() * 1.8f;
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_RIGHT;
 			}
@@ -94,9 +94,9 @@ void PlayerTest::Update()
 		}
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_A)) {
 			// 移動
-			regidbody_->AddForce(-transform_->GetRight());
+			regidbody_.lock()->AddForce(-transform_->GetRight());
 
-			regidbody_->velocity_ = regidbody_->velocity_.Normalized() * 1.8f;
+			regidbody_.lock()->velocity_ = regidbody_.lock()->velocity_.Normalized() * 1.8f;
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_LEFT;
 			}
@@ -151,7 +151,7 @@ void PlayerTest::Update()
 		}
 	}
 
-	if(regidbody_->velocity_.Magnitude() > 3.0f)
+	if(regidbody_.lock()->velocity_.Magnitude() > 3.0f)
 	{
 	}
 }

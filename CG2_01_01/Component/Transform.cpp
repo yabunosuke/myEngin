@@ -7,7 +7,7 @@
 
 
 Transform::Transform() :
-	Component("Transform",  ComponentID::TRANSFORM,true)
+	Component("Transform",  ComponentType::TRANSFORM,true)
 {
 }
 
@@ -76,7 +76,7 @@ void Transform::Infomation()
         CameraManager::GetProjection().r->m128_f32, mCurrentGizmoOperation, mCurrentGizmoMode, world_matrix_.r->m128_f32, NULL, useSnap ? &snap.x : NULL);
     
     // 親がいる場合はローカルに変換しなおす
-    if(parent != nullptr)
+    if(!parent_.expired())
     {
 		XMVECTOR scale, rotate, position;
 		XMMatrixDecompose(&scale, &rotate, &position, world_matrix_);
@@ -152,9 +152,9 @@ void Transform::UpdateMatrix()
 {
     //親の情報
     if (game_object_->GetPearent().lock().use_count() > 0 &&
-        parent == nullptr)
+        !parent_.expired())
     {
-        parent = game_object_->GetPearent().lock()->GetComponent<Transform>();
+        parent_ = game_object_->GetPearent().lock()->GetComponent<Transform>();
     }
     // ローカル行列を計算
     XMMATRIX S = DirectX::XMMatrixScaling(
@@ -174,9 +174,9 @@ void Transform::UpdateMatrix()
     local_matrix_ = S * R * T;
 
     // 親がいる場合は親の行列をかける
-    if (parent != nullptr)
+    if (!parent_.expired())
     {
-        world_matrix_ = local_matrix_ * parent->GetWorldMatrix();
+        world_matrix_ = local_matrix_ * parent_.lock()->GetWorldMatrix();
     }
     else
     {

@@ -30,13 +30,17 @@ bool Looper::Loop()
 
 	// 固定長更新
 	// 通常の更新に時間がかかりすぎていた場合はループさせて調整する
-	while(Time::GetInstance()->CheckFixedUpdate())
+	for (int i = 0; Time::GetInstance()->CheckFixedUpdate(); ++i)
 	{
 		sceneStack.top()->FixedUpdate();
 		
-
 		// 経過時間を減少させる
 		Time::GetInstance()->SubFixedTimer();
+
+		if (i >= 5)
+		{
+			break;
+		}
 	}
 	
 	// 各種初期化

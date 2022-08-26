@@ -8,8 +8,8 @@ void SphereCollider::Update()
 {
 	// ワールド行列から座標を抽出
 	XMMATRIX matWorld = XMMatrixIdentity();
-	if (object->GetComponent<Transform>() != nullptr) {
-		matWorld = object->GetComponent<Transform>()->GetWorldMatrix();
+	if (!object->GetComponent<Transform>().expired()) {
+		matWorld = object->GetComponent<Transform>().lock()->GetWorldMatrix();
 	}
 	
 	// 球のメンバ変数を更新

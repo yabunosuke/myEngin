@@ -9,11 +9,12 @@
 #include "Object/Object.h"
 
 
+
 class GameObject;
 class Transform;
 
 // 更新順
-enum class ComponentID
+enum class ComponentType
 {
 	None,
 	Sqript,		// スクリプト
@@ -64,21 +65,43 @@ public:
 	void ImGuiDraw();
 
 
+
+	//===========================================
+	//
+	//		アクセッサ
+	//
+	//===========================================
+
+
+	/// <summary>
+	/// トランスフォーム (get = true, set = false)
+	/// </summary>
+	/*Property <Transform> transform{
+		transform_,
+		AccessorType::AllAccess,
+		
+	};*/
+	/// <summary>
+	/// コンポーネント識別 (get = true, set = false)
+	/// </summary>
+	Property<ComponentType> type{ type_,AccessorType::ReadOnly };
+
+
+
 	// コンポーネント比較演算子
 	bool operator <(const Component &component) const{
-		return static_cast<int>(component_id_) < static_cast<int>(component.component_id_);
+		return static_cast<int>(type_) < static_cast<int>(component.type_);
 	}
 	bool operator == (const Component &component) const {
-		return static_cast<int>(component_id_) == static_cast<int>(component.component_id_);
+		return static_cast<int>(type_) == static_cast<int>(component.type_);
 	}
 	bool operator != (const Component &component) const {
-		return static_cast<int>(component_id_) != static_cast<int>(component.component_id_);
+		return static_cast<int>(type_) != static_cast<int>(component.type_);
 	}
 
 
 public:	//ゲッター＆セッタ
 	
-
 	// isRemove
 	void Remove() { isRemove = true; }
 	bool GetIsRemove() { return isRemove; }
@@ -89,11 +112,11 @@ public:	//ゲッター＆セッタ
 	// 重複チェック用のタグ
 	std::string tag_ = "";
 	// ゲームオブジェクトが持つTransform
-	Transform *transform_ = nullptr;
+	Transform *transform_;
 
 
 protected:	//関数
-	Component(std::string name, ComponentID component_id,bool dontRemove = false);
+	Component(std::string name, ComponentType component_id,bool dontRemove = false);
 
 	/// <summary>
 	/// 初期化
@@ -125,11 +148,11 @@ protected:	//関数
 
 	bool operator >(std::shared_ptr<Component> rhs)
 	{
-		return static_cast<int>(this->component_id_) > static_cast<int>(rhs->component_id_);
+		return static_cast<int>(this->type_) > static_cast<int>(rhs->type_);
 	}
 	bool operator <(std::shared_ptr<Component> rhs)
 	{
-		return static_cast<int>(this->component_id_) < static_cast<int>(rhs->component_id_);
+		return static_cast<int>(this->type_) < static_cast<int>(rhs->type_);
 	}
 
 	
@@ -142,7 +165,7 @@ private:
 	// 削除不可
 	bool isDontRemove;
 	//
-	ComponentID component_id_ = ComponentID::None;
+	ComponentType type_ = ComponentType::None;
 
 public:	// アクセッサ
 	

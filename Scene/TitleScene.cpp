@@ -34,7 +34,7 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	player.lock().get()->AddComponent<Rigidbody>();
 	player.lock().get()->AddComponent<PlayerTest>();
 	player.lock().get()->AddComponent<Light>(light_manager_);
-	player.lock()->transform_->local_scale_ = { 0.2f,0.2f,0.2f };
+	//player.lock()->->local_scale_ = { 0.2f,0.2f,0.2f };
 
 	/*auto dorone = game_object_manager_.CreateObject("Dorone");
 	dorone.lock().get()->AddComponent<Object3dComponent>(
@@ -45,8 +45,8 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	castle.lock().get()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/Castle/Castle FBX.fbx");
-	castle.lock()->GetComponent<Transform>()->local_scale_ = { 20,20,20 };
-	castle.lock()->GetComponent<Transform>()->local_position_ = { 0,-7,0 };
+	castle.lock()->GetComponent<Transform>().lock()->local_scale_ = { 20,20,20 };
+	castle.lock()->GetComponent<Transform>().lock()->local_position_ = { 0,-7,0 };
 	/*auto streat = game_object_manager_.CreateObject("streat");
 	streat.lock().get()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
@@ -60,8 +60,8 @@ TitleScene::TitleScene(IoChangedListener *impl)
 
 	auto camera = game_object_manager_.CreateObject("Camera");
 	camera.lock()->AddComponent<Camera>(camera_manager_);
-	camera.lock()->transform_->local_position_= { 0,200,-400 };
-	XMStoreFloat4(&camera.lock()->GetComponent<Transform>()->local_quaternion_, XMQuaternionRotationRollPitchYaw(0, 0, 0));
+	//camera.lock()->transform_->local_position_= { 0,200,-400 };
+	XMStoreFloat4(&camera.lock()->GetComponent<Transform>().lock()->local_quaternion_, XMQuaternionRotationRollPitchYaw(0, 0, 0));
 	game_object_manager_.SetPearentChild(player, camera);
 
 }

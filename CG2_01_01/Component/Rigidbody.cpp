@@ -3,7 +3,7 @@
 #include "Object/GameObject/GameObject.h"
 
 Rigidbody::Rigidbody() :
-	Component("Rigidbody", ComponentID::RigitBody),
+	Component("Rigidbody", ComponentType::RigitBody),
 	velocity_({ 0,0,0 })
 {
 	
@@ -81,7 +81,6 @@ void Rigidbody::ComponentUpdate()
 	// íÔçRåvéZ
 	Vector3 f = static_cast<float>(drag_ / 100) * velocity_;
 	velocity_ -= f;
-
 	transform_->local_position_ += velocity_;
 }
 

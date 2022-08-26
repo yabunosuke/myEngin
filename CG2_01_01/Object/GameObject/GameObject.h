@@ -33,11 +33,83 @@ private:
 
 public:	//関数
 
+	//===========================================
+	//
+	//		コンストラクタ
+	//
+	//===========================================
+
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="name">オブジェクト名</param>
 	GameObject(const std::string &name);
+
+
+	//===========================================
+	//
+	//		メンバ関数
+	//
+	//===========================================
+	
+	/// <summary>
+	/// クラス名
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <typeparam name="...Args"></typeparam>
+	/// <param name="...args"></param>
+	/// <returns></returns>
+	template<class T, class... Args>
+	T *AddComponent(Args ...args);
+
+	/// <summary>
+	/// タグ名の比較
+	/// </summary>
+	/// <param name="tag"確認したいタグ></param>
+	/// <returns>bool タグが一致したかどうか</returns>
+	bool CompareTag(const std::string &tag);
+
+	/// <summary>
+	/// コンポーネントの取得
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <returns></returns>
+	template<class T>
+	std::weak_ptr<T> GetComponent();
+
+
+
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="value"></param>
+	void SetActive(bool value);
+
+
+	//===========================================
+	//
+	//		静的関数
+	//
+	//===========================================
+
+
+	//===========================================
+	//
+	//		アクセッサ
+	//
+	//===========================================
+
+	/// <summary>
+	/// オブジェクト識別タグ (get = true, set = true)
+	/// </summary>
+	Property<std::string> tag{ tag_ ,AccessorType::AllAccess };
+
+	/// <summary>
+	/// オブジェクト識別タグ (get = true, set = false)
+	/// </summary>
+	Property<bool> activeSelf{ active_self_ ,AccessorType::ReadOnly };
+
 
 	//初期化
 	void Initialize();
@@ -69,16 +141,8 @@ public:	//関数
 	/// </summary>
 	void Finalize() {};
 
-///////////////////
-// 
-//ゲッタ&セッタ
-//
-///////////////////
 	
 
-	// isActive
-	void SetIsActive(bool active) { isActive = active; }
-	bool GetIsActive() { return isActive; }
 
 	// isBlind
 	void SetIsBlind(bool blind) { isBlind = blind; }
@@ -88,7 +152,7 @@ public:	//関数
 	void Remove() { isRemove = true; }
 
 	// 親オブジェクトの取得
-	void SetPearentObject(std::weak_ptr<GameObject> pearent) { pearent_game_object_ = pearent; }
+	void SetPearentObject(std::weak_ptr<GameObject> pearent);
 	std::weak_ptr<GameObject> &GetPearent() { return pearent_game_object_; }
 	// 子のオブジェクトコンテナの取得
 	void SetCildrenObject(std::weak_ptr<GameObject> children) { child_game_object_.emplace_back(children); }
@@ -100,17 +164,6 @@ public:	//関数
 	/// <returns></returns>
 	std::list<std::shared_ptr<Component>> GetComponentList() { return component_list_; }
 
-	/// <summary>
-	/// コンポーネントの取得
-	/// </summary>
-	/// <typeparam name="T"></typeparam>
-	/// <returns></returns>
-	template<class T>
-	T *GetComponent(std::string tag = "");
-
-	//コンポーネントの追加
-	template<class T, class... Args>
-	T *AddComponent(Args ...args);
 
 	// コライダー
 	void AddCollider(std::weak_ptr<BaseCollider> collider);
@@ -126,19 +179,12 @@ public:	//関数
 	/// 所属しているシーン (get = true, set = false)
 	/// </summary>
 	//Property<std::weak_ptr<AbstractScene>> scene{ scene_ ,AccessorType::ReadOnly };
-	/// <summary>
-	/// オブジェクト識別タグ (get = true, set = true)
-	/// </summary>
-	Property<std::string> tag{ tag_ ,AccessorType::AllAccess };
-
-	// アタッチされているトランスフォーム
-	Transform *transform_ = nullptr;
-
-
-
-private:	// 静的メンバ変数
 	
 
+	// アタッチされているトランスフォーム
+private:	// 静的メンバ変数
+	
+	Transform *transform_;
 
 	// 属しているシーン
 	//std::weak_ptr<AbstractScene> scene_;
@@ -160,8 +206,8 @@ private:	// 静的メンバ変数
 	// Scriptリスト
 	std::vector<std::weak_ptr<Component>> scripts_;
 
-	// アクティブか
-	bool isActive;
+
+	bool active_self_;				// ローカルのアクティブ状態
 	// 非表示になっているか
 	bool isBlind;
 	// 削除するか
@@ -172,18 +218,6 @@ private:	// 静的メンバ変数
 
 };
 
-template<class T>
-inline T *GameObject::GetComponent(std::string tag)
-{
-	for (auto &component : component_list_) {
-		T *temp = dynamic_cast<T *>(component.get());
-		if (temp != nullptr) {
-			return temp;
-		}
-	}
-
-	return nullptr;
-}
 
 template<class T, class ...Args>
 inline T *GameObject::AddComponent(Args ...args)
@@ -192,9 +226,25 @@ inline T *GameObject::AddComponent(Args ...args)
 	buff->game_object_=this;
 	component_list_.emplace_back(buff);
 	buff->CheckInitialize();
-	buff->transform_ = GetComponent<Transform>();
+	buff->transform_ = GetComponent<Transform>().lock().get();
 
 	component_list_.sort();
 
 	return buff;
+}
+
+template<class T>
+inline std::weak_ptr<T> GameObject::GetComponent()
+{
+	std::weak_ptr<T> temp;
+	for (auto &component : component_list_)
+	{
+		temp = std::dynamic_pointer_cast<T>(component);
+		if (!temp.expired())
+		{
+			return temp;
+		}
+	}
+
+	return temp;
 }

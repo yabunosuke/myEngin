@@ -31,11 +31,11 @@ void Component::CheckFinalize()
 	ComponentFinalize();
 }
 
-Component::Component(std::string name, ComponentID component_id, bool dontRemove):
+Component::Component(std::string name, ComponentType component_id, bool dontRemove):
 	is_active_(true),
 	isDontRemove(dontRemove),
 	isRemove(false),
-	component_id_(component_id)
+	type_(component_id)
 {
 
 
