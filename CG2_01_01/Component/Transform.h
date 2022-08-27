@@ -26,11 +26,7 @@ public:
 	XMMATRIX GetWorldMatrix() { return  world_matrix_; }
 
 
-	// ローカル座標
-	Vector3		local_position_		= { 0,0,0 };			// ローカル座標
-	Quaternion	local_quaternion_	= { 0,1,0,0, };	// ローカル回転（クオータニオン）
-	Vector3		local_scale_		= { 1,1,1 };			// ローカル拡大
-
+	
 	Vector3 GetRight() {return Vector3(world_matrix_.r[0]).Normalized();}
 	Vector3 GetUp() {return Vector3(world_matrix_.r[1]).Normalized();}
 	Vector3 GetFront() {return Vector3(world_matrix_.r[2]).Normalized();}
@@ -68,7 +64,33 @@ public:
 	//	nullptr
 	//};
 
-
+	/// <summary>
+	/// ワールド空間の座標 (AllAccess)
+	/// </summary>
+	Property<Vector3> localPosition{
+		local_position_, AccessorType::AllAccess,
+		nullptr,
+		// ローカルの再計算処理
+		nullptr
+	};
+	/// <summary>
+	/// ワールド空間の回転 (AllAccess)
+	/// </summary>
+	Property<Quaternion> localQuaternion{
+		local_quaternion_,AccessorType::AllAccess,
+		nullptr,
+		// ローカルの再計算処理
+		nullptr
+	};
+	/// <summary>
+	/// ワールド空間の座標 (AllAccess)
+	/// </summary>
+	Property<Vector3> localScale{
+		local_scale_, AccessorType::AllAccess,
+		nullptr,
+		// ローカルの再計算処理
+		nullptr
+	};
 	/// <summary>
 	/// ワールド空間の座標 (get = true, set = true)
 	/// </summary>
@@ -101,6 +123,11 @@ public:
 
 
 private:
+	// ローカル座標
+	Vector3		local_position_ = { 0,0,0 };			// ローカル座標
+	Quaternion	local_quaternion_ = { 0,1,0,0, };	// ローカル回転（クオータニオン）
+	Vector3		local_scale_ = { 1,1,1 };			// ローカル拡大
+
 	XMMATRIX local_matrix_ = XMMatrixIdentity();		// ローカル行列
 
 

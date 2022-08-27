@@ -28,21 +28,27 @@ bool Looper::Loop()
 	ImGui::NewFrame();
 	ImGuizmo::BeginFrame();
 
-	// 固定長更新
-	// 通常の更新に時間がかかりすぎていた場合はループさせて調整する
-	for (int i = 0; Time::GetInstance()->CheckFixedUpdate(); ++i)
-	{
-		sceneStack.top()->FixedUpdate();
-		
-		// 経過時間を減少させる
-		Time::GetInstance()->SubFixedTimer();
+	// エディタ描画
+	editor.Draw();
 
-		if (i >= 5)
+	// 物理挙動アップデート
+	{
+		// 固定長更新
+		// 通常の更新に時間がかかりすぎていた場合はループさせて調整する
+		for (int i = 0; Time::GetInstance()->CheckFixedUpdate(); ++i)
 		{
-			break;
+			sceneStack.top()->FixedUpdate();
+
+			// 経過時間を減少させる
+			Time::GetInstance()->SubFixedTimer();
+
+			// 5回処理して改善しなければ強制的に離脱
+			if (i >= 5)
+			{
+				break;
+			}
 		}
 	}
-	
 	// 各種初期化
 	PrimitiveRenderer::GetInstance().FrameInitialize();	// プリミティブのバッファインデックス初期化
 
@@ -51,8 +57,6 @@ bool Looper::Loop()
 	KeyboardInput::GetIns()->Update();
 
 
-	// エディタ描画
-	editor.Draw();
 
 	//シーンの更新
 	sceneStack.top()->Update();

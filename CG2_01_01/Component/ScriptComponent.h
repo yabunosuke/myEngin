@@ -36,6 +36,7 @@ protected:
 	/// <summary>
 	/// 更新
 	/// </summary>
+	virtual void FixedUpdate() {};
 	virtual void Update() {};
 	virtual void LustUpdate() {};
 
@@ -65,6 +66,7 @@ private:
 	/// <summary>
 	/// 更新
 	/// </summary>
+	void ComponentFixedUpdate() override;
 	void ComponentUpdate() override;
 	void ComponentLustUpdate() override;
 

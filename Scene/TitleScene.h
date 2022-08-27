@@ -12,7 +12,6 @@ class TitleScene final
 {
 public:
 	explicit TitleScene(IoChangedListener *impl);
-	void Initialize() override;
 	void Finalize() override;
 	void Update() override;
 private:

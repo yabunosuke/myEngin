@@ -17,6 +17,11 @@ void ScriptComponent::ComponentInitialize()
 	Initialize();
 }
 
+void ScriptComponent::ComponentFixedUpdate()
+{
+	FixedUpdate();
+}
+
 void ScriptComponent::ComponentUpdate()
 {
 	Update();

@@ -22,6 +22,7 @@ private:
 	/// <summary>
 	/// XV
 	/// </summary>
+	void FixedUpdate() override;
 	void Update() override;
 	void LustUpdate() override;
 

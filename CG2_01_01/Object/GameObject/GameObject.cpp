@@ -1,6 +1,5 @@
 
 #include "GameObject.h"
-#include "Component/Transform.h"
 #include "ImGui/imguiManager.h"
 #include "BaseCollider.h"
 
@@ -32,7 +31,7 @@ void GameObject::SetActive(bool value)
 }
 void GameObject::SetPearentObject(std::weak_ptr<GameObject> pearent) {
 	pearent_game_object_ = pearent;
-	transform_->parent_ = pearent.lock().get()->GetComponent<Transform>();
+	transform_.lock()->parent_ = pearent.lock().get()->GetComponent<Transform>();
 }
 
 
@@ -43,6 +42,14 @@ void GameObject::Initialize()
 		if (dynamic_cast<ScriptComponent *>(component.get())) {
 			scripts_.emplace_back(component);
 		}
+	}
+}
+
+void GameObject::FixedUpdate()
+{
+	// 全てのコンポーネントを更新
+	for (const auto &component : component_list_) {
+		component->CheckFixedUpdate();
 	}
 }
 

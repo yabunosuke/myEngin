@@ -17,7 +17,9 @@ class imguiManager
 {
 private:	//シングルトンパターン
 	imguiManager() = default;
-	~imguiManager() = default;
+	~imguiManager() {
+		ImGui::DestroyContext();
+	}
 	imguiManager(const imguiManager &r) = default;
 	imguiManager &operator= (const imguiManager &r) = default;
 private:	//記述省略

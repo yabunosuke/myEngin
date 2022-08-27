@@ -14,6 +14,7 @@
 
 #include "Time/Time.h"
 
+
 bool SystemMain::Initialize()
 {
 	WinApp::WindowCreate();				//ウィンドウ生成

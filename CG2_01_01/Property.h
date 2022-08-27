@@ -44,7 +44,7 @@ public:
     }
     
     // 参照渡しオーバーロード
-    const ReferenceT *operator &()const
+    ReferenceT *operator &()const
     {
 
         return &r_;
@@ -64,6 +64,16 @@ public:
             r_ = v;
         }
     }
+
+    ReferenceT operator +(const ReferenceT &v) const
+    {
+        return r_ + v;
+    }
+    ReferenceT operator -(const ReferenceT &v) const
+    {
+        return r_ - v;
+    }
+
 
 private:
     ReferenceT &r_;                                           // 値

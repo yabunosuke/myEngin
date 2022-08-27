@@ -7,6 +7,12 @@ void Component::CheckInitialize()
 	ComponentInitialize();
 }
 
+void Component::CheckFixedUpdate()
+{
+	if (!is_active_) return;
+	ComponentFixedUpdate();
+}
+
 void Component::CheckUpdate()
 {
 	if (!is_active_) return;

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Math/Vector3.h"
 #include "Component/Component.h"
 #include "Transform.h"
@@ -21,6 +20,7 @@ public:
 	void Infomation() override;
 
 	void ComponentInitialize() override;
+	void ComponentFixedUpdate() override;
 	void ComponentUpdate() override;
 
 

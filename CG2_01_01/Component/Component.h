@@ -46,6 +46,10 @@ public:
 	/// <summary>
 	/// アクティブなときだけ更新
 	/// </summary>
+	void CheckFixedUpdate();
+	/// <summary>
+	/// アクティブなときだけ更新
+	/// </summary>
 	void CheckUpdate();
 	/// <summary>
 	/// アクティブなときだけ更新
@@ -100,8 +104,6 @@ public:
 	}
 
 
-public:	//ゲッター＆セッタ
-	
 	// isRemove
 	void Remove() { isRemove = true; }
 	bool GetIsRemove() { return isRemove; }
@@ -112,7 +114,7 @@ public:	//ゲッター＆セッタ
 	// 重複チェック用のタグ
 	std::string tag_ = "";
 	// ゲームオブジェクトが持つTransform
-	Transform *transform_;
+	std::weak_ptr<Transform>  transform_;
 
 
 protected:	//関数
@@ -122,6 +124,10 @@ protected:	//関数
 	/// 初期化
 	/// </summary>
 	virtual void ComponentInitialize() {};
+	/// <summary>
+	/// 更新
+	/// </summary>
+	virtual void ComponentFixedUpdate() {};
 	/// <summary>
 	/// 更新
 	/// </summary>

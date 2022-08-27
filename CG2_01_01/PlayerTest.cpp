@@ -25,6 +25,31 @@ void PlayerTest::Initialize()
 
 }
 
+void PlayerTest::FixedUpdate()
+{
+	
+	// キー入力での移動処理
+	if (KeyboardInput::GetIns()->GetKeyPress(DIK_W))
+	{
+		regidbody_.lock()->AddForce(transform_.lock()->GetFront());
+
+	}
+	if (KeyboardInput::GetIns()->GetKeyPress(DIK_S)) {
+		// 移動
+		regidbody_.lock()->AddForce(-transform_.lock()->GetFront());
+	}
+	if(KeyboardInput::GetIns()->GetKeyPress(DIK_D))
+	{
+		// 移動
+		regidbody_.lock()->AddForce(transform_.lock()->GetRight());
+	}
+	if (KeyboardInput::GetIns()->GetKeyPress(DIK_A))
+	{
+		// 移動
+		regidbody_.lock()->AddForce(-transform_.lock()->GetRight());
+	}
+}
+
 void PlayerTest::Update()
 {
 	static float spin = 180;
@@ -70,8 +95,6 @@ void PlayerTest::Update()
 		}
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_S)) {
 			// 移動
-			regidbody_.lock()->AddForce(-transform_->GetFront());
-			regidbody_.lock()->velocity_ = regidbody_.lock()->velocity_.Normalized() * 1.0f;
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_BACK;
 			}
@@ -81,9 +104,7 @@ void PlayerTest::Update()
 			game_object->PlayAnimation(static_cast<int>(state));
 		}
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_D)) {
-			// 移動
-			regidbody_.lock()->AddForce(transform_->GetRight());
-			regidbody_.lock()->velocity_ = regidbody_.lock()->velocity_.Normalized() * 1.8f;
+			
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_RIGHT;
 			}
@@ -93,10 +114,6 @@ void PlayerTest::Update()
 			game_object->PlayAnimation(static_cast<int>(state));
 		}
 		if (KeyboardInput::GetIns()->GetKeyPress(DIK_A)) {
-			// 移動
-			regidbody_.lock()->AddForce(-transform_->GetRight());
-
-			regidbody_.lock()->velocity_ = regidbody_.lock()->velocity_.Normalized() * 1.8f;
 			if (isRifle) {
 				state = AnimationState::RIFLE_WALK_LEFT;
 			}
@@ -112,21 +129,13 @@ void PlayerTest::Update()
 	if (KeyboardInput::GetIns()->GetKeyPress(DIK_Q))
 	{
 		spin -= 2;
-		XMStoreFloat4(&transform_->local_quaternion_, XMQuaternionRotationRollPitchYaw(0,spin * Mathf::deg_to_rad,0));
+		XMStoreFloat4(&transform_.lock()->localQuaternion, XMQuaternionRotationRollPitchYaw(0,spin * Mathf::deg_to_rad,0));
 	}
 	if (KeyboardInput::GetIns()->GetKeyPress(DIK_E))
 	{
 		spin += 2;
-		XMStoreFloat4(&transform_->local_quaternion_, XMQuaternionRotationRollPitchYaw(0, spin * Mathf::deg_to_rad, 0));
+		XMStoreFloat4(&transform_.lock()->localQuaternion, XMQuaternionRotationRollPitchYaw(0, spin * Mathf::deg_to_rad, 0));
 	}
-	// 回転デバッグ
-	/*if (KeyboardInput::GetIns()->GetKeyPress(DIK_Q)) {
-		transform_->rotate.y -= 1.0f;
-	}
-	if (KeyboardInput::GetIns()->GetKeyPress(DIK_E)) {
-		transform_->rotate.y += 1.0f;
-
-	}*/
 
 	if (KeyboardInput::GetIns()->GetKeyPressT(DIK_SPACE)) {
 		isRifle = !isRifle;

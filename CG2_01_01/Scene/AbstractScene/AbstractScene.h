@@ -22,7 +22,7 @@ public:
 	/// <summary>
 	/// ‰Šú‰»
 	/// </summary>
-	virtual void Initialize() = 0;
+	virtual void Initialize();
 	/// <summary>
 	/// ˆê’èŠÔŠu‚ÅXV
 	/// </summary>

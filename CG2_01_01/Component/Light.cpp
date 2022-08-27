@@ -17,6 +17,8 @@ Light::Light(
 {
 	// 転送用のライトデータ
 	light_date_ = std::make_shared<LightDate>();
+	light_date_->intensity = intensity;
+
 
 	// マネージャをセット
 	light_manager.lock()->AddLight(light_date_);
@@ -93,9 +95,9 @@ void Light::ComponentUpdate()
 	// データを転送用に変換
 
 	light_date_->position = {
-		transform_->position->x,
-		transform_->position->y,
-		transform_->position->z,
+		transform_.lock()->position->x,
+		transform_.lock()->position->y,
+		transform_.lock()->position->z,
 		1.0f
 	};
 
@@ -111,7 +113,7 @@ void Light::ComponentUpdate()
 	{
 	case LightType::Directional:
 		light_date_->light_type = { 0.0f,1.0f,0.0f,0.0f };
-		Vector3 direction_v = transform_->quaternion->EulerAngles().Normalized();
+		Vector3 direction_v = transform_.lock()->quaternion->EulerAngles().Normalized();
 		light_date_->direction = {
 			direction_v.x,
 			direction_v.y,

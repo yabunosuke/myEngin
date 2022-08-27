@@ -15,6 +15,10 @@ public:
 	/// <summary>
 	/// 有効なオブジェクトをアップデート
 	/// </summary>
+	void FixedUpdate();
+	/// <summary>
+	/// 有効なオブジェクトをアップデート
+	/// </summary>
 	void Update();
 	/// <summary>
 	/// 有効なオブジェクトをアップデート

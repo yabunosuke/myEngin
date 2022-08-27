@@ -8,6 +8,13 @@ void GameObjectManager::Initialize()
 	
 }
 
+void GameObjectManager::FixedUpdate()
+{//更新
+	for (auto &e : game_objects_) {
+		e->FixedUpdate();
+	}
+}
+
 void GameObjectManager::Update()
 {
 	//更新

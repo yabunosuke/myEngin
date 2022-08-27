@@ -11,7 +11,7 @@ void Time::Create()
         time_instance_->frame_count_    = 0;                    // 経過フレーム初期化
         time_instance_->time_           = 0;                    // 経過時間初期化
 
-        time_instance_->fixed_frame_rate_ = 0.02;       // 0.02秒ごとにFixedUpdate
+        time_instance_->fixed_delta_time_ = 0.02;       // 0.02秒ごとにFixedUpdate
         time_instance_->fixed_update_time_ = 0.0;
 
         // 仮で60FPSに設定

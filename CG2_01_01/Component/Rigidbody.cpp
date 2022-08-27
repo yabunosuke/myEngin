@@ -67,21 +67,27 @@ void Rigidbody::ComponentInitialize()
 {
 }
 
-void Rigidbody::ComponentUpdate()
+void Rigidbody::ComponentFixedUpdate()
 {
 	float test_masatu_ = 0.9f;
 	velocity_ *= test_masatu_;
 
 	// èdóÕåvéZ
-	if(use_gravity_)
+	if (use_gravity_)
 	{
-		velocity_ += {0.0f,-9.8f,0.0f};
+		velocity_ += {0.0f, -9.8f, 0.0f};
 	}
 
 	// íÔçRåvéZ
 	Vector3 f = static_cast<float>(drag_ / 100) * velocity_;
 	velocity_ -= f;
-	transform_->local_position_ += velocity_;
+	transform_.lock()->localPosition =
+		transform_.lock()->localPosition
+		+ velocity_;
+}
+
+void Rigidbody::ComponentUpdate()
+{
 }
 
 void Rigidbody::AddForce(XMFLOAT3 force, ForceMode force_mode)

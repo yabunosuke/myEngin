@@ -45,32 +45,27 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	castle.lock().get()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/Castle/Castle FBX.fbx");
-	castle.lock()->GetComponent<Transform>().lock()->local_scale_ = { 20,20,20 };
-	castle.lock()->GetComponent<Transform>().lock()->local_position_ = { 0,-7,0 };
+	castle.lock()->transform_.lock()->localScale = { 20,20,20 };
+	castle.lock()->transform_.lock()->localPosition = { 0,-7,0 };
 	/*auto streat = game_object_manager_.CreateObject("streat");
 	streat.lock().get()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/streat/Street environment_V01.FBX");*/
 
 	auto test = game_object_manager_.CreateObject("plantune");
-	test.lock().get()->AddComponent<Object3dComponent>(
+	test.lock()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/UNIT/danbo_fbx/danbo_taiki.fbx");
 	test.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_SPHERE);
 
 	auto camera = game_object_manager_.CreateObject("Camera");
 	camera.lock()->AddComponent<Camera>(camera_manager_);
-	//camera.lock()->transform_->local_position_= { 0,200,-400 };
-	XMStoreFloat4(&camera.lock()->GetComponent<Transform>().lock()->local_quaternion_, XMQuaternionRotationRollPitchYaw(0, 0, 0));
+	camera.lock()->transform_.lock()->localPosition = { 0,200,-400 };
+	XMStoreFloat4(&camera.lock()->transform_.lock()->localQuaternion, XMQuaternionRotationRollPitchYaw(0, 0, 0));
 	game_object_manager_.SetPearentChild(player, camera);
 
 }
 
-void TitleScene::Initialize()
-{
-
-	game_object_manager_.Initialize();
-}
 
 void TitleScene::Finalize()
 {

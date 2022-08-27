@@ -1,4 +1,5 @@
 #pragma once
+#include "DirectXCommon.h"
 #include "Transform.h"
 #include "Component/Component.h"
 #include "ConstantBufferManager/ConstantBuffer.h"
@@ -10,9 +11,7 @@ class Camera :
     public Component
 {
 public:
-	Camera(
-		std::weak_ptr<CameraManager> camera_manager
-	);
+	Camera();
 
 	void ComponentInitialize() override;
 	void ComponentUpdate() override;
@@ -20,9 +19,46 @@ public:
 
 	void Infomation() override;
 
+	static void BufferTransfer(
+		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list,
+		UINT subresource,
+		UINT rootparameta_index
+	);
+
+	//===========================================
+	//
+	//		アクセッサ
+	//
+	//===========================================
+	Property<std::weak_ptr<Camera>> main{
+		main_camera_, AccessorType::AllAccess,
+		nullptr,
+		// ローカルの再計算処理
+		nullptr
+	};
 private:
-	// 転送用のカメラデータ
-	std::shared_ptr<CameraDeta> camera_date_;
+
+	//===========================================
+	//
+	//		静的メンバ変数
+	//
+	//===========================================
+
+	// 現在有効なカメラ
+	static std::weak_ptr<Camera> main_camera_;
+	// カメラコンテナ
+	static std::vector<std::weak_ptr<Camera>> cameras_;
+
+
+	//===========================================
+	//
+	//		静的メンバ変数
+	//
+	//===========================================
+
+	DirectX::XMFLOAT4 view_position;
+	DirectX::XMMATRIX mat_view;
+	DirectX::XMMATRIX mat_projection;
 
 	// 画面クリア方法
 	enum class ClearFlag
@@ -39,7 +75,7 @@ private:
 	{
 		Perspective,			// 透視投影変換
 		Orthographic			// 平衡投影変換
-	}projection_type_;
+	}projection_type_ = Perspective;
 
 	float fov_of_view_		{ 60.0f };			// カメラのビュー角度
 	float view_point_size_	{ 5.0f };			// Orthographic設定した場合のサイズ

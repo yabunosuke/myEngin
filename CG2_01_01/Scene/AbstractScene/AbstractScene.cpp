@@ -23,8 +23,14 @@ AbstractScene::AbstractScene(IoChangedListener *impl,std::string sceneName)
 }
 
 
+void AbstractScene::Initialize()
+{
+	game_object_manager_.Initialize();
+}
+
 void AbstractScene::FixedUpdate()
 {
+	game_object_manager_.FixedUpdate();
 }
 
 void AbstractScene::Update()

@@ -46,11 +46,12 @@ public:
 	static const Vector3 positive_infinity;		// (  inf,  inf,  inf )
 	static const Vector3 negative_infinity;		// ( -inf, -inf, -inf )
 
-	//	************
+
+	//===========================================
 	//
-	//	  静的関数
+	//		静的関数
 	//
-	//	************
+	//===========================================
 
 	/// <summary>
 	/// 2つのベクトルの内積

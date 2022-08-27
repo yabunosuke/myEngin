@@ -23,7 +23,7 @@ struct LightDate
 	DirectX::XMFLOAT4 position		{ 0,0,0,0 };	// ライトの座標
 	DirectX::XMFLOAT4 color			{ 1,1,1,1 };	// ライトの色
 
-	float intensity					{ 5.0f };			// 輝度
+	float intensity					{ 1.0f };			// 輝度
 	float range						{ 50.0f};			// 影響距離
 	float is_active					{ 1.0f };			// 有効
 	float PADING01					{ 0.0f };			// パディング

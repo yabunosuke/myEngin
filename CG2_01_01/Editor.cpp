@@ -10,6 +10,7 @@
 #include <algorithm>
 
 #include "DirectXCommon.h"
+#include "Time/Time.h"
 
 void Editor::Draw()
 {
@@ -443,6 +444,10 @@ void Editor::ProjectSettingsWindow()
 		ImVec2(400, 500),
 		ImGuiCond_::ImGuiCond_FirstUseEver
 	);
+	//ŒÅ’è’·XV‚ÌŽžŠÔ
+	float time = Time::GetInstance()->fixedDeltaTime;
+	ImGui::DragFloat("Fixed Timestep", &time,0.01f);
+	Time::GetInstance()->fixedDeltaTime = static_cast<double>(time);
 
 	ImGui::End();
 }

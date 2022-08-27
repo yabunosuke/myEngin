@@ -11,6 +11,7 @@
 
 // 基底クラス
 #include "Object/Object.h"
+#include "Component/Transform.h"
 
 //コンポーネント基底クラス
 #include "Component/Component.h"
@@ -60,8 +61,7 @@ public:	//関数
 	/// <param name="...args"></param>
 	/// <returns></returns>
 	template<class T, class... Args>
-	T *AddComponent(Args ...args);
-
+	inline std::weak_ptr<T> AddComponent(Args ...args);
 	/// <summary>
 	/// タグ名の比較
 	/// </summary>
@@ -104,16 +104,23 @@ public:	//関数
 	/// オブジェクト識別タグ (get = true, set = true)
 	/// </summary>
 	Property<std::string> tag{ tag_ ,AccessorType::AllAccess };
-
 	/// <summary>
-	/// オブジェクト識別タグ (get = true, set = false)
+	/// ローカルのアクティブ状態 (get = true, set = false)
 	/// </summary>
 	Property<bool> activeSelf{ active_self_ ,AccessorType::ReadOnly };
+	/// <summary>
+	/// ローカルのアクティブ状態 (get = true, set = false)
+	/// </summary>
+	//Property<Transform> transform{ transform_ ,AccessorType::AllAccess };
 
 
 	//初期化
 	void Initialize();
 
+	/// <summary>
+	/// 毎フレーム更新
+	/// </summary>
+	void FixedUpdate();
 	/// <summary>
 	/// 毎フレーム更新
 	/// </summary>
@@ -123,8 +130,6 @@ public:	//関数
 	/// </summary>
 	void LastUpdate();
 
-	//一定の間隔で更新
-	void FixUpdate() {};
 
 	/// <summary>
 	/// 描画
@@ -179,12 +184,13 @@ public:	//関数
 	/// 所属しているシーン (get = true, set = false)
 	/// </summary>
 	//Property<std::weak_ptr<AbstractScene>> scene{ scene_ ,AccessorType::ReadOnly };
-	
+
+	std::weak_ptr<Transform> transform_;
+
 
 	// アタッチされているトランスフォーム
 private:	// 静的メンバ変数
 	
-	Transform *transform_;
 
 	// 属しているシーン
 	//std::weak_ptr<AbstractScene> scene_;
@@ -220,17 +226,18 @@ private:	// 静的メンバ変数
 
 
 template<class T, class ...Args>
-inline T *GameObject::AddComponent(Args ...args)
+inline std::weak_ptr<T> GameObject::AddComponent(Args ...args)
 {
-	T *buff = new T(args...);
-	buff->game_object_=this;
-	component_list_.emplace_back(buff);
-	buff->CheckInitialize();
-	buff->transform_ = GetComponent<Transform>().lock().get();
+	std::shared_ptr<T> temp = std::make_shared<T>(args...);
+	temp->game_object_=this;
+	temp->CheckInitialize();
+	temp->transform_ = GetComponent<Transform>();
 
+	component_list_.emplace_back(temp);
+	
 	component_list_.sort();
 
-	return buff;
+	return temp;
 }
 
 template<class T>

@@ -19,7 +19,7 @@ void Object3dComponent::ComponentInitialize()
 void Object3dComponent::ComponentUpdate()
 {
 	XMFLOAT4X4 world;
-	DirectX::XMStoreFloat4x4(&world, game_object_->GetComponent<Transform>().lock()->GetWorldMatrix());
+	DirectX::XMStoreFloat4x4(&world, transform_.lock()->GetWorldMatrix());
 
 	// アニメーション再生
 	object_fbx->UpdateAnimation();
