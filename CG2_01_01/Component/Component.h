@@ -25,7 +25,9 @@ enum class ComponentType
 	Mesh,		// メッシュ
 };
 
-class Component : public Object
+class Component : 
+	public Object,
+	public std::enable_shared_from_this<Component>
 {
 protected: // エイリアス
 	// Microsoft::WRL::を省略

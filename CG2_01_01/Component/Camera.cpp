@@ -1,25 +1,37 @@
 #include "Camera.h"
 #include "Object/GameObject/GameObject.h"
-#include "Component/Manager/CameraManager.h"
+#include "ConstantBufferManager/ConstantBufferManager.h"
 
+std::weak_ptr<Camera> Camera::main_camera_;
+std::vector<std::weak_ptr<Camera>> Camera::cameras_;
+Property<std::weak_ptr<Camera>> Camera::main{
+		main_camera_, AccessorType::AllAccess,
+		nullptr,
+		nullptr
+};
 
 Camera::Camera():
 	Component("Camera", ComponentType::Camera)
 {
 
-	// 転送用のカメラデータ
-	camera_date_ = std::make_shared<CameraDeta>();
-	cameras_.emAddCamera(camera_date_);
+
+	//// 転送用のカメラデータ
+	//camera_date_ = std::make_shared<CameraDeta>();
+	//cameras_.emAddCamera(camera_date_);
 }
 
 void Camera::ComponentInitialize()
 {
+	if (main_camera_.expired()) {
+		main_camera_ = std::dynamic_pointer_cast<Camera>(shared_from_this());
+	}
+	cameras_.emplace_back(std::dynamic_pointer_cast<Camera>(shared_from_this()));
 }
 
 void Camera::ComponentUpdate()
 {
 	// カメラの位置をセット
-	camera_date_->view_position = {
+	view_position = {
 		transform_.lock()->position->x,
 		transform_.lock()->position->y,
 		transform_.lock()->position->z,
@@ -40,7 +52,7 @@ void Camera::ComponentUpdate()
 	{
 	case Camera::Perspective:
 		
-		camera_date_->mat_view = XMMatrixLookAtLH(
+		mat_view = XMMatrixLookAtLH(
 			XMLoadFloat3(&transform_.lock()->position),
 			target,
 			XMLoadFloat3(&Vector3::up)
@@ -63,7 +75,7 @@ void Camera::ComponentUpdate()
 	}
 
 	// プロジェクション行列計算
-	camera_date_-> mat_projection = XMMatrixPerspectiveFovLH(
+	mat_projection = XMMatrixPerspectiveFovLH(
 		fov_of_view_ * Mathf::deg_to_rad,
 		static_cast<float>(WinApp::windowWidth) / static_cast<float>(WinApp::windowHeight),
 		near_plane_,far_plane_
@@ -130,17 +142,17 @@ void Camera::Infomation()
 
 void Camera::BufferTransfer(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list, UINT subresource, UINT rootparameta_index)
 {
-	// 今のカメラ
-	
 	// 使用しているカメラデータを格納
 	CameraConstantBuffer const_camera_map;
-	const_camera_map.view_position = main_camera_.lock()->view_position;
-	// ビュープロジェクション
-	DirectX::XMMATRIX view_projection_data = main_camera_.lock()->mat_view * main_camera_.lock()->mat_projection;
-	XMStoreFloat4x4(&const_camera_map.view_projection, view_projection_data);
+	{
+		const_camera_map.view_position = main_camera_.lock()->view_position;
+		// ビュープロジェクション
+		DirectX::XMMATRIX view_projection_data = main_camera_.lock()->mat_view * main_camera_.lock()->mat_projection;
+		XMStoreFloat4x4(&const_camera_map.view_projection, view_projection_data);
+		// ビュープロジェクションの逆行列
+		DirectX::XMStoreFloat4x4(&const_camera_map.inv_view_projection, DirectX::XMMatrixInverse(nullptr, view_projection_data));
 
-	DirectX::XMStoreFloat4x4(&const_camera_map.inv_view_projection, DirectX::XMMatrixInverse(nullptr, view_projection_data));
-
+	}
 	ConstantBufferManager::GetInstance()->BufferTransfer<CameraConstantBuffer>(
 		cmd_list, subresource, rootparameta_index,
 		BufferName::Camera, &const_camera_map

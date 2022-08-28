@@ -8,7 +8,6 @@
 
 
 #include "Component/Manager/LightManager.h"
-#include "Component/Manager/CameraManager.h"
 #include <wrl.h>
 
 class AbstractScene
@@ -77,8 +76,6 @@ protected:
 	GameObjectManager game_object_manager_;
 	// コリジョンマネージャー
 	CollisionManager collision_manager_;
-	// カメラマネージャ
-	std::shared_ptr<CameraManager> camera_manager_;
 	// ライトマネージャー
 	std::shared_ptr<LightManager> light_manager_;
 	// ポストエフェクト

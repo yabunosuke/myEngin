@@ -2,8 +2,7 @@
 #include "yMath.h"
 #include "ImGui/ImGuizmo.h"
 #include "Object/GameObject/GameObject.h"
-#include "Component/Manager/CameraManager.h"
-
+#include "Camera.h"
 
 
 Transform::Transform() :
@@ -72,8 +71,9 @@ void Transform::Infomation()
 	// 直前のマトリックス
     XMMATRIX old_matrix = world_matrix_;
     ImGuizmo::Manipulate(
-        CameraManager::GetView().r->m128_f32, 
-        CameraManager::GetProjection().r->m128_f32, mCurrentGizmoOperation, mCurrentGizmoMode, world_matrix_.r->m128_f32, NULL, useSnap ? &snap.x : NULL);
+        Camera::main->lock()->viewMatrix->r->m128_f32,
+        Camera::main->lock()->projectionMatrix->r->m128_f32,
+        mCurrentGizmoOperation, mCurrentGizmoMode, world_matrix_.r->m128_f32, NULL, useSnap ? &snap.x : NULL);
     
     // 親がいる場合はローカルに変換しなおす
     if(!parent_.expired())

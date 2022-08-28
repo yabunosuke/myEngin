@@ -198,7 +198,6 @@
     <ClCompile Include="Component\ColliderComponent.cpp" />
     <ClCompile Include="Component\Component.cpp" />
     <ClCompile Include="Component\Light.cpp" />
-    <ClCompile Include="Component\Manager\CameraManager.cpp" />
     <ClCompile Include="Component\Manager\LightManager.cpp" />
     <ClCompile Include="Component\Rigidbody.cpp" />
     <ClCompile Include="Component\ScriptComponent.cpp" />
@@ -466,7 +465,6 @@
     <ClInclude Include="Component\ColliderComponent.h" />
     <ClInclude Include="Component\Component.h" />
     <ClInclude Include="Component\Light.h" />
-    <ClInclude Include="Component\Manager\CameraManager.h" />
     <ClInclude Include="Component\Manager\LightManager.h" />
     <ClInclude Include="Component\Rigidbody.h" />
     <ClInclude Include="Component\ScriptComponent.h" />

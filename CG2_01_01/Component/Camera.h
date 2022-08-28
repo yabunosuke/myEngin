@@ -11,6 +11,13 @@ class Camera :
     public Component
 {
 public:
+
+	//===========================================
+	//
+	//		コンストラクタ
+	//
+	//===========================================
+
 	Camera();
 
 	void ComponentInitialize() override;
@@ -19,6 +26,13 @@ public:
 
 	void Infomation() override;
 
+	//===========================================
+	//
+	//		静的関数
+	//
+	//===========================================
+	
+	// バッファに一番上のカメラ情報を転送 
 	static void BufferTransfer(
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list,
 		UINT subresource,
@@ -30,10 +44,20 @@ public:
 	//		アクセッサ
 	//
 	//===========================================
-	Property<std::weak_ptr<Camera>> main{
-		main_camera_, AccessorType::AllAccess,
+
+	//static DirectX::XMMATRIX GetProjection() { return  now_camera->mat_projection; }
+	//static DirectX::XMMATRIX GetView() { return  now_camera->mat_view; }
+
+	
+	static Property<std::weak_ptr<Camera>> main;
+	Property<DirectX::XMMATRIX> projectionMatrix{
+		mat_projection, AccessorType::AllAccess,
 		nullptr,
-		// ローカルの再計算処理
+		nullptr
+	};
+	Property<DirectX::XMMATRIX> viewMatrix{
+		mat_view, AccessorType::AllAccess,
+		nullptr,
 		nullptr
 	};
 private:
@@ -44,7 +68,7 @@ private:
 	//
 	//===========================================
 
-	// 現在有効なカメラ
+	// 現在有効なカメラ（カメラコンテナの中で一番上にある有効なカメラ）
 	static std::weak_ptr<Camera> main_camera_;
 	// カメラコンテナ
 	static std::vector<std::weak_ptr<Camera>> cameras_;

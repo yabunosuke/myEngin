@@ -150,9 +150,6 @@
     <ClCompile Include="Component\Camera.cpp">
       <Filter>Component\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Component\Manager\CameraManager.cpp">
-      <Filter>Component\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="3d\DrawFbx.cpp" />
     <ClCompile Include="PlayerTest.cpp">
       <Filter>Component\UserComponent</Filter>
@@ -303,9 +300,6 @@
       <Filter>Component\Light</Filter>
     </ClInclude>
     <ClInclude Include="Component\Camera.h">
-      <Filter>Component\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Component\Manager\CameraManager.h">
       <Filter>Component\Camera</Filter>
     </ClInclude>
     <ClInclude Include="3d\DrawFbx.h" />

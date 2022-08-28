@@ -31,12 +31,15 @@ bool Looper::Loop()
 	// エディタ描画
 	editor.Draw();
 
+
+	ImGui::Begin("UpdateCheck");
 	// 物理挙動アップデート
 	{
 		// 固定長更新
 		// 通常の更新に時間がかかりすぎていた場合はループさせて調整する
 		for (int i = 0; Time::GetInstance()->CheckFixedUpdate(); ++i)
 		{
+			ImGui::Text("FixedUpdate %d", i);
 			sceneStack.top()->FixedUpdate();
 
 			// 経過時間を減少させる
@@ -51,7 +54,7 @@ bool Looper::Loop()
 	}
 	// 各種初期化
 	PrimitiveRenderer::GetInstance().FrameInitialize();	// プリミティブのバッファインデックス初期化
-
+	ImGui::End();
 
 	//キーボード更新
 	KeyboardInput::GetIns()->Update();

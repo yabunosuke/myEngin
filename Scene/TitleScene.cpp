@@ -59,7 +59,7 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	test.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_SPHERE);
 
 	auto camera = game_object_manager_.CreateObject("Camera");
-	camera.lock()->AddComponent<Camera>(camera_manager_);
+	camera.lock()->AddComponent<Camera>();
 	camera.lock()->transform_.lock()->localPosition = { 0,200,-400 };
 	XMStoreFloat4(&camera.lock()->transform_.lock()->localQuaternion, XMQuaternionRotationRollPitchYaw(0, 0, 0));
 	game_object_manager_.SetPearentChild(player, camera);

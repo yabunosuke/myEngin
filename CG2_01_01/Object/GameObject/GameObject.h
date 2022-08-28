@@ -229,12 +229,11 @@ template<class T, class ...Args>
 inline std::weak_ptr<T> GameObject::AddComponent(Args ...args)
 {
 	std::shared_ptr<T> temp = std::make_shared<T>(args...);
+	component_list_.emplace_back(temp);
 	temp->game_object_=this;
 	temp->CheckInitialize();
 	temp->transform_ = GetComponent<Transform>();
 
-	component_list_.emplace_back(temp);
-	
 	component_list_.sort();
 
 	return temp;

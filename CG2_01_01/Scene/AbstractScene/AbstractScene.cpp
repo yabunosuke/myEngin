@@ -4,6 +4,8 @@
 #include "3d/DrawFbx.h"
 #include "Component/Light.h"
 
+#include "Component/Camera.h"
+
 AbstractScene::AbstractScene(IoChangedListener *impl,std::string sceneName)
 	:implSceneChanged(impl),
 	name(sceneName)
@@ -15,7 +17,7 @@ AbstractScene::AbstractScene(IoChangedListener *impl,std::string sceneName)
 	muluti_render_target_->InitializeMulutiRenderTarget(DirectXCommon::dev);
 
 	light_manager_ = std::make_shared<LightManager>();
-	camera_manager_ = std::make_shared<CameraManager>();
+	//camera_manager_ = std::make_shared<CameraManager>();
 
 
 	auto directional_light_ = game_object_manager_.CreateObject("Directional Light");
@@ -61,7 +63,8 @@ void AbstractScene::Draw() const
 
 	//カメラマネージャをセット
 	PipelineManager::GetInstance()->SetPipline(DirectXCommon::cmdList, "GBuffer");
-	camera_manager_->BufferTransfer(DirectXCommon::cmdList, 0, 0);
+	Camera::BufferTransfer(DirectXCommon::cmdList, 0, 0);
+	//camera_manager_->BufferTransfer(DirectXCommon::cmdList, 0, 0);
 	// モデルを描画
 	DrawFbx::GetIns()->AllDraw(DirectXCommon::dev,DirectXCommon::cmdList);
 

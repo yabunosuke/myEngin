@@ -1,6 +1,5 @@
 #include "Fbx.h"
 #include "PipelineManager.h"
-#include "Component/Manager/CameraManager.h"
 #include "Texture.h"
 #include "ConstantBufferManager/ConstantBufferManager.h"
 #include "3d/DrawFbx.h"
