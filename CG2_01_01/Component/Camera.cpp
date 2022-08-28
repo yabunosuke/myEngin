@@ -5,7 +5,7 @@
 std::weak_ptr<Camera> Camera::main_camera_;
 std::vector<std::weak_ptr<Camera>> Camera::cameras_;
 Property<std::weak_ptr<Camera>> Camera::main{
-		main_camera_, AccessorType::AllAccess,
+		main_camera_, AccessorType::ReadOnly,
 		nullptr,
 		nullptr
 };

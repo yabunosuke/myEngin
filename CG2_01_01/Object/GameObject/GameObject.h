@@ -111,7 +111,7 @@ public:	//関数
 	/// <summary>
 	/// ローカルのアクティブ状態 (get = true, set = false)
 	/// </summary>
-	//Property<Transform> transform{ transform_ ,AccessorType::AllAccess };
+	Property<std::weak_ptr<Transform>> transform{ transform_,AccessorType::AllAccess };
 
 
 	//初期化
@@ -185,12 +185,12 @@ public:	//関数
 	/// </summary>
 	//Property<std::weak_ptr<AbstractScene>> scene{ scene_ ,AccessorType::ReadOnly };
 
-	std::weak_ptr<Transform> transform_;
 
 
 	// アタッチされているトランスフォーム
 private:	// 静的メンバ変数
 	
+	std::weak_ptr<Transform> transform_;
 
 	// 属しているシーン
 	//std::weak_ptr<AbstractScene> scene_;
