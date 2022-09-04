@@ -1,7 +1,7 @@
 #pragma once
 #include "Component/Component.h"
 
-#include "KeyboardInput.h"
+#include "Input.h"
 #include "Transform.h"
 
 
@@ -50,12 +50,7 @@ protected:
 	/// </summary>
 	virtual void Finalize() {};
 
-
-
-	// 継承先で直に使える数値
-	KeyboardInput *keybord;		// キーボード入力
-
-
+	
 private:
 
 	/// <summary>

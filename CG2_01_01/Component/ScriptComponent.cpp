@@ -10,9 +10,6 @@ ScriptComponent::ScriptComponent(std::string script_name) :
 
 void ScriptComponent::ComponentInitialize()
 {
-	// キーボード取得
-	keybord = KeyboardInput::GetIns();
-
 
 	Initialize();
 }

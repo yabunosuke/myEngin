@@ -195,7 +195,7 @@ public:
 
 		// ボーン情報
 		std::vector<uint32_t>	node_indices;			// ボーン
-		std::vector<XMFLOAT4X4>	offset_transforms;		// ?
+		std::vector<XMFLOAT4X4>	offset_transforms;		// 
 
 
 		// 頂点バッファ

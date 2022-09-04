@@ -86,7 +86,7 @@ private:
 	bool	animation_loop_flag_ = false;		// ループフラグ
 	bool	animation_end_flag_ = false;		// アニメーション終了フラグ
 	float	animation_blend_time_ = 0.0f;		// 補完にかける秒数
-	float	animation_blend_seconds_ = 0.0f;	// 補完の原罪時間
+	float	animation_blend_seconds_ = 0.0f;	// 補完の現在時間
 
 
 	XMFLOAT4 color_ = { 1,1,1,1 };	//カラー

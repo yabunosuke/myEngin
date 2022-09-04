@@ -7,10 +7,13 @@ class Weapon
 public:
 	Weapon();
 
+	void Initialize() override;
 	void Update() override;
 	void FixedUpdate() override;
 
+	void OnCollisionEnter() override;
+
 private:
-	DirectX::XMFLOAT4X4 *bone_;
+	DirectX::XMFLOAT4X4 *hand_bone_;
 };
 

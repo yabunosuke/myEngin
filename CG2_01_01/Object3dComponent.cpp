@@ -1,7 +1,7 @@
 #include "Object3dComponent.h"
 #include "Component/Transform.h"
 #include "Object/GameObject/GameObject.h"
-#include "yMath.h"
+#include "Time/Time.h"
 
 Object3dComponent::Object3dComponent(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cmd_list, const char *file_path):
 	Component("Object3d", ComponentType::Mesh, true)
@@ -22,7 +22,7 @@ void Object3dComponent::ComponentUpdate()
 	DirectX::XMStoreFloat4x4(&world, transform_.lock()->GetWorldMatrix());
 
 	// アニメーション再生
-	object_fbx->UpdateAnimation();
+	object_fbx->UpdateAnimation(Time::GetInstance()->time);
 
 	auto test = object_fbx->FindNode("LeftHand");
 

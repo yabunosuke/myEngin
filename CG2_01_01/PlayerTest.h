@@ -42,22 +42,18 @@ private:
 	// アニメーションステート
 	enum class AnimationState {
 		NONE = -1,
-		DETH,
-		IDLE,
-		IDLE_LIFRE,
-		PULL_RIFLE,
-		PUT_RIFLE,
+		IDOLE,
+		Jump,
+		RUN_FRONT,
+		SLASH,
+		T_POSE,
 		WALK_BACK,
-		RIFLE_WALK_BACK,
-		WALK,
-		RIFLE_WALK,
-		WALK_RIGHT,
+		WALK_FRONT,
 		WALK_LEFT,
-		RIFLE_WALK_LEFT,
-		RIFLE_WALK_RIGHT,
+		WALK_RIGHT,
 		MAX
 	};
-	AnimationState state = AnimationState::IDLE;
+	AnimationState state = AnimationState::T_POSE;
 	bool isRifle{ false };
 	bool isDead{ false };
 

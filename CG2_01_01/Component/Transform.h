@@ -160,7 +160,23 @@ public:
 		world_scale_,AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
-		nullptr
+		[this](Vector3 sca)
+		{
+			// 親がいなければそのまま代入
+			if (parent_.expired())
+			{
+				local_scale_ = sca;
+				world_scale_ = sca;
+			}
+			// 親がいれば差分を考慮して代入
+			else
+			{
+				local_scale_ =
+					sca - parent_.lock()->scale;
+				world_scale_ = sca;
+
+			}
+		}
 	};
 
 	/// <summary>
@@ -201,13 +217,14 @@ public:
 			// 親がいる場合は再計算
 			else
 			{
-				int a = 0;
+
 			}
 		}
 	};
 
 	std::weak_ptr<Transform> parent_;
 
+	XMFLOAT4X4 *user_set_parent_ = nullptr;
 
 private:
 	// ローカル座標
@@ -224,6 +241,10 @@ private:
 	XMMATRIX world_matrix_ = XMMatrixIdentity();		// ワールド行列
 
 
+
+
+
+
 	// 行列更新
 	void UpdateMatrix();
 
@@ -234,6 +255,9 @@ private:
 		XMFLOAT4 &quaternion,
 		XMFLOAT3 &position
 	);
-	
+
+
+
+
 };
 

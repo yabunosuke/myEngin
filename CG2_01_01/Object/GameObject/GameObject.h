@@ -7,6 +7,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <algorithm>
 #include <map>
 
 // 基底クラス
@@ -206,6 +207,7 @@ private:	// 静的メンバ変数
 	std::vector<std::weak_ptr<GameObject>> child_game_object_;
 	// コンポーネント
 	std::list<std::shared_ptr<Component>> component_list_;
+	
 	// コライダーリスト
 	std::vector<std::weak_ptr<BaseCollider>> colliders_;
 
@@ -224,7 +226,6 @@ private:	// 静的メンバ変数
 
 };
 
-
 template<class T, class ...Args>
 inline std::weak_ptr<T> GameObject::AddComponent(Args ...args)
 {
@@ -234,7 +235,13 @@ inline std::weak_ptr<T> GameObject::AddComponent(Args ...args)
 	temp->CheckInitialize();
 	temp->transform_ = GetComponent<Transform>();
 
-	component_list_.sort();
+	component_list_.sort(
+		[](std::shared_ptr<Component> lhs,std::shared_ptr<Component> rhs)
+		{
+			return static_cast<int>(lhs->type.r_ ) < static_cast<int>(rhs->type.r_);
+		}
+	);
+
 
 	return temp;
 }

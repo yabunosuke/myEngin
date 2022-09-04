@@ -45,8 +45,6 @@ void Transform::Infomation()
             mCurrentGizmoMode = ImGuizmo::WORLD;
     }
     static bool useSnap(false);
-    if (ImGui::IsKeyPressed(83))
-        useSnap = !useSnap;
     ImGui::Checkbox("", &useSnap);
     ImGui::SameLine();
     XMFLOAT3 snap;
@@ -76,7 +74,40 @@ void Transform::Infomation()
         mCurrentGizmoOperation, mCurrentGizmoMode, world_matrix_.r->m128_f32, NULL, useSnap ? &snap.x : NULL);
     
     // 親がいる場合はローカルに変換しなおす
-    if(!parent_.expired())
+    if (user_set_parent_ != nullptr)
+    {
+        XMVECTOR scale, rotate, position;
+        XMMatrixDecompose(&scale, &rotate, &position, world_matrix_);
+
+        XMVECTOR old_scale, old_rotate, old_position;
+        XMMatrixDecompose(&old_scale, &old_rotate, &old_position, old_matrix);
+
+        // 差分を移動する
+        XMVECTOR difference_scale = old_scale - scale;
+        local_scale_ += difference_scale;
+
+        XMStoreFloat4(&local_quaternion_, XMQuaternionMultiply(XMLoadFloat4(&local_quaternion_), XMQuaternionMultiply(old_rotate, XMQuaternionInverse(rotate))));
+
+        XMVECTOR difference_position = old_position - position;
+        local_position_ += difference_position;
+
+        // 座標
+        ImGui::DragFloat3("Position", (float *)&local_position_);
+        // 回転
+        XMFLOAT3 euler = QuaternionToEuler(local_quaternion_);
+        ImGui::DragFloat3("Rotation", &euler.x);
+        XMStoreFloat4(&local_quaternion_,
+            XMQuaternionRotationRollPitchYaw(
+                euler.x * Mathf::deg_to_rad,
+                euler.y * Mathf::deg_to_rad,
+                euler.z * Mathf::deg_to_rad
+            )
+        );
+        // スケール
+        ImGui::DragFloat3("Scale", (float *)&local_scale_);
+
+    }
+    else if(!parent_.expired())
     {
 		XMVECTOR scale, rotate, position;
 		XMMatrixDecompose(&scale, &rotate, &position, world_matrix_);
@@ -174,7 +205,13 @@ void Transform::UpdateMatrix()
     local_matrix_ = S * R * T;
 
     // 親がいる場合は親の行列をかける
-    if (!parent_.expired())
+    if (user_set_parent_ != nullptr)
+    {
+        XMMATRIX user_parent_matrix_ = DirectX::XMLoadFloat4x4(user_set_parent_);
+        world_matrix_ = local_matrix_ * user_parent_matrix_;
+
+    }
+    else if (!parent_.expired())
     {
         world_matrix_ = local_matrix_ * parent_.lock()->GetWorldMatrix();
     }

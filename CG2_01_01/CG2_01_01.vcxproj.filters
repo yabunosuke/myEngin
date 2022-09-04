@@ -42,7 +42,6 @@
     <ClCompile Include="..\DirectX\Collision\MeshCollider.cpp" />
     <ClCompile Include="..\DirectX\DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="..\DirectX\Input\ControllerInput.cpp" />
-    <ClCompile Include="..\DirectX\Input\KeyboardInput.cpp" />
     <ClCompile Include="..\DirectX\Object3d\Model.cpp" />
     <ClCompile Include="..\DirectX\Object3d\ModelLoader.cpp" />
     <ClCompile Include="..\DirectX\Object3d\ModelManager.cpp" />
@@ -189,7 +188,12 @@
     <ClCompile Include="Object\Component\Renderer\MeshRenderer\MeshRenderer.cpp">
       <Filter>Object\Component\Renderer\MeshRenderer</Filter>
     </ClCompile>
-    <ClCompile Include="Weapon.cpp" />
+    <ClCompile Include="Weapon.cpp">
+      <Filter>Component\UserComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -198,7 +202,6 @@
     <ClInclude Include="..\DirectX\Collision\RaycastHit.h" />
     <ClInclude Include="..\DirectX\DirectXCommon\DirectXCommon.h" />
     <ClInclude Include="..\DirectX\Input\ControllerInput.h" />
-    <ClInclude Include="..\DirectX\Input\KeyboardInput.h" />
     <ClInclude Include="..\DirectX\Object3d\Model.h" />
     <ClInclude Include="..\DirectX\Object3d\ModelLoader.h" />
     <ClInclude Include="..\DirectX\Object3d\ModelManager.h" />
@@ -352,7 +355,12 @@
     <ClInclude Include="Object\Component\Renderer\MeshRenderer\MeshRenderer.h">
       <Filter>Object\Component\Renderer\MeshRenderer</Filter>
     </ClInclude>
-    <ClInclude Include="Weapon.h" />
+    <ClInclude Include="Weapon.h">
+      <Filter>Component\UserComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
@@ -459,6 +467,9 @@
     </Filter>
     <Filter Include="Object\Component\Renderer\MeshRenderer">
       <UniqueIdentifier>{3f95c123-9e2e-414d-8adc-f4644083d2f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{1bca81a4-85d8-4e8f-80cc-e71c7d46f06b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

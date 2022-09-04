@@ -43,7 +43,7 @@ inline DirectX::XMFLOAT4 ToXMFLOAT4(const FbxDouble4& fbxdouble4)
 // ƒ{[ƒ“‰e‹¿“x
 struct BoneInfluence {
 	uint32_t bone_index;
-	float bone_weight;
+	float bone_weight {1.0f};
 };
 using BoneInfluencesPerControlPoint = std::vector<BoneInfluence>;
 

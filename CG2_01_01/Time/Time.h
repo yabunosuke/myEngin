@@ -25,6 +25,8 @@ public:
 	}
 
 	// 最後のフレームから現在のフレームまでの経過秒数（ReadOnly）
+	Property<double> time{ delta_time_,AccessorType::ReadOnly };
+
 	Property<double> deltaTime{ fixed_update_time_,AccessorType::ReadOnly };
 	// 固定フレームレートの更新を実行するインターバル
 	Property<double> fixedDeltaTime{ fixed_delta_time_,AccessorType::AllAccess };
@@ -53,7 +55,7 @@ private:
 	LARGE_INTEGER frequency_;			// 周波数
 	LARGE_INTEGER time_count_start_;	// 計測開始時間
 	LARGE_INTEGER time_count_end_;		// 計測終了時間
-	double delta_time_;				// 1フレームでの経過時間
+	double delta_time_;					// 1フレームでの経過時間
 	double fixed_update_time_;			// 固定長更新用タイマー
 };
 

@@ -1,7 +1,8 @@
 #include "Looper.h"
 #include "DirectXCommon.h"
 #include "AudioManager.h"	//音声管理
-#include "KeyboardInput.h"
+//#include "KeyboardInput.h"
+#include "Input.h"
 #include "PrimitiveRenderer.h"
 #include "ComponentList.h"
 #include "Time/Time.h"
@@ -15,7 +16,8 @@ Looper::Looper() {
 	sceneStack.top()->Initialize();
 	ComponentList::GetIns()->Initialize();
 	editor.Initialize(sceneStack.top());
-	KeyboardInput::GetIns()->Initialize();
+	//KeyboardInput::GetIns()->Initialize();
+	Input::Initialize();
 }
 
 bool Looper::Loop()
@@ -32,21 +34,21 @@ bool Looper::Loop()
 	editor.Draw();
 
 
-	ImGui::Begin("UpdateCheck");
+	//キーボード更新
+	//KeyboardInput::GetIns()->Update();
+	Input::Update();
+
 	// 物理挙動アップデート
 	{
-		// 固定長更新
-		// 通常の更新に時間がかかりすぎていた場合はループさせて調整する
 		for (int i = 0; Time::GetInstance()->CheckFixedUpdate(); ++i)
 		{
-			ImGui::Text("FixedUpdate %d", i);
 			sceneStack.top()->FixedUpdate();
 
 			// 経過時間を減少させる
 			Time::GetInstance()->SubFixedTimer();
 
 			// 5回処理して改善しなければ強制的に離脱
-			if (i >= 3)
+			if(i >=10)
 			{
 				break;
 			}
@@ -54,10 +56,7 @@ bool Looper::Loop()
 	}
 	// 各種初期化
 	PrimitiveRenderer::GetInstance().FrameInitialize();	// プリミティブのバッファインデックス初期化
-	ImGui::End();
 
-	//キーボード更新
-	KeyboardInput::GetIns()->Update();
 
 
 
@@ -95,7 +94,7 @@ bool Looper::Loop()
 	Time::GetInstance()->InstrumentationEnd();
 
 	//ESCが押されたらゲームを終了
-	if (KeyboardInput::GetIns()->GetKeyPressT(DIK_ESCAPE)) {
+	if (Input::GetKeyPressTrigger(DIK_ESCAPE)) {
 		return false;
 	}
 	return true;

@@ -1,6 +1,7 @@
 #include "Component/Rigidbody.h"
 
 #include "Object/GameObject/GameObject.h"
+#include "Time/Time.h"
 
 Rigidbody::Rigidbody() :
 	Component("Rigidbody", ComponentType::RigitBody),
@@ -70,6 +71,7 @@ void Rigidbody::ComponentInitialize()
 void Rigidbody::ComponentFixedUpdate()
 {
 	float test_masatu_ = 0.9f;
+
 	velocity_ *= test_masatu_;
 
 	// d—ÍŒvŽZ
@@ -83,7 +85,7 @@ void Rigidbody::ComponentFixedUpdate()
 	velocity_ -= f;
 	transform_.lock()->localPosition =
 		transform_.lock()->localPosition
-		+ velocity_;
+		+ (velocity_ * Time::GetInstance()->fixedDeltaTime);
 }
 
 void Rigidbody::ComponentUpdate()

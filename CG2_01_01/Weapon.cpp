@@ -4,11 +4,19 @@
 Weapon::Weapon():
 	ScriptComponent("Weapon")
 {
+}
+
+void Weapon::Initialize()
+{
 	// ゲームオブジェクトの親のゲームオブジェクトの
 	// モデルのボーンのトランスフォームを取得
-	bone_ = &(game_object_->GetPearent().lock()
+	hand_bone_ = &(game_object_->GetPearent().lock()
 		->GetComponent<Object3dComponent>().lock()->
-		GetObjectData()->FindNode("LeftHand")->world_transform);
+		GetObjectData()->FindNode("mixamorig:RightHand")->world_transform);
+	game_object_->transform->lock()->localScale = { 25,25,25 };
+	game_object_->transform->lock()->localPosition = { -50,-40,4 };
+	game_object_->transform->lock()->localQuaternion = Quaternion::Euler(0,0.001f,0);
+	game_object_->transform->lock()->user_set_parent_ = hand_bone_;
 }
 
 void Weapon::Update()
@@ -17,7 +25,9 @@ void Weapon::Update()
 
 void Weapon::FixedUpdate()
 {
-	XMMATRIX bone_matrix = DirectX::XMLoadFloat4x4(bone_);
-	transform_.lock()->matrix =
-		bone_matrix * transform_.lock()->matrix;
+}
+
+void Weapon::OnCollisionEnter()
+{
+	int a = 0;
 }

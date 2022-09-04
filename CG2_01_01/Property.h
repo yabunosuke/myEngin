@@ -31,7 +31,7 @@ public:
     operator ReferenceT() const
     {
         // 書き込み専用ならエラーを返す
-        assert(static_cast<int>(AccessorType::WriteOnly) & static_cast<int>(access_type_));
+        //assert(static_cast<int>(AccessorType::WriteOnly) & static_cast<int>(access_type_));
         // getが設定されてれば登録されたほうを呼ぶ
         return get_ ? this->get_() : this->r_;
     }
@@ -75,9 +75,8 @@ public:
     }
 
 
-private:
     ReferenceT &r_;                                           // 値
-    AccessorType access_type_;                       // アクセスタイプ
+    AccessorType access_type_;                                // アクセスタイプ
     std::function<ReferenceT()> get_ = nullptr;               // ゲット時の処理
     std::function<void(ReferenceT value)> set_ = nullptr;     // セット時の処理
 };

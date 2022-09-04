@@ -99,6 +99,10 @@ public:
 	bool operator <(const Component &component) const{
 		return static_cast<int>(type_) < static_cast<int>(component.type_);
 	}
+	bool operator >(const Component &component) const {
+ 		return static_cast<int>(type_) > static_cast<int>(component.type_);
+	}
+
 	bool operator == (const Component &component) const {
 		return static_cast<int>(type_) == static_cast<int>(component.type_);
 	}
@@ -155,14 +159,6 @@ protected:	//関数
 
 
 
-	bool operator >(std::shared_ptr<Component> rhs)
-	{
-		return static_cast<int>(this->type_) > static_cast<int>(rhs->type_);
-	}
-	bool operator <(std::shared_ptr<Component> rhs)
-	{
-		return static_cast<int>(this->type_) < static_cast<int>(rhs->type_);
-	}
 
 	
 
@@ -179,4 +175,3 @@ private:
 public:	// アクセッサ
 	
 };
-

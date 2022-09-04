@@ -17,6 +17,7 @@
 #include "Component/Light.h"
 #include "Component/Rigidbody.h"
 #include "Component/Camera.h"
+#include "Weapon.h"
 #include "Object/Component/Renderer/MeshRenderer/MeshRenderer.h"
 #include "PlayerTest.h"
 
@@ -30,15 +31,17 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	auto player = game_object_manager_.CreateObject("human");
 	player.lock().get()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/test/human.fbx");
+		"Assets/3d/sword human/Sword man.fbx");
 	player.lock().get()->AddComponent<ColliderComponent>(this);
 	player.lock().get()->AddComponent<Rigidbody>();
 	player.lock().get()->AddComponent<PlayerTest>();
 	player.lock().get()->AddComponent<Light>(light_manager_);
-	player.lock()->transform->lock()->localScale = { 0.2f,0.2f,0.2f };
+	player.lock()->transform->lock()->localScale = { 0.4f,0.4f,0.4f };
 
-	auto test = game_object_manager_.CreateObject("Test");
-	test.lock()->AddComponent<MeshRenderer>();
+	/*auto test = game_object_manager_.CreateObject("sword human");
+	test.lock().get()->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/sword human/Sword man.fbx");*/
 
 	/*auto dorone = game_object_manager_.CreateObject("Dorone");
 	dorone.lock().get()->AddComponent<Object3dComponent>(
@@ -51,16 +54,12 @@ TitleScene::TitleScene(IoChangedListener *impl)
 		"Assets/3d/Castle/Castle FBX.fbx");
 	castle.lock()->transform->lock()->localScale = { 20,20,20 };
 	castle.lock()->transform->lock()->localPosition = { 0,-7,0 };
-	/*auto streat = game_object_manager_.CreateObject("streat");
-	streat.lock().get()->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/streat/Street environment_V01.FBX");*/
 
-	//auto test = game_object_manager_.CreateObject("plantune");
-	//test.lock()->AddComponent<Object3dComponent>(
-	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-	//	"Assets/3d/UNIT/danbo_fbx/danbo_taiki.fbx");
-	//test.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_SPHERE);
+	auto danbo = game_object_manager_.CreateObject("danbo");
+	danbo.lock()->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/UNIT/danbo_fbx/danbo_taiki.fbx");
+	danbo.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_SPHERE);
 
 	auto camera = game_object_manager_.CreateObject("Camera");
 	camera.lock()->AddComponent<Camera>();
@@ -71,7 +70,13 @@ TitleScene::TitleScene(IoChangedListener *impl)
 
 
 	// •Ší
-	auto weapon = game_object_manager_.CreateObject("GunBraid");
+	auto weapon = game_object_manager_.CreateObject("Leona's sword");
+	weapon.lock()->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/Leona's sword/Models and Textures/sword.fbx");
+	game_object_manager_.SetPearentChild(player, weapon);
+	weapon.lock()->AddComponent<Weapon>();
+	weapon.lock()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_SPHERE);
 
 }
 
