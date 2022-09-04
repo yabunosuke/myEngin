@@ -24,6 +24,12 @@ void Object3dComponent::ComponentUpdate()
 	// アニメーション再生
 	object_fbx->UpdateAnimation();
 
+	auto test = object_fbx->FindNode("LeftHand");
+
+	if (test) {
+		auto w = &test->world_transform;
+	}
+
 	// トランスフォーム
 	object_fbx->UpdateTransform(world);
 }

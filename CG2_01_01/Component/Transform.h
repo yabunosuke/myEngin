@@ -91,6 +91,49 @@ public:
 		// ローカルの再計算処理
 		nullptr
 	};
+
+	/// <summary>
+	/// ローカル空間のマトリックス (get = true, set = true)
+	/// </summary>
+	Property<XMMATRIX> local_matrix{
+		local_matrix_,AccessorType::AllAccess,
+		nullptr,
+		// ローカルの再計算処理
+		//nullptr
+		[this](XMMATRIX mat)
+		{
+			// Matrix代入
+			local_matrix_ = mat;
+
+			// 各要素再計算
+			MatrixDecompose(
+				local_matrix_,
+				local_scale_,
+				local_quaternion_,
+				local_position_
+			);
+
+			// ワールド行列再計算
+			if (parent_.expired()) {
+				world_matrix_ = local_matrix_;
+			}
+			else {
+				world_matrix_ =
+					local_matrix_ * parent_.lock()->matrix;
+			}
+
+			// ワールド各要素再計算
+			MatrixDecompose(
+				world_matrix_,
+				world_scale_,
+				world_quaternion_,
+				world_position_
+			);
+		}
+	};
+
+
+
 	/// <summary>
 	/// ワールド空間の座標 (get = true, set = true)
 	/// </summary>
@@ -112,11 +155,55 @@ public:
 	/// <summary>
 	/// ワールド空間のスケール (get = true, set = true)
 	/// </summary>
-	Property<Vector3> scale{
+	Property<Vector3> scale
+	{
 		world_scale_,AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
 		nullptr
+	};
+
+	/// <summary>
+	/// ワールド空間のマトリックス (get = true, set = true)
+	/// </summary>
+	Property<XMMATRIX> matrix
+	{
+		world_matrix_,AccessorType::AllAccess,
+		nullptr,
+		// ローカルの再計算処理
+		//nullptr
+		[this](XMMATRIX mat)
+		{
+			// 親がいなければそのまま代入
+			if (parent_.expired())
+			{
+				// Matrix代入
+				world_matrix_ = mat;
+
+				// ワールド各要素再計算
+				MatrixDecompose(
+					world_matrix_,
+					world_scale_,
+					world_quaternion_,
+					world_position_
+				);
+
+
+				// ローカルも同じ値
+				local_matrix_ = mat;
+
+				// 各要素再計算
+				local_scale_ = world_scale_;
+				local_quaternion_ = world_quaternion_;
+				local_position_ = world_position_;
+
+			}
+			// 親がいる場合は再計算
+			else
+			{
+				int a = 0;
+			}
+		}
 	};
 
 	std::weak_ptr<Transform> parent_;
@@ -127,7 +214,6 @@ private:
 	Vector3		local_position_ = { 0,0,0 };			// ローカル座標
 	Quaternion	local_quaternion_ = { 0,1,0,0, };	// ローカル回転（クオータニオン）
 	Vector3		local_scale_ = { 1,1,1 };			// ローカル拡大
-
 	XMMATRIX local_matrix_ = XMMatrixIdentity();		// ローカル行列
 
 

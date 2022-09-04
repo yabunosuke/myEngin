@@ -180,6 +180,16 @@
     <ClCompile Include="Math\Quaternion.cpp">
       <Filter>Math</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Material\Material.cpp">
+      <Filter>Object\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Object\Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Component\Renderer\MeshRenderer\MeshRenderer.cpp">
+      <Filter>Object\Component\Renderer\MeshRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -333,6 +343,16 @@
     <ClInclude Include="Object\Mesh\Mesh.h">
       <Filter>Object\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="Object\Material\Material.h">
+      <Filter>Object\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Object\Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Component\Renderer\MeshRenderer\MeshRenderer.h">
+      <Filter>Object\Component\Renderer\MeshRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
@@ -430,6 +450,15 @@
     </Filter>
     <Filter Include="Object\Mesh">
       <UniqueIdentifier>{f042ccec-23fe-472f-8936-e9c520ea0726}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Material">
+      <UniqueIdentifier>{e4cf7465-6312-45f3-898e-b2312654abed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component\Renderer">
+      <UniqueIdentifier>{2675058c-c700-42f3-9ee9-4456c2581671}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component\Renderer\MeshRenderer">
+      <UniqueIdentifier>{3f95c123-9e2e-414d-8adc-f4644083d2f5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -22,6 +22,7 @@ enum class ComponentType
 	TRANSFORM,	// トランスフォーム
 	Light,		// ライト
 	Camera,		// カメラ
+	Renderer,	// 描画処理
 	Mesh,		// メッシュ
 };
 

@@ -17,6 +17,7 @@
 #include "Component/Light.h"
 #include "Component/Rigidbody.h"
 #include "Component/Camera.h"
+#include "Object/Component/Renderer/MeshRenderer/MeshRenderer.h"
 #include "PlayerTest.h"
 
 
@@ -36,6 +37,9 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	player.lock().get()->AddComponent<Light>(light_manager_);
 	player.lock()->transform->lock()->localScale = { 0.2f,0.2f,0.2f };
 
+	auto test = game_object_manager_.CreateObject("Test");
+	test.lock()->AddComponent<MeshRenderer>();
+
 	/*auto dorone = game_object_manager_.CreateObject("Dorone");
 	dorone.lock().get()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
@@ -52,17 +56,22 @@ TitleScene::TitleScene(IoChangedListener *impl)
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/streat/Street environment_V01.FBX");*/
 
-	auto test = game_object_manager_.CreateObject("plantune");
-	test.lock()->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/UNIT/danbo_fbx/danbo_taiki.fbx");
-	test.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_SPHERE);
+	//auto test = game_object_manager_.CreateObject("plantune");
+	//test.lock()->AddComponent<Object3dComponent>(
+	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+	//	"Assets/3d/UNIT/danbo_fbx/danbo_taiki.fbx");
+	//test.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_SPHERE);
 
 	auto camera = game_object_manager_.CreateObject("Camera");
 	camera.lock()->AddComponent<Camera>();
 	camera.lock()->transform->lock()->localPosition = { 0,200,-400 };
 	XMStoreFloat4(&camera.lock()->transform->lock()->localQuaternion, XMQuaternionRotationRollPitchYaw(0, 0, 0));
 	game_object_manager_.SetPearentChild(player, camera);
+
+
+
+	// ïêäÌ
+	auto weapon = game_object_manager_.CreateObject("GunBraid");
 
 }
 
