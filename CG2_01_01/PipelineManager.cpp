@@ -849,16 +849,16 @@ void PipelineManager::CreateDeferredPpline(ComPtr<ID3D12Device> dev)
 	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
 
 	// デスクリプタレンジ
-	CD3DX12_DESCRIPTOR_RANGE descRangeSRV[6];
+	CD3DX12_DESCRIPTOR_RANGE desc_range_srv[6]{};
 	for (int i = 0; i < 6; ++i)
 	{
-		descRangeSRV[i].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, i); // tレジスタ
+		desc_range_srv[i].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, i); // tレジスタ
 	}
 
 	// ルートパラメータ
 	CD3DX12_ROOT_PARAMETER rootparams[3] = {};
 	// 画像データ
-	rootparams[0].InitAsDescriptorTable(_countof(descRangeSRV), descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[0].InitAsDescriptorTable(_countof(desc_range_srv), desc_range_srv, D3D12_SHADER_VISIBILITY_ALL);
 	// いらないバッファ、後で消す
 	rootparams[1].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	// ライト用バッファ

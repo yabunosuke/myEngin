@@ -21,9 +21,7 @@ void Editor::Draw()
 		HierarchyWindow();
 	}
 	//インスペクター
-	if (isHierarchy) {
-		DrawInspector();
-	}
+	DrawInspector();
 
 	// 設定画面
 	ProjectSettingsWindow();
@@ -211,15 +209,17 @@ void Editor::Hierarchy(std::vector<std::shared_ptr<GameObject>>& objects, bool i
 		}
 
 		// 子オブジェクト表示
-		char bufC[64];
-		sprintf_s(bufC, "Child ##child %d", object->name, object->GetInstanceID());
-
-		if (ImGui::TreeNode(bufC))
+		if(object->GetChildren().size() > 0)
 		{
-			Hierarchy(object->GetChildren(), true);
+			char bufC[64];
+			sprintf_s(bufC, "Child ##child %d", object->name, object->GetInstanceID());
+			if (ImGui::TreeNode(bufC))
+			{
+				Hierarchy(object->GetChildren(), true);
 
 
-			ImGui::TreePop();
+				ImGui::TreePop();
+			}
 		}
 
 
@@ -271,17 +271,19 @@ void Editor::Hierarchy(std::vector<std::weak_ptr<GameObject>> &objects, bool is_
 				ImGui::ResetMouseDragDelta();
 			}
 		}
-
-		// 子オブジェクト表示
-		char bufC[64];
-		sprintf_s(bufC, "Child ##child %d", object.lock()->name, object.lock()->GetInstanceID());
-
-		// 子オブジェクト表示
-		if (ImGui::TreeNode(bufC))
+		if (object.lock()->GetChildren().size() > 0)
 		{
-			Hierarchy(object.lock()->GetChildren(), true);
+			// 子オブジェクト表示
+			char bufC[64];
+			sprintf_s(bufC, "Child ##child %d", object.lock()->name, object.lock()->GetInstanceID());
 
-			ImGui::TreePop();
+			// 子オブジェクト表示
+			if (ImGui::TreeNode(bufC))
+			{
+				Hierarchy(object.lock()->GetChildren(), true);
+
+				ImGui::TreePop();
+			}
 		}
 
 
@@ -292,7 +294,7 @@ void Editor::Hierarchy(std::vector<std::weak_ptr<GameObject>> &objects, bool is_
 
 void Editor::DrawInspector()
 {
-	ImGui::Begin("Inspector");
+	ImGui::Begin("Inspector", &isHierarchy);
 
 	auto *selectObject = nowScene->GetObjectManager()->GetGameObject(selected_object_id);
 

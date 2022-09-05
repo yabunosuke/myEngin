@@ -1,7 +1,7 @@
 #include<math.h>
 #include"easing.h"
 
-static const float PI = 3.14159265359;
+static const double PI = 3.14159265359;
 
 using namespace std;
 
@@ -95,14 +95,16 @@ double Ease(type InOutType, ease EaseType, double t, double start, double end)
 
         return (end - start) * (1 - FuncPtr[EaseType](2 - 2 * t) / 2) + start;
     }
+
+    return -1.0f;
 }
 
 Vector3 Ease(type InOutType, ease EaseType, double t, Vector3 start, Vector3 end)
 {
     Vector3 result;
-    result.x = Ease(InOutType, EaseType, t, start.x, end.x);
-    result.y = Ease(InOutType, EaseType, t, start.y, end.y);
-    result.z = Ease(InOutType, EaseType, t, start.z, end.z);
+    result.x = static_cast<float>(Ease(InOutType, EaseType, t, start.x, end.x));
+    result.y = static_cast<float>(Ease(InOutType, EaseType, t, start.y, end.y));
+    result.z = static_cast<float>(Ease(InOutType, EaseType, t, start.z, end.z));
 
     return result;
 }

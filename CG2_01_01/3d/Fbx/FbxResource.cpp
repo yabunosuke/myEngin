@@ -214,7 +214,7 @@ void FbxResource::FetchMeshes(FbxScene *fbx_scene, std::vector<Mesh> &meshes)
 		// 全てのマテリアルidと名前を取得
 		for (int material_index = 0; material_index < material_count; ++material_index) {
 			const FbxSurfaceMaterial *fbx_material = fbx_mesh->GetNode()->GetMaterial(material_index);
-			subsets.at(material_index).material_index = fbx_material->GetUniqueID();
+			subsets.at(material_index).material_index = static_cast<uint32_t>(fbx_material->GetUniqueID());
 		}
 
 		// ポリゴン数の取得

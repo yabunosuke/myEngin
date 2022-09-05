@@ -1,10 +1,5 @@
 #include "DirectXCommon.h"
 
-
-
-
-
-
 HRESULT DirectXCommon::result;
 ComPtr<ID3D12Device> DirectXCommon::dev;
 ComPtr<IDXGIFactory6> DirectXCommon::dxgiFactory;
@@ -46,7 +41,7 @@ void DirectXCommon::Initialize()
     CreateDepthBuffer();      //深度バッファ
     CreateFence();            //フェンスの生成
 
-
+    //dev.Get()->SetName(L"Device");
 }
 
 bool DirectXCommon::DebugLayerON()
@@ -214,7 +209,7 @@ bool DirectXCommon::CreateRenderTargetView()
 bool DirectXCommon::CreateDepthBuffer()
 {
     //リソース設定
-    CD3DX12_RESOURCE_DESC depthResDesc =
+    CD3DX12_RESOURCE_DESC depth_resdesc =
         CD3DX12_RESOURCE_DESC::Tex2D(
             DXGI_FORMAT_D32_FLOAT,
             WinApp::windowWidth,
@@ -228,7 +223,7 @@ bool DirectXCommon::CreateDepthBuffer()
     result = DirectXCommon::dev->CreateCommittedResource(
         &CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
         D3D12_HEAP_FLAG_NONE,
-        &depthResDesc,
+        &depth_resdesc,
         D3D12_RESOURCE_STATE_DEPTH_WRITE,
         &CD3DX12_CLEAR_VALUE(DXGI_FORMAT_D32_FLOAT,1.0f,0),
         IID_PPV_ARGS(&depthBuffer)
@@ -259,10 +254,12 @@ bool DirectXCommon::CreateDepthView()
 
 bool DirectXCommon::ResourceBarrierWriting()
 {
+
     //レンダーターゲットを書き込み可能に
     bbIndex = swapchain->GetCurrentBackBufferIndex();
-	cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(backBuffers[bbIndex].Get(),
-        D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
+		cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(backBuffers[bbIndex].Get(),
+			D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
+
 
     //レンダーターゲット設定
     rtvH = CD3DX12_CPU_DESCRIPTOR_HANDLE(rtvHeaps->GetCPUDescriptorHandleForHeapStart(),
@@ -276,10 +273,9 @@ bool DirectXCommon::ResourceBarrierWriting()
 
 
     //ビューポートの設定
-    cmdList->RSSetViewports(1, &CD3DX12_VIEWPORT(0.0f, 0.0f, WinApp::windowWidth, WinApp::windowHeight));
+    cmdList->RSSetViewports(1, &CD3DX12_VIEWPORT(0.0f, 0.0f, static_cast<float>(WinApp::windowWidth), static_cast<float>(WinApp::windowHeight)));
     //シザー矩形の設定
-    cmdList->RSSetScissorRects(1, &CD3DX12_RECT(0, 0, WinApp::windowWidth, WinApp::windowHeight));
-
+    cmdList->RSSetScissorRects(1, &CD3DX12_RECT(0, 0, static_cast<LONG>(WinApp::windowWidth), static_cast<LONG>(WinApp::windowHeight)));
 
 
     return true;
@@ -292,14 +288,17 @@ bool DirectXCommon::ScreenClear()
     float color[] = { 0.0f,0.0f,1.0f,0.0f };
     cmdList->ClearRenderTargetView(rtvH, color, 0, nullptr);
     cmdList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+
     return true;
 }
 
 bool DirectXCommon::PlayCommandList()
 {
     //リソースバリア変更
-    cmdList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(backBuffers[bbIndex].Get(),
-        D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
+    cmdList->ResourceBarrier(1,
+        &CD3DX12_RESOURCE_BARRIER::Transition(backBuffers[bbIndex].Get(),
+        D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT)
+    );
     // 命令のクローズ
     cmdList->Close();
     // コマンドリストの実行
@@ -309,9 +308,11 @@ bool DirectXCommon::PlayCommandList()
     cmdQueue->Signal(fence.Get(), ++fenceVal);
     if (fence->GetCompletedValue() != fenceVal) {
         HANDLE event = CreateEvent(nullptr, false, false, nullptr);
-        fence->SetEventOnCompletion(fenceVal, event);
-        WaitForSingleObject(event, INFINITE);
-        CloseHandle(event);
+        if (event) {
+            fence->SetEventOnCompletion(fenceVal, event);
+            WaitForSingleObject(event, INFINITE);
+            CloseHandle(event);
+        }
     }
 
     cmdAllocator->Reset(); // キューをクリア
