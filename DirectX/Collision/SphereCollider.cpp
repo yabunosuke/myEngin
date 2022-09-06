@@ -1,5 +1,5 @@
 #include "SphereCollider.h"
-#include "Component/Transform.h"
+#include "Object/Component/Transform.h"
 #include "PrimitiveRenderer.h"
 
 using namespace DirectX;

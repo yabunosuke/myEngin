@@ -1,5 +1,5 @@
 #include "Object3dComponent.h"
-#include "Component/Transform.h"
+#include "Object/Component/Transform.h"
 #include "Object/GameObject/GameObject.h"
 #include "Time/Time.h"
 

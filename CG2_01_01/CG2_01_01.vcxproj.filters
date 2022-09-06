@@ -13,12 +13,8 @@
     <FxCompile Include="Assets\Shaders\UvScrollPS.hlsl" />
     <FxCompile Include="BasicPS.hlsl" />
     <FxCompile Include="BasicVS.hlsl" />
-    <FxCompile Include="LambertPS.hlsl" />
-    <FxCompile Include="LambertVS.hlsl" />
     <FxCompile Include="LinerPS.hlsl" />
     <FxCompile Include="LinerVS.hlsl" />
-    <FxCompile Include="OBJPixelShader.hlsl" />
-    <FxCompile Include="OBJVertexShader.hlsl" />
     <FxCompile Include="SkinnedMeshPS.hlsl" />
     <FxCompile Include="SkinnedMeshVS.hlsl" />
     <FxCompile Include="SpriteVS.hlsl" />
@@ -70,9 +66,6 @@
     <ClCompile Include="Scene\AbstractScene\AbstractScene.cpp">
       <Filter>Scene\AbstractScene</Filter>
     </ClCompile>
-    <ClCompile Include="Component\Component.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="Component\ScriptComponent.cpp">
       <Filter>Component</Filter>
     </ClCompile>
@@ -103,21 +96,12 @@
     <ClCompile Include="ImGui\ImGuizmo.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Component\Light.cpp">
-      <Filter>Component\Light</Filter>
-    </ClCompile>
     <ClCompile Include="MultiRenderTarget\MulutiRenderTarget.cpp" />
     <ClCompile Include="ConstantBufferManager\ConstantBufferLapper.cpp">
       <Filter>ConstantBufferManager</Filter>
     </ClCompile>
     <ClCompile Include="ConstantBufferManager\ConstantBufferManager.cpp">
       <Filter>ConstantBufferManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Component\Transform.cpp">
-      <Filter>Component\Transform</Filter>
-    </ClCompile>
-    <ClCompile Include="Component\Rigidbody.cpp">
-      <Filter>Component\Rigidbody</Filter>
     </ClCompile>
     <ClCompile Include="Component\ColliderComponent.cpp">
       <Filter>Component\Collider</Filter>
@@ -145,9 +129,6 @@
     </ClCompile>
     <ClCompile Include="Component\Manager\LightManager.cpp">
       <Filter>Component\Light</Filter>
-    </ClCompile>
-    <ClCompile Include="Component\Camera.cpp">
-      <Filter>Component\Camera</Filter>
     </ClCompile>
     <ClCompile Include="3d\DrawFbx.cpp" />
     <ClCompile Include="PlayerTest.cpp">
@@ -194,6 +175,24 @@
     <ClCompile Include="Input.cpp">
       <Filter>Input</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Component\Camera.cpp">
+      <Filter>Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Component\Transform.cpp">
+      <Filter>Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Component\Rigidbody.cpp">
+      <Filter>Component\Rigidbody</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Component\Light.cpp">
+      <Filter>Component\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Component\Component.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBase.cpp">
+      <Filter>Component\UserComponent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -230,9 +229,6 @@
     <ClInclude Include="Scene\AbstractScene\AbstractScene.h">
       <Filter>Scene\AbstractScene</Filter>
     </ClInclude>
-    <ClInclude Include="Component\Component.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="Component\ScriptComponent.h">
       <Filter>Component</Filter>
     </ClInclude>
@@ -266,21 +262,12 @@
     <ClInclude Include="ImGui\ImGuizmo.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="Component\Light.h">
-      <Filter>Component\Light</Filter>
-    </ClInclude>
     <ClInclude Include="MultiRenderTarget\MulutiRenderTarget.h" />
     <ClInclude Include="ConstantBufferManager\ConstantBufferLapper.h">
       <Filter>ConstantBufferManager</Filter>
     </ClInclude>
     <ClInclude Include="ConstantBufferManager\ConstantBufferManager.h">
       <Filter>ConstantBufferManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Component\Transform.h">
-      <Filter>Component\Transform</Filter>
-    </ClInclude>
-    <ClInclude Include="Component\Rigidbody.h">
-      <Filter>Component\Rigidbody</Filter>
     </ClInclude>
     <ClInclude Include="Component\ColliderComponent.h">
       <Filter>Component\Collider</Filter>
@@ -311,9 +298,6 @@
     </ClInclude>
     <ClInclude Include="Component\Manager\LightManager.h">
       <Filter>Component\Light</Filter>
-    </ClInclude>
-    <ClInclude Include="Component\Camera.h">
-      <Filter>Component\Camera</Filter>
     </ClInclude>
     <ClInclude Include="3d\DrawFbx.h" />
     <ClInclude Include="PlayerTest.h">
@@ -361,13 +345,29 @@
     <ClInclude Include="Input.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="Object\Component\Camera.h">
+      <Filter>Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Component\Transform.h">
+      <Filter>Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Component\Rigidbody.h">
+      <Filter>Component\Rigidbody</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Component\Light.h">
+      <Filter>Component\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Component\Component.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBase.h">
+      <Filter>Component\UserComponent</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
     <None Include="Basic.hlsli" />
-    <None Include="Lambert.hlsli" />
     <None Include="Liner.hlsli" />
-    <None Include="OBJShaderHeader.hlsli" />
     <None Include="SkinnedMesh.hlsli" />
     <None Include="Sprite.hlsli" />
     <None Include="Assets\Shaders\3d\GBuffer.hlsli">

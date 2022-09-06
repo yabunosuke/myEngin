@@ -3,7 +3,7 @@
 #include "SphereCollider.h"
 #include "CollisionManager.h"
 
-#include "Easing.h"
+#include "Math/Easing.h"
 #include "Math/Mathf.h"
 //#include "Quaternion.h"
 
@@ -14,9 +14,9 @@
 // コンポーネント
 #include "Object3dComponent.h"
 #include "Component/ColliderComponent.h"
-#include "Component/Light.h"
-#include "Component/Rigidbody.h"
-#include "Component/Camera.h"
+#include "Object/Component/Light.h"
+#include "Object/Component/Rigidbody.h"
+#include "Object/Component/Camera.h"
 #include "Weapon.h"
 #include "Object/Component/Renderer/MeshRenderer/MeshRenderer.h"
 #include "PlayerTest.h"
@@ -28,25 +28,19 @@ TitleScene::TitleScene(IoChangedListener *impl)
 {
 
 	// プレイヤー
-	auto player = game_object_manager_.CreateObject("human");
+	auto player = game_object_manager_.CreateObject("Human");
 	player.lock().get()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/sword human/Sword man.fbx");
 	player.lock().get()->AddComponent<ColliderComponent>(this);
 	player.lock().get()->AddComponent<Rigidbody>();
 	player.lock().get()->AddComponent<PlayerTest>();
-	player.lock().get()->AddComponent<Light>(light_manager_);
 	player.lock()->transform->lock()->localScale = { 0.4f,0.4f,0.4f };
 
-	/*auto test = game_object_manager_.CreateObject("sword human");
-	test.lock().get()->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/sword human/Sword man.fbx");*/
-
-	/*auto dorone = game_object_manager_.CreateObject("Dorone");
-	dorone.lock().get()->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/UNIT/Drone166/Drone166.1.fbx");*/
+	auto player_light = game_object_manager_.CreateObject("Player light");
+	player_light.lock().get()->AddComponent<Light>(light_manager_);
+	player_light.lock()->transform->lock()->localPosition = { 0.0f,50.0f,0.0f };
+	game_object_manager_.SetPearentChild(player, player_light);
 
 	auto castle = game_object_manager_.CreateObject("Castle");
 	castle.lock().get()->AddComponent<Object3dComponent>(

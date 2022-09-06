@@ -3,7 +3,7 @@
 #include "ImGui/ImGuizmo.h"
 #include "FileManager.h"
 
-#include "Component/Transform.h"
+#include "Object/Component/Transform.h"
 
 #include "ComponentList.h"
 
@@ -17,9 +17,8 @@ void Editor::Draw()
 	//プルダウンメニュー
 	MainMenu();
 	//ヒエラルキー
-	if (isHierarchy) {
-		HierarchyWindow();
-	}
+	HierarchyWindow();
+
 	//インスペクター
 	DrawInspector();
 
@@ -27,16 +26,12 @@ void Editor::Draw()
 	ProjectSettingsWindow();
 
 	// 出力
-	if(true)
+	/*if(true)
 	{
 		DrawMulutiRender();
+	}*/
 
-	}
-
-	//デモ
-	if (isDemo) {
-		ImGui::ShowDemoWindow();
-	}
+	//ImGui::ShowDemoWindow(&isDemo);
 }
 
 void Editor::MainMenu()
@@ -144,7 +139,7 @@ void Editor::WindowMenu()
 void Editor::HierarchyWindow()
 {
 	//ウィンドウ名定義
-	ImGui::Begin("Hierarchy");
+	ImGui::Begin("Hierarchy", &isHierarchy);
 
 	ImGui::SetWindowSize(
 		ImVec2(400, 500),
@@ -212,7 +207,7 @@ void Editor::Hierarchy(std::vector<std::shared_ptr<GameObject>>& objects, bool i
 		if(object->GetChildren().size() > 0)
 		{
 			char bufC[64];
-			sprintf_s(bufC, "Child ##child %d", object->name, object->GetInstanceID());
+			sprintf_s(bufC, "Child ##child %d",  object->GetInstanceID());
 			if (ImGui::TreeNode(bufC))
 			{
 				Hierarchy(object->GetChildren(), true);
@@ -275,7 +270,7 @@ void Editor::Hierarchy(std::vector<std::weak_ptr<GameObject>> &objects, bool is_
 		{
 			// 子オブジェクト表示
 			char bufC[64];
-			sprintf_s(bufC, "Child ##child %d", object.lock()->name, object.lock()->GetInstanceID());
+			sprintf_s(bufC, "Child ##child %d", object.lock()->GetInstanceID());
 
 			// 子オブジェクト表示
 			if (ImGui::TreeNode(bufC))

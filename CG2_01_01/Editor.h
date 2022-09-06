@@ -50,7 +50,7 @@ public:
 	void ProjectSettingsWindow();
 
 private:	//メニュー
-	bool isDemo = true;			//デモウィンドウ
+	bool isDemo = false;			//デモウィンドウ
 	bool isHierarchy = true;	//ヒエラルキー
 	bool isInsupector = true;	//デモウィンドウ
 	bool open_project_settings_window_ = false;

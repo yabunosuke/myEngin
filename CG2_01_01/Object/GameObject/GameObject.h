@@ -12,10 +12,11 @@
 
 // 基底クラス
 #include "Object/Object.h"
-#include "Component/Transform.h"
+#include "Object/Component/Transform.h"
+
 
 //コンポーネント基底クラス
-#include "Component/Component.h"
+#include "Object/Component/Component.h"
 #include "Component/ScriptComponent.h"
 
 

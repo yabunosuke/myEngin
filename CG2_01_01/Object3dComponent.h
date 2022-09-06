@@ -1,5 +1,5 @@
 #pragma once
-#include "Component/Component.h"
+#include "Object/Component/Component.h"
 #include "3d/Fbx/Fbx.h"
 
 class Object3dComponent :

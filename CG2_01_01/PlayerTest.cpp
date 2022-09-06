@@ -92,21 +92,23 @@ void PlayerTest::Update()
 			}
 			game_object->PlayAnimation(static_cast<int>(state));
 		}
-		if (Input::GetKeyPress(DIK_S)) {
+		else if (Input::GetKeyPress(DIK_S)) {
 			// ˆÚ“®
 			state = AnimationState::WALK_BACK;
 			game_object->PlayAnimation(static_cast<int>(state));
 		}
-		if (Input::GetKeyPress(DIK_D)) {
-			
-			// ˆÚ“®
-			state = AnimationState::WALK_RIGHT;
-			game_object->PlayAnimation(static_cast<int>(state));
-		}
-		if (Input::GetKeyPress(DIK_A)) {
-			// ˆÚ“®
-			state = AnimationState::WALK_LEFT;
-			game_object->PlayAnimation(static_cast<int>(state));
+		else{
+			if (Input::GetKeyPress(DIK_D)) {
+
+				// ˆÚ“®
+				state = AnimationState::WALK_RIGHT;
+				game_object->PlayAnimation(static_cast<int>(state));
+			}
+			if (Input::GetKeyPress(DIK_A)) {
+				// ˆÚ“®
+				state = AnimationState::WALK_LEFT;
+				game_object->PlayAnimation(static_cast<int>(state));
+			}
 		}
 	}
 

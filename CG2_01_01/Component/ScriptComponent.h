@@ -1,9 +1,9 @@
 #pragma once
-#include "Component/Component.h"
+#include "Object/Component/Component.h"
 
 #include "Input.h"
-#include "Transform.h"
 
+#include "Object/Component/Transform.h"
 
 class ScriptComponent :
 	public Component

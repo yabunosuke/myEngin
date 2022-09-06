@@ -2,9 +2,9 @@
 #include  "DirectXCommon.h"
 #include "PipelineManager.h"
 #include "3d/DrawFbx.h"
-#include "Component/Light.h"
+#include "Object/Component/Light.h"
 
-#include "Component/Camera.h"
+#include "Object/Component/Camera.h"
 
 AbstractScene::AbstractScene(IoChangedListener *impl,std::string sceneName)
 	:implSceneChanged(impl),
@@ -22,6 +22,7 @@ AbstractScene::AbstractScene(IoChangedListener *impl,std::string sceneName)
 
 	auto directional_light_ = game_object_manager_.CreateObject("Directional Light");
 	directional_light_.lock()->AddComponent<Light>(light_manager_,LightType::Directional);
+	directional_light_.lock()->transform->lock()->localQuaternion = { 1,0,0,30 };
 }
 
 

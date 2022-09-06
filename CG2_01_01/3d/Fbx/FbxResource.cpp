@@ -611,7 +611,7 @@ void FbxResource::CreateComObjects(ID3D12Device *dev)
 				}
 			}
 			else {
-				material.texture_id = Texture::MakeTexture(dev);
+				material.texture_id = Texture::MakeTexture(dev, 0xff000000);
 			}
 
 			material.shader_resource_views[i] = CD3DX12_GPU_DESCRIPTOR_HANDLE(

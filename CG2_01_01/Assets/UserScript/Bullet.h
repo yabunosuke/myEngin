@@ -1,6 +1,6 @@
 #pragma once
 #include "Component/ScriptComponent.h"
-#include "Component/Rigidbody.h"
+#include "Object/Component/Rigidbody.h"
 
 class Bullet :
     public ScriptComponent

@@ -1,10 +1,10 @@
 #pragma once
 #include "Component/ScriptComponent.h"
-#include "Component/Transform.h"
+#include "Object/Component/Transform.h"
 
 #include "3d/Fbx/Fbx.h"
-#include "Component/Light.h"
-#include "Component/Rigidbody.h"
+#include "Object/Component/Light.h"
+#include "Object/Component/Rigidbody.h"
 
 class PlayerTest :
 	public ScriptComponent

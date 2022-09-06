@@ -2,10 +2,9 @@
 #include <map>
 #include <memory>
 #include <functional>
-#include "Component/Component.h"
-
-#include "Component/Transform.h"
-#include "Component/Light.h"
+#include "Object/Component/Component.h"
+#include "Object/Component/Transform.h"
+#include "Object/Component/Light.h"
 #include "Object/GameObject/GameObject.h"
 
 
