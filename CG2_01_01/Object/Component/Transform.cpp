@@ -1,4 +1,4 @@
-#include "Component/Transform.h"
+#include "Object/Component/Transform.h"
 #include "yMath.h"
 #include "ImGui/ImGuizmo.h"
 #include "Object/GameObject/GameObject.h"
@@ -94,7 +94,7 @@ void Transform::Infomation()
         // ç¿ïW
         ImGui::DragFloat3("Position", (float *)&local_position_);
         // âÒì]
-        XMFLOAT3 euler = QuaternionToEuler(local_quaternion_);
+        XMFLOAT3 euler = local_quaternion_.EulerAngles();
         ImGui::DragFloat3("Rotation", &euler.x);
         XMStoreFloat4(&local_quaternion_,
             XMQuaternionRotationRollPitchYaw(
@@ -127,7 +127,7 @@ void Transform::Infomation()
         // ç¿ïW
         ImGui::DragFloat3("Position", (float *)&local_position_);
         // âÒì]
-        XMFLOAT3 euler = QuaternionToEuler(local_quaternion_);
+        XMFLOAT3 euler = local_quaternion_.EulerAngles();
         ImGui::DragFloat3("Rotation", &euler.x);
         XMStoreFloat4(&local_quaternion_,
             XMQuaternionRotationRollPitchYaw(
@@ -153,7 +153,7 @@ void Transform::Infomation()
         // ç¿ïW
         ImGui::DragFloat3("Position", (float *)&local_position_);
         // âÒì]
-        XMFLOAT3 euler = QuaternionToEuler(local_quaternion_);
+        XMFLOAT3 euler = local_quaternion_.EulerAngles();
         ImGui::DragFloat3("Rotation", &euler.x);
         XMStoreFloat4(&local_quaternion_,
             XMQuaternionRotationRollPitchYaw(

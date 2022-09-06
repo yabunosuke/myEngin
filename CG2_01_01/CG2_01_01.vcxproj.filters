@@ -11,12 +11,8 @@
     <FxCompile Include="Assets\Shaders\SepiaPS.hlsl" />
     <FxCompile Include="Assets\Shaders\TilingPS.hlsl" />
     <FxCompile Include="Assets\Shaders\UvScrollPS.hlsl" />
-    <FxCompile Include="BasicPS.hlsl" />
-    <FxCompile Include="BasicVS.hlsl" />
     <FxCompile Include="LinerPS.hlsl" />
     <FxCompile Include="LinerVS.hlsl" />
-    <FxCompile Include="SkinnedMeshPS.hlsl" />
-    <FxCompile Include="SkinnedMeshVS.hlsl" />
     <FxCompile Include="SpriteVS.hlsl" />
     <FxCompile Include="SpritePS.hlsl" />
     <FxCompile Include="Assets\Shaders\3d\GBufferVS.hlsl">
@@ -366,9 +362,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
-    <None Include="Basic.hlsli" />
     <None Include="Liner.hlsli" />
-    <None Include="SkinnedMesh.hlsli" />
     <None Include="Sprite.hlsli" />
     <None Include="Assets\Shaders\3d\GBuffer.hlsli">
       <Filter>Shader\3d\GBuffer</Filter>

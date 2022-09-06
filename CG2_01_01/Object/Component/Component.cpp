@@ -1,5 +1,5 @@
 #include "Component.h"
-#include "Component/Transform.h"
+#include "Object/Component/Transform.h"
 
 void Component::CheckInitialize()
 {
