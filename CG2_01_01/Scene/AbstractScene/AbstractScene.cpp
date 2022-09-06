@@ -33,6 +33,10 @@ void AbstractScene::Initialize()
 void AbstractScene::FixedUpdate()
 {
 	game_object_manager_.FixedUpdate();
+
+
+	// 当たり判定チェック
+	collision_manager_.CheckBroadCollisions(game_object_manager_.game_objects_);
 }
 
 void AbstractScene::Update()
@@ -40,8 +44,6 @@ void AbstractScene::Update()
 	// オブジェクト更新
 	game_object_manager_.Update();
 
-	// 当たり判定チェック
-	collision_manager_.CheckBroadCollisions(game_object_manager_.game_objects_);
 
 	// 最終更新
 	game_object_manager_.LastUpdate();

@@ -58,8 +58,6 @@ bool Looper::Loop()
 	PrimitiveRenderer::GetInstance().FrameInitialize();	// プリミティブのバッファインデックス初期化
 
 
-
-
 	//シーンの更新
 	sceneStack.top()->Update();
 
