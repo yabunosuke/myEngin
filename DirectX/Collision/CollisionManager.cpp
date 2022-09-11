@@ -9,22 +9,18 @@ using namespace DirectX;
 //ここでの処理を2ms以内に収める
 void CollisionManager::CheckBroadCollisions(const std::vector<std::shared_ptr<GameObject>> &game_objects)
 { 
-	// オブジェクトのイテレーター
-	std::vector<std::shared_ptr<GameObject>>::const_iterator game_object_it_a;
-	std::vector<std::shared_ptr<GameObject>>::const_iterator game_object_it_b;
 	// コライダーのイテレーター
 	std::vector<std::weak_ptr<BaseCollider>>::const_iterator collider_it_a;
 	std::vector<std::weak_ptr<BaseCollider>>::const_iterator collider_it_b;
 
 	// 全てのオブジェクトをチェック
-	for (game_object_it_a = game_objects.begin(); game_object_it_a != game_objects.end(); ++game_object_it_a) {
-		
+	for (auto object_a = game_objects.begin(); object_a != game_objects.end(); ++object_a)
+	{
 		// Bオブジェクトのイテレータを一つずらす
-		game_object_it_b = game_object_it_a;
-		++game_object_it_b;
+		auto object_b = object_a;
+		++object_b;
 
-
-		for (; game_object_it_b != game_objects.end(); ++game_object_it_b) {
+		for (; object_b != game_objects.end(); ++object_b) {
 
 			// ブロードフェーズ
 			if (false) {
@@ -32,44 +28,29 @@ void CollisionManager::CheckBroadCollisions(const std::vector<std::shared_ptr<Ga
 				continue;
 			}
 
+			DirectX::XMVECTOR interBroad;
+
 			// ナローフェーズ
-			for (collider_it_a = game_object_it_a->get()->GetColliders().begin();
-				collider_it_a != game_object_it_a->get()->GetColliders().end();
-				++collider_it_a) {
-
-				collider_it_b = collider_it_a;
-				++collider_it_b;
-
-				// Aコライダー
-				std::weak_ptr<BaseCollider> colider_a = collider_it_a->lock();
-
-				// コライダー未設定は無視する
-				if (colider_a.lock()->GetShapeType() == SHAPE_UNKNOWN) continue;
-				
-				for (collider_it_b = game_object_it_b->get()->GetColliders().begin();
-					collider_it_b != game_object_it_b->get()->GetColliders().end();
-					++collider_it_b) {
-
-					// Bコライダー
-					std::weak_ptr<BaseCollider>  colider_b = collider_it_b->lock();
-					
-					// コライダー未設定は無視する
-					if (colider_b.lock()->GetShapeType() == SHAPE_UNKNOWN) continue;
-					
-					DirectX::XMVECTOR interBroad;
-					if (CheckHitCollision(colider_a.lock().get(), colider_b.lock().get(), &interBroad)) {
-						// 衝突コールバック
-						for (const auto &script_a : game_object_it_a->get()->GetScripts()) {
-							std::static_pointer_cast<ScriptComponent>(script_a.lock())->OnCollisionEnter();
-						}
-						for (const auto &script_b : game_object_it_b->get()->GetScripts()) {
-							std::static_pointer_cast<ScriptComponent>(script_b.lock())->OnCollisionEnter();
+			for (std::weak_ptr<BaseCollider> collider_a : object_a->get()->GetColliders())
+			{
+				for (std::weak_ptr<BaseCollider> collider_b : object_b->get()->GetColliders())
+				{
+					// 衝突判定
+					if (CheckHitCollision(collider_a.lock().get(), collider_b.lock().get(), &interBroad)) 
+					{
+						// 衝突タイプ別処理
+						if (true) {
+							for (const auto &script_a : object_a->get()->GetScripts()) {
+								std::static_pointer_cast<ScriptComponent>(script_a.lock())->OnCollisionEnter();
+							}
+							for (const auto &script_b : object_b->get()->GetScripts()) {
+								std::static_pointer_cast<ScriptComponent>(script_b.lock())->OnCollisionEnter();
+							}
 						}
 					}
 				}
 
 			}
-
 
 		}
 	}

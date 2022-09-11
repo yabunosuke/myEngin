@@ -3,6 +3,7 @@
 // https://docs.unity3d.com/ja/2018.4/ScriptReference/Object.html
 
 #include <string>
+#include <vector>
 #include "Property.h"
 
 
@@ -28,6 +29,10 @@ public:
 	/// </summary>
 	Property<std::string> name{ name_ ,AccessorType::AllAccess };
 private:
+	
+	static std::vector<Object*> objects_;		// 全オブジェクトを格納するコンテナ
+
+
 	// オブジェクトIDの重複回避用
 	static int static_id_;
 

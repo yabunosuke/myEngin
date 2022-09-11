@@ -7,7 +7,6 @@
 
 
 GameObject::GameObject(const std::string &name) :
-	Object(),
 	active_self_(true),
 	isBlind(false),
 	isRemove(false)
@@ -16,8 +15,13 @@ GameObject::GameObject(const std::string &name) :
 	this->name = name;
 	tag_ = "Notag";
 	transform_ = AddComponent<Transform>();
-
 	
+}
+
+std::weak_ptr<GameObject> GameObject::CreateEmpty(std::string object_name)
+{
+
+	return std::weak_ptr<GameObject>();
 }
 
 bool GameObject::CompareTag(const std::string &tag)

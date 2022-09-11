@@ -1,5 +1,6 @@
 #include "ColliderComponent.h"
 #include "Scene/AbstractScene/AbstractScene.h"
+#include "CollisionManager.h"
 
 // コライダー
 #include "SphereCollider.h"
@@ -43,7 +44,6 @@ ColliderComponent::ColliderComponent(AbstractScene *scene, CollisionShapeType ty
 		break;
 	}
 	collision_manager_ = std::make_shared<CollisionManager>(*scene->GetCollisionManager());
-	collision_manager_->AddCollider(collider);
 }
 
 ColliderComponent::~ColliderComponent()

@@ -31,9 +31,9 @@ private:
 
 	// リジッドボディ
 	float mass_			{ 1.0f };			// 質量
-	int drag_			{ 0 };			// 力で動く場合の空気抵抗係数
-	float angular_drag_ { 1.0f };	// トルクで動く場合の空気抵抗
-	bool use_gravity_	{ false };						// 重力を使用するか
+	int drag_			{ 1 };			// 力で動く場合の空気抵抗係数
+	float angular_drag_ { 1.0f };			// トルクで動く場合の空気抵抗
+	bool use_gravity_	{ false };			// 重力を使用するか
 
 	struct FreezePosition { // ワールド座標の指定した軸でリジッドボディの移動を停止
 		bool x;

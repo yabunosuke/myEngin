@@ -1,7 +1,8 @@
 #pragma once
 #include "Object/Component/Component.h"
-
 #include "BaseCollider.h"
+
+class CollisionManager;
 
 class AbstractScene;
 

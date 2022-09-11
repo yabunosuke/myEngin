@@ -55,7 +55,7 @@ private:
 	LARGE_INTEGER frequency_;			// 周波数
 	LARGE_INTEGER time_count_start_;	// 計測開始時間
 	LARGE_INTEGER time_count_end_;		// 計測終了時間
-	double delta_time_;					// 1フレームでの経過時間
+	double delta_time_{0.0};					// 1フレームでの経過時間
 	double fixed_update_time_;			// 固定長更新用タイマー
 };
 

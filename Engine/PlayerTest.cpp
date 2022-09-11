@@ -34,27 +34,27 @@ void PlayerTest::FixedUpdate()
 		if(Input::GetKeyPress(DIK_LSHIFT))
 		{
 			
-			regidbody_.lock()->AddForce(transform_.lock()->GetFront() * 64);
+			regidbody_.lock()->AddForce(transform_.lock()->GetFront());
 		}
 		else
 		{
-			regidbody_.lock()->AddForce(transform_.lock()->GetFront() * 8);
+			regidbody_.lock()->AddForce(transform_.lock()->GetFront());
 		}
 
 	}
 	if (Input::GetKeyPress(DIK_S)) {
 		// ˆÚ“®
-		regidbody_.lock()->AddForce(-transform_.lock()->GetFront() * 8);
+		regidbody_.lock()->AddForce(-transform_.lock()->GetFront());
 	}
 	if(Input::GetKeyPress(DIK_D))
 	{
 		// ˆÚ“®
-		regidbody_.lock()->AddForce(transform_.lock()->GetRight() * 8);
+		regidbody_.lock()->AddForce(transform_.lock()->GetRight());
 	}
 	if (Input::GetKeyPress(DIK_A))
 	{
 		// ˆÚ“®
-		regidbody_.lock()->AddForce(-transform_.lock()->GetRight() * 8);
+		regidbody_.lock()->AddForce(-transform_.lock()->GetRight());
 	}
 }
 

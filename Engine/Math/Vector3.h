@@ -4,14 +4,15 @@
 using namespace DirectX;
 
 
-class Vector3 : public XMFLOAT3
+class Vector3 :
+	public XMFLOAT3
 {
 public:
-	//	**************
+	//===========================================
 	//
-	//	 コンストラクタ
+	//		コンストラクタ
 	//
-	//	**************
+	//===========================================
 
 	Vector3() = default;
 	Vector3(float x, float y, float z) {
@@ -52,6 +53,14 @@ public:
 	//		静的関数
 	//
 	//===========================================
+
+	/// <summary>
+	/// 2点間の角度を求める
+	/// </summary>
+	/// <param name="from">角度差の測定元となるベクトル</param>
+	/// <param name="to">角度差を測定するベクトル</param>
+	/// <returns>float 角度(degree)</returns>
+	static float Angle(const Vector3 &from, const Vector3 &to);
 
 	/// <summary>
 	/// 2つのベクトルの内積
@@ -105,14 +114,6 @@ public:
 	/// <returns>2点間の距離</returns>
 	inline static float Distance(const Vector3 &lhs, const Vector3 &rhs);
 
-	/// <summary>
-	/// 2点間の角度を求める
-	/// </summary>
-	/// <param name="from">角度差の測定元となるベクトル</param>
-	/// <param name="to">角度差を測定するベクトル</param>
-	/// <returns>float 角度(degree)</returns>
-	static float Angle(const Vector3 &from, const Vector3 &to);
-
 
 
 	//===========================================
@@ -141,11 +142,11 @@ public:
 
 
 
-	//	**********
+	//===========================================
 	//
 	//	  演算子
 	//
-	//	**********
+	//===========================================
 
 	// 単項演算子
 	Vector3 operator +() const { return *this; }

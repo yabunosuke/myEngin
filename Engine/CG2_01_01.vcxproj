@@ -216,6 +216,7 @@
     <ClCompile Include="Math\Easing.cpp" />
     <ClCompile Include="Math\Mathf.h" />
     <ClCompile Include="Math\Quaternion.cpp" />
+    <ClCompile Include="Math\Vector2.cpp" />
     <ClCompile Include="Math\Vector3.cpp" />
     <ClCompile Include="OBBCollider.cpp" />
     <ClCompile Include="MultiRenderTarget\MulutiRenderTarget.cpp" />
@@ -416,6 +417,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Math\Easing.h" />
     <ClInclude Include="Math\Quaternion.h" />
+    <ClInclude Include="Math\Vector2.h" />
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="MultiRenderTarget\MulutiRenderTarget.h" />
     <ClInclude Include="Object3dComponent.h" />

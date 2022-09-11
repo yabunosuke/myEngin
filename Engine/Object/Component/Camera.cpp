@@ -51,7 +51,6 @@ void Camera::ComponentUpdate()
 	switch (projection_type_)
 	{
 	case Camera::Perspective:
-		
 		mat_view = XMMatrixLookAtLH(
 			XMLoadFloat3(&transform_.lock()->position),
 			target,
@@ -61,13 +60,12 @@ void Camera::ComponentUpdate()
 		break;
 
 	case Camera::Orthographic:
-
-		/*camera_date_->mat_view = XMMatrixOrthographicLH(
+		mat_view = XMMatrixOrthographicLH(
 			10 * view_point_size_,
 			10 * view_point_size_,
 			near_plane_,
 			far_plane_
-		);*/
+		);
 
 		break;
 	default:

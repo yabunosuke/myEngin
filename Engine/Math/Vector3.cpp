@@ -1,15 +1,15 @@
 #include "Vector3.h"
 
-const Vector3 Vector3::forward{ 0,0,1 };
-const Vector3 Vector3::back{ 0,0,-1 };		// (  0,  0, -1 )
-const Vector3 Vector3::up{ 0, 1, 0 };		// (  0,  1,  0 )
-const Vector3 Vector3::down{ 0,-1,0 };		// (  0, -1,  0 )
-const Vector3 Vector3::right{ 1,0,0 };		// (  1,  0,  0 )
-const Vector3 Vector3::left{ -1,0,0 };		// ( -1,  0,  0 )
-const Vector3 Vector3::zero{ 0,0,0 };		// (  0,  0,  0 )
-const Vector3 Vector3::one{ 1,1,1 };		// (  1,  1,  1 )
+const Vector3 Vector3::forward{ 0.0f, 0.0f, 1.0f };	// (  0,  0,  1 )
+const Vector3 Vector3::back{ 0.0f, 0.0f, -1.0f };	// (  0,  0, -1 )
+const Vector3 Vector3::up{ 0.0f, 1.0f, 0.0f };		// (  0,  1,  0 )
+const Vector3 Vector3::down{ 0.0f, -1, 0.0f };		// (  0, -1,  0 )
+const Vector3 Vector3::right{ 1.0f, 0.0f, 0.0f };	// (  1,  0,  0 )
+const Vector3 Vector3::left{ -1.0f, 0.0f, 0.0f };	// ( -1,  0,  0 )
+const Vector3 Vector3::zero{ 0.0f, 0.0f, 0.0f };	// (  0,  0,  0 )
+const Vector3 Vector3::one{ 1.0f, 1.0f, 1.0f };		// (  1,  1,  1 )
 const Vector3 Vector3::positive_infinity{ Mathf::infinity, Mathf::infinity, Mathf::infinity };		// (  inf,  inf,  inf )
-const Vector3 Vector3::negative_infinity{ -std::numeric_limits<float>::infinity(),-std::numeric_limits<float>::infinity(),-std::numeric_limits<float>::infinity() };// ( -inf, -inf, -inf )
+const Vector3 Vector3::negative_infinity{ Mathf::negative_infinity,Mathf::negative_infinity,Mathf::negative_infinity };// ( -inf, -inf, -inf )
 
 
 float Vector3::Magnitude() const
@@ -32,6 +32,14 @@ Vector3 Vector3::Normalized() const
 	Vector3 normalized = XMVector3Normalize(XMLoadFloat3(this));
 
 	return normalized;
+}
+
+float Vector3::Angle(const Vector3 &from, const Vector3 &to)
+{
+	float cos_sita = Dot(from, to) / (from.Magnitude() * to.Magnitude());
+	float angle = acos(cos_sita);
+
+	return angle;
 }
 
 float Vector3::Dot(const Vector3& lhs, const Vector3& rhs)
@@ -104,12 +112,4 @@ float Vector3::Distance(const Vector3 &lhs, const Vector3 &rhs)
 	float distance = (lhs - rhs).Magnitude();
 
 	return distance;
-}
-
-float Vector3::Angle(const Vector3 &from, const Vector3 &to)
-{
-	float cos_sita = Dot(from, to) / (from.Magnitude() * to.Magnitude());
-	float angle = acos(cos_sita);
-
-	return angle;
 }

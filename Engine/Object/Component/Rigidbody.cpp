@@ -70,26 +70,30 @@ void Rigidbody::ComponentInitialize()
 
 void Rigidbody::ComponentFixedUpdate()
 {
-	float test_masatu_ = 0.9f;
+	float test_masatu_ = 1.0f;
 
 	velocity_ *= test_masatu_;
 
 	// 重力計算
 	if (use_gravity_)
 	{
-		velocity_ += {0.0f, -9.8f, 0.0f};
+		velocity_ += Vector3::down * 9.8f * Time::GetInstance()->fixedDeltaTime;
 	}
 
 	// 抵抗計算
-	Vector3 f = static_cast<float>(drag_ / 100) * velocity_;
-	velocity_ -= f;
+	velocity_ -= static_cast<float>(drag_ / 100.0f) * velocity_;
 	transform_.lock()->localPosition =
 		transform_.lock()->localPosition
-		+ (velocity_ * Time::GetInstance()->fixedDeltaTime);
+		+ velocity_ * Time::GetInstance()->fixedDeltaTime;
 }
 
 void Rigidbody::ComponentUpdate()
 {
+	// 見た目上の移動を保管する場合はコメントアウトを外す
+	/*auto a =  static_cast<float>(Time::GetInstance()->time / Time::GetInstance()->fixedDeltaTime);
+	transform_.lock()->localPosition =
+		transform_.lock()->localPosition
+		+ velocity_ * a;*/
 }
 
 void Rigidbody::AddForce(XMFLOAT3 force, ForceMode force_mode)
