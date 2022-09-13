@@ -22,6 +22,9 @@
 #include "PlayerTest.h"
 
 
+// テスト
+#include "testObject.h"
+#include "newObject/GameObject/testGameObject.h"
 
 TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
@@ -72,6 +75,9 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	weapon.lock()->AddComponent<Weapon>();
 	weapon.lock()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_SPHERE);
 
+
+	// テスト
+	auto test = testObject::CreateObject<testGameObject>();
 }
 
 

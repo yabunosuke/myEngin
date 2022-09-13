@@ -4,7 +4,6 @@
 //#include "KeyboardInput.h"
 #include "Input.h"
 #include "PrimitiveRenderer.h"
-#include "ComponentList.h"
 #include "Time/Time.h"
 
 //シーン
@@ -14,7 +13,6 @@ Looper::Looper() {
 	//最初のシーン
 	sceneStack.push(make_shared<TitleScene>(this));
 	sceneStack.top()->Initialize();
-	ComponentList::GetIns()->Initialize();
 	editor.Initialize(sceneStack.top());
 	//KeyboardInput::GetIns()->Initialize();
 	Input::Initialize();

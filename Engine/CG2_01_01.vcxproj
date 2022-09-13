@@ -190,7 +190,6 @@
     <ClCompile Include="3d\Fbx\Fbx.cpp" />
     <ClCompile Include="3d\Fbx\FbxResource.cpp" />
     <ClCompile Include="Assets\UserScript\Bullet.cpp" />
-    <ClCompile Include="ComponentList.cpp" />
     <ClCompile Include="Component\Behaviour\Behaviour.cpp" />
     <ClCompile Include="Component\Behaviour\MonoBehaviour\MonoBehaviour.cpp" />
     <ClCompile Include="Component\ColliderComponent.cpp" />
@@ -218,6 +217,7 @@
     <ClCompile Include="Math\Quaternion.cpp" />
     <ClCompile Include="Math\Vector2.cpp" />
     <ClCompile Include="Math\Vector3.cpp" />
+    <ClCompile Include="newObject\GameObject\testGameObject.cpp" />
     <ClCompile Include="OBBCollider.cpp" />
     <ClCompile Include="MultiRenderTarget\MulutiRenderTarget.cpp" />
     <ClCompile Include="Object3dComponent.cpp" />
@@ -236,6 +236,7 @@
     <ClCompile Include="PrimitiveRenderer.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene\AbstractScene\AbstractScene.cpp" />
+    <ClCompile Include="testObject.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Text\Text.cpp" />
     <ClCompile Include="Time\Time.cpp" />
@@ -391,7 +392,6 @@
     <ClInclude Include="3d\Fbx\FbxResource.h" />
     <ClInclude Include="Assets\UserScript\Bullet.h" />
     <ClInclude Include="Collider\OBBCollider.h" />
-    <ClInclude Include="ComponentList.h" />
     <ClInclude Include="Component\Behaviour\Behaviour.h" />
     <ClInclude Include="Component\Behaviour\MonoBehaviour\MonoBehaviour.h" />
     <ClInclude Include="Component\ColliderComponent.h" />
@@ -420,6 +420,7 @@
     <ClInclude Include="Math\Vector2.h" />
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="MultiRenderTarget\MulutiRenderTarget.h" />
+    <ClInclude Include="newObject\GameObject\testGameObject.h" />
     <ClInclude Include="Object3dComponent.h" />
     <ClInclude Include="Object\Component\Camera.h" />
     <ClInclude Include="Object\Component\Component.h" />
@@ -437,6 +438,7 @@
     <ClInclude Include="Property.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene\AbstractScene\AbstractScene.h" />
+    <ClInclude Include="testObject.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Text\Text.h" />
     <ClInclude Include="Time\Time.h" />

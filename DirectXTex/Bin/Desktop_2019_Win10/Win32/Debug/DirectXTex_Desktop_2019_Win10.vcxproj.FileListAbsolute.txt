@@ -1,1 +1,2 @@
 C:\Users\yabun\Desktop\programming\DirectXTex\Bin\Desktop_2019_Win10\Win32\Debug\DirectXTex.lib
+C:\K020G1199\myEngin\DirectXTex\Bin\Desktop_2019_Win10\Win32\Debug\DirectXTex.lib

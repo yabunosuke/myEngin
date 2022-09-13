@@ -5,7 +5,6 @@
 
 #include "Object/Component/Transform.h"
 
-#include "ComponentList.h"
 
 #include <algorithm>
 
@@ -312,105 +311,103 @@ void Editor::DrawInspector()
 		ImGui::OpenPopup("ComponentList");
 	}
 
-	// コンポーネントグループ
-	auto &component_groups = ComponentList::GetIns()->GetComponentGroup();
-	// コンポーネントリスト
-	auto &component_list = ComponentList::GetIns()->GetComponentList();
+	//// コンポーネントグループ
+	//auto &component_groups = ComponentList::GetIns()->GetComponentGroup();
+	//// コンポーネントリスト
+	//auto &component_list = ComponentList::GetIns()->GetComponentList();
 
 	if (ImGui::BeginPopup("ComponentList")) {
-		// コンポーネントの検索
-		static char searchComponent[64] = "";
-		ImGui::InputText("##searchBox", searchComponent, 64);
-		
-		// 検索ボックスに何も入っていなかったら全て表示
-		if (searchComponent[0] == '\0') {
-			ImGui::Text("Component");
+		//// コンポーネントの検索
+		//static char searchComponent[64] = "";
+		//ImGui::InputText("##searchBox", searchComponent, 64);
+		//
+		//// 検索ボックスに何も入っていなかったら全て表示
+		//if (searchComponent[0] == '\0') {
+		//	ImGui::Text("Component");
 
-			//グループ単位で表示
-			for (auto &component_group : component_groups) {
-				// グループ名表示
-				std::string group_name = "";
-				switch (component_group.first)
-				{
-				case ComponentList::Group::Physics:
-					group_name = "Physics";
-					break;
-				case ComponentList::Group::Physics2D:
-					group_name = "Physics2D";
-					break;
-				default:
-					group_name = "error";
-					break;
-				}
-				
+		//	//グループ単位で表示
+		//	for (auto &component_group : component_groups) {
+		//		// グループ名表示
+		//		std::string group_name = "";
+		//		switch (component_group.first)
+		//		{
+		//		case ComponentList::Group::Physics:
+		//			group_name = "Physics";
+		//			break;
+		//		case ComponentList::Group::Physics2D:
+		//			group_name = "Physics2D";
+		//			break;
+		//		default:
+		//			group_name = "error";
+		//			break;
+		//		}
+		//		
 
-				// グループごとに表示
-				if (ImGui::TreeNode(group_name.c_str())) {
-					// 属しているコンポーネントを表示
-					for (auto &component : component_group.second) {
-						if (ImGui::Button(component.c_str())) {
-							// コンポーネント追加
-							///selectObject->AddComponent<LightComponent>();
-						}
-					}
-					ImGui::TreePop();
-				}
+		//		// グループごとに表示
+		//		if (ImGui::TreeNode(group_name.c_str())) {
+		//			// 属しているコンポーネントを表示
+		//			for (auto &component : component_group.second) {
+		//				if (ImGui::Button(component.c_str())) {
+		//					// コンポーネント追加
+		//					///selectObject->AddComponent<LightComponent>();
+		//				}
+		//			}
+		//			ImGui::TreePop();
+		//		}
 
-				//switch (component.first)
-				//{
-				//case ComponentList::Group::Rendering:
-				//	if(ImGui::TreeNode("Rendering")){
+		//		//switch (component.first)
+		//		//{
+		//		//case ComponentList::Group::Rendering:
+		//		//	if(ImGui::TreeNode("Rendering")){
 
-				//		//中身を表示
-				//		for (auto &component : component.second) {
-				//			if (ImGui::Button(component.c_str())) {
-				//				ComponentList::GetIns()->GetComponentList()[component];
-				//			}
-				//		}
+		//		//		//中身を表示
+		//		//		for (auto &component : component.second) {
+		//		//			if (ImGui::Button(component.c_str())) {
+		//		//				ComponentList::GetIns()->GetComponentList()[component];
+		//		//			}
+		//		//		}
 
-				//		ImGui::TreePop();
-				//	}
-				//	break;
-				//default:
-				//	ImGui::TreeNode("Dummy");
-				//	ImGui::TreePop();
+		//		//		ImGui::TreePop();
+		//		//	}
+		//		//	break;
+		//		//default:
+		//		//	ImGui::TreeNode("Dummy");
+		//		//	ImGui::TreePop();
 
-				//	break;
-				//}
-				//ImGui::Button(component.first)
-				
-			}
+		//		//	break;
+		//		//}
+		//		//ImGui::Button(component.first)
+		//		
+		//	}
 
-			//すべて表示
-			for (auto &list : ComponentList::GetIns()->GetComponentList()) {
-				if (ImGui::Button(list.first.c_str())) {
-					list.second(selectObject);					
-				}
-			}
-		}
-		// 検索
-		else {
-			// 小文字のstringに変換
-			std::string searchComponentStrnig = searchComponent;
-			std::transform(searchComponentStrnig.begin(), searchComponentStrnig.end(), searchComponentStrnig.begin(), std::tolower);
-			ImGui::Text("Search");
+		//	//すべて表示
+		//	for (auto &list : ComponentList::GetIns()->GetComponentList()) {
+		//		if (ImGui::Button(list.first.c_str())) {
+		//			list.second(selectObject);					
+		//		}
+		//	}
+		//}
+		//// 検索
+		//else {
+		//	// 小文字のstringに変換
+		//	std::string searchComponentStrnig = searchComponent;
+		//	std::transform(searchComponentStrnig.begin(), searchComponentStrnig.end(), searchComponentStrnig.begin(), std::tolower);
+		//	ImGui::Text("Search");
 
-			for (auto &list : ComponentList::GetIns()->GetComponentList()) {
-				// リストのコンポーネント名を小文字に変換
-				std::string componentName = list.first;
-				std::transform(componentName.begin(), componentName.end(), componentName.begin(), std::tolower);
-				//一部合致するものがあれば表示
-				if (componentName.find(searchComponentStrnig) != std::string::npos) {
-					//追加
-					if (ImGui::Button(list.first.c_str())) {
-						list.second(selectObject);
-					}
-				}
-			}
-		}
-		
-
-
+		//	for (auto &list : ComponentList::GetIns()->GetComponentList()) {
+		//		// リストのコンポーネント名を小文字に変換
+		//		std::string componentName = list.first;
+		//		std::transform(componentName.begin(), componentName.end(), componentName.begin(), std::tolower);
+		//		//一部合致するものがあれば表示
+		//		if (componentName.find(searchComponentStrnig) != std::string::npos) {
+		//			//追加
+		//			if (ImGui::Button(list.first.c_str())) {
+		//				list.second(selectObject);
+		//			}
+		//		}
+		//	}
+		//}
+		//
 		ImGui::EndPopup();
 	}
 	

@@ -44,7 +44,6 @@
     <ClCompile Include="..\System\SystemMain\SystemMain.cpp" />
     <ClCompile Include="2d\PostEffect.cpp" />
     <ClCompile Include="2d\Sprite.cpp" />
-    <ClCompile Include="ComponentList.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
@@ -134,11 +133,11 @@
       <Filter>Component\UserComponent</Filter>
     </ClCompile>
     <ClCompile Include="Object\Object.cpp">
-      <Filter>Object</Filter>
+      <Filter>oldObject</Filter>
     </ClCompile>
     <ClCompile Include="Text\Text.cpp" />
     <ClCompile Include="Object\GameObject\GameObject.cpp">
-      <Filter>Object\GameObject</Filter>
+      <Filter>oldObject\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Math\Easing.cpp">
       <Filter>Math</Filter>
@@ -151,19 +150,19 @@
     </ClCompile>
     <ClCompile Include="Component\Behaviour\MonoBehaviour\MonoBehaviour.cpp" />
     <ClCompile Include="Object\Mesh\Mesh.cpp">
-      <Filter>Object\Mesh</Filter>
+      <Filter>oldObject\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Math\Quaternion.cpp">
       <Filter>Math</Filter>
     </ClCompile>
     <ClCompile Include="Object\Material\Material.cpp">
-      <Filter>Object\Material</Filter>
+      <Filter>oldObject\Material</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
-      <Filter>Object\Component\Renderer</Filter>
+      <Filter>oldObject\Component\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Object\Component\Renderer\MeshRenderer\MeshRenderer.cpp">
-      <Filter>Object\Component\Renderer\MeshRenderer</Filter>
+      <Filter>oldObject\Component\Renderer\MeshRenderer</Filter>
     </ClCompile>
     <ClCompile Include="Weapon.cpp">
       <Filter>Component\UserComponent</Filter>
@@ -192,6 +191,12 @@
     <ClCompile Include="Math\Vector2.cpp">
       <Filter>Math</Filter>
     </ClCompile>
+    <ClCompile Include="testObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="newObject\GameObject\testGameObject.cpp">
+      <Filter>Object\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -211,7 +216,6 @@
     <ClInclude Include="..\System\SystemMain\SystemMain.h" />
     <ClInclude Include="2d\PostEffect.h" />
     <ClInclude Include="2d\Sprite.h" />
-    <ClInclude Include="ComponentList.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="GameObjectManager.h" />
@@ -309,11 +313,11 @@
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Object\Object.h">
-      <Filter>Object</Filter>
+      <Filter>oldObject</Filter>
     </ClInclude>
     <ClInclude Include="Text\Text.h" />
     <ClInclude Include="Object\GameObject\GameObject.h">
-      <Filter>Object\GameObject</Filter>
+      <Filter>oldObject\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Math\Easing.h">
       <Filter>Math</Filter>
@@ -327,16 +331,16 @@
     </ClInclude>
     <ClInclude Include="Component\Behaviour\MonoBehaviour\MonoBehaviour.h" />
     <ClInclude Include="Object\Mesh\Mesh.h">
-      <Filter>Object\Mesh</Filter>
+      <Filter>oldObject\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Object\Material\Material.h">
-      <Filter>Object\Material</Filter>
+      <Filter>oldObject\Material</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
-      <Filter>Object\Component\Renderer</Filter>
+      <Filter>oldObject\Component\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Object\Component\Renderer\MeshRenderer\MeshRenderer.h">
-      <Filter>Object\Component\Renderer\MeshRenderer</Filter>
+      <Filter>oldObject\Component\Renderer\MeshRenderer</Filter>
     </ClInclude>
     <ClInclude Include="Weapon.h">
       <Filter>Component\UserComponent</Filter>
@@ -364,6 +368,12 @@
     </ClInclude>
     <ClInclude Include="Math\Vector2.h">
       <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="testObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="newObject\GameObject\testGameObject.h">
+      <Filter>Object\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -432,18 +442,6 @@
     <Filter Include="Component\UserComponent">
       <UniqueIdentifier>{8d2edc7d-c0bb-44e0-b8cd-da5ccde7b80d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object">
-      <UniqueIdentifier>{58b65b59-e841-4d86-9aa3-b6c1a7a398f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\GameObject">
-      <UniqueIdentifier>{c0253acf-c08c-439e-86a2-09ef48cf0086}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Component">
-      <UniqueIdentifier>{ee098992-f0f2-4839-bc3e-5883ff1534cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Text">
-      <UniqueIdentifier>{ab32ecff-7df1-40a5-9fe9-5ab33c06f2dd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Time">
       <UniqueIdentifier>{086a8f6d-1484-4859-8da9-6fab5f0e4ef3}</UniqueIdentifier>
     </Filter>
@@ -456,20 +454,35 @@
     <Filter Include="Component\Behaviour\MonoBehaviour\NewFilter1">
       <UniqueIdentifier>{c9acd4ef-11e1-41c6-a660-db8edd77a090}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Mesh">
-      <UniqueIdentifier>{f042ccec-23fe-472f-8936-e9c520ea0726}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Material">
-      <UniqueIdentifier>{e4cf7465-6312-45f3-898e-b2312654abed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Component\Renderer">
-      <UniqueIdentifier>{2675058c-c700-42f3-9ee9-4456c2581671}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Component\Renderer\MeshRenderer">
-      <UniqueIdentifier>{3f95c123-9e2e-414d-8adc-f4644083d2f5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Input">
       <UniqueIdentifier>{1bca81a4-85d8-4e8f-80cc-e71c7d46f06b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{74bcff15-1535-4bcf-8212-32054a42e928}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="oldObject">
+      <UniqueIdentifier>{58b65b59-e841-4d86-9aa3-b6c1a7a398f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="oldObject\GameObject">
+      <UniqueIdentifier>{c0253acf-c08c-439e-86a2-09ef48cf0086}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="oldObject\Component">
+      <UniqueIdentifier>{ee098992-f0f2-4839-bc3e-5883ff1534cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="oldObject\Component\Renderer">
+      <UniqueIdentifier>{2675058c-c700-42f3-9ee9-4456c2581671}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="oldObject\Component\Renderer\MeshRenderer">
+      <UniqueIdentifier>{3f95c123-9e2e-414d-8adc-f4644083d2f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="oldObject\Mesh">
+      <UniqueIdentifier>{f042ccec-23fe-472f-8936-e9c520ea0726}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="oldObject\Material">
+      <UniqueIdentifier>{e4cf7465-6312-45f3-898e-b2312654abed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\GameObject">
+      <UniqueIdentifier>{a20d7e83-db5d-4826-90a2-8393ab4f461b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
