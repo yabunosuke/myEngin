@@ -16,16 +16,16 @@ Camera::Camera():
 
 
 	//// 転送用のカメラデータ
-	//camera_date_ = std::make_shared<CameraDeta>();
-	//cameras_.emAddCamera(camera_date_);
+	//camera_date_ = std::static_pointer_cast<Camera>(Object::shared_from_this());
+	//cameras_.AddCamera(camera_date_);
 }
 
 void Camera::ComponentInitialize()
 {
 	if (main_camera_.expired()) {
-		main_camera_ = std::dynamic_pointer_cast<Camera>(shared_from_this());
+		main_camera_ = std::static_pointer_cast<Camera>(Object::shared_from_this());
 	}
-	cameras_.emplace_back(std::dynamic_pointer_cast<Camera>(shared_from_this()));
+	cameras_.emplace_back(std::static_pointer_cast<Camera>(Object::shared_from_this()));
 }
 
 void Camera::ComponentUpdate()

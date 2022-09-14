@@ -27,8 +27,7 @@ enum class ComponentType
 };
 
 class Component : 
-	public Object,
-	public std::enable_shared_from_this<Component>
+	public Object
 {
 protected: // エイリアス
 	// Microsoft::WRL::を省略
@@ -41,7 +40,6 @@ protected: // エイリアス
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
-	virtual ~Component() = default;
 	/// <summary>
 	/// アクティブなときだけ初期化
 	/// </summary>
@@ -117,7 +115,7 @@ public:
 
 
 	// ゲームオブジェクト
-	GameObject *game_object_ = nullptr;
+	std::weak_ptr<GameObject>game_object_;
 	// 重複チェック用のタグ
 	std::string tag_ = "";
 	// ゲームオブジェクトが持つTransform

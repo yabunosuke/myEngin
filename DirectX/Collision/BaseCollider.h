@@ -36,9 +36,9 @@ public:
 	virtual ~BaseCollider() = default;		//仮想デストラクタ
 
 	//オブジェクトをセット
-	inline void SetObject(GameObject *object) { this->object = object; }
+	inline void SetObject(std::weak_ptr<GameObject> object) { this->object = object; }
 	//セットされているオブジェクトをリターン
-	inline GameObject *GetObject3d() { return object; }
+	inline std::weak_ptr<GameObject> GetObject3d() { return object; }
 
 	//更新
 	virtual void Update() = 0;
@@ -74,7 +74,7 @@ public:
 	}
 
 protected:
-	GameObject *object = nullptr;
+	std::weak_ptr<GameObject> object;
 	//形状タイプ
 	CollisionShapeType shapeType = SHAPE_UNKNOWN;
 	//当たり判定タグ

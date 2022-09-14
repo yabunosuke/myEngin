@@ -7,7 +7,7 @@
 using namespace DirectX;
 
 //ここでの処理を2ms以内に収める
-void CollisionManager::CheckBroadCollisions(const std::vector<std::shared_ptr<GameObject>> &game_objects)
+void CollisionManager::CheckBroadCollisions(const std::vector<std::weak_ptr<GameObject>> &game_objects)
 { 
 	// コライダーのイテレーター
 	std::vector<std::weak_ptr<BaseCollider>>::const_iterator collider_it_a;
@@ -31,19 +31,19 @@ void CollisionManager::CheckBroadCollisions(const std::vector<std::shared_ptr<Ga
 			DirectX::XMVECTOR interBroad;
 
 			// ナローフェーズ
-			for (std::weak_ptr<BaseCollider> collider_a : object_a->get()->GetColliders())
+			for (std::weak_ptr<BaseCollider> collider_a : object_a->lock().get()->GetColliders())
 			{
-				for (std::weak_ptr<BaseCollider> collider_b : object_b->get()->GetColliders())
+				for (std::weak_ptr<BaseCollider> collider_b : object_b->lock().get()->GetColliders())
 				{
 					// 衝突判定
 					if (CheckHitCollision(collider_a.lock().get(), collider_b.lock().get(), &interBroad)) 
 					{
 						// 衝突タイプ別処理
 						if (true) {
-							for (const auto &script_a : object_a->get()->GetScripts()) {
+							for (const auto &script_a : object_a->lock().get()->GetScripts()) {
 								std::static_pointer_cast<ScriptComponent>(script_a.lock())->OnCollisionEnter();
 							}
-							for (const auto &script_b : object_b->get()->GetScripts()) {
+							for (const auto &script_b : object_b->lock().get()->GetScripts()) {
 								std::static_pointer_cast<ScriptComponent>(script_b.lock())->OnCollisionEnter();
 							}
 						}

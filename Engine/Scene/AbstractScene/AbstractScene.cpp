@@ -122,3 +122,7 @@ void AbstractScene::DrawPostEffect(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandL
 	post_effect_->DrawPostEffect(cmd_list);
 }
 
+void AbstractScene::Finalize()
+{
+
+}

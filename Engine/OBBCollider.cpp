@@ -4,8 +4,8 @@
 void OBBCollider::Update()
 {
 	XMMATRIX matWorld = XMMatrixIdentity();
-	if (!object->GetComponent<Transform>().expired()) {
-		matWorld = object->GetComponent<Transform>().lock()->GetWorldMatrix();
+	if (!object.lock()->GetComponent<Transform>().expired()) {
+		matWorld = object.lock()->GetComponent<Transform>().lock()->GetWorldMatrix();
 	}
 
 	center = matWorld.r[3] + XMLoadFloat3(&offset_);

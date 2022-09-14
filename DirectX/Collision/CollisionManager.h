@@ -19,7 +19,7 @@ class CollisionManager
 public:// メンバ関数
 
 	//全てのブロードフェイズ衝突チェック
-	void CheckBroadCollisions(const std::vector<std::shared_ptr<GameObject>> &game_objects);
+	void CheckBroadCollisions(const std::vector<std::weak_ptr<GameObject>> &game_objects);
 
 	//二つの衝突チェック
 	bool CheckHitCollision(BaseCollider *colA, BaseCollider *colB, DirectX::XMVECTOR *inter = nullptr);

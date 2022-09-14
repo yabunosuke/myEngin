@@ -17,10 +17,10 @@ void PlayerTest::Initialize()
 	// トランスフォーム
 
 	// リジッド
-	regidbody_ = game_object_->GetComponent<Rigidbody>();
+	regidbody_ = game_object_.lock()->GetComponent<Rigidbody>();
 
 	// オブジェクトデータ
-	game_object = game_object_->GetComponent<Object3dComponent>().lock()->GetObjectData();
+	game_object = game_object_.lock()->GetComponent<Object3dComponent>().lock()->GetObjectData();
 
 
 }

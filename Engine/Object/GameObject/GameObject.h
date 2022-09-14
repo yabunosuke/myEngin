@@ -60,7 +60,6 @@ public:	//関数
 	//		静的メンバ変数
 	//
 	//===========================================
-	static std::weak_ptr<GameObject> CreateEmpty(std::string object_name = "");
 
 	//===========================================
 	//
@@ -182,7 +181,7 @@ public:	//関数
 	/// コンポーネントリストの取得
 	/// </summary>
 	/// <returns></returns>
-	std::list<std::shared_ptr<Component>> GetComponentList() { return component_list_; }
+	std::list<std::weak_ptr<Component>> GetComponentList() { return component_list_; }
 
 
 	// コライダー
@@ -236,7 +235,7 @@ private:
 	// 子オブジェクトのコンテナ
 	std::vector<std::weak_ptr<GameObject>> child_game_object_;
 	// コンポーネント
-	std::list<std::shared_ptr<Component>> component_list_;
+	std::list<std::weak_ptr<Component>> component_list_;
 	
 	// コライダーリスト
 	std::vector<std::weak_ptr<BaseCollider>> colliders_;
@@ -259,16 +258,17 @@ private:
 template<class T, class ...Args>
 inline std::weak_ptr<T> GameObject::AddComponent(Args ...args)
 {
-	std::shared_ptr<T> temp = std::make_shared<T>(args...);
+	std::weak_ptr<T> temp = Object::CreateObject<T>(args...);
 	component_list_.emplace_back(temp);
-	temp->game_object_=this;
-	temp->CheckInitialize();
-	temp->transform_ = GetComponent<Transform>();
-
+	//auto a = shared_from_this();
+	//temp.lock()->game_object_ = std::static_pointer_cast<GameObject>(shared_from_this());
+	temp.lock()->CheckInitialize();
+	temp.lock()->transform_ = GetComponent<Transform>();
+	temp.lock()->game_object_ = std::static_pointer_cast<GameObject>(shared_from_this());
 	component_list_.sort(
-		[](std::shared_ptr<Component> lhs,std::shared_ptr<Component> rhs)
+		[](std::weak_ptr<Component> lhs,std::weak_ptr<Component> rhs)
 		{
-			return static_cast<int>(lhs->type.r_ ) < static_cast<int>(rhs->type.r_);
+			return static_cast<int>(lhs.lock()->type.r_) < static_cast<int>(rhs.lock()->type.r_);
 		}
 	);
 
@@ -282,7 +282,7 @@ inline std::weak_ptr<T> GameObject::GetComponent()
 	std::weak_ptr<T> temp;
 	for (auto &component : component_list_)
 	{
-		temp = std::dynamic_pointer_cast<T>(component);
+		temp = std::dynamic_pointer_cast<T>(component.lock());
 		if (!temp.expired())
 		{
 			return temp;

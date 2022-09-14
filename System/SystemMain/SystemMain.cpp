@@ -53,7 +53,6 @@ void SystemMain::Finalize() const
 {
 	// Timeクラスのシングルトン解放
 	Time::Destroy();
-
 	AudioManager::SoundUnLoad(AudioManager::sound);		//音声を開放
 	WinApp::WindowClassRelease();	// ウィンドウクラスを登録解除
 }

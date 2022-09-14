@@ -10,6 +10,7 @@
 #include "Texture.h"
 #include "PipelineManager.h"
 #include "PrimitiveRenderer.h"
+#include "Object/GameObject/GameObject.h"
 
 // コンポーネント
 #include "Object3dComponent.h"
@@ -22,14 +23,10 @@
 #include "PlayerTest.h"
 
 
-// テスト
-#include "testObject.h"
-#include "newObject/GameObject/testGameObject.h"
 
 TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
-
 	// プレイヤー
 	auto player = game_object_manager_.CreateObject("Human");
 	player.lock().get()->AddComponent<Object3dComponent>(
@@ -77,13 +74,10 @@ TitleScene::TitleScene(IoChangedListener *impl)
 
 
 	// テスト
-	auto test = testObject::CreateObject<testGameObject>();
+	//auto test = testObject::CreateObject<testGameObject>();
 }
 
 
-void TitleScene::Finalize()
-{
-}
 
 void TitleScene::Update()
 {

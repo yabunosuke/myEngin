@@ -62,7 +62,7 @@ public:
 	/// <summary>
 	/// 終了
 	/// </summary>
-	virtual void Finalize() = 0;
+	virtual void Finalize();
 
 
 	// ゲッター

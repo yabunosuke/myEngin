@@ -45,19 +45,19 @@ ColliderComponent::ColliderComponent(AbstractScene *scene, CollisionShapeType ty
 	}
 	collision_manager_ = std::make_shared<CollisionManager>(*scene->GetCollisionManager());
 }
-
-ColliderComponent::~ColliderComponent()
-{
-	game_object_->RemoveCollider(collider);
-
-}
+//
+//ColliderComponent::~ColliderComponent()
+//{
+//	game_object_.lock()->RemoveCollider(collider);
+//
+//}
 
 void ColliderComponent::ComponentInitialize()
 {
 	// コライダーにオブジェクトを紐づけ
-	collider->SetObject(game_object_);
+	collider->SetObject(game_object_.lock());
 	// オブジェクトにコライダーwaek_ptr渡す
-	game_object_->AddCollider(collider);
+	game_object_.lock()->AddCollider(collider);
 	collider->Update();
 
 }

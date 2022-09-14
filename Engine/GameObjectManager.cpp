@@ -3,7 +3,7 @@ void GameObjectManager::Initialize()
 {
 	//更新
 	for (auto &e : game_objects_) {
-		e->Initialize();
+		e.lock()->Initialize();
 	}
 	
 }
@@ -11,7 +11,7 @@ void GameObjectManager::Initialize()
 void GameObjectManager::FixedUpdate()
 {//更新
 	for (auto &e : game_objects_) {
-		e->FixedUpdate();
+		e.lock()->FixedUpdate();
 	}
 }
 
@@ -19,7 +19,7 @@ void GameObjectManager::Update()
 {
 	//更新
 	for (auto &e : game_objects_) {
-		e->Update();
+		e.lock()->Update();
 		
 	}
 }
@@ -28,7 +28,7 @@ void GameObjectManager::LastUpdate()
 {
 	//更新
 	for (auto &e : game_objects_) {
-		e->LastUpdate();
+		e.lock()->LastUpdate();
 	}
 }
 
@@ -36,7 +36,7 @@ void GameObjectManager::Draw() const
 {
 	//描画
 	for (auto &e : game_objects_) {
-		e->Draw();
+		e.lock()->Draw();
 	}
 }
 
@@ -51,8 +51,8 @@ GameObject *GameObjectManager::GetGameObject(int id)
 {
 	for (const auto &object : game_objects_) 
 	{
-		if (id == object->GetInstanceID()) {
-			return object.get();
+		if (id == object.lock()->GetInstanceID()) {
+			return object.lock().get();
 		}
 	}
 
@@ -66,14 +66,17 @@ void GameObjectManager::Finalize()
 
 std::weak_ptr<GameObject> GameObjectManager::CreateObject(std::string object_name)
 {
-	std::shared_ptr<GameObject> gameObject;
+	std::weak_ptr<GameObject> gameObject;
 	// 名前が入っていなければ
 	if (object_name.size() == 0) {
-		gameObject = std::make_shared<GameObject>("GameObject(" + std::to_string(game_objects_.size()) + ")");
+		gameObject = Object::CreateObject<GameObject>("GameObject(" + std::to_string(game_objects_.size()) + ")");
 	}
 	else {
-		gameObject = std::make_shared<GameObject>(object_name);
+		gameObject = Object::CreateObject<GameObject>(object_name);
 	}
+	// 生成時にトランスフォーム
+	gameObject.lock()->transform = gameObject.lock()->AddComponent<Transform>();
+
 
 	return game_objects_.emplace_back(std::move(gameObject));
 }

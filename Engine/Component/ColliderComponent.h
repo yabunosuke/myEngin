@@ -11,7 +11,7 @@ class ColliderComponent final :
 {
 public:
 	ColliderComponent(AbstractScene *scene, CollisionShapeType type = SHAPE_SPHERE);
-	~ColliderComponent();
+	//~ColliderComponent();
 	/// <summary>
 	/// ‰Šú‰»
 	/// </summary>

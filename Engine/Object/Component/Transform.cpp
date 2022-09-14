@@ -182,10 +182,10 @@ void Transform::ComponentDraw()
 void Transform::UpdateMatrix()
 {
     //親の情報
-    if (game_object_->GetPearent().lock().use_count() > 0 &&
+    if (game_object_.lock()->GetPearent().lock().use_count() > 0 &&
         !parent_.expired())
     {
-        parent_ = game_object_->GetPearent().lock()->GetComponent<Transform>();
+        parent_ = game_object_.lock()->GetPearent().lock()->GetComponent<Transform>();
     }
     // ローカル行列を計算
     XMMATRIX S = DirectX::XMMatrixScaling(

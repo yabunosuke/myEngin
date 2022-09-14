@@ -14,15 +14,9 @@ GameObject::GameObject(const std::string &name) :
 	// 名前をセット
 	this->name = name;
 	tag_ = "Notag";
-	transform_ = AddComponent<Transform>();
 	
 }
 
-std::weak_ptr<GameObject> GameObject::CreateEmpty(std::string object_name)
-{
-
-	return std::weak_ptr<GameObject>();
-}
 
 bool GameObject::CompareTag(const std::string &tag)
 {
@@ -43,7 +37,7 @@ void GameObject::Initialize()
 {
 	scripts_.clear();
 	for (auto component : component_list_) {
-		if (dynamic_cast<ScriptComponent *>(component.get())) {
+		if (dynamic_cast<ScriptComponent *>(component.lock().get())) {
 			scripts_.emplace_back(component);
 		}
 	}
@@ -53,7 +47,7 @@ void GameObject::FixedUpdate()
 {
 	// 全てのコンポーネントを更新
 	for (const auto &component : component_list_) {
-		component->CheckFixedUpdate();
+		component.lock()->CheckFixedUpdate();
 	}
 }
 
@@ -67,7 +61,7 @@ void GameObject::Update()
 	// コンポーネントの削除
 	auto &itr = component_list_.begin();
 	while (itr != component_list_.end()) {
-		if ((*itr)->GetIsRemove()) {
+		if ((*itr).lock()->GetIsRemove()) {
 			itr->reset();
 			itr = component_list_.erase(itr);
 		}
@@ -78,7 +72,7 @@ void GameObject::Update()
 
 	// 全てのコンポーネントを更新
 	for (const auto &component : component_list_) {
-		component->CheckUpdate();
+		component.lock()->CheckUpdate();
 	}
 }
 
@@ -87,7 +81,7 @@ void GameObject::LastUpdate()
 	//アクティブでなければ描画しない
 	if (!active_self_) return;
 	for (auto &component : component_list_) {
-		component->CheckLustUpdate();
+		component.lock()->CheckLustUpdate();
 	}
 }
 
@@ -100,7 +94,7 @@ void GameObject::Draw()
 
 	//全てのコンポーネントを描画
 	for (auto &component : component_list_) {
-		component->CheckDraw();
+		component.lock()->CheckDraw();
 	}
 }
 
@@ -120,7 +114,7 @@ void GameObject::DrawInspector()
 	int i = 0;
 	for (auto &component : component_list_) {
 		ImGui::PushID(i);
-		component->ImGuiDraw();
+		component.lock()->ImGuiDraw();
 		ImGui::Separator();
 		ImGui::PopID();
 		i++;

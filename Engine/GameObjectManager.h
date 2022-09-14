@@ -52,6 +52,6 @@ public:
 	std::weak_ptr<GameObject> CreateObject(std::string object_name = "");
 
 	//オブジェクト
-	std::vector<std::shared_ptr<GameObject>> game_objects_;
+	std::vector<std::weak_ptr<GameObject>> game_objects_;
 };
 

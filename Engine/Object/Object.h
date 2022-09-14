@@ -2,22 +2,51 @@
 // 参考
 // https://docs.unity3d.com/ja/2018.4/ScriptReference/Object.html
 
+#include <memory>
 #include <string>
 #include <vector>
 #include "Property.h"
 
 
-class Object
+class Object :
+	public std::enable_shared_from_this<Object>
 {
 public:
-	Object();
+	//===========================================
+	//
+	//		静的変数
+	//
+	//===========================================
+	~Object();
+	/// <summary>
+	/// ゲームオブジェクトやコンポーネント、アセットの削除関数
+	/// </summary>
+	/// <param name="obj">削除するオブジェクト</param>
+	/// <param name="t">削除するまでのディレイ時間</param>
+	static void Destroy(Object *obj, float t = 0.0f);
 
 	/// <summary>
-	/// t秒後にオブジェクトを削除する
+	/// 指定された型に一致するオブジェクトを返す
 	/// </summary>
-	/// <param name="object">削除対象のオブジェクト</param>
-	/// <param name="t">削除までのディレイ時間</param>
-	static void Destroy(Object *object, float t);
+	/// <typeparam name="Type">見つけたいオブジェクトの型</typeparam>
+	/// <returns></returns>
+	template<class Type>
+	static std::weak_ptr<Type> FindObjectOfType();
+
+	/// <summary>
+	/// オブジェクト生成関数
+	/// </summary>
+	/// <typeparam name="T">生成する派生クラス</typeparam>
+	/// <param name="...parameter">パラメータ</param>
+	/// <returns>オブジェクトのweak_ptr</returns>
+	template<class T, class ...Parameter>
+	static std::weak_ptr<T> CreateObject(Parameter ...parameter);
+
+
+
+
+	Object();
+	//~Object();
 
 	/// <summary>
 	/// インスタンスIDを返す
@@ -29,8 +58,11 @@ public:
 	/// </summary>
 	Property<std::string> name{ name_ ,AccessorType::AllAccess };
 private:
-	
-	static std::vector<Object*> objects_;		// 全オブジェクトを格納するコンテナ
+
+	/// <summary>
+	/// オブジェクトコンテナ
+	/// </summary>
+	static std::vector<std::shared_ptr<Object>> objects_;
 
 
 	// オブジェクトIDの重複回避用
@@ -43,3 +75,16 @@ private:
 
 };
 
+template<class Type>
+inline std::weak_ptr<Type> Object::FindObjectOfType()
+{
+	return std::weak_ptr<Type>();
+}
+
+template<class T, class ...Parameter>
+inline std::weak_ptr<T> Object::CreateObject(Parameter ...parameter)
+{
+	std::shared_ptr<T> temp = std::make_shared<T>(parameter...);
+	objects_.emplace_back(temp);
+	return  temp;
+}
