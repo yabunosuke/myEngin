@@ -29,21 +29,21 @@ TitleScene::TitleScene(IoChangedListener *impl)
 {
 	// ƒvƒŒƒCƒ„[
 	auto player = game_object_manager_.CreateObject("Human");
-	player.lock().get()->AddComponent<Object3dComponent>(
+	player.lock()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/sword human/Sword man.fbx");
-	player.lock().get()->AddComponent<ColliderComponent>(this);
-	player.lock().get()->AddComponent<Rigidbody>();
-	player.lock().get()->AddComponent<PlayerTest>();
+	player.lock()->AddComponent<ColliderComponent>(this);
+	player.lock()->AddComponent<Rigidbody>();
+	player.lock()->AddComponent<PlayerTest>();
 	player.lock()->transform->lock()->localScale = { 0.4f,0.4f,0.4f };
 
 	auto player_light = game_object_manager_.CreateObject("Player light");
-	player_light.lock().get()->AddComponent<Light>(light_manager_);
+	player_light.lock()->AddComponent<Light>(light_manager_);
 	player_light.lock()->transform->lock()->localPosition = { 0.0f,50.0f,0.0f };
 	game_object_manager_.SetPearentChild(player, player_light);
 
 	auto castle = game_object_manager_.CreateObject("Castle");
-	castle.lock().get()->AddComponent<Object3dComponent>(
+	castle.lock()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/Castle/Castle FBX.fbx");
 	castle.lock()->transform->lock()->localScale = { 20,20,20 };
@@ -53,7 +53,7 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	danbo.lock()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/UNIT/danbo_fbx/danbo_taiki.fbx");
-	danbo.lock().get()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_SPHERE);
+	danbo.lock()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_SPHERE);
 
 	auto camera = game_object_manager_.CreateObject("Camera");
 	camera.lock()->AddComponent<Camera>();

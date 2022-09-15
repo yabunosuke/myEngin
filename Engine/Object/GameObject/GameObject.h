@@ -260,11 +260,9 @@ inline std::weak_ptr<T> GameObject::AddComponent(Args ...args)
 {
 	std::weak_ptr<T> temp = Object::CreateObject<T>(args...);
 	component_list_.emplace_back(temp);
-	//auto a = shared_from_this();
-	//temp.lock()->game_object_ = std::static_pointer_cast<GameObject>(shared_from_this());
-	temp.lock()->CheckInitialize();
 	temp.lock()->transform_ = GetComponent<Transform>();
 	temp.lock()->game_object_ = std::static_pointer_cast<GameObject>(shared_from_this());
+	temp.lock()->CheckInitialize();
 	component_list_.sort(
 		[](std::weak_ptr<Component> lhs,std::weak_ptr<Component> rhs)
 		{
