@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+
 #include "Property.h"
 
 
@@ -21,9 +22,9 @@ public:
 	/// <summary>
 	/// ゲームオブジェクトやコンポーネント、アセットの削除関数
 	/// </summary>
-	/// <param name="obj">削除するオブジェクト</param>
+	/// <param name="objct">削除するオブジェクト</param>
 	/// <param name="t">削除するまでのディレイ時間</param>
-	static void Destroy(Object *obj, float t = 0.0f);
+	static void Destroy(std::weak_ptr<Object> object, float t = 0.0f);
 
 	/// <summary>
 	/// 指定された型に一致するオブジェクトを返す
@@ -32,6 +33,15 @@ public:
 	/// <returns></returns>
 	template<class Type>
 	static std::weak_ptr<Type> FindObjectOfType();
+
+	/// <summary>
+	/// 指定された型に一致するオブジェクトを返す
+	/// </summary>
+	/// <typeparam name="Type">見つけたいオブジェクトの型</typeparam>
+	/// <param name="include_inactive">非同期を含むかかどうか</param>
+	/// <returns></returns>
+	template<class Type>
+	static std::weak_ptr<Type> FindObjectOfType(bool include_inactive);
 
 	/// <summary>
 	/// オブジェクト生成関数
@@ -77,6 +87,13 @@ private:
 
 template<class Type>
 inline std::weak_ptr<Type> Object::FindObjectOfType()
+{
+
+	return std::weak_ptr<Type>();
+}
+
+template<class Type>
+inline std::weak_ptr<Type> Object::FindObjectOfType(bool include_inactive)
 {
 	return std::weak_ptr<Type>();
 }

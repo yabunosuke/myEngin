@@ -14,7 +14,7 @@
 
 // コンポーネント
 #include "Object3dComponent.h"
-#include "Component/ColliderComponent.h"
+#include "Object/Component/Collider/Collider.h"
 #include "Object/Component/Light.h"
 #include "Object/Component/Rigidbody.h"
 #include "Object/Component/Camera.h"
@@ -32,7 +32,7 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	player.lock()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/sword human/Sword man.fbx");
-	player.lock()->AddComponent<ColliderComponent>(this);
+	player.lock()->AddComponent<Collider>(this);
 	player.lock()->AddComponent<Rigidbody>();
 	player.lock()->AddComponent<PlayerTest>();
 	player.lock()->transform->lock()->localScale = { 0.4f,0.4f,0.4f };
@@ -53,7 +53,7 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	danbo.lock()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/UNIT/danbo_fbx/danbo_taiki.fbx");
-	danbo.lock()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_SPHERE);
+	danbo.lock()->AddComponent<Collider>(this, CollisionShapeType::SHAPE_SPHERE);
 
 	auto camera = game_object_manager_.CreateObject("Camera");
 	camera.lock()->AddComponent<Camera>();
@@ -70,7 +70,7 @@ TitleScene::TitleScene(IoChangedListener *impl)
 		"Assets/3d/Leona's sword/Models and Textures/sword.fbx");
 	game_object_manager_.SetPearentChild(player, weapon);
 	weapon.lock()->AddComponent<Weapon>();
-	weapon.lock()->AddComponent<ColliderComponent>(this, CollisionShapeType::SHAPE_SPHERE);
+	weapon.lock()->AddComponent<Collider>(this, CollisionShapeType::SHAPE_SPHERE);
 
 
 	// テスト

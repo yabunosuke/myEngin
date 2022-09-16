@@ -6,7 +6,7 @@
 #include "GameObjectManager.h"
 #include "Object/GameObject/GameObject.h"
 
-#include "Component/ColliderComponent.h"
+#include "Object/Component/Collider/Collider.h"
 #include <memory>
 
 #include <d3d12.h>

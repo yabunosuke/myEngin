@@ -20,6 +20,7 @@ Object::~Object()
 //
 //}
 
-void Object::Destroy(Object *object, float t)
+void Object::Destroy(std::weak_ptr<Object> object, float t)
 {
+	object.lock().reset();
 }

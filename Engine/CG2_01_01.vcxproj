@@ -191,7 +191,6 @@
     <ClCompile Include="3d\Fbx\FbxResource.cpp" />
     <ClCompile Include="Component\Behaviour\Behaviour.cpp" />
     <ClCompile Include="Component\Behaviour\MonoBehaviour\MonoBehaviour.cpp" />
-    <ClCompile Include="Component\ColliderComponent.cpp" />
     <ClCompile Include="Component\Manager\LightManager.cpp" />
     <ClCompile Include="Component\ScriptComponent.cpp" />
     <ClCompile Include="ConstantBufferManager\ConstantBufferLapper.cpp" />
@@ -220,6 +219,7 @@
     <ClCompile Include="MultiRenderTarget\MulutiRenderTarget.cpp" />
     <ClCompile Include="Object3dComponent.cpp" />
     <ClCompile Include="Object\Component\Camera.cpp" />
+    <ClCompile Include="Object\Component\Collider\Collider.cpp" />
     <ClCompile Include="Object\Component\Component.cpp" />
     <ClCompile Include="Object\Component\Light.cpp" />
     <ClCompile Include="Object\Component\Renderer\MeshRenderer\MeshRenderer.cpp" />
@@ -390,7 +390,6 @@
     <ClInclude Include="Collider\OBBCollider.h" />
     <ClInclude Include="Component\Behaviour\Behaviour.h" />
     <ClInclude Include="Component\Behaviour\MonoBehaviour\MonoBehaviour.h" />
-    <ClInclude Include="Component\ColliderComponent.h" />
     <ClInclude Include="Component\Manager\LightManager.h" />
     <ClInclude Include="Component\ScriptComponent.h" />
     <ClInclude Include="ConstantBufferManager\ConstantBuffer.h" />
@@ -418,6 +417,7 @@
     <ClInclude Include="MultiRenderTarget\MulutiRenderTarget.h" />
     <ClInclude Include="Object3dComponent.h" />
     <ClInclude Include="Object\Component\Camera.h" />
+    <ClInclude Include="Object\Component\Collider\Collider.h" />
     <ClInclude Include="Object\Component\Component.h" />
     <ClInclude Include="Object\Component\Light.h" />
     <ClInclude Include="Object\Component\Renderer\MeshRenderer\MeshRenderer.h" />

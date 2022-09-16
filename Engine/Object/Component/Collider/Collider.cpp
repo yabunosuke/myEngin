@@ -1,4 +1,4 @@
-#include "ColliderComponent.h"
+#include "Collider.h"
 #include "Scene/AbstractScene/AbstractScene.h"
 #include "CollisionManager.h"
 
@@ -6,7 +6,7 @@
 #include "SphereCollider.h"
 #include "Collider/OBBCollider.h"
 
-ColliderComponent::ColliderComponent(AbstractScene *scene, CollisionShapeType type):
+Collider::Collider(AbstractScene *scene, CollisionShapeType type):
 	Component("Collider", ComponentType::None),
 	type_(type)
 {
@@ -52,7 +52,7 @@ ColliderComponent::ColliderComponent(AbstractScene *scene, CollisionShapeType ty
 //
 //}
 
-void ColliderComponent::ComponentInitialize()
+void Collider::ComponentInitialize()
 {
 	// コライダーにオブジェクトを紐づけ
 	collider->SetObject(game_object_.lock());
@@ -62,21 +62,21 @@ void ColliderComponent::ComponentInitialize()
 
 }
 
-void ColliderComponent::ComponentUpdate()
+void Collider::ComponentUpdate()
 {
 	collider->Update();
 }
 
-void ColliderComponent::ComponentDraw()
+void Collider::ComponentDraw()
 {
 	collider->Draw();
 }
 
-void ColliderComponent::ComponentFinalize()
+void Collider::ComponentFinalize()
 {
 }
 
-void ColliderComponent::Infomation()
+void Collider::Infomation()
 {
 	collider->Infomation();
 }

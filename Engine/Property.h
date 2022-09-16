@@ -10,8 +10,9 @@ enum class AccessorType // Accessƒ^ƒCƒv
     WriteOnly   = 0x02,
     AllAccess   = 0x03,
 };
-
-template<class ReferenceT> class Property
+// test
+template<class ReferenceT>
+class Property
 {
 public:
     Property() = default;

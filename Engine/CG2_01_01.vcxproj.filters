@@ -98,9 +98,6 @@
     <ClCompile Include="ConstantBufferManager\ConstantBufferManager.cpp">
       <Filter>ConstantBufferManager</Filter>
     </ClCompile>
-    <ClCompile Include="Component\ColliderComponent.cpp">
-      <Filter>Component\Collider</Filter>
-    </ClCompile>
     <ClCompile Include="..\DirectX\Collision\CollisionManager.cpp">
       <Filter>Component\Collider</Filter>
     </ClCompile>
@@ -188,6 +185,9 @@
     <ClCompile Include="Math\Vector2.cpp">
       <Filter>Math</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Component\Collider\Collider.cpp">
+      <Filter>Object\Component\Collider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -262,9 +262,6 @@
     </ClInclude>
     <ClInclude Include="ConstantBufferManager\ConstantBufferManager.h">
       <Filter>ConstantBufferManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Component\ColliderComponent.h">
-      <Filter>Component\Collider</Filter>
     </ClInclude>
     <ClInclude Include="..\DirectX\Collision\CollisionManager.h">
       <Filter>Component\Collider</Filter>
@@ -356,6 +353,9 @@
     </ClInclude>
     <ClInclude Include="Math\Vector2.h">
       <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Component\Collider\Collider.h">
+      <Filter>Object\Component\Collider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -459,6 +459,9 @@
     </Filter>
     <Filter Include="Object\Material">
       <UniqueIdentifier>{e4cf7465-6312-45f3-898e-b2312654abed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component\Collider">
+      <UniqueIdentifier>{907e9985-2a5b-49d5-a77a-cbc89069dd4b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
