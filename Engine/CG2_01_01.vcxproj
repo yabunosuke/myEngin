@@ -189,8 +189,6 @@
     <ClCompile Include="3d\DrawFbx.cpp" />
     <ClCompile Include="3d\Fbx\Fbx.cpp" />
     <ClCompile Include="3d\Fbx\FbxResource.cpp" />
-    <ClCompile Include="Component\Behaviour\Behaviour.cpp" />
-    <ClCompile Include="Component\Behaviour\MonoBehaviour\MonoBehaviour.cpp" />
     <ClCompile Include="Component\Manager\LightManager.cpp" />
     <ClCompile Include="Component\ScriptComponent.cpp" />
     <ClCompile Include="ConstantBufferManager\ConstantBufferLapper.cpp" />
@@ -388,8 +386,6 @@
     <ClInclude Include="3d\Fbx\Fbx.h" />
     <ClInclude Include="3d\Fbx\FbxResource.h" />
     <ClInclude Include="Collider\OBBCollider.h" />
-    <ClInclude Include="Component\Behaviour\Behaviour.h" />
-    <ClInclude Include="Component\Behaviour\MonoBehaviour\MonoBehaviour.h" />
     <ClInclude Include="Component\Manager\LightManager.h" />
     <ClInclude Include="Component\ScriptComponent.h" />
     <ClInclude Include="ConstantBufferManager\ConstantBuffer.h" />

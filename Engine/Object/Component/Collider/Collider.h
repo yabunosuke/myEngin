@@ -42,18 +42,15 @@ public:
 	//===========================================
 	
 	// コライダーがトリガーかどうか
-	/*Property<bool> isTrigger
+	yEngin::Property<bool> isTrigger
 	{
 		is_trigger_,
-		AccessorType::AllAccess
-	};*/
+		yEngin::AccessorType::AllAccess
+	};
 
 private:
 	// コライダーがトリガーかどうか
 	bool is_trigger_ = false;
-
-
-
 
 	// コライダー
 	std::shared_ptr<BaseCollider> collider;

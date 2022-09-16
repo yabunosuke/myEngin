@@ -117,15 +117,15 @@ public:	//関数
 	/// <summary>
 	/// オブジェクト識別タグ (get = true, set = true)
 	/// </summary>
-	Property<std::string> tag{ tag_ ,AccessorType::AllAccess };
+	yEngin::Property<std::string> tag{ tag_ ,yEngin::AccessorType::AllAccess };
 	/// <summary>
 	/// ローカルのアクティブ状態 (get = true, set = false)
 	/// </summary>
-	Property<bool> activeSelf{ active_self_ ,AccessorType::ReadOnly };
+	yEngin::Property<bool> activeSelf{ active_self_ ,yEngin::AccessorType::ReadOnly };
 	/// <summary>
 	/// ローカルのアクティブ状態 (get = true, set = false)
 	/// </summary>
-	Property<std::weak_ptr<Transform>> transform{ transform_,AccessorType::AllAccess };
+	yEngin::Property<std::weak_ptr<Transform>> transform{ transform_,yEngin::AccessorType::AllAccess };
 
 
 	//初期化

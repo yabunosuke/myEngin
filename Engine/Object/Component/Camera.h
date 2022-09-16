@@ -49,14 +49,15 @@ public:
 	//static DirectX::XMMATRIX GetView() { return  now_camera->mat_view; }
 
 	
-	static Property<std::weak_ptr<Camera>> main;
-	Property<DirectX::XMMATRIX> projectionMatrix{
-		mat_projection, AccessorType::AllAccess,
+	static yEngin::Property<std::weak_ptr<Camera>> main;
+	yEngin::Property<DirectX::XMMATRIX> projectionMatrix{
+		mat_projection, yEngin::AccessorType::AllAccess,
 		nullptr,
 		nullptr
 	};
-	Property<DirectX::XMMATRIX> viewMatrix{
-		mat_view, AccessorType::AllAccess,
+	yEngin::Property<DirectX::XMMATRIX> viewMatrix{
+		mat_view,
+		yEngin::AccessorType::AllAccess,
 		nullptr,
 		nullptr
 	};

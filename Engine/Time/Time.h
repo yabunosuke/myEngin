@@ -25,16 +25,16 @@ public:
 	}
 
 	// 最後のフレームから現在のフレームまでの経過秒数（ReadOnly）
-	Property<double> time{ delta_time_,AccessorType::ReadOnly };
+	yEngin::Property<double> time{ delta_time_,yEngin::AccessorType::ReadOnly };
 
-	Property<double> deltaTime{ fixed_update_time_,AccessorType::ReadOnly };
+	yEngin::Property<double> deltaTime{ fixed_update_time_,yEngin::AccessorType::ReadOnly };
 	// 固定フレームレートの更新を実行するインターバル
-	Property<double> fixedDeltaTime{ fixed_delta_time_,AccessorType::AllAccess };
+	yEngin::Property<double> fixedDeltaTime{ fixed_delta_time_,yEngin::AccessorType::AllAccess };
 
 	// 最初のシーンが起動してからの経過フレーム数（ReadOnly）
-	Property<int> frameCount{ frame_count_,AccessorType::ReadOnly };
+	yEngin::Property<int> frameCount{ frame_count_,yEngin::AccessorType::ReadOnly };
 	// 最初のシーンが起動してからの経過秒数（float型）（ReadOnly）
-	Property<double> timeAsDouble{ time_,AccessorType::ReadOnly };
+	yEngin::Property<double> timeAsDouble{ time_,yEngin::AccessorType::ReadOnly };
 
 private:
 	//シングルトンパターン

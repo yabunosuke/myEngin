@@ -72,6 +72,7 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	weapon.lock()->AddComponent<Weapon>();
 	weapon.lock()->AddComponent<Collider>(this, CollisionShapeType::SHAPE_SPHERE);
 
+	Vector3 test = player.lock()->transform->lock()->scale;
 
 	// ƒeƒXƒg
 	//auto test = testObject::CreateObject<testGameObject>();

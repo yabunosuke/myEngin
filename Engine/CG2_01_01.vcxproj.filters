@@ -139,10 +139,6 @@
     <ClCompile Include="Time\Time.cpp">
       <Filter>Time</Filter>
     </ClCompile>
-    <ClCompile Include="Component\Behaviour\Behaviour.cpp">
-      <Filter>Component\Behaviour</Filter>
-    </ClCompile>
-    <ClCompile Include="Component\Behaviour\MonoBehaviour\MonoBehaviour.cpp" />
     <ClCompile Include="Object\Mesh\Mesh.cpp">
       <Filter>Object\Mesh</Filter>
     </ClCompile>
@@ -311,10 +307,6 @@
     <ClInclude Include="Time\Time.h">
       <Filter>Time</Filter>
     </ClInclude>
-    <ClInclude Include="Component\Behaviour\Behaviour.h">
-      <Filter>Component\Behaviour</Filter>
-    </ClInclude>
-    <ClInclude Include="Component\Behaviour\MonoBehaviour\MonoBehaviour.h" />
     <ClInclude Include="Object\Mesh\Mesh.h">
       <Filter>Object\Mesh</Filter>
     </ClInclude>
@@ -427,15 +419,6 @@
     <Filter Include="Time">
       <UniqueIdentifier>{086a8f6d-1484-4859-8da9-6fab5f0e4ef3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Behaviour">
-      <UniqueIdentifier>{abfce33d-d90e-49eb-bfb1-c9765cfd29c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Behaviour\MonoBehaviour">
-      <UniqueIdentifier>{15f98e68-8b42-4020-bd33-c1551ee0f5bc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Behaviour\MonoBehaviour\NewFilter1">
-      <UniqueIdentifier>{c9acd4ef-11e1-41c6-a660-db8edd77a090}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Input">
       <UniqueIdentifier>{1bca81a4-85d8-4e8f-80cc-e71c7d46f06b}</UniqueIdentifier>
     </Filter>
@@ -462,6 +445,12 @@
     </Filter>
     <Filter Include="Object\Component\Collider">
       <UniqueIdentifier>{907e9985-2a5b-49d5-a77a-cbc89069dd4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component\Behaviour">
+      <UniqueIdentifier>{40ccd1ba-b155-4e85-b236-4192cbe4050f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component\Behaviour\MonoBehaviour">
+      <UniqueIdentifier>{537ee50a-d73d-4e91-ae68-62d90cde5286}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

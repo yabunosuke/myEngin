@@ -67,8 +67,9 @@ public:
 	/// <summary>
 	/// ワールド空間の座標 (AllAccess)
 	/// </summary>
-	Property<Vector3> localPosition{
-		local_position_, AccessorType::AllAccess,
+	yEngin::Property<Vector3> localPosition{
+		local_position_,
+		yEngin::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
 		nullptr
@@ -76,8 +77,9 @@ public:
 	/// <summary>
 	/// ワールド空間の回転 (AllAccess)
 	/// </summary>
-	Property<Quaternion> localQuaternion{
-		local_quaternion_,AccessorType::AllAccess,
+	yEngin::Property<Quaternion> localQuaternion{
+		local_quaternion_,
+		yEngin::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
 		nullptr
@@ -85,8 +87,9 @@ public:
 	/// <summary>
 	/// ワールド空間の座標 (AllAccess)
 	/// </summary>
-	Property<Vector3> localScale{
-		local_scale_, AccessorType::AllAccess,
+	yEngin::Property<Vector3> localScale{
+		local_scale_,
+		yEngin::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
 		nullptr
@@ -95,8 +98,9 @@ public:
 	/// <summary>
 	/// ローカル空間のマトリックス (get = true, set = true)
 	/// </summary>
-	Property<XMMATRIX> local_matrix{
-		local_matrix_,AccessorType::AllAccess,
+	yEngin::Property<XMMATRIX> local_matrix{
+		local_matrix_,
+		yEngin::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
 		//nullptr
@@ -137,8 +141,9 @@ public:
 	/// <summary>
 	/// ワールド空間の座標 (get = true, set = true)
 	/// </summary>
-	Property<Vector3> position{
-		world_position_, AccessorType::AllAccess,
+	yEngin::Property<Vector3> position{
+		world_position_,
+		yEngin::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
 		nullptr
@@ -146,8 +151,8 @@ public:
 	/// <summary>
 	/// ワールド空間の回転 (get = true, set = true)
 	/// </summary>
-	Property<Quaternion> quaternion{
-		world_quaternion_,AccessorType::AllAccess,
+	yEngin::Property<Quaternion> quaternion{
+		world_quaternion_,yEngin::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
 		nullptr
@@ -155,9 +160,10 @@ public:
 	/// <summary>
 	/// ワールド空間のスケール (get = true, set = true)
 	/// </summary>
-	Property<Vector3> scale
+	yEngin::Property<Vector3> scale
 	{
-		world_scale_,AccessorType::AllAccess,
+		world_scale_,
+		yEngin::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
 		[this](Vector3 sca)
@@ -182,9 +188,10 @@ public:
 	/// <summary>
 	/// ワールド空間のマトリックス (get = true, set = true)
 	/// </summary>
-	Property<XMMATRIX> matrix
+	yEngin::Property<XMMATRIX> matrix
 	{
-		world_matrix_,AccessorType::AllAccess,
+		world_matrix_,
+		yEngin::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
 		//nullptr
