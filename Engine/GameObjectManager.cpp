@@ -78,5 +78,5 @@ std::weak_ptr<GameObject> GameObjectManager::CreateObject(std::string object_nam
 	gameObject.lock()->transform = gameObject.lock()->AddComponent<Transform>();
 
 
-	return game_objects_.emplace_back(std::move(gameObject));
+	return game_objects_.emplace_back(gameObject);
 }

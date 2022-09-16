@@ -13,11 +13,6 @@ Property<std::weak_ptr<Camera>> Camera::main{
 Camera::Camera():
 	Component("Camera", ComponentType::Camera)
 {
-
-
-	//// 転送用のカメラデータ
-	//camera_date_ = std::static_pointer_cast<Camera>(Object::shared_from_this());
-	//cameras_.AddCamera(camera_date_);
 }
 
 void Camera::ComponentInitialize()
@@ -37,7 +32,7 @@ void Camera::ComponentUpdate()
 		transform_.lock()->position->z,
 		1.0f
 	};
-
+	
 	// 焦点計算
 	XMMATRIX temp = XMMatrixRotationQuaternion(XMLoadFloat4(&transform_.lock()->quaternion));
 	XMVECTOR target = {
@@ -140,6 +135,7 @@ void Camera::Infomation()
 
 void Camera::BufferTransfer(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list, UINT subresource, UINT rootparameta_index)
 {
+
 	// 使用しているカメラデータを格納
 	CameraConstantBuffer const_camera_map;
 	{
