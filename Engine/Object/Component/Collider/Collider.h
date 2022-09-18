@@ -2,20 +2,22 @@
 #include "Object/Component/Component.h"
 #include "BaseCollider.h"
 
-class CollisionManager;
+enum class CollisonType
+{
+	None,
+	Sphere,
+	Box,
+	Capsule,
+	Mesh,
 
-class AbstractScene;
+};
 
 class Collider :
 	public Component
 {
 public:
-	Collider(AbstractScene *scene, CollisionShapeType type = SHAPE_SPHERE);
-	//~ColliderComponent();
-	/// <summary>
-	/// 初期化
-	/// </summary>
-	void ComponentInitialize() override;
+	Collider();
+	
 	/// <summary>
 	/// 更新
 	/// </summary>
@@ -48,13 +50,9 @@ public:
 		yEngin::AccessorType::AllAccess
 	};
 
-private:
+protected:
 	// コライダーがトリガーかどうか
 	bool is_trigger_ = false;
-
-	// コライダー
-	std::shared_ptr<BaseCollider> collider;
-	CollisionShapeType type_;
-	std::shared_ptr<CollisionManager> collision_manager_;
+	CollisonType collision_type_ = CollisonType::None;
 };
 

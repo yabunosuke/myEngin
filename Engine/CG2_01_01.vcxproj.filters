@@ -107,9 +107,6 @@
     <ClCompile Include="..\DirectX\Collision\Collision.cpp">
       <Filter>Component\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX\Collision\SphereCollider.cpp">
-      <Filter>Component\Collider\Collider</Filter>
-    </ClCompile>
     <ClCompile Include="OBBCollider.cpp">
       <Filter>Component\Collider\Collider</Filter>
     </ClCompile>
@@ -183,6 +180,12 @@
     </ClCompile>
     <ClCompile Include="Object\Component\Collider\Collider.cpp">
       <Filter>Object\Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Component\Collider\CheckCollision.cpp">
+      <Filter>Object\Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Component\Collider\SphereCollider\SphereCollider.cpp">
+      <Filter>Object\Component\Collider\SphereCollider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -271,9 +274,6 @@
     <ClInclude Include="..\DirectX\Collision\Collision.h">
       <Filter>Component\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX\Collision\SphereCollider.h">
-      <Filter>Component\Collider\Collider</Filter>
-    </ClInclude>
     <ClInclude Include="Collider\OBBCollider.h">
       <Filter>Component\Collider\Collider</Filter>
     </ClInclude>
@@ -348,6 +348,12 @@
     </ClInclude>
     <ClInclude Include="Object\Component\Collider\Collider.h">
       <Filter>Object\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Component\Collider\CheckCollision.h">
+      <Filter>Object\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Component\Collider\SphereCollider\SphereCollider.h">
+      <Filter>Object\Component\Collider\SphereCollider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

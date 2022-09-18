@@ -173,7 +173,6 @@
     <ClCompile Include="..\DirectX\Collision\CollisionManager.cpp" />
     <ClCompile Include="..\DirectX\Collision\CollisionPrimitive.cpp" />
     <ClCompile Include="..\DirectX\Collision\MeshCollider.cpp" />
-    <ClCompile Include="..\DirectX\Collision\SphereCollider.cpp" />
     <ClCompile Include="..\DirectX\DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="..\DirectX\Input\ControllerInput.cpp" />
     <ClCompile Include="..\DirectX\Object3d\Model.cpp" />
@@ -217,7 +216,9 @@
     <ClCompile Include="MultiRenderTarget\MulutiRenderTarget.cpp" />
     <ClCompile Include="Object3dComponent.cpp" />
     <ClCompile Include="Object\Component\Camera.cpp" />
+    <ClCompile Include="Object\Component\Collider\CheckCollision.cpp" />
     <ClCompile Include="Object\Component\Collider\Collider.cpp" />
+    <ClCompile Include="Object\Component\Collider\SphereCollider\SphereCollider.cpp" />
     <ClCompile Include="Object\Component\Component.cpp" />
     <ClCompile Include="Object\Component\Light.cpp" />
     <ClCompile Include="Object\Component\Renderer\MeshRenderer\MeshRenderer.cpp" />
@@ -368,7 +369,6 @@
     <ClInclude Include="..\DirectX\Collision\CollisionPrimitive.h" />
     <ClInclude Include="..\DirectX\Collision\MeshCollider.h" />
     <ClInclude Include="..\DirectX\Collision\RaycastHit.h" />
-    <ClInclude Include="..\DirectX\Collision\SphereCollider.h" />
     <ClInclude Include="..\DirectX\DirectXCommon\DirectXCommon.h" />
     <ClInclude Include="..\DirectX\Input\ControllerInput.h" />
     <ClInclude Include="..\DirectX\Object3d\Model.h" />
@@ -413,7 +413,9 @@
     <ClInclude Include="MultiRenderTarget\MulutiRenderTarget.h" />
     <ClInclude Include="Object3dComponent.h" />
     <ClInclude Include="Object\Component\Camera.h" />
+    <ClInclude Include="Object\Component\Collider\CheckCollision.h" />
     <ClInclude Include="Object\Component\Collider\Collider.h" />
+    <ClInclude Include="Object\Component\Collider\SphereCollider\SphereCollider.h" />
     <ClInclude Include="Object\Component\Component.h" />
     <ClInclude Include="Object\Component\Light.h" />
     <ClInclude Include="Object\Component\Renderer\MeshRenderer\MeshRenderer.h" />

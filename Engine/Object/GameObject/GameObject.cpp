@@ -3,7 +3,12 @@
 #include "ImGui/imguiManager.h"
 #include "BaseCollider.h"
 
+#include "Object/Component/Collider/Collider.h"
 
+#include "GameObjectManager.h"
+
+
+std::weak_ptr<GameObjectManager> GameObject::game_object_manager_;
 
 
 GameObject::GameObject(const std::string &name) :
@@ -15,6 +20,27 @@ GameObject::GameObject(const std::string &name) :
 	this->name = name;
 	tag_ = "Notag";
 	
+}
+
+std::weak_ptr<GameObject> GameObject::CreateObject(const std::string &object_name)
+{
+	std::weak_ptr<GameObject> game_object;
+	// 名前が入っていなければ
+	if (object_name.size() == 0) {
+		game_object = Object::CreateObject<GameObject>("GameObject(" + std::to_string(game_object_manager_.lock()->game_objects_.size()) + ")");
+	}
+	else {
+		game_object = Object::CreateObject<GameObject>(object_name);
+	}
+	// 生成時にトランスフォーム
+	game_object.lock()->transform = game_object.lock()->AddComponent<Transform>();
+
+	return game_object_manager_.lock()->game_objects_.emplace_back(game_object);
+}
+
+void GameObject::SetGameObjectManager(std::weak_ptr<GameObjectManager> game_object_manager)
+{
+	game_object_manager_ = game_object_manager;
 }
 
 
@@ -123,13 +149,13 @@ void GameObject::DrawInspector()
 
 }
 
-void GameObject::AddCollider(std::weak_ptr<BaseCollider> collider)
+void GameObject::AddCollider(std::weak_ptr<Collider> collider)
 {
 	// タグ名で管理
 	colliders_.emplace_back(collider);
 }
 
-void GameObject::RemoveCollider(std::weak_ptr<BaseCollider> collider)
+void GameObject::RemoveCollider(std::weak_ptr<Collider> collider)
 {
 	for (auto col = colliders_.begin(); col != colliders_.end();++col) {
 		if (col->lock() = collider.lock()) {

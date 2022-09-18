@@ -66,16 +66,16 @@ public:
 
 
 	// ゲッター
-	GameObjectManager *GetObjectManager() { return &game_object_manager_; }	// オブジェクトマネージャー
-	CollisionManager *GetCollisionManager() { return &collision_manager_; }			// 子リジョンマネージャー
+	std::weak_ptr<GameObjectManager> GetObjectManager() { return game_object_manager_; }	// オブジェクトマネージャー
+	//CollisionManager *GetCollisionManager() { return &collision_manager_; }			// 子リジョンマネージャー
 	std::string GetName() { return name; }
 	std::unique_ptr<MulutiRenderTarget> *GetMulutiRenderTarget() { return &muluti_render_target_; }
 
 protected:
 	// オブジェクトマネージャー
-	GameObjectManager game_object_manager_;
+	std::shared_ptr<GameObjectManager> game_object_manager_;
 	// コリジョンマネージャー
-	CollisionManager collision_manager_;
+	//CollisionManager collision_manager_;
 	// ライトマネージャー
 	std::shared_ptr<LightManager> light_manager_;
 	// ポストエフェクト

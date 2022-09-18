@@ -5,13 +5,13 @@
 #include "Input.h"
 #include "PrimitiveRenderer.h"
 #include "Time/Time.h"
-
+#include "Object/GameObject/GameObject.h"
 //シーン
 #include "TitleScene.h"
 
 Looper::Looper() {
 	//最初のシーン
-	sceneStack.push(make_shared<TitleScene>(this));
+	OnSceneChanged(Scenes::Title, false);
 	sceneStack.top()->Initialize();
 	editor.Initialize(sceneStack.top());
 	//KeyboardInput::GetIns()->Initialize();
@@ -95,7 +95,10 @@ bool Looper::Loop()
 void Looper::OnSceneChanged(const Scenes scene, const bool stackClear)
 {
 	//現在のシーンを終了
-	sceneStack.top()->Finalize();
+	if(sceneStack.size() != 0)
+	{
+		sceneStack.top()->Finalize();
+	}
 	if (stackClear == true) {				//スタックをクリアする設定なら
 		while (!sceneStack.empty()) {	//スタックがからになるまでポップする
 			sceneStack.pop();
@@ -111,6 +114,9 @@ void Looper::OnSceneChanged(const Scenes scene, const bool stackClear)
 		
 		break;
 	}
+	// ゲームオブジェクトに現在のマネージャーをセット
+	GameObject::SetGameObjectManager(sceneStack.top()->GetObjectManager());
+
 	//新しいシーンを初期化
 	sceneStack.top()->Initialize();
 	editor.Initialize(sceneStack.top());

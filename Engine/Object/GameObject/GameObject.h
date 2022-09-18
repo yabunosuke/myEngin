@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <map>
 
+
 // 基底クラス
 #include "Object/Object.h"
 #include "Object/Component/Transform.h"
@@ -23,7 +24,8 @@
 #include "Property.h"
 
 // コライダー
-class BaseCollider;
+class Collider;
+class GameObjectManager;
 
 class GameObject :
 public Object
@@ -61,6 +63,9 @@ public:	//関数
 	//
 	//===========================================
 
+	static std::weak_ptr<GameObject> CreateObject(const std::string &object_name = "");
+
+	static void SetGameObjectManager(std::weak_ptr<GameObjectManager> game_object_manager);
 	//===========================================
 	//
 	//		メンバ関数
@@ -107,14 +112,6 @@ public:	//関数
 	/// </summary>
 	/// <param name="value"></param>
 	void SetActive(bool value);
-
-
-	//===========================================
-	//
-	//		静的関数
-	//
-	//===========================================
-
 
 	//===========================================
 	//
@@ -193,9 +190,9 @@ public:	//関数
 
 
 	// コライダー
-	void AddCollider(std::weak_ptr<BaseCollider> collider);
-	const std::vector<std::weak_ptr<BaseCollider>> &GetColliders() { return colliders_; }
-	void RemoveCollider(std::weak_ptr<BaseCollider> collider);
+	void AddCollider(std::weak_ptr<Collider> collider);
+	const std::vector<std::weak_ptr<Collider>> &GetColliders() { return colliders_; }
+	void RemoveCollider(std::weak_ptr<Collider> collider);
 
 
 	// Script
@@ -217,6 +214,8 @@ private:
 	//
 	//===========================================
 
+	// ゲームオブジェクトマネージャーのポインタ
+	static std::weak_ptr<GameObjectManager> game_object_manager_;
 	//static std::vector<std::shared_ptr<GameObject>> game_objects_;	// オブジェクトコンテナ
 
 	//===========================================
@@ -246,7 +245,7 @@ private:
 	std::list<std::weak_ptr<Component>> component_list_;
 	
 	// コライダーリスト
-	std::vector<std::weak_ptr<BaseCollider>> colliders_;
+	std::vector<std::weak_ptr<Collider>> colliders_;
 
 	// Scriptリスト
 	std::vector<std::weak_ptr<Component>> scripts_;
@@ -266,11 +265,13 @@ private:
 template<class T, class ...Args>
 inline std::weak_ptr<T> GameObject::AddComponent(Args ...args)
 {
+
 	std::weak_ptr<T> temp = Object::CreateObject<T>(args...);
 	component_list_.emplace_back(temp);
 	temp.lock()->transform_ = GetComponent<Transform>();
 	temp.lock()->game_object_ = std::static_pointer_cast<GameObject>(shared_from_this());
 	temp.lock()->CheckInitialize();
+	// コンポーネントを更新順に並び替え
 	component_list_.sort(
 		[](std::weak_ptr<Component> lhs,std::weak_ptr<Component> rhs)
 		{

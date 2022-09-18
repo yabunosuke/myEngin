@@ -17,37 +17,35 @@ AbstractScene::AbstractScene(IoChangedListener *impl,std::string sceneName)
 	muluti_render_target_->InitializeMulutiRenderTarget(DirectXCommon::dev);
 
 	light_manager_ = std::make_shared<LightManager>();
+	game_object_manager_ = std::make_shared<GameObjectManager>();
 	//camera_manager_ = std::make_shared<CameraManager>();
 
 
-	auto directional_light_ = game_object_manager_.CreateObject("Directional Light");
-	directional_light_.lock()->AddComponent<Light>(light_manager_,LightType::Directional);
-	directional_light_.lock()->transform->lock()->localQuaternion = { 1,0,0,30 };
 }
 
 
 void AbstractScene::Initialize()
 {
-	game_object_manager_.Initialize();
+	game_object_manager_->Initialize();
 }
 
 void AbstractScene::FixedUpdate()
 {
-	game_object_manager_.FixedUpdate();
+	game_object_manager_->FixedUpdate();
 
 
 	// 当たり判定チェック
-	collision_manager_.CheckBroadCollisions(game_object_manager_.game_objects_);
+	//collision_manager_.CheckBroadCollisions(game_object_manager_.game_objects_);
 }
 
 void AbstractScene::Update()
 {
 	// オブジェクト更新
-	game_object_manager_.Update();
+	game_object_manager_->Update();
 
 
 	// 最終更新
-	game_object_manager_.LastUpdate();
+	game_object_manager_->LastUpdate();
 
 
 }
@@ -62,7 +60,7 @@ void AbstractScene::PreDrawMultiRenderTarget(Microsoft::WRL::ComPtr<ID3D12Device
 void AbstractScene::Draw() const
 {
 	// マネージャー描画（最終的には削除）
-	game_object_manager_.Draw();
+	game_object_manager_->Draw();
 
 	//カメラマネージャをセット
 	PipelineManager::GetInstance()->SetPipline(DirectXCommon::cmdList, "GBuffer");

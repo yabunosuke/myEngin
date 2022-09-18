@@ -62,21 +62,3 @@ GameObject *GameObjectManager::GetGameObject(int id)
 void GameObjectManager::Finalize()
 {
 }
-
-
-std::weak_ptr<GameObject> GameObjectManager::CreateObject(std::string object_name)
-{
-	std::weak_ptr<GameObject> gameObject;
-	// 名前が入っていなければ
-	if (object_name.size() == 0) {
-		gameObject = Object::CreateObject<GameObject>("GameObject(" + std::to_string(game_objects_.size()) + ")");
-	}
-	else {
-		gameObject = Object::CreateObject<GameObject>(object_name);
-	}
-	// 生成時にトランスフォーム
-	gameObject.lock()->transform = gameObject.lock()->AddComponent<Transform>();
-
-
-	return game_objects_.emplace_back(gameObject);
-}

@@ -20,6 +20,7 @@ enum class ComponentType
 	Sqript,		// スクリプト
 	RigitBody,	// リジッドボディ
 	TRANSFORM,	// トランスフォーム
+	Collider,
 	Light,		// ライト
 	Camera,		// カメラ
 	Renderer,	// 描画処理
@@ -78,14 +79,7 @@ public:
 	//===========================================
 
 
-	/// <summary>
-	/// トランスフォーム (get = true, set = false)
-	/// </summary>
-	yEngin::Property <Transform*> transform{
-		transform_.lock().get(),
-		yEngin::AccessorType::AllAccess,
-		
-	};
+	
 	/// <summary>
 	/// コンポーネント識別 (get = true, set = false)
 	/// </summary>
@@ -140,7 +134,7 @@ protected:	//関数
 	/// <summary>
 	/// 更新
 	/// </summary>
-	virtual void ComponentLustUpdate() {};
+	virtual void ComponentLustUpdate() { };
 	/// <summary>
 	/// 描画
 	/// </summary>

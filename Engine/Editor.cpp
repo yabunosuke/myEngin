@@ -147,10 +147,10 @@ void Editor::HierarchyWindow()
 
 	ImGui::Text(nowScene.get()->GetName().c_str());
 	/*nowScene.get()->GetObjectManager()->DrawHierarchy(selected_object_id);*/
-	Hierarchy(nowScene.get()->GetObjectManager()->game_objects_);
+	Hierarchy(nowScene.get()->GetObjectManager().lock()->game_objects_);
 	//’Ç‰Á
 	if (ImGui::Button("add")) {
-		nowScene->GetObjectManager()->CreateObject();
+		GameObject::CreateObject();
 	}
 
 	//I—¹
@@ -290,7 +290,7 @@ void Editor::DrawInspector()
 {
 	ImGui::Begin("Inspector", &isHierarchy);
 
-	auto *selectObject = nowScene->GetObjectManager()->GetGameObject(selected_object_id);
+	auto *selectObject = nowScene->GetObjectManager().lock()->GetGameObject(selected_object_id);
 
 	// ID—‡‚¤•¨‚ª‚È‚¯‚ê‚Î–¢•\¦
 	if (selectObject == nullptr) {

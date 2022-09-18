@@ -1,3 +1,10 @@
+#pragma once
+
+class CheckCollision
+{
+	//static CheckCollisions(const std::vector<std::weak_ptr<GameObject>> &game_objects)
+};
+
 //#pragma once
 //
 //#include "CollisionPrimitive.h"
