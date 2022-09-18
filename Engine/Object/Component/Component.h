@@ -81,11 +81,11 @@ public:
 	/// <summary>
 	/// トランスフォーム (get = true, set = false)
 	/// </summary>
-	/*Property <Transform> transform{
-		transform_,
-		AccessorType::AllAccess,
+	yEngin::Property <Transform*> transform{
+		transform_.lock().get(),
+		yEngin::AccessorType::AllAccess,
 		
-	};*/
+	};
 	/// <summary>
 	/// コンポーネント識別 (get = true, set = false)
 	/// </summary>

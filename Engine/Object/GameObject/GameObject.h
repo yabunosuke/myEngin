@@ -91,6 +91,14 @@ public:	//関数
 	template<class T>
 	std::weak_ptr<T> GetComponent();
 
+	/// <summary>
+	/// コンポーネントの取得 調整中
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <returns></returns>
+	template<class T>
+	std::vector<std::weak_ptr<T>>  GetComponents();
+
 
 
 
@@ -288,4 +296,11 @@ inline std::weak_ptr<T> GameObject::GetComponent()
 	}
 
 	return temp;
+}
+
+template<class T>
+inline std::vector<std::weak_ptr<T>> GameObject::GetComponents()
+{
+	std::vector<std::weak_ptr<T>> components;
+	return std::weak_ptr<T>();
 }

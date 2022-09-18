@@ -38,8 +38,10 @@ void CollisionManager::CheckBroadCollisions(const std::vector<std::weak_ptr<Game
 					// 衝突判定
 					if (CheckHitCollision(collider_a.lock().get(), collider_b.lock().get(), &interBroad)) 
 					{
-						// トリガー処理
+						// トリガー
 
+						// 物理接触
+						
 						// 衝突タイプ別処理
 						if (true) {
 							for (const auto &script_a : object_a->lock().get()->GetScripts()) {

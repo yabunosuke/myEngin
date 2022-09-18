@@ -452,5 +452,17 @@
     <Filter Include="Object\Component\Behaviour\MonoBehaviour">
       <UniqueIdentifier>{537ee50a-d73d-4e91-ae68-62d90cde5286}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Component\Collider\BoxCollider">
+      <UniqueIdentifier>{263bddcc-a9e2-434b-b5f4-5de3c9cab0bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component\Collider\SphereCollider">
+      <UniqueIdentifier>{aa42154a-021f-408c-b5aa-32e70e35dae4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component\Collider\CapsuleCollider">
+      <UniqueIdentifier>{183b1d38-c384-49d0-83ba-8cd8b18a5dc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component\Collider\MeshCollider">
+      <UniqueIdentifier>{6d5ac3d6-8e71-4459-8159-75ebb64cb73f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
