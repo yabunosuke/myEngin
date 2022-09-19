@@ -38,8 +38,12 @@ void CheckCollision::CheckColliders(const std::vector<std::weak_ptr<GameObject>>
 					// Õ“Ë”»’è
 					if (CheckHit(collider_a, collider_b, hit_pos))
 					{
-						// ƒgƒŠƒK[
+						// “–‚½‚è”»’èî•ñ
 						Collision collision_info_a{
+							object_a->lock(),
+							{ 0,20,0 }
+						};
+						Collision collision_info_b{
 							object_a->lock(),
 							{ 0,20,0 }
 						};
@@ -50,9 +54,9 @@ void CheckCollision::CheckColliders(const std::vector<std::weak_ptr<GameObject>>
 							for (const auto &script_a : object_a->lock().get()->GetMonoBehaviours()) {
 								script_a.lock()->OnCollisionEnter(collision_info_a);
 							}
-							/*for (const auto &script_b : object_b->lock().get()->GetMonoBehaviours()) {
-								std::static_pointer_cast<ScriptComponent>(script_b.lock())->OnCollisionEnter();
-							}*/
+							for (const auto &script_b : object_b->lock().get()->GetMonoBehaviours()) {
+								script_b.lock()->OnCollisionEnter(collision_info_b);
+							}
 						}
 					}
 				}
