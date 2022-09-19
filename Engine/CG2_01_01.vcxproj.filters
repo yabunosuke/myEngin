@@ -31,7 +31,6 @@
   <ItemGroup>
     <ClCompile Include="..\DirectX\AudioManager\AudioManager.cpp" />
     <ClCompile Include="..\DirectX\Collision\BaseCollider.cpp" />
-    <ClCompile Include="..\DirectX\Collision\MeshCollider.cpp" />
     <ClCompile Include="..\DirectX\DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="..\DirectX\Input\ControllerInput.cpp" />
     <ClCompile Include="..\DirectX\Object3d\Model.cpp" />
@@ -94,18 +93,6 @@
     </ClCompile>
     <ClCompile Include="ConstantBufferManager\ConstantBufferManager.cpp">
       <Filter>ConstantBufferManager</Filter>
-    </ClCompile>
-    <ClCompile Include="..\DirectX\Collision\CollisionManager.cpp">
-      <Filter>Component\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="..\DirectX\Collision\CollisionPrimitive.cpp">
-      <Filter>Component\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="..\DirectX\Collision\Collision.cpp">
-      <Filter>Component\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="OBBCollider.cpp">
-      <Filter>Component\Collider\Collider</Filter>
     </ClCompile>
     <ClCompile Include="Math\Mathf.h">
       <Filter>Math</Filter>
@@ -191,7 +178,6 @@
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
     <ClInclude Include="..\DirectX\Collision\BaseCollider.h" />
-    <ClInclude Include="..\DirectX\Collision\MeshCollider.h" />
     <ClInclude Include="..\DirectX\Collision\RaycastHit.h" />
     <ClInclude Include="..\DirectX\DirectXCommon\DirectXCommon.h" />
     <ClInclude Include="..\DirectX\Input\ControllerInput.h" />
@@ -259,20 +245,8 @@
     <ClInclude Include="ConstantBufferManager\ConstantBufferManager.h">
       <Filter>ConstantBufferManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX\Collision\CollisionManager.h">
-      <Filter>Component\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="..\DirectX\Collision\CollisionPrimitive.h">
-      <Filter>Component\Collider</Filter>
-    </ClInclude>
     <ClInclude Include="..\DirectX\Collision\CollisionInfo.h">
       <Filter>Component\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="..\DirectX\Collision\Collision.h">
-      <Filter>Component\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider\OBBCollider.h">
-      <Filter>Component\Collider\Collider</Filter>
     </ClInclude>
     <ClInclude Include="ConstantBufferManager\ConstantBuffer.h">
       <Filter>ConstantBufferManager</Filter>
@@ -478,6 +452,9 @@
     </Filter>
     <Filter Include="Asset\Player">
       <UniqueIdentifier>{bf7e6b15-6f73-447c-84d4-a6173d78679e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Collision">
+      <UniqueIdentifier>{cb9b5f93-f30a-4167-9482-0979d818a40b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

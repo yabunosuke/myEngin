@@ -2,7 +2,6 @@
 #include "2d/Sprite.h"
 
 #include "Scene/AbstractScene/AbstractScene.h"
-#include "CollisionPrimitive.h"
 #include <vector>
 #include <string>
 
