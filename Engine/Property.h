@@ -19,7 +19,7 @@ namespace yEngin
     {
     public:
         Property() = default;
-        Property(const Property &other) { ; }
+        Property(const Property &other) {  };
         Property(
             ReferenceT &r,
             AccessorType type = AccessorType::AllAccess,

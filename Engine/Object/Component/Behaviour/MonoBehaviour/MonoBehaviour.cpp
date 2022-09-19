@@ -5,6 +5,11 @@ MonoBehaviour::MonoBehaviour(const std::string &name):
 {
 }
 
+void MonoBehaviour::ComponentInitialize()
+{
+	game_object_.lock()->AddMonoBehaviour(std::static_pointer_cast<MonoBehaviour>(shared_from_this()));
+}
+
 void MonoBehaviour::ComponentFixedUpdate()
 {
 	if (!enabled) return;

@@ -2,7 +2,7 @@
 #include "Collision.h"
 #include <memory>
 #include "Object/Component/Rigidbody.h"
-
+#include "Object/Component/Behaviour/MonoBehaviour/MonoBehaviour.h"
 void CheckCollision::CheckColliders(const std::vector<std::weak_ptr<GameObject>> &game_objects)
 {
 
@@ -39,15 +39,18 @@ void CheckCollision::CheckColliders(const std::vector<std::weak_ptr<GameObject>>
 					if (CheckHit(collider_a, collider_b, hit_pos))
 					{
 						// トリガー
-						
+						Collision collision_info_a{
+							object_a->lock(),
+							{ 0,20,0 }
+						};
 						// 物理接触
 
 						// 衝突タイプ別処理
 						if (true) {
-							/*for (const auto &script_a : object_a->lock().get()->GetScripts()) {
-								std::static_pointer_cast<ScriptComponent>(script_a.lock())->OnCollisionEnter();
+							for (const auto &script_a : object_a->lock().get()->GetMonoBehaviours()) {
+								script_a.lock()->OnCollisionEnter(collision_info_a);
 							}
-							for (const auto &script_b : object_b->lock().get()->GetScripts()) {
+							/*for (const auto &script_b : object_b->lock().get()->GetMonoBehaviours()) {
 								std::static_pointer_cast<ScriptComponent>(script_b.lock())->OnCollisionEnter();
 							}*/
 						}

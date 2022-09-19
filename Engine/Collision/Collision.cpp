@@ -1,4 +1,4 @@
-#include "Collision/Collision.h"
+#include "Collision.h"
 
 Collision::Collision( std::weak_ptr<GameObject> game_object, Vector3 relative_velocity):
 game_object_(game_object),

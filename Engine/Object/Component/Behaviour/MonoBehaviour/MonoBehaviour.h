@@ -14,6 +14,7 @@ public:
 
     MonoBehaviour(const std::string &name);
 
+    void ComponentInitialize() override;
     void ComponentFixedUpdate() override;
     void ComponentUpdate() override;
 
@@ -28,7 +29,7 @@ public:
     /// <summary>
     /// êGÇÍÇΩèuä‘Ç…åƒÇ—èoÇ≥ÇÍÇÈ
     /// </summary>
-    virtual void OnCollisionEnter(Collision collision){};
+    virtual void OnCollisionEnter(Collision &collision){};
     /// <summary>
     /// ó£ÇÍÇΩèuä‘Ç…åƒÇ—èoÇ≥ÇÍÇÈ
     /// </summary>

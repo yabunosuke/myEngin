@@ -11,11 +11,18 @@ MonoBehaviour("Player")
 {
 }
 
+void Player::OnCollisionEnter(Collision &collision)
+{
+
+}
+
 void Player::Start()
 {
 	// ƒŠƒWƒbƒh
-	regidbody_ = game_object_.lock()->GetComponent<Rigidbody>();
-	game_object = game_object_.lock()->GetComponent<Object3dComponent>().lock()->GetObjectData();
+	regidbody_ = 
+		game_object_.lock()->GetComponent<Rigidbody>();
+	game_object = 
+		game_object_.lock()->GetComponent<Object3dComponent>().lock()->GetObjectData();
 }
 
 void Player::FixedUpdate()

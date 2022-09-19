@@ -4,7 +4,7 @@
 #include "BaseCollider.h"
 
 #include "Object/Component/Collider/Collider.h"
-
+#include "Object/Component/Behaviour/MonoBehaviour/MonoBehaviour.h"
 #include "GameObjectManager.h"
 
 
@@ -160,4 +160,18 @@ void GameObject::RemoveCollider(std::weak_ptr<Collider> collider)
 		}
 	}
 
+}
+
+void GameObject::AddMonoBehaviour(std::weak_ptr<MonoBehaviour> monobehaviour)
+{
+	mono_behaviours_.emplace_back(monobehaviour);
+}
+
+const std::vector<std::weak_ptr<MonoBehaviour>>& GameObject::GetMonoBehaviours()
+{
+	return mono_behaviours_;
+}
+
+void GameObject::RemoveMonoBehaviour(std::weak_ptr<MonoBehaviour> monobehaviour)
+{
 }

@@ -24,6 +24,7 @@
 
 // コライダー
 class Collider;
+class MonoBehaviour;
 class GameObjectManager;
 
 class GameObject :
@@ -166,6 +167,11 @@ public:	//関数
 	const std::vector<std::weak_ptr<Collider>> &GetColliders() { return colliders_; }
 	void RemoveCollider(std::weak_ptr<Collider> collider);
 
+	// MonoBehaviour
+	void AddMonoBehaviour(std::weak_ptr<MonoBehaviour> monobehaviour);
+	const std::vector<std::weak_ptr<MonoBehaviour>> &GetMonoBehaviours();
+	void RemoveMonoBehaviour(std::weak_ptr<MonoBehaviour> monobehaviour);
+
 
 	/// <summary>
 	/// 所属しているシーン (get = true, set = false)
@@ -220,9 +226,10 @@ private:
 	std::vector<std::weak_ptr<GameObject>> child_game_object_;
 	// コンポーネント
 	std::list<std::weak_ptr<Component>> component_list_;
-	
-	// コライダーリスト
+	// コライダー
 	std::vector<std::weak_ptr<Collider>> colliders_;
+	// MonoBehaviour
+	std::vector<std::weak_ptr<MonoBehaviour>> mono_behaviours_;
 
 	bool active_self_;				// ローカルのアクティブ状態
 	// 非表示になっているか

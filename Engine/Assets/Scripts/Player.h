@@ -8,9 +8,14 @@ class Player :
 {
 public:
     Player();
-    void Start() override;
+
+	void OnCollisionEnter(Collision& collision) override;
+
+	void Start() override;
     void FixedUpdate() override;
     void Update() override;
+
+
 private:
 	// アニメーションステート
 	enum class AnimationState {
@@ -31,5 +36,6 @@ private:
     std::weak_ptr<Rigidbody> regidbody_;
     Fbx *game_object{ nullptr };
 
+	int hp_ = 10;
 };
 
