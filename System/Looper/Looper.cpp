@@ -6,6 +6,7 @@
 #include "PrimitiveRenderer.h"
 #include "Time/Time.h"
 #include "Object/GameObject/GameObject.h"
+#include "Object/Component/Collider/CheckCollision.h"
 //シーン
 #include "TitleScene.h"
 
@@ -44,6 +45,9 @@ bool Looper::Loop()
 
 			// 経過時間を減少させる
 			Time::GetInstance()->SubFixedTimer();
+
+			// 当たり判定
+			CheckCollision::CheckColliders(sceneStack.top()->GetObjectManager().lock()->game_objects_);
 
 			// 5回処理して改善しなければ強制的に離脱
 			if(i >=10)

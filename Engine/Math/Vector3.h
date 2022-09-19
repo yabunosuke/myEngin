@@ -112,7 +112,7 @@ public:
 	/// 2“_ŠÔ‚Ì‹——£‚ğ‹‚ß‚é
 	/// </summary>
 	/// <returns>2“_ŠÔ‚Ì‹——£</returns>
-	inline static float Distance(const Vector3 &lhs, const Vector3 &rhs);
+	static float Distance(const Vector3 &lhs, const Vector3 &rhs);
 
 
 

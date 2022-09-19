@@ -187,6 +187,12 @@
     <ClCompile Include="Object\Component\Collider\SphereCollider\SphereCollider.cpp">
       <Filter>Object\Component\Collider\SphereCollider</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Component\Behaviour\Behaviour.cpp">
+      <Filter>Object\Component\Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Component\Behaviour\MonoBehaviour\MonoBehaviour.cpp">
+      <Filter>Object\Component\Behaviour\MonoBehaviour</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -354,6 +360,12 @@
     </ClInclude>
     <ClInclude Include="Object\Component\Collider\SphereCollider\SphereCollider.h">
       <Filter>Object\Component\Collider\SphereCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Component\Behaviour\Behaviour.h">
+      <Filter>Object\Component\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Component\Behaviour\MonoBehaviour\MonoBehaviour.h">
+      <Filter>Object\Component\Behaviour\MonoBehaviour</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

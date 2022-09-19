@@ -1,43 +1,15 @@
 #pragma once
 
+#include "Object/GameObject/GameObject.h"
+#include "Object/Component/Collider/SphereCollider/SphereCollider.h"
+
 class CheckCollision
 {
-	//static CheckCollisions(const std::vector<std::weak_ptr<GameObject>> &game_objects)
-};
+public:
+	static void CheckColliders(const std::vector<std::weak_ptr<GameObject>> &game_objects);
+	static bool CheckHitCollision(std::weak_ptr<Collider> a, std::weak_ptr<Collider> b,Vector3 hit_pos);
 
-//#pragma once
-//
-//#include "CollisionPrimitive.h"
-//#include "RaycastHit.h"
-//#include "QueryCallback.h"
-//#include "GameObjectManager.h"
-//#include "Object/GameObject/GameObject.h"
-//
-//#include "Object/Component/Collider/Collider.h"
-//#include <memory>
-//
-//#include <d3d12.h>
-//#include <forward_list>
-//
-//class BaseCollider;
-//
-//class CollisionManager
-//{
-//public:// メンバ関数
-//
-//	//全てのブロードフェイズ衝突チェック
-//	void CheckBroadCollisions(const std::vector<std::weak_ptr<GameObject>> &game_objects);
-//
-//	//二つの衝突チェック
-//	bool CheckHitCollision(BaseCollider *colA, BaseCollider *colB, DirectX::XMVECTOR *inter = nullptr);
-//
-//	// レイキャスト
-//	//bool Raycast(const Ray& ray, RaycastHit* hitInfo = nullptr, float maxDistance = D3D12_FLOAT32_MAX);
-//
-//	/*bool Raycast(const Ray& ray, unsigned short attribute, RaycastHit* hitInfo = nullptr,
-//		float maxDistance = D3D12_FLOAT32_MAX);*/
-//
-//	// 球による衝突全検索
-//	void QuerySphere(const Sphere &sphere, QueryCallback *callback);
-//
-//};
+	static bool SphereToSphere(std::weak_ptr<SphereCollider> a, std::weak_ptr<SphereCollider> b);
+private:
+
+};

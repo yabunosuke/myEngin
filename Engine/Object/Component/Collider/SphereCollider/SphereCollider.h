@@ -14,6 +14,21 @@ public:
     /// 情報
     /// </summary>
     void Infomation() override;
+
+    
+    // オブジェクトの座標に対するオフセット
+    yEngin::Property<Vector3> center
+    {
+        center_,
+        yEngin::AccessorType::AllAccess
+    };
+    // 半径
+    yEngin::Property<float> radius
+    {
+        radius_,
+        yEngin::AccessorType::AllAccess
+    };
+
 private:
     // オブジェクトの座標に対するオフセット
     Vector3 center_;

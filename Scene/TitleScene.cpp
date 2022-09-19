@@ -43,7 +43,7 @@ void TitleScene::Initialize()
 	player.lock()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/sword human/Sword man.fbx");
-	player.lock()->AddComponent<Collider>();
+	player.lock()->AddComponent<SphereCollider>();
 	player.lock()->AddComponent<Rigidbody>();
 	player.lock()->AddComponent<PlayerTest>();
 	player.lock()->transform->lock()->localScale = { 0.4f,0.4f,0.4f };
@@ -60,11 +60,11 @@ void TitleScene::Initialize()
 	//castle.lock()->transform->lock()->localScale = { 20,20,20 };
 	//castle.lock()->transform->lock()->localPosition = { 0,-7,0 };
 
-	//auto danbo = game_object_manager_->CreateObject("danbo");
-	//danbo.lock()->AddComponent<Object3dComponent>(
-	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-	//	"Assets/3d/UNIT/danbo_fbx/danbo_taiki.fbx");
-	//danbo.lock()->AddComponent<SphereCollider>();
+	auto danbo = GameObject::CreateObject("danbo");
+	danbo.lock()->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/UNIT/danbo_fbx/danbo_taiki.fbx");
+	danbo.lock()->AddComponent<SphereCollider>();
 
 	auto camera = GameObject::CreateObject("Camera");
 	camera.lock()->AddComponent<Camera>();

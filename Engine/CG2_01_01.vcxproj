@@ -215,6 +215,8 @@
     <ClCompile Include="OBBCollider.cpp" />
     <ClCompile Include="MultiRenderTarget\MulutiRenderTarget.cpp" />
     <ClCompile Include="Object3dComponent.cpp" />
+    <ClCompile Include="Object\Component\Behaviour\Behaviour.cpp" />
+    <ClCompile Include="Object\Component\Behaviour\MonoBehaviour\MonoBehaviour.cpp" />
     <ClCompile Include="Object\Component\Camera.cpp" />
     <ClCompile Include="Object\Component\Collider\CheckCollision.cpp" />
     <ClCompile Include="Object\Component\Collider\Collider.cpp" />
@@ -412,6 +414,8 @@
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="MultiRenderTarget\MulutiRenderTarget.h" />
     <ClInclude Include="Object3dComponent.h" />
+    <ClInclude Include="Object\Component\Behaviour\Behaviour.h" />
+    <ClInclude Include="Object\Component\Behaviour\MonoBehaviour\MonoBehaviour.h" />
     <ClInclude Include="Object\Component\Camera.h" />
     <ClInclude Include="Object\Component\Collider\CheckCollision.h" />
     <ClInclude Include="Object\Component\Collider\Collider.h" />
