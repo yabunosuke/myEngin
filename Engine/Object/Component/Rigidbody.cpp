@@ -89,11 +89,6 @@ void Rigidbody::ComponentFixedUpdate()
 
 void Rigidbody::ComponentUpdate()
 {
-	// 見た目上の移動を保管する場合はコメントアウトを外す
-	/*auto a =  static_cast<float>(Time::GetInstance()->time / Time::GetInstance()->fixedDeltaTime);
-	transform_.lock()->localPosition =
-		transform_.lock()->localPosition
-		+ velocity_ * a;*/
 }
 
 void Rigidbody::AddForce(XMFLOAT3 force, ForceMode force_mode)

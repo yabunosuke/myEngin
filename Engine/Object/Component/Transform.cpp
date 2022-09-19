@@ -6,7 +6,7 @@
 
 
 Transform::Transform() :
-	Component("Transform",  ComponentType::TRANSFORM,true)
+	Component("Transform",  ComponentType::Transform,true)
 {
 }
 

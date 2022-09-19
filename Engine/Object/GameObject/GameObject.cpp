@@ -61,12 +61,12 @@ void GameObject::SetPearentObject(std::weak_ptr<GameObject> pearent) {
 
 void GameObject::Initialize()
 {
-	scripts_.clear();
+	/*scripts_.clear();
 	for (auto component : component_list_) {
 		if (dynamic_cast<ScriptComponent *>(component.lock().get())) {
 			scripts_.emplace_back(component);
 		}
-	}
+	}*/
 }
 
 void GameObject::FixedUpdate()

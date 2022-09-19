@@ -5,11 +5,27 @@ class MonoBehaviour :
     public Behaviour
 {
 public:
+
+    //===========================================
+    //
+    //		コンストラクタ
+    //
+    //===========================================
+
+    MonoBehaviour(const std::string &name);
+
+    void ComponentFixedUpdate() override;
+    void ComponentUpdate() override;
+
+
+    virtual void Reset() {};
     virtual void Awake(){};
-    virtual void FixedUpadate(){};
-    virtual void LateUpdate();
-    virtual void Reset(){};
-    virtual void Start(){};
-    virtual void Update(){};
+    virtual void Start() {};
+    virtual void FixedUpdate(){};
+    virtual void Update() {};
+    virtual void LateUpdate(){};
+
+private:
+    bool do_start_ = true;
 };
 

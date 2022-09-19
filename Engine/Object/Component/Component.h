@@ -17,9 +17,11 @@ class Transform;
 enum class ComponentType
 {
 	None,
-	Sqript,		// スクリプト
+	Sqript,		// 削除予定
+	Behaviour,		// 
+	MonoBehaviour,		// 
 	RigitBody,	// リジッドボディ
-	TRANSFORM,	// トランスフォーム
+	Transform,	// トランスフォーム
 	Collider,
 	Light,		// ライト
 	Camera,		// カメラ
@@ -68,7 +70,7 @@ public:
 	/// <summary>
 	/// インスペクター用
 	/// </summary>
-	void ImGuiDraw();
+	virtual void ImGuiDraw();
 
 
 
@@ -154,13 +156,11 @@ protected:	//関数
 
 	
 
-	// アクティブフラグ
-	bool is_active_;
 	// リムーブフラグ
 	bool isRemove;
-private:
 	// 削除不可
 	bool isDontRemove;
+private:
 	//
 	ComponentType type_ = ComponentType::None;
 

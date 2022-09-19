@@ -188,12 +188,11 @@
     <ClCompile Include="3d\DrawFbx.cpp" />
     <ClCompile Include="3d\Fbx\Fbx.cpp" />
     <ClCompile Include="3d\Fbx\FbxResource.cpp" />
+    <ClCompile Include="Assets\Scripts\Player.cpp" />
     <ClCompile Include="Component\Manager\LightManager.cpp" />
-    <ClCompile Include="Component\ScriptComponent.cpp" />
     <ClCompile Include="ConstantBufferManager\ConstantBufferLapper.cpp" />
     <ClCompile Include="ConstantBufferManager\ConstantBufferManager.cpp" />
     <ClCompile Include="Editor.cpp" />
-    <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
@@ -231,7 +230,6 @@
     <ClCompile Include="Object\Mesh\Mesh.cpp" />
     <ClCompile Include="Object\Object.cpp" />
     <ClCompile Include="PipelineManager.cpp" />
-    <ClCompile Include="PlayerTest.cpp" />
     <ClCompile Include="PrimitiveRenderer.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene\AbstractScene\AbstractScene.cpp" />
@@ -387,14 +385,13 @@
     <ClInclude Include="3d\DrawFbx.h" />
     <ClInclude Include="3d\Fbx\Fbx.h" />
     <ClInclude Include="3d\Fbx\FbxResource.h" />
+    <ClInclude Include="Assets\Scripts\Player.h" />
     <ClInclude Include="Collider\OBBCollider.h" />
     <ClInclude Include="Component\Manager\LightManager.h" />
-    <ClInclude Include="Component\ScriptComponent.h" />
     <ClInclude Include="ConstantBufferManager\ConstantBuffer.h" />
     <ClInclude Include="ConstantBufferManager\ConstantBufferLapper.h" />
     <ClInclude Include="ConstantBufferManager\ConstantBufferManager.h" />
     <ClInclude Include="Editor.h" />
-    <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="ImGui\imconfig.h" />
@@ -430,7 +427,6 @@
     <ClInclude Include="Object\Mesh\Mesh.h" />
     <ClInclude Include="Object\Object.h" />
     <ClInclude Include="PipelineManager.h" />
-    <ClInclude Include="PlayerTest.h" />
     <ClInclude Include="PrimitiveRenderer.h" />
     <ClInclude Include="Property.h" />
     <ClInclude Include="Renderer.h" />

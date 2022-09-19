@@ -43,12 +43,12 @@ void CheckCollision::CheckColliders(const std::vector<std::weak_ptr<GameObject>>
 
 						// Õ“Ëƒ^ƒCƒv•Êˆ—
 						if (true) {
-							for (const auto &script_a : object_a->lock().get()->GetScripts()) {
+							/*for (const auto &script_a : object_a->lock().get()->GetScripts()) {
 								std::static_pointer_cast<ScriptComponent>(script_a.lock())->OnCollisionEnter();
 							}
 							for (const auto &script_b : object_b->lock().get()->GetScripts()) {
 								std::static_pointer_cast<ScriptComponent>(script_b.lock())->OnCollisionEnter();
-							}
+							}*/
 						}
 					}
 				}

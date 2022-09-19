@@ -17,9 +17,8 @@
 #include "Object/Component/Light.h"
 #include "Object/Component/Rigidbody.h"
 #include "Object/Component/Camera.h"
+#include "Assets/Scripts/Player.h"
 #include "Weapon.h"
-#include "Object/Component/Renderer/MeshRenderer/MeshRenderer.h"
-#include "PlayerTest.h"
 
 
 
@@ -27,8 +26,6 @@ TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
 
-	// ƒeƒXƒg
-	//auto test = testObject::CreateObject<testGameObject>();
 }
 
 void TitleScene::Initialize()
@@ -45,7 +42,7 @@ void TitleScene::Initialize()
 		"Assets/3d/sword human/Sword man.fbx");
 	player.lock()->AddComponent<SphereCollider>();
 	player.lock()->AddComponent<Rigidbody>();
-	player.lock()->AddComponent<PlayerTest>();
+	player.lock()->AddComponent<Player>();
 	player.lock()->transform->lock()->localScale = { 0.4f,0.4f,0.4f };
 
 	//auto player_light = game_object_manager_->CreateObject("Player light");
@@ -53,12 +50,12 @@ void TitleScene::Initialize()
 	//player_light.lock()->transform->lock()->localPosition = { 0.0f,50.0f,0.0f };
 	//game_object_manager_->SetPearentChild(player, player_light);
 
-	//auto castle = game_object_manager_->CreateObject("Castle");
-	//castle.lock()->AddComponent<Object3dComponent>(
-	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-	//	"Assets/3d/Castle/Castle FBX.fbx");
-	//castle.lock()->transform->lock()->localScale = { 20,20,20 };
-	//castle.lock()->transform->lock()->localPosition = { 0,-7,0 };
+	auto castle = GameObject::CreateObject("Castle");
+	castle.lock()->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/Castle/Castle FBX.fbx");
+	castle.lock()->transform->lock()->localScale = { 20,20,20 };
+	castle.lock()->transform->lock()->localPosition = { 0,-7,0 };
 
 	auto danbo = GameObject::CreateObject("danbo");
 	danbo.lock()->AddComponent<Object3dComponent>(

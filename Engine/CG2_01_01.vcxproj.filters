@@ -61,9 +61,6 @@
     <ClCompile Include="Scene\AbstractScene\AbstractScene.cpp">
       <Filter>Scene\AbstractScene</Filter>
     </ClCompile>
-    <ClCompile Include="Component\ScriptComponent.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="ImGui\imgui.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
@@ -120,9 +117,6 @@
       <Filter>Component\Light</Filter>
     </ClCompile>
     <ClCompile Include="3d\DrawFbx.cpp" />
-    <ClCompile Include="PlayerTest.cpp">
-      <Filter>Component\UserComponent</Filter>
-    </ClCompile>
     <ClCompile Include="Object\Object.cpp">
       <Filter>Object</Filter>
     </ClCompile>
@@ -166,14 +160,8 @@
     <ClCompile Include="Object\Component\Rigidbody.cpp">
       <Filter>Component\Rigidbody</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Component\Light.cpp">
-      <Filter>Component\Light</Filter>
-    </ClCompile>
     <ClCompile Include="Object\Component\Component.cpp">
       <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyBase.cpp">
-      <Filter>Component\UserComponent</Filter>
     </ClCompile>
     <ClCompile Include="Math\Vector2.cpp">
       <Filter>Math</Filter>
@@ -192,6 +180,12 @@
     </ClCompile>
     <ClCompile Include="Object\Component\Behaviour\MonoBehaviour\MonoBehaviour.cpp">
       <Filter>Object\Component\Behaviour\MonoBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Component\Light.cpp">
+      <Filter>Object\Component\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Player.cpp">
+      <Filter>Asset\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -227,9 +221,6 @@
     </ClInclude>
     <ClInclude Include="Scene\AbstractScene\AbstractScene.h">
       <Filter>Scene\AbstractScene</Filter>
-    </ClInclude>
-    <ClInclude Include="Component\ScriptComponent.h">
-      <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imconfig.h">
       <Filter>ImGui</Filter>
@@ -293,9 +284,6 @@
       <Filter>Component\Light</Filter>
     </ClInclude>
     <ClInclude Include="3d\DrawFbx.h" />
-    <ClInclude Include="PlayerTest.h">
-      <Filter>Component\UserComponent</Filter>
-    </ClInclude>
     <ClInclude Include="Math\Quaternion.h">
       <Filter>Math</Filter>
     </ClInclude>
@@ -340,14 +328,8 @@
     <ClInclude Include="Object\Component\Rigidbody.h">
       <Filter>Component\Rigidbody</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Component\Light.h">
-      <Filter>Component\Light</Filter>
-    </ClInclude>
     <ClInclude Include="Object\Component\Component.h">
       <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyBase.h">
-      <Filter>Component\UserComponent</Filter>
     </ClInclude>
     <ClInclude Include="Math\Vector2.h">
       <Filter>Math</Filter>
@@ -366,6 +348,12 @@
     </ClInclude>
     <ClInclude Include="Object\Component\Behaviour\MonoBehaviour\MonoBehaviour.h">
       <Filter>Object\Component\Behaviour\MonoBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Component\Light.h">
+      <Filter>Object\Component\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Player.h">
+      <Filter>Asset\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -481,6 +469,15 @@
     </Filter>
     <Filter Include="Object\Component\Collider\MeshCollider">
       <UniqueIdentifier>{6d5ac3d6-8e71-4459-8159-75ebb64cb73f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component\Light">
+      <UniqueIdentifier>{86374e8a-36f0-4ae1-adbf-152232335174}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset">
+      <UniqueIdentifier>{4d28c3cb-65ca-4757-8f13-379f06a3a677}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Player">
+      <UniqueIdentifier>{bf7e6b15-6f73-447c-84d4-a6173d78679e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

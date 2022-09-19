@@ -18,7 +18,6 @@
 
 //コンポーネント基底クラス
 #include "Object/Component/Component.h"
-#include "Component/ScriptComponent.h"
 
 
 #include "Property.h"
@@ -195,10 +194,6 @@ public:	//関数
 	void RemoveCollider(std::weak_ptr<Collider> collider);
 
 
-	// Script
-	const std::vector<std::weak_ptr<Component>> &GetScripts() { return scripts_; }
-
-
 	/// <summary>
 	/// 所属しているシーン (get = true, set = false)
 	/// </summary>
@@ -234,9 +229,6 @@ private:
 	// ゲームオブジェクトのタグ
 	std::string tag_ = "Notag";
 
-
-
-
 	// 親オブジェクト
 	std::weak_ptr<GameObject> pearent_game_object_;
 	// 子オブジェクトのコンテナ
@@ -246,10 +238,6 @@ private:
 	
 	// コライダーリスト
 	std::vector<std::weak_ptr<Collider>> colliders_;
-
-	// Scriptリスト
-	std::vector<std::weak_ptr<Component>> scripts_;
-
 
 	bool active_self_;				// ローカルのアクティブ状態
 	// 非表示になっているか

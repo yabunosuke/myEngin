@@ -1,39 +1,31 @@
-#include "PlayerTest.h"
-#include "Object/GameObject/GameObject.h"
+#include "Player.h"
+
+#include "Input.h"
 #include "Object3dComponent.h"
-PlayerTest::PlayerTest():
-	ScriptComponent("Player")
+#include "Object/GameObject/GameObject.h"
+
+class Object3dComponent;
+
+Player::Player():
+MonoBehaviour("Player")
 {
 }
 
-void PlayerTest::OnCollisionEnter()
+void Player::Start()
 {
-	game_object->SetColor({1,0,0,1});
-
-}
-
-void PlayerTest::Initialize()
-{
-	// トランスフォーム
-
 	// リジッド
 	regidbody_ = game_object_.lock()->GetComponent<Rigidbody>();
-
-	// オブジェクトデータ
 	game_object = game_object_.lock()->GetComponent<Object3dComponent>().lock()->GetObjectData();
-
-
 }
 
-void PlayerTest::FixedUpdate()
+void Player::FixedUpdate()
 {
-	
 	// キー入力での移動処理
 	if (Input::GetKeyPress(DIK_W))
 	{
-		if(Input::GetKeyPress(DIK_LSHIFT))
+		if (Input::GetKeyPress(DIK_LSHIFT))
 		{
-			
+
 			regidbody_.lock()->AddForce(transform_.lock()->GetFront());
 		}
 		else
@@ -46,7 +38,7 @@ void PlayerTest::FixedUpdate()
 		// 移動
 		regidbody_.lock()->AddForce(-transform_.lock()->GetFront());
 	}
-	if(Input::GetKeyPress(DIK_D))
+	if (Input::GetKeyPress(DIK_D))
 	{
 		// 移動
 		regidbody_.lock()->AddForce(transform_.lock()->GetRight());
@@ -58,25 +50,23 @@ void PlayerTest::FixedUpdate()
 	}
 }
 
-void PlayerTest::Update()
+void Player::Update()
 {
 	static float spin = 180;
-	
-	//
 
 	if (!(Input::GetKeyPress(DIK_W) ||
 		Input::GetKeyPress(DIK_A) ||
 		Input::GetKeyPress(DIK_S) ||
 		Input::GetKeyPress(DIK_D)
 		)) {
-		if(state != AnimationState::SLASH ||
+		if (state != AnimationState::SLASH ||
 			!game_object->IsPlayAnimation())
 		{
 			state = AnimationState::IDOLE;
 			game_object->PlayAnimation(static_cast<int>(state));
 
 		}
-		
+
 	}
 	else {
 		// キー入力での移動処理
@@ -97,7 +87,7 @@ void PlayerTest::Update()
 			state = AnimationState::WALK_BACK;
 			game_object->PlayAnimation(static_cast<int>(state));
 		}
-		else{
+		else {
 			if (Input::GetKeyPress(DIK_D)) {
 
 				// 移動
@@ -115,7 +105,7 @@ void PlayerTest::Update()
 	if (Input::GetKeyPress(DIK_Q))
 	{
 		spin -= 2;
-		XMStoreFloat4(&transform_.lock()->localQuaternion, XMQuaternionRotationRollPitchYaw(0,spin * Mathf::deg_to_rad,0));
+		XMStoreFloat4(&transform_.lock()->localQuaternion, XMQuaternionRotationRollPitchYaw(0, spin * Mathf::deg_to_rad, 0));
 	}
 	if (Input::GetKeyPress(DIK_E))
 	{
@@ -127,32 +117,4 @@ void PlayerTest::Update()
 		state = AnimationState::SLASH;
 		game_object->PlayAnimation(static_cast<int>(state), false);
 	}
-
-	//if (Input::GetKeyPressTrigger(DIK_1)) {
-	//	isDead = !isDead;
-	//	if (isDead) {
-	//		state = AnimationState::DETH;
-	//		game_object->PlayAnimation(static_cast<int>(state), false);
-	//	}
-	//	else {
-	//		state = AnimationState::IDLE;
-	//	}
-	//}
-
-	//if(regidbody_.lock()->velocity_.Magnitude() > 3.0f)
-	//{
-	//}
 }
-
-void PlayerTest::LustUpdate()
-{
-}
-
-void PlayerTest::Draw()
-{
-}
-
-void PlayerTest::Finalize()
-{
-}
-

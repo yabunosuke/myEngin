@@ -13,7 +13,6 @@
 Looper::Looper() {
 	//最初のシーン
 	OnSceneChanged(Scenes::Title, false);
-	sceneStack.top()->Initialize();
 	editor.Initialize(sceneStack.top());
 	//KeyboardInput::GetIns()->Initialize();
 	Input::Initialize();

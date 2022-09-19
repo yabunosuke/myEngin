@@ -2,11 +2,11 @@
 #include "Object/GameObject/GameObject.h"
 #include "Object3dComponent.h"
 Weapon::Weapon():
-	ScriptComponent("Weapon")
+	MonoBehaviour("Weapon")
 {
 }
 
-void Weapon::Initialize()
+void Weapon::Start()
 {
 	// ゲームオブジェクトの親のゲームオブジェクトの
 	// モデルのボーンのトランスフォームを取得
@@ -19,15 +19,3 @@ void Weapon::Initialize()
 	game_object_.lock()->transform->lock()->user_set_parent_ = hand_bone_;
 }
 
-void Weapon::Update()
-{
-}
-
-void Weapon::FixedUpdate()
-{
-}
-
-void Weapon::OnCollisionEnter()
-{
-	int a = 0;
-}
