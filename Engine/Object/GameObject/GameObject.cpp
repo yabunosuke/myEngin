@@ -49,10 +49,6 @@ bool GameObject::CompareTag(const std::string &tag)
 	return tag_ == tag;
 }
 
-
-void GameObject::SetActive(bool value)
-{
-}
 void GameObject::SetPearentObject(std::weak_ptr<GameObject> pearent) {
 	pearent_game_object_ = pearent;
 	transform_.lock()->parent_ = pearent.lock().get()->GetComponent<Transform>();

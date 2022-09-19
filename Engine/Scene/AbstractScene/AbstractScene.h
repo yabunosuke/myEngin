@@ -2,7 +2,6 @@
 #include <string>
 #include "IoChangedListener.h"
 #include "GameObjectManager.h"
-#include "CollisionManager.h"
 #include "2d/PostEffect.h"
 #include "MultiRenderTarget/MulutiRenderTarget.h"
 
@@ -17,7 +16,6 @@ protected:
 	IoChangedListener *implSceneChanged;
 public:
 	AbstractScene(IoChangedListener *impl,std::string sceneName);
-	virtual ~AbstractScene() {};
 	/// <summary>
 	/// ‰Šú‰»
 	/// </summary>

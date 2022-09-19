@@ -4,7 +4,7 @@ class SphereCollider final :
     public Collider
 {
 public:
-    SphereCollider(Vector3 center = {0,0,0}, float radius = 0.0f);
+    SphereCollider(float radius = 1.0f, Vector3 center = { 0,0,0 });
     /// <summary>
     /// ‰Šú‰»
     /// </summary>

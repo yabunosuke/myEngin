@@ -105,33 +105,6 @@ public:	//関数
 
 
 
-
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <param name="value"></param>
-	void SetActive(bool value);
-
-	//===========================================
-	//
-	//		アクセッサ
-	//
-	//===========================================
-
-	/// <summary>
-	/// オブジェクト識別タグ (get = true, set = true)
-	/// </summary>
-	yEngin::Property<std::string> tag{ tag_ ,yEngin::AccessorType::AllAccess };
-	/// <summary>
-	/// ローカルのアクティブ状態 (get = true, set = false)
-	/// </summary>
-	yEngin::Property<bool> activeSelf{ active_self_ ,yEngin::AccessorType::ReadOnly };
-	/// <summary>
-	/// ローカルのアクティブ状態 (get = true, set = false)
-	/// </summary>
-	yEngin::Property<std::weak_ptr<Transform>> transform{ transform_,yEngin::AccessorType::AllAccess };
-
-
 	//初期化
 	void Initialize();
 
@@ -199,9 +172,21 @@ public:	//関数
 	/// </summary>
 	//Property<std::weak_ptr<AbstractScene>> scene{ scene_ ,AccessorType::ReadOnly };
 
+	
+	/// <summary>
+	/// オブジェクト識別タグ (get = true, set = true)
+	/// </summary>
+	yEngin::Property<std::string> tag{ tag_ ,yEngin::AccessorType::AllAccess };
+	/// <summary>
+	/// ローカルのアクティブ状態 (get = true, set = false)
+	/// </summary>
+	yEngin::Property<bool> activeSelf{ active_self_ ,yEngin::AccessorType::ReadOnly };
+	/// <summary>
+	/// ローカルのアクティブ状態 (get = true, set = false)
+	/// </summary>
+	yEngin::Property<std::weak_ptr<Transform>> transform{ transform_,yEngin::AccessorType::AllAccess };
 
 
-	// アタッチされているトランスフォーム
 private:
 	//===========================================
 	//

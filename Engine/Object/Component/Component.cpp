@@ -46,6 +46,7 @@ Component::Component(std::string name, ComponentType component_id, bool dontRemo
 
 void Component::ImGuiDraw()
 {
+	ImGui::SameLine(30);
 	if (ImGui::TreeNode(name->c_str())) {
 		ImGui::Separator();
 		Infomation();

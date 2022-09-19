@@ -5,15 +5,20 @@ Component(name,component_type)
 {
 }
 
+void Behaviour::ComponentFixedUpdate()
+{
+	if (!enabled_) return;
+	Component::ComponentFixedUpdate();
+}
+
+void Behaviour::ComponentUpdate()
+{
+	if (!enabled_) return;
+	Component::ComponentUpdate();
+}
+
 void Behaviour::ImGuiDraw()
 {
 	ImGui::Checkbox("##is_active_", &enabled_);
-	if (ImGui::TreeNode(name->c_str())) {
-		ImGui::Separator();
-		Infomation();
-		if (!isDontRemove) {
-			isRemove = ImGui::Button("Remove");
-		}
-		ImGui::TreePop();
-	}
+	Component::ImGuiDraw();
 }

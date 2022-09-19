@@ -1,8 +1,7 @@
 #include "CheckCollision.h"
-
-#include "Collider.h"
-#include "SphereCollider/SphereCollider.h"
+#include "Collision.h"
 #include <memory>
+#include "Object/Component/Rigidbody.h"
 
 void CheckCollision::CheckColliders(const std::vector<std::weak_ptr<GameObject>> &game_objects)
 {
@@ -14,12 +13,14 @@ void CheckCollision::CheckColliders(const std::vector<std::weak_ptr<GameObject>>
 	// 全てのオブジェクトをチェック
 	for (auto object_a = game_objects.begin(); object_a != game_objects.end(); ++object_a)
 	{
+		auto rigidbody_a = object_a->lock()->GetComponent<Rigidbody>();
 		// Bオブジェクトのイテレータを一つずらす
 		auto object_b = object_a;
 		++object_b;
 
 		for (; object_b != game_objects.end(); ++object_b)
 		{
+			auto rigidbody_b = object_b->lock()->GetComponent<Rigidbody>();
 
 			// ブロードフェーズ(後ほど実装) 
 			if (false) {
@@ -35,10 +36,10 @@ void CheckCollision::CheckColliders(const std::vector<std::weak_ptr<GameObject>>
 				for (std::weak_ptr<Collider> collider_b : object_b->lock().get()->GetColliders())
 				{
 					// 衝突判定
-					if (CheckHitCollision(collider_a, collider_b, hit_pos))
+					if (CheckHit(collider_a, collider_b, hit_pos))
 					{
 						// トリガー
-
+						
 						// 物理接触
 
 						// 衝突タイプ別処理
@@ -59,7 +60,7 @@ void CheckCollision::CheckColliders(const std::vector<std::weak_ptr<GameObject>>
 	}
 }
 
-bool CheckCollision::CheckHitCollision(std::weak_ptr<Collider> a, std::weak_ptr<Collider> b, Vector3 hit_pos)
+bool CheckCollision::CheckHit(std::weak_ptr<Collider> a, std::weak_ptr<Collider> b, Vector3 hit_pos)
 {
 	int collision_pattern = static_cast<int>(a.lock()->collisionType.r_) | static_cast<int>(b.lock()->collisionType.r_);
 

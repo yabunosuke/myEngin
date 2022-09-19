@@ -7,11 +7,13 @@ MonoBehaviour::MonoBehaviour(const std::string &name):
 
 void MonoBehaviour::ComponentFixedUpdate()
 {
+	if (!enabled) return;
 	FixedUpdate();
 }
 
 void MonoBehaviour::ComponentUpdate()
 {
+	if (!enabled) return;
 	// 一度だけスタート関数を経由する
 	if(do_start_)
 	{

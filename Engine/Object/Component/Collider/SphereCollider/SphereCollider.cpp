@@ -1,6 +1,6 @@
 #include "SphereCollider.h"
 
-SphereCollider::SphereCollider(Vector3 center, float radius):
+SphereCollider::SphereCollider(float radius, Vector3 center):
 center_(center),
 radius_(radius)
 {

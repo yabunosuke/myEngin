@@ -1,6 +1,6 @@
 #pragma once
 #include "Object/Component/Behaviour/Behaviour.h"
-
+#include "Collision/Collision.h"
 class MonoBehaviour :
     public Behaviour
 {
@@ -25,8 +25,31 @@ public:
     virtual void Update() {};
     virtual void LateUpdate(){};
 
+    /// <summary>
+    /// G‚ê‚½uŠÔ‚ÉŒÄ‚Ño‚³‚ê‚é
+    /// </summary>
+    virtual void OnCollisionEnter(Collision collision){};
+    /// <summary>
+    /// —£‚ê‚½uŠÔ‚ÉŒÄ‚Ño‚³‚ê‚é
+    /// </summary>
+    virtual void OnCollisionExit(Collision collision) {};
+    /// <summary>
+    /// U‚ê‚Ä‚¢‚éŠÔŒÄ‚Ño‚³‚ê‚é
+    /// </summary>
+    virtual void OnCollisionStay(Collision collision) {};
 
-
+    /// <summary>
+    /// G‚ê‚½uŠÔ‚ÉŒÄ‚Ño‚³‚ê‚é
+    /// </summary>
+    virtual void OnTriggerEnter(Collision collision) {};
+    /// <summary>
+    /// —£‚ê‚½uŠÔ‚ÉŒÄ‚Ño‚³‚ê‚é
+    /// </summary>
+    virtual void OnTriggerExit(Collision collision) {};
+    /// <summary>
+    /// U‚ê‚Ä‚¢‚éŠÔŒÄ‚Ño‚³‚ê‚é
+    /// </summary>
+    virtual void OnTriggerStay(Collision collision) {};
 private:
     bool do_start_ = true;
 };

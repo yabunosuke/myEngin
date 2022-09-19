@@ -156,9 +156,6 @@
     <ClCompile Include="Object\Component\Collider\Collider.cpp">
       <Filter>Object\Component\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Component\Collider\CheckCollision.cpp">
-      <Filter>Object\Component\Collider</Filter>
-    </ClCompile>
     <ClCompile Include="Object\Component\Collider\SphereCollider\SphereCollider.cpp">
       <Filter>Object\Component\Collider\SphereCollider</Filter>
     </ClCompile>
@@ -173,6 +170,12 @@
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Player.cpp">
       <Filter>Asset\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision\Collision.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision\CheckCollision.cpp">
+      <Filter>Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -311,9 +314,6 @@
     <ClInclude Include="Object\Component\Collider\Collider.h">
       <Filter>Object\Component\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Component\Collider\CheckCollision.h">
-      <Filter>Object\Component\Collider</Filter>
-    </ClInclude>
     <ClInclude Include="Object\Component\Collider\SphereCollider\SphereCollider.h">
       <Filter>Object\Component\Collider\SphereCollider</Filter>
     </ClInclude>
@@ -328,6 +328,12 @@
     </ClInclude>
     <ClInclude Include="Assets\Scripts\Player.h">
       <Filter>Asset\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\Collision.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\CheckCollision.h">
+      <Filter>Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

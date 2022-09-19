@@ -58,7 +58,7 @@ namespace yEngin
         void operator =(const ReferenceT v)
         {
             // “Ç‚İ‚İê—p‚È‚çƒGƒ‰[‚ğ•Ô‚·
-            assert(static_cast<int>(AccessorType::ReadOnly) & static_cast<int>(access_type_));
+            assert(static_cast<int>(AccessorType::ReadOnly) != static_cast<int>(access_type_));
             if (set_) // set‚ªİ’è‚³‚ê‚Ä‚¢‚ê‚Î“o˜^‚³‚ê‚½‚Ù‚¤‚ğŒÄ‚Ô
             {
                 this->set_(v);

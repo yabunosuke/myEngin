@@ -6,7 +6,7 @@
 #include "PrimitiveRenderer.h"
 #include "Time/Time.h"
 #include "Object/GameObject/GameObject.h"
-#include "Object/Component/Collider/CheckCollision.h"
+#include "Collision/CheckCollision.h"
 //シーン
 #include "TitleScene.h"
 
