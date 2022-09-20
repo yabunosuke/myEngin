@@ -43,6 +43,7 @@ void TitleScene::Initialize()
 	player.lock()->AddComponent<Rigidbody>();
 	player.lock()->AddComponent<Player>();
 	player.lock()->transform->lock()->localScale = { 0.4f,0.4f,0.4f };
+	player.lock()->transform->lock()->localPosition = { 0.0f,0.0f,20.0f };
 
 	//auto player_light = game_object_manager_->CreateObject("Player light");
 	//player_light.lock()->AddComponent<Light>(light_manager_);

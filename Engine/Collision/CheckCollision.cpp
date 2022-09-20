@@ -35,28 +35,58 @@ void CheckCollision::CheckColliders(const std::vector<std::weak_ptr<GameObject>>
 			{
 				for (std::weak_ptr<Collider> collider_b : object_b->lock().get()->GetColliders())
 				{
+
+					// 当たり判定情報
+					Collision collision_info_a{
+						object_a->lock(),
+						{ 0,20,0 }
+					};
+					Collision collision_info_b{
+						object_b->lock(),
+						{ 0,20,0 }
+					};
+
+
 					// 衝突判定
 					if (CheckHit(collider_a, collider_b, hit_pos))
 					{
-						// 当たり判定情報
-						Collision collision_info_a{
-							object_a->lock(),
-							{ 0,20,0 }
-						};
-						Collision collision_info_b{
-							object_a->lock(),
-							{ 0,20,0 }
-						};
-						// 物理接触
+						// Aの処理
+						// 始めて衝突した場合と前回のアップデートで衝突していなかった場合Enter呼び出し
+						if (
+							collider_a.lock()->hitlist_[collider_b.lock()->GetInstanceID()] == false ||
+							collider_a.lock()->hitlist_.count(collider_b.lock()->GetInstanceID()) == 0
+							)
+						{
+							for (const auto &script_a : object_a->lock().get()->GetMonoBehaviours()) 
+							{
+								script_a.lock()->OnCollisionEnter(collision_info_a);
+							}
+							collider_a.lock()->hitlist_[collider_b.lock()->GetInstanceID()] = true;
+						}
+						// 前回のアップデートで衝突していた場合
+						else
+						{
+							for (const auto &script_a : object_a->lock().get()->GetMonoBehaviours()) 
+							{
+								script_a.lock()->OnCollisionStay(collision_info_a);
+							}
 
-						// 衝突タイプ別処理
-						if (true) {
+						}
+
+					}
+					else
+					{
+						// 接触が解除された場合
+						if (
+							collider_a.lock()->hitlist_.count(collider_b.lock()->GetInstanceID()) == 1 &&
+							collider_a.lock()->hitlist_[collider_b.lock()->GetInstanceID()] == true
+							)
+						{
 							for (const auto &script_a : object_a->lock().get()->GetMonoBehaviours()) {
 								script_a.lock()->OnCollisionEnter(collision_info_a);
 							}
-							for (const auto &script_b : object_b->lock().get()->GetMonoBehaviours()) {
-								script_b.lock()->OnCollisionEnter(collision_info_b);
-							}
+							collider_a.lock()->hitlist_[collider_b.lock()->GetInstanceID()] = false;
+
 						}
 					}
 				}
@@ -131,6 +161,7 @@ float CheckCollision::SqDistancePointSegment(Vector3 start, Vector3 end, Vector3
 	{
 		return Vector3::Dot(end_to_point, end_to_point);
 	}
+
 	// pointが線分上に射影される場合
 	return Vector3::Dot(start_to_point, start_to_point) - e * e / f;
 }

@@ -1,14 +1,15 @@
 #pragma once
 #include "Object/Component/Component.h"
 #include "BaseCollider.h"
+#include <map>
 
 enum class CollisonType
 {
-	None,
-	Sphere,
-	Box,
-	Capsule,
-	Mesh,
+	None	= -1,
+	AABB	= 1 << 0,
+	Sphere	= 1 << 1,
+	OBB		= 1 << 2,
+	Capsule = 1 << 3,
 
 };
 
@@ -54,9 +55,13 @@ public:
 		collision_type_,
 		yEngine::AccessorType::ReadOnly
 	};
+
+
+	std::map<int, bool> hitlist_;
 protected:
 	// コライダーがトリガーかどうか
 	bool is_trigger_ = false;
 	CollisonType collision_type_ = CollisonType::None;
+
 };
 

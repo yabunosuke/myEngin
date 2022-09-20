@@ -26,6 +26,7 @@ public:
     virtual void Update() {};
     virtual void LateUpdate(){};
 
+
     /// <summary>
     /// G‚ê‚½uŠÔ‚ÉŒÄ‚Ño‚³‚ê‚é
     /// </summary>
@@ -33,11 +34,11 @@ public:
     /// <summary>
     /// —£‚ê‚½uŠÔ‚ÉŒÄ‚Ño‚³‚ê‚é
     /// </summary>
-    virtual void OnCollisionExit(Collision collision) {};
+    virtual void OnCollisionExit(Collision &collision) {};
     /// <summary>
-    /// U‚ê‚Ä‚¢‚éŠÔŒÄ‚Ño‚³‚ê‚é
+    /// G‚ê‚Ä‚¢‚éŠÔŒÄ‚Ño‚³‚ê‚é
     /// </summary>
-    virtual void OnCollisionStay(Collision collision) {};
+    virtual void OnCollisionStay(Collision &collision) {};
 
     /// <summary>
     /// G‚ê‚½uŠÔ‚ÉŒÄ‚Ño‚³‚ê‚é
