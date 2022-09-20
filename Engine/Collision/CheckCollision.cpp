@@ -96,13 +96,41 @@ bool CheckCollision::AABB2AABB(yEngine::AABB a, yEngine::AABB b)
 
 bool CheckCollision::Sphere2Sphere(yEngine::Sphere a, yEngine::Sphere b)
 {
-	float distance = Vector3::Distance(a.center, b.center);
+	Vector3 distance = a.center - b.center;
+	float distance2 = Vector3::Dot(distance, distance);
 	float radius_sum = a.radius + b.radius;
 
-	return distance * distance <= radius_sum * radius_sum;
+	return distance2 <= radius_sum * radius_sum;
 }
 
 bool CheckCollision::OBB2OBB(yEngine::OBB a, yEngine::OBB b) 
 {
 	return false;
+}
+
+bool CheckCollision::Spphere2Capsule(yEngine::Sphere sphere, yEngine::Capsule capsule)
+{
+	float distance2 = SqDistancePointSegment(capsule.start,capsule.end,sphere.center);
+	float radius = sphere.radius + capsule.radius;
+
+	return distance2 < radius * radius;
+}
+
+float CheckCollision::SqDistancePointSegment(Vector3 start, Vector3 end, Vector3 point)
+{
+	Vector3 start_to_end = end - start, start_to_point = point - start, end_to_point = point - end;
+	float e = Vector3::Dot(start_to_point, start_to_end);
+
+	// point‚ªü•ª‚ÌŠO‘¤‚ÉË‰e‚³‚ê‚éê‡
+	if (e <= 0.0f)
+	{
+		return Vector3::Dot(start_to_point, start_to_point);
+	}
+	float f = Vector3::Dot(start_to_end, start_to_end);
+	if (e >= f)
+	{
+		return Vector3::Dot(end_to_point, end_to_point);
+	}
+	// point‚ªü•ªã‚ÉË‰e‚³‚ê‚éê‡
+	return Vector3::Dot(start_to_point, start_to_point) - e * e / f;
 }
