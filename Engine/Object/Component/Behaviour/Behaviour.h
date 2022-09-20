@@ -19,10 +19,10 @@ public:
 	void ImGuiDraw() override;
 
 
-    yEngin::Property<bool> enabled
+    yEngine::Property<bool> enabled
     {
         enabled_,
-        yEngin::AccessorType::AllAccess
+        yEngine::AccessorType::AllAccess
     };
 
 private:

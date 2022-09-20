@@ -75,7 +75,8 @@ bool CheckCollision::CheckHit(std::weak_ptr<Collider> a, std::weak_ptr<Collider>
 	{
 		std::weak_ptr<SphereCollider> sphere_a = std::static_pointer_cast<SphereCollider>(a.lock());
 		std::weak_ptr<SphereCollider> sphere_b = std::static_pointer_cast<SphereCollider>(b.lock());
-		if(SphereToSphere(sphere_a, sphere_b))
+
+		if (Sphere2Sphere(*sphere_a.lock().get(), *sphere_b.lock().get()))
 		{
 			return true;
 		}
@@ -84,19 +85,24 @@ bool CheckCollision::CheckHit(std::weak_ptr<Collider> a, std::weak_ptr<Collider>
 	return false;
 }
 
-bool CheckCollision::SphereToSphere(std::weak_ptr<SphereCollider> a, std::weak_ptr<SphereCollider> b)
+bool CheckCollision::AABB2AABB(yEngine::AABB a, yEngine::AABB b)
 {
-	float distance =
-		Vector3::Distance(
-			(a.lock()->center + a.lock()->transform_.lock()->position),
-			(b.lock()->center + b.lock()->transform_.lock()->position)
-		);
-	float radius =
-		a.lock()->radius + b.lock()->radius;
+	if (fabsf(a.center[0] - b.center[0]) > (a.radius[0] + b.radius[0]))	return true;
+	if (fabsf(a.center[1] - b.center[1]) > (a.radius[1] + b.radius[1]))	return true;
+	if (fabsf(a.center[2] - b.center[2]) > (a.radius[2] + b.radius[2]))	return true;
+	
+	return false;
+}
 
-	if(distance<= radius)
-	{
-		return  true;
-	}
+bool CheckCollision::Sphere2Sphere(yEngine::Sphere a, yEngine::Sphere b)
+{
+	float distance = Vector3::Distance(a.center, b.center);
+	float radius_sum = a.radius + b.radius;
+
+	return distance * distance <= radius_sum * radius_sum;
+}
+
+bool CheckCollision::OBB2OBB(yEngine::OBB a, yEngine::OBB b) 
+{
 	return false;
 }

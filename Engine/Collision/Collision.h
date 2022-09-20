@@ -11,16 +11,16 @@ public:
 		);
 
 	// 衝突した相手のオブジェクト (ReadOnly)
-	yEngin::Property<std::weak_ptr<GameObject>> gameObject
+	yEngine::Property<std::weak_ptr<GameObject>> gameObject
 	{
 		game_object_,
-		yEngin::AccessorType::ReadOnly
+		yEngine::AccessorType::ReadOnly
 	};
 	// 衝突した2つのオブジェクトの相対的な速度 (ReadOnly)
-	yEngin::Property<Vector3> relativeVelocity
+	yEngine::Property<Vector3> relativeVelocity
 	{
 		relative_velocity_,
-		yEngin::AccessorType::ReadOnly
+		yEngine::AccessorType::ReadOnly
 	};
 
 

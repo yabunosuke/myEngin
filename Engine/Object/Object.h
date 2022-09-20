@@ -66,7 +66,7 @@ public:
 	/// <summary>
 	/// オブジェクト名 (AllAccess)
 	/// </summary>
-	yEngin::Property<std::string> name{ name_ ,yEngin::AccessorType::AllAccess };
+	yEngine::Property<std::string> name{ name_ ,yEngine::AccessorType::AllAccess };
 private:
 
 	/// <summary>

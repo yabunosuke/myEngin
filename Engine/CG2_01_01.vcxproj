@@ -359,7 +359,6 @@
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
     <ClInclude Include="..\DirectX\Collision\BaseCollider.h" />
-    <ClInclude Include="..\DirectX\Collision\CollisionInfo.h" />
     <ClInclude Include="..\DirectX\Collision\RaycastHit.h" />
     <ClInclude Include="..\DirectX\DirectXCommon\DirectXCommon.h" />
     <ClInclude Include="..\DirectX\Input\ControllerInput.h" />
@@ -380,6 +379,7 @@
     <ClInclude Include="Assets\Scripts\Player.h" />
     <ClInclude Include="Collision\CheckCollision.h" />
     <ClInclude Include="Collision\Collision.h" />
+    <ClInclude Include="Collision\Primitive.h" />
     <ClInclude Include="Component\Manager\LightManager.h" />
     <ClInclude Include="ConstantBufferManager\ConstantBuffer.h" />
     <ClInclude Include="ConstantBufferManager\ConstantBufferLapper.h" />

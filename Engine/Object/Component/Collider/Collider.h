@@ -44,15 +44,15 @@ public:
 	//===========================================
 	
 	// コライダーがトリガーかどうか
-	yEngin::Property<bool> isTrigger
+	yEngine::Property<bool> isTrigger
 	{
 		is_trigger_,
-		yEngin::AccessorType::AllAccess
+		yEngine::AccessorType::AllAccess
 	};
-	yEngin::Property<CollisonType> collisionType
+	yEngine::Property<CollisonType> collisionType
 	{
 		collision_type_,
-		yEngin::AccessorType::ReadOnly
+		yEngine::AccessorType::ReadOnly
 	};
 protected:
 	// コライダーがトリガーかどうか

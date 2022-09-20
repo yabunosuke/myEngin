@@ -182,15 +182,15 @@ public:	//関数
 	/// <summary>
 	/// オブジェクト識別タグ (get = true, set = true)
 	/// </summary>
-	yEngin::Property<std::string> tag{ tag_ ,yEngin::AccessorType::AllAccess };
+	yEngine::Property<std::string> tag{ tag_ ,yEngine::AccessorType::AllAccess };
 	/// <summary>
 	/// ローカルのアクティブ状態 (get = true, set = false)
 	/// </summary>
-	yEngin::Property<bool> activeSelf{ active_self_ ,yEngin::AccessorType::ReadOnly };
+	yEngine::Property<bool> activeSelf{ active_self_ ,yEngine::AccessorType::ReadOnly };
 	/// <summary>
 	/// ローカルのアクティブ状態 (get = true, set = false)
 	/// </summary>
-	yEngin::Property<std::weak_ptr<Transform>> transform{ transform_,yEngin::AccessorType::AllAccess };
+	yEngine::Property<std::weak_ptr<Transform>> transform{ transform_,yEngine::AccessorType::AllAccess };
 
 
 private:

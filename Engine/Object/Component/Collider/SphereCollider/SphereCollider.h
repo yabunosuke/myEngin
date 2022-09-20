@@ -1,7 +1,9 @@
 #pragma once
+#include "../Engine/Collision/Primitive.h"
 #include "../Collider.h"
 class SphereCollider final :
-    public Collider
+    public Collider,
+    public yEngine::Sphere
 {
 public:
     SphereCollider(float radius = 1.0f, Vector3 center = { 0,0,0 });
@@ -9,30 +11,16 @@ public:
     /// 初期化
     /// </summary>
     void ComponentInitialize() override;
+    void ComponentUpdate() override;
 
     /// <summary>
     /// 情報
     /// </summary>
     void Infomation() override;
 
-    
-    // オブジェクトの座標に対するオフセット
-    yEngin::Property<Vector3> center
-    {
-        center_,
-        yEngin::AccessorType::AllAccess
-    };
-    // 半径
-    yEngin::Property<float> radius
-    {
-        radius_,
-        yEngin::AccessorType::AllAccess
-    };
 
 private:
-    // オブジェクトの座標に対するオフセット
-    Vector3 center_;
-    // 半径
-	float radius_;
+    Vector3 local_center_{ 0,0,0 };   // ローカルの中央
+    float local_radius_{1.0f};  // ローカルの半径
 };
 

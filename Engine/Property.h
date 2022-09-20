@@ -4,7 +4,7 @@
 #include <functional>
 #include <assert.h>
 
-namespace yEngin
+namespace yEngine
 {
 
     enum class AccessorType // Accessƒ^ƒCƒv

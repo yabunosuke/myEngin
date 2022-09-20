@@ -4,8 +4,8 @@
 
 std::weak_ptr<Camera> Camera::main_camera_;
 std::vector<std::weak_ptr<Camera>> Camera::cameras_;
-yEngin::Property<std::weak_ptr<Camera>> Camera::main{
-		main_camera_, yEngin::AccessorType::ReadOnly,
+yEngine::Property<std::weak_ptr<Camera>> Camera::main{
+		main_camera_, yEngine::AccessorType::ReadOnly,
 		nullptr,
 		nullptr
 };
