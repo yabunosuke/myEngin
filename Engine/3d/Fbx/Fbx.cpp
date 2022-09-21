@@ -72,7 +72,7 @@ void Fbx::UpdateTransform(const XMFLOAT4X4 &transform)
 void Fbx::Draw(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cmd_list)
 {
 	// Œã‚©‚ç•`‰æ
-	DrawFbx::GetIns()->SetDrawResource(resource_, nodes_);
+	Renderer::GetIns()->SetDrawResource(resource_, nodes_);
 }
 
 Fbx::Node *Fbx::FindNode(const char *name)

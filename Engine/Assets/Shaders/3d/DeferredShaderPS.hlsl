@@ -31,9 +31,11 @@ float4 main(VSOutput input) : SV_TARGET
 	/// 仮計算
 	if (id_tex.r != 0) {
 
-		// Lightの計算
 
 		float3 diffuse, specular;
+
+
+		// Lightの計算
 		for(int i =0;i<LIGHT_MAX;++i)
 		{
 			if(light[i].is_active == 0.0f)
@@ -45,10 +47,18 @@ float4 main(VSOutput input) : SV_TARGET
 			if (light[i].light_type.y != 0)
 			{
 				float t = max(0.0f,dot(normal_tex.xyz, light[i].direction_.xyz));
-				
 
-				float3 diffuse_dorectonal = light[i].color.rgb * t;
-				diffuse += diffuse_dorectonal * light[i].intensity;
+				float3 diffuse_directonal = light[i].color.rgb * t;
+				diffuse += diffuse_directonal * light[i].intensity;
+
+				float3 specular_directonal = CalcPhongSpecular(
+					light[i].direction_.xyz,
+					light[i].color.xyz,
+					position_tex.xyz,
+					normal_tex.xyz,
+					eye_pos.xyz
+				);
+				specular += specular_directonal;
 			}
 
 			// PointLight
@@ -71,9 +81,8 @@ float4 main(VSOutput input) : SV_TARGET
 					light[i].color.xyz,
 					position_tex.xyz,
 					normal_tex.xyz,
-					light[i].position.xyz
+					eye_pos.xyz
 				);
-
 				// ポイントライトとの距離を計算する
 				float distance = length(position_tex. xyz - light[i].position.xyz);
 				// 影響率の計算
@@ -99,20 +108,9 @@ float4 main(VSOutput input) : SV_TARGET
 
 
 
-		// 仮のライト
-		float3 dir_light = normalize(-float3(1, -1, 0));
-
-		// 外積
-		float d = dot(dir_light, normalize(normal_tex.rgb));
-		float power = max(0, d) * 0.8f + 0.2f;
-
-		float3 dir_diffuse = float3(0.8, 0.8, 0.8) * float3(1, 1, 1) * saturate(power);
 
 
-
-
-
-		float3 light = dir_diffuse + diffuse + specular + float3(0.2f, 0.2f, 0.2f);
+		float3 light = diffuse + specular + (color_tex.rgb * float3(0.2f, 0.2f, 0.2f));
 
 		output_color = float4(color_tex.rgb * light, color_tex.w);
 		

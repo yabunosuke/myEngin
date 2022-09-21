@@ -177,6 +177,9 @@
     <ClCompile Include="Collision\CheckCollision.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
+    <ClCompile Include="Math\Matrix4x4.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -334,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="Collision\Primitive.h">
       <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Matrix4x4.h">
+      <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

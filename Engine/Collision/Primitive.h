@@ -10,6 +10,13 @@ namespace yEngine
 		float dot{ 0.0f };					//
 	};
 	
+	/// <summary>
+	/// 3頂点から平面を作成
+	/// </summary>
+	/// <param name="a"></param>
+	/// <param name="b"></param>
+	/// <param name="c"></param>
+	/// <returns></returns>
 	static Plane ComputePlane(Vector3 a, Vector3 b, Vector3 c)
 	{
 		Plane p;
@@ -31,7 +38,6 @@ namespace yEngine
 		float	radius{ 0.0f };				// 半径
 	};
 
-
 	struct OBB
 	{
 		Vector3	center{ 0.0f,0.0f,0.0f };	// 中心座標
@@ -49,6 +55,16 @@ namespace yEngine
 		Vector3 start{ 0.0f,0.0f,0.0f };	// 開始地点
 		Vector3 end{ 0.0f,1.0f,0.0f };		// 終了地点
 		float radius{ 1.0f };				// 半径
+	};
+
+	struct Triangle
+	{
+		Vector3 point[3]
+		{
+			{1.0f,0.0f,0.0f},
+			{0.0f,1.0f,0.0f},
+			{0.0f,1.0f,0.0f}
+		};
 	};
 
 }

@@ -36,6 +36,7 @@ static const int LIGHT_MAX = 128;
 // ライトバッファ用データ構造体
 struct LightConstBufferData {
 	LightDate light[LIGHT_MAX];
+	DirectX::XMFLOAT4 eye_pos{ 0,0,0,0 };
 };
 
 struct CameraDeta

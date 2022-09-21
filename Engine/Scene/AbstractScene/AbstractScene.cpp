@@ -59,7 +59,7 @@ void AbstractScene::PreDrawMultiRenderTarget(Microsoft::WRL::ComPtr<ID3D12Device
 
 void AbstractScene::Draw() const
 {
-	// マネージャー描画（最終的には削除）
+	// マネージャー描画）
 	game_object_manager_->Draw();
 
 	//カメラマネージャをセット
@@ -67,7 +67,7 @@ void AbstractScene::Draw() const
 	Camera::BufferTransfer(DirectXCommon::cmdList, 0, 0);
 	//camera_manager_->BufferTransfer(DirectXCommon::cmdList, 0, 0);
 	// モデルを描画
-	DrawFbx::GetIns()->AllDraw(DirectXCommon::dev,DirectXCommon::cmdList);
+	Renderer::GetIns()->DrawDeferred(DirectXCommon::dev,DirectXCommon::cmdList);
 
 	//ウィンドウ名定義
 	ImGui::Begin("PostEffectShader");

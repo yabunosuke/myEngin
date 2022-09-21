@@ -206,6 +206,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\Easing.cpp" />
     <ClCompile Include="Math\Mathf.h" />
+    <ClCompile Include="Math\Matrix4x4.cpp" />
     <ClCompile Include="Math\Quaternion.cpp" />
     <ClCompile Include="Math\Vector2.cpp" />
     <ClCompile Include="Math\Vector3.cpp" />
@@ -399,6 +400,7 @@
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Math\Easing.h" />
+    <ClInclude Include="Math\Matrix4x4.h" />
     <ClInclude Include="Math\Quaternion.h" />
     <ClInclude Include="Math\Vector2.h" />
     <ClInclude Include="Math\Vector3.h" />

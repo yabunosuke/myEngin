@@ -3,25 +3,27 @@
 
 #include "Fbx/Fbx.h"
 
-class DrawFbx
+class Renderer
 {
 
 private:	//シングルトンパターン
-	DrawFbx() = default;
-	~DrawFbx() = default;
-	DrawFbx(const DrawFbx & r) = default;
-	DrawFbx &operator= (const DrawFbx & r) = default;
+	Renderer() = default;
+	~Renderer() = default;
+	Renderer(const Renderer & r) = default;
+	Renderer &operator= (const Renderer & r) = default;
 
 public:		//インスタンスの取得
-	static DrawFbx *GetIns();
+	static Renderer *GetIns();
 
 	void SetDrawResource(std::weak_ptr<FbxResource> resorces , std::vector<Fbx::Node> nodes);
-	void AllDraw(Microsoft::WRL::ComPtr<ID3D12Device> dev, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list);
+	void DrawDeferred(Microsoft::WRL::ComPtr<ID3D12Device> dev, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list);
+	void DrawForward(Microsoft::WRL::ComPtr<ID3D12Device> dev, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list);
 
 
 private:
 	
-	static std::vector<std::shared_ptr<FbxResource>>	resouces_;
+	static std::vector<std::shared_ptr<FbxResource>>	deferred_shading_datas_;
+	static std::vector<std::shared_ptr<FbxResource>>	forward_shading_datas_;
 	static std::vector<std::vector<Fbx::Node>>			nodes_;
 };
 

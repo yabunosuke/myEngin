@@ -32,6 +32,7 @@ struct Light
 cbuffer LIGHT_CONSTANT_BUFFER : register(b1)
 {
 	Light light[LIGHT_MAX];	//ポイントライト128個
+	float4 eye_pos;
 }
 
 // 頂点シェーダーからピクセルシェーダ―へのやり取りに使用する構造体

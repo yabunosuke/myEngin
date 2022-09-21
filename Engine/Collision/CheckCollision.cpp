@@ -83,7 +83,7 @@ void CheckCollision::CheckColliders(const std::vector<std::weak_ptr<GameObject>>
 							)
 						{
 							for (const auto &script_a : object_a->lock().get()->GetMonoBehaviours()) {
-								script_a.lock()->OnCollisionEnter(collision_info_a);
+								script_a.lock()->OnCollisionExit(collision_info_a);
 							}
 							collider_a.lock()->hitlist_[collider_b.lock()->GetInstanceID()] = false;
 
@@ -135,6 +135,7 @@ bool CheckCollision::Sphere2Sphere(yEngine::Sphere a, yEngine::Sphere b)
 
 bool CheckCollision::OBB2OBB(yEngine::OBB a, yEngine::OBB b) 
 {
+
 	return false;
 }
 

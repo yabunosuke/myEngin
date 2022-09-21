@@ -98,7 +98,7 @@ public:
 	enum class TextureType {
 		BASE,
 		NORMAL,
-		MS,
+		SPECULAR,
 		MAX
 	};
 
@@ -106,7 +106,7 @@ public:
 	const std::string filename[static_cast<int>(TextureType::MAX)]{
 		"",			// ベース
 		"",			// ノーマルマップ
-		"_MS"		// メタリックとスムースネス
+		"_specular"		// メタリックとスムースネス
 	};
 
 	// ノード
@@ -134,6 +134,7 @@ public:
 		/// <summary>
 		///	<para>0. BaseTexture </para>
 		///	<para>1. NormalTexture </para>
+		///	<para>1. SpecularTexture </para>
 		/// </summary>
 		std::string				texture_filenames[2];
 

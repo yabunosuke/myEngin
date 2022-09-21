@@ -50,18 +50,29 @@ void TitleScene::Initialize()
 	//player_light.lock()->transform->lock()->localPosition = { 0.0f,50.0f,0.0f };
 	//game_object_manager_->SetPearentChild(player, player_light);
 
-	auto castle = GameObject::CreateObject("Castle");
-	castle.lock()->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/Castle/Castle FBX.fbx");
-	castle.lock()->transform->lock()->localScale = { 20,20,20 };
-	castle.lock()->transform->lock()->localPosition = { 0,-7,0 };
+	//auto sphere = GameObject::CreateObject("sphere");
+	//sphere.lock()->AddComponent<Object3dComponent>(
+	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+	//	"Assets/3d/test/test.fbx");
 
-	auto danbo = GameObject::CreateObject("danbo");
+	//auto castle = GameObject::CreateObject("Castle");
+	//castle.lock()->AddComponent<Object3dComponent>(
+	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+	//	"Assets/3d/Castle/Castle FBX.fbx");
+	//castle.lock()->transform->lock()->localScale = { 20,20,20 };
+	//castle.lock()->transform->lock()->localPosition = { 0,-7,0 };
+
+	auto danbo = GameObject::CreateObject("Bot");
 	danbo.lock()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/UNIT/danbo_fbx/danbo_taiki.fbx");
 	danbo.lock()->AddComponent<SphereCollider>();
+
+
+	auto test = GameObject::CreateObject("test");
+	test.lock()->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/Test/test.fbx");
 
 	auto camera = GameObject::CreateObject("Camera");
 	camera.lock()->AddComponent<Camera>();
@@ -71,15 +82,15 @@ void TitleScene::Initialize()
 
 
 
-	// •Ší
-	auto weapon = GameObject::CreateObject("Leona's sword");
-	weapon.lock()->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/Leona's sword/Models and Textures/sword.fbx");
-	game_object_manager_->SetPearentChild(player, weapon);
-	weapon.lock()->AddComponent<Weapon>();
+	//// •Ší
+	//auto weapon = GameObject::CreateObject("Leona's sword");
+	//weapon.lock()->AddComponent<Object3dComponent>(
+	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+	//	"Assets/3d/Leona's sword/Models and Textures/sword.fbx");
+	//game_object_manager_->SetPearentChild(player, weapon);
+	//weapon.lock()->AddComponent<Weapon>();
 
-	Vector3 test = player.lock()->transform->lock()->scale;
+	//Vector3 test = player.lock()->transform->lock()->scale;
 }
 
 

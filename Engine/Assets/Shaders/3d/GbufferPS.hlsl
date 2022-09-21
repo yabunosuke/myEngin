@@ -18,7 +18,7 @@ PSOutput main(VSOutput input)
 	float3 normal = normal_t.Sample(texture_sampler, input.texcoord).rgb;
 
 	// テクスチャなしの画像が来たらマテリアルカラーに変更
-	if(0 == albedo.r + albedo.g + albedo.b+albedo.a)
+	if (0 == albedo.r + albedo.g + albedo.b + albedo.a)
 	{
 		albedo = input.color;
 	}

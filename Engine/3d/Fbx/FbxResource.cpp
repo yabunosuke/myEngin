@@ -4,7 +4,7 @@
 
 inline DirectX::XMFLOAT4X4 ToXMFLOAT4x4(const FbxAMatrix& fbxamatrix)
 {
-	DirectX::XMFLOAT4X4 xmfloat4x4;
+	DirectX::XMFLOAT4X4 xmfloat4x4{};
 	for (int row = 0; row < 4; row++)
 	{
 		for (int column = 0; column < 4; column++)
@@ -16,14 +16,14 @@ inline DirectX::XMFLOAT4X4 ToXMFLOAT4x4(const FbxAMatrix& fbxamatrix)
 }
 inline DirectX::XMFLOAT2 ToXMFLOAT2(const FbxDouble2& fbxdouble3)
 {
-	DirectX::XMFLOAT2 xmfloat2;
+	DirectX::XMFLOAT2 xmfloat2{};
 	xmfloat2.x = static_cast<float>(fbxdouble3[0]);
 	xmfloat2.y = static_cast<float>(fbxdouble3[1]);
 	return xmfloat2;
 }
 inline DirectX::XMFLOAT3 ToXMFLOAT3(const FbxDouble3& fbxdouble3)
 {
-	DirectX::XMFLOAT3 xmfloat3;
+	DirectX::XMFLOAT3 xmfloat3{};
 	xmfloat3.x = static_cast<float>(fbxdouble3[0]);
 	xmfloat3.y = static_cast<float>(fbxdouble3[1]);
 	xmfloat3.z = static_cast<float>(fbxdouble3[2]);
@@ -31,7 +31,7 @@ inline DirectX::XMFLOAT3 ToXMFLOAT3(const FbxDouble3& fbxdouble3)
 }
 inline DirectX::XMFLOAT4 ToXMFLOAT4(const FbxDouble4& fbxdouble4)
 {
-	DirectX::XMFLOAT4 xmfloat4;
+	DirectX::XMFLOAT4 xmfloat4{};
 	xmfloat4.x = static_cast<float>(fbxdouble4[0]);
 	xmfloat4.y = static_cast<float>(fbxdouble4[1]);
 	xmfloat4.z = static_cast<float>(fbxdouble4[2]);
@@ -42,7 +42,7 @@ inline DirectX::XMFLOAT4 ToXMFLOAT4(const FbxDouble4& fbxdouble4)
 
 // ボーン影響度
 struct BoneInfluence {
-	uint32_t bone_index;
+	uint32_t bone_index{0};
 	float bone_weight {1.0f};
 };
 using BoneInfluencesPerControlPoint = std::vector<BoneInfluence>;
@@ -379,7 +379,7 @@ void FbxResource::FetchMaterial(FbxScene *fbx_scene, std::vector<Material> &mate
 				material.texture_filenames[0] =
 					fbx_texture ? fbx_texture->GetRelativeFileName() : "";
 			}
-
+			// ノーマルチェック
 			FbxProperty fbx_property_normalmap = fbx_material->FindProperty(FbxSurfaceMaterial::sNormalMap);
 			if (fbx_property_normalmap.IsValid())
 			{
@@ -387,6 +387,14 @@ void FbxResource::FetchMaterial(FbxScene *fbx_scene, std::vector<Material> &mate
 				material.texture_filenames[1] =
 					fbx_texture ? fbx_texture->GetRelativeFileName() : "";
 			}
+			FbxProperty fbx_property_specular = fbx_material->FindProperty(FbxSurfaceMaterial::sSpecular);
+			if (fbx_property_specular.IsValid())
+			{
+				const FbxFileTexture *fbx_texture = fbx_property_specular.GetSrcObject<FbxFileTexture>();
+				material.texture_filenames[2] =
+					fbx_texture ? fbx_texture->GetRelativeFileName() : "";
+			}
+			
 			materials.emplace_back(material);
 		}
 	}
@@ -570,24 +578,54 @@ void FbxResource::CreateComObjects(ID3D12Device *dev)
 		for (int i = 0; i < static_cast<int>(TextureType::MAX); ++i) {
 			std::filesystem::path texture_name;			// テクスチャの名前
 			std::filesystem::path texture_extension;	// 拡張子
+			std::filesystem::path texture_path;			// テクスチャのパス
+			std::filesystem::path path;					// 読み込むパス
+			
 
-			// ノーマルなら情報を取得する
-			if (static_cast<TextureType>(i) == TextureType::NORMAL) {
-				texture_name = material.texture_filenames[1];
-				texture_extension = material.texture_filenames[1];
-			}
-			else {
+			switch (static_cast<TextureType>(i))
+			{
+			case TextureType::BASE:
 				texture_name = material.texture_filenames[0];
 				texture_extension = material.texture_filenames[0];
+
+				texture_name = texture_name.replace_extension("");
+				texture_extension = texture_extension.extension();
+
+				texture_path =
+					texture_name.string() + filename[i] + texture_extension.string();
+
+				path = filename_;
+				path.replace_filename(texture_path);
+
+				break;
+
+			case TextureType::NORMAL:
+				texture_name = material.texture_filenames[1];
+				texture_extension = material.texture_filenames[1];
+
+				texture_name = texture_name.replace_extension("");
+				texture_extension = texture_extension.extension();
+
+				texture_path =
+					texture_name.string() + filename[i] + texture_extension.string();
+
+				path = filename_;
+				path.replace_filename(texture_path);
+
+				break;
+			case TextureType::SPECULAR:
+				texture_name = filename_;
+				texture_name = texture_name.replace_extension("");
+				texture_name += ".fbm\\";
+				texture_extension = ".png";
+
+				texture_path =
+					texture_name.string() + filename[i] + texture_extension.string();
+				path = texture_path;
+				break;
+			default:
+				break;
 			}
-			texture_name = texture_name.replace_extension("");
-			texture_extension = texture_extension.extension();
-
-			std::filesystem::path texture_path =
-				texture_name.string() + filename[i] + texture_extension.string();
-
-			std::filesystem::path path = filename_;
-			path.replace_filename(texture_path);
 
 			// テクスチャのチェック
 			// ファイルがあれば読み込み
@@ -596,10 +634,10 @@ void FbxResource::CreateComObjects(ID3D12Device *dev)
 				if (texture_path.c_str()[0] == 0) {
 					if (static_cast<TextureType>(i) == TextureType::BASE)
 					{
-						material.texture_id = Texture::MakeTexture(dev);
+						material.texture_id = Texture::MakeTexture(dev, 0x00000000);
 
 					}
-					if(static_cast<TextureType>(i) == TextureType::NORMAL)
+					if (static_cast<TextureType>(i) == TextureType::NORMAL)
 					{
 						material.texture_id = Texture::MakeTexture(dev, 0xff000000);
 

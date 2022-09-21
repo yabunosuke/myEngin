@@ -1,5 +1,6 @@
 #include "LightManager.h"
 #include <algorithm>
+#include "../Engine/Object/Component/Camera.h"
 
 
 void LightManager::AddLight(std::weak_ptr<LightDate> light)
@@ -38,7 +39,14 @@ void LightManager::BufferTransfer(
 		}
 		const_light_map.light[i + 1].is_active = false;
 	}
-
+	Vector3 cam_pos = Camera::main->lock()->transform_.lock()->position;
+	const_light_map.eye_pos =
+	{
+		cam_pos.x,
+		cam_pos.y,
+		cam_pos.z,
+		0
+	};
 	// “]‘—
 	ConstantBufferManager::GetInstance()->BufferTransfer<LightConstBufferData>(cmd_list, subresource, rootparameta_index, BufferName::Light, &const_light_map);
 

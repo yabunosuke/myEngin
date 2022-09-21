@@ -69,8 +69,9 @@ bool Looper::Loop()
 	sceneStack.top()->PostDrawMultiRenderTarget(DirectXCommon::cmdList);						// 設定終了
 	// ここまでの描画はマルチレンダーターゲットの対象
 
-	sceneStack.top()->PreDrawPostEffect(DirectXCommon::dev,DirectXCommon::cmdList);			// ポストエフェクトの設定
-	sceneStack.top()->DrawMulutiRenderTarget(DirectXCommon::dev, DirectXCommon::cmdList);							// マルチレンダーターゲットの描画
+	sceneStack.top()->PreDrawPostEffect(DirectXCommon::dev,DirectXCommon::cmdList);				// ポストエフェクトの設定
+	sceneStack.top()->DrawMulutiRenderTarget(DirectXCommon::dev, DirectXCommon::cmdList);		// ディファ―レンダリング描画
+
 	sceneStack.top()->PostDrawPoseEffect(DirectXCommon::cmdList);								// 設定終了
 
 	//バッファクリア
