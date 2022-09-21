@@ -59,7 +59,7 @@ void Player::FixedUpdate()
 
 void Player::Update()
 {
-	static float spin = 180;
+	static float spin = 0;
 
 	if (!(Input::GetKeyPress(DIK_W) ||
 		Input::GetKeyPress(DIK_A) ||

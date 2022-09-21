@@ -114,7 +114,8 @@ void Light::ComponentUpdate()
 	case LightType::Directional:
 	{
 		light_date_->light_type = { 0.0f,1.0f,0.0f,0.0f };
-		Vector3 direction_v = transform_.lock()->quaternion->EulerAngles().Normalized();
+		Vector3 direction_v = transform_.lock()->quaternion->EulerAngles();
+		Vector3::Normalize(direction_v);
 		light_date_->direction = {
 			direction_v.x,
 			direction_v.y,

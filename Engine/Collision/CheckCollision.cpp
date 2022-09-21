@@ -59,7 +59,7 @@ void CheckCollision::CheckColliders(const std::vector<std::weak_ptr<GameObject>>
 						{
 							for (const auto &script_a : object_a->lock().get()->GetMonoBehaviours()) 
 							{
-								script_a.lock()->OnCollisionEnter(collision_info_a);
+								script_a.lock()->OnCollisionEnter(collision_info_b);
 							}
 							collider_a.lock()->hitlist_[collider_b.lock()->GetInstanceID()] = true;
 						}
@@ -68,24 +68,57 @@ void CheckCollision::CheckColliders(const std::vector<std::weak_ptr<GameObject>>
 						{
 							for (const auto &script_a : object_a->lock().get()->GetMonoBehaviours()) 
 							{
-								script_a.lock()->OnCollisionStay(collision_info_a);
+								script_a.lock()->OnCollisionStay(collision_info_b);
 							}
 
 						}
+						// Bの処理
+						// 始めて衝突した場合と前回のアップデートで衝突していなかった場合Enter呼び出し
+						if (
+							collider_b.lock()->hitlist_[collider_a.lock()->GetInstanceID()] == false ||
+							collider_b.lock()->hitlist_.count(collider_a.lock()->GetInstanceID()) == 0
+							)
+						{
+							for (const auto &script_b : object_b->lock().get()->GetMonoBehaviours())
+							{
+								script_b.lock()->OnCollisionEnter(collision_info_a);
+							}
+							collider_b.lock()->hitlist_[collider_a.lock()->GetInstanceID()] = true;
+						}
+						// 前回のアップデートで衝突していた場合
+						else
+						{
+							for (const auto &script_b : object_b->lock().get()->GetMonoBehaviours())
+							{
+								script_b.lock()->OnCollisionStay(collision_info_a);
+							}
 
+						}
 					}
 					else
 					{
-						// 接触が解除された場合
+						// 接触が解除された場合A
 						if (
 							collider_a.lock()->hitlist_.count(collider_b.lock()->GetInstanceID()) == 1 &&
 							collider_a.lock()->hitlist_[collider_b.lock()->GetInstanceID()] == true
 							)
 						{
 							for (const auto &script_a : object_a->lock().get()->GetMonoBehaviours()) {
-								script_a.lock()->OnCollisionExit(collision_info_a);
+								script_a.lock()->OnCollisionExit(collision_info_b);
 							}
 							collider_a.lock()->hitlist_[collider_b.lock()->GetInstanceID()] = false;
+
+						}
+						// 接触が解除された場合B
+						if (
+							collider_b.lock()->hitlist_.count(collider_a.lock()->GetInstanceID()) == 1 &&
+							collider_b.lock()->hitlist_[collider_a.lock()->GetInstanceID()] == true
+							)
+						{
+							for (const auto &script_b : object_b->lock().get()->GetMonoBehaviours()) {
+								script_b.lock()->OnCollisionExit(collision_info_a);
+							}
+							collider_b.lock()->hitlist_[collider_a.lock()->GetInstanceID()] = false;
 
 						}
 					}

@@ -17,6 +17,7 @@
 #include "Object/Component/Rigidbody.h"
 #include "Object/Component/Camera.h"
 #include "Assets/Scripts/Player.h"
+#include "Assets/Scripts/Enemy.h"
 #include "Weapon.h"
 
 
@@ -33,17 +34,17 @@ void TitleScene::Initialize()
 
 	auto directional_light_ = GameObject::CreateObject("Directional Light");
 	directional_light_.lock()->AddComponent<Light>(light_manager_, LightType::Directional);
-	directional_light_.lock()->transform->lock()->localQuaternion = { 1,0,0,30 };
+	XMStoreFloat4(&directional_light_.lock()->transform->lock()->localQuaternion, XMQuaternionRotationRollPitchYaw(45, 45, 0));
 	// ƒvƒŒƒCƒ„[
 	auto player = GameObject::CreateObject("Human");
 	player.lock()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/sword human/Sword man.fbx");
-	player.lock()->AddComponent<SphereCollider>();
 	player.lock()->AddComponent<Rigidbody>();
 	player.lock()->AddComponent<Player>();
+	XMStoreFloat4(&player.lock()->transform->lock()->localQuaternion, XMQuaternionRotationRollPitchYaw(0, 0, 0));
+	player.lock()->transform->lock()->localPosition = { 0.0f,0.0f,-50.0f };
 	player.lock()->transform->lock()->localScale = { 0.4f,0.4f,0.4f };
-	player.lock()->transform->lock()->localPosition = { 0.0f,0.0f,20.0f };
 
 	//auto player_light = game_object_manager_->CreateObject("Player light");
 	//player_light.lock()->AddComponent<Light>(light_manager_);
@@ -55,24 +56,28 @@ void TitleScene::Initialize()
 	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 	//	"Assets/3d/test/test.fbx");
 
-	//auto castle = GameObject::CreateObject("Castle");
-	//castle.lock()->AddComponent<Object3dComponent>(
+	auto castle = GameObject::CreateObject("Castle");
+	castle.lock()->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/Castle/Castle FBX.fbx");
+	castle.lock()->transform->lock()->localScale = { 20,20,20 };
+	castle.lock()->transform->lock()->localPosition = { 0,-7,0 };
+
+	auto enemy = GameObject::CreateObject("Enemy");
+	enemy.lock()->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/Dwarf/Dwarf.fbx");
+	enemy.lock()->AddComponent<SphereCollider>(25,Vector3{0,20,0});
+	enemy.lock()->transform->lock()->localScale = { 0.4f,0.4f,0.4f };
+	enemy.lock()->transform->lock()->localPosition = { 0.0f,0.0f,20.0f };
+	enemy.lock()->AddComponent<Enemy>();
+
+
+
+	//auto test = GameObject::CreateObject("test");
+	//test.lock()->AddComponent<Object3dComponent>(
 	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-	//	"Assets/3d/Castle/Castle FBX.fbx");
-	//castle.lock()->transform->lock()->localScale = { 20,20,20 };
-	//castle.lock()->transform->lock()->localPosition = { 0,-7,0 };
-
-	auto danbo = GameObject::CreateObject("Bot");
-	danbo.lock()->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/UNIT/danbo_fbx/danbo_taiki.fbx");
-	danbo.lock()->AddComponent<SphereCollider>();
-
-
-	auto test = GameObject::CreateObject("test");
-	test.lock()->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/Test/test.fbx");
+	//	"Assets/3d/Test/test.fbx");
 
 	auto camera = GameObject::CreateObject("Camera");
 	camera.lock()->AddComponent<Camera>();
@@ -82,13 +87,14 @@ void TitleScene::Initialize()
 
 
 
-	//// •Ší
-	//auto weapon = GameObject::CreateObject("Leona's sword");
-	//weapon.lock()->AddComponent<Object3dComponent>(
-	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-	//	"Assets/3d/Leona's sword/Models and Textures/sword.fbx");
-	//game_object_manager_->SetPearentChild(player, weapon);
-	//weapon.lock()->AddComponent<Weapon>();
+	// •Ší
+	auto weapon = GameObject::CreateObject("Weapon");
+	weapon.lock()->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/Leona's sword/Models and Textures/sword.fbx");
+	game_object_manager_->SetPearentChild(player, weapon);
+	weapon.lock()->AddComponent<Weapon>();
+	weapon.lock()->AddComponent<SphereCollider>(4);
 
 	//Vector3 test = player.lock()->transform->lock()->scale;
 }

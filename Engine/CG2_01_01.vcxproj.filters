@@ -181,6 +181,9 @@
       <Filter>Math</Filter>
     </ClCompile>
     <ClCompile Include="Math\Vector4.cpp" />
+    <ClCompile Include="Assets\Scripts\Enemy.cpp">
+      <Filter>Asset\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -343,6 +346,9 @@
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Math\Vector4.h" />
+    <ClInclude Include="Assets\Scripts\Enemy.h">
+      <Filter>Asset\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
@@ -463,6 +469,12 @@
     </Filter>
     <Filter Include="Collision">
       <UniqueIdentifier>{cb9b5f93-f30a-4167-9482-0979d818a40b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Enemy">
+      <UniqueIdentifier>{4b3fea8a-9cd3-41e8-bf72-ae70a19930f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Weapon">
+      <UniqueIdentifier>{a72795d5-cbab-4b3c-89fe-4893789bd37d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
