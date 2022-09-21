@@ -4,6 +4,9 @@
 
 namespace Mathf
 {
+
+	// ƒCƒvƒVƒƒ“
+	inline static constexpr float epsilon{FLT_EPSILON};
 	// ‰~ü—¦
 	inline static const float pi = 3.14159265358979f;
 	// ³‚Ì–³ŒÀ

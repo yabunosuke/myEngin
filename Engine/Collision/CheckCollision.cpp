@@ -135,8 +135,152 @@ bool CheckCollision::Sphere2Sphere(yEngine::Sphere a, yEngine::Sphere b)
 
 bool CheckCollision::OBB2OBB(yEngine::OBB a, yEngine::OBB b) 
 {
+	float radius_a, radius_b;
+	XMFLOAT3X3 r, abs_r;
 
-	return false;
+	// a座標内でbを表現する回転行列を計算
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < 3; ++ j)
+		{
+			r.m[i][j] = Vector3::Dot(a.unidirectional[i], b.unidirectional[j]);
+		}
+	}
+	// 平行行列ベクトルを計算
+	Vector3 t{ b.center - a.center };
+	// 平行移動をaの座標に変換
+	t = Vector3{ Vector3::Dot(t,a.unidirectional[0]),Vector3::Dot(t,a.unidirectional[1]),Vector3::Dot(t,a.unidirectional[2]) };
+
+	// 共通の部分式を計算
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			abs_r.m[i][j] = fabsf(r.m[i][j]) + Mathf::epsilon;
+		}
+	}
+
+	// 軸 L = A0, L = A1, L = A2 を判定
+	for (int i = 0; i < 3; ++i)
+	{
+		radius_a = a.extent[i];
+		radius_b =
+			b.extent[0] * abs_r.m[i][0] +
+			b.extent[1] * abs_r.m[i][1] +
+			b.extent[2] * abs_r.m[i][2];
+		if(fabsf(t[i]) > radius_a + radius_b)
+		{
+			return  false;
+		}
+	}
+
+	// 軸 L = B0, L = B1, L = B2 を判定
+	for (int i = 0; i < 3; ++i)
+	{
+		radius_a =
+			a.extent[0] * abs_r.m[0][i] +
+			a.extent[1] * abs_r.m[1][i] +
+			a.extent[2] * abs_r.m[2][i];
+		radius_b = a.extent[i];
+		if (fabsf(
+			t[0] * r.m[0][i] +
+			t[1] * r.m[1][i] +
+			t[2] * r.m[2][i] ) >
+			radius_a + radius_b)
+		{
+			return  false;
+		}
+	}
+
+	// 軸 L = A0 x B0 を判定
+	radius_a = a.extent[1] * abs_r.m[2][0] + a.extent[2] * abs_r.m[1][0];
+	radius_b = b.extent[1] * abs_r.m[0][2] + b.extent[2] * abs_r.m[0][1];
+	if(fabsf(
+		t[2] *r.m[1][0] -
+		t[1] *r.m[2][0]) >
+		radius_a + radius_b)
+	{
+		return false;
+	}
+
+	// 軸 L = A0 x B1 を判定
+	radius_a = a.extent[1] * abs_r.m[2][1] + a.extent[2] * abs_r.m[1][1];
+	radius_b = b.extent[0] * abs_r.m[0][2] + b.extent[2] * abs_r.m[0][0];
+	if (fabsf(
+		t[2] * r.m[1][1] -
+		t[1] * r.m[2][1]) >
+		radius_a + radius_b)
+	{
+		return false;
+	}
+
+	// 軸 L = A0 x B2 を判定
+	radius_a = a.extent[1] * abs_r.m[2][2] + a.extent[2] * abs_r.m[1][2];
+	radius_b = b.extent[0] * abs_r.m[0][1] + b.extent[1] * abs_r.m[0][0];
+	if (fabsf(
+		t[2] * r.m[1][2] -
+		t[1] * r.m[2][2]) >
+		radius_a + radius_b)
+	{
+		return false;
+	}
+
+	// 軸 L = A1 x B1 を判定
+	radius_a = a.extent[0] * abs_r.m[2][1] + a.extent[2] * abs_r.m[0][1];
+	radius_b = b.extent[0] * abs_r.m[1][2] + b.extent[2] * abs_r.m[1][0];
+	if (fabsf(
+		t[0] * r.m[2][1] -
+		t[2] * r.m[0][2]) >
+		radius_a + radius_b)
+	{
+		return false;
+	}
+
+	// 軸 L = A1 x B2 を判定
+	radius_a = a.extent[0] * abs_r.m[2][2] + a.extent[2] * abs_r.m[0][2];
+	radius_b = b.extent[0] * abs_r.m[1][1] + b.extent[1] * abs_r.m[1][0];
+	if (fabsf(
+		t[0] * r.m[2][2] -
+		t[2] * r.m[0][2]) >
+		radius_a + radius_b)
+	{
+		return false;
+	}
+
+	// 軸 L = A2 x B0 を判定
+	radius_a = a.extent[0] * abs_r.m[1][0] + a.extent[1] * abs_r.m[0][0];
+	radius_b = b.extent[1] * abs_r.m[2][2] + b.extent[2] * abs_r.m[2][1];
+	if (fabsf(
+		t[1] * r.m[0][0] -
+		t[0] * r.m[1][0]) >
+		radius_a + radius_b)
+	{
+		return false;
+	}
+
+	// 軸 L = A2 x B1 を判定
+	radius_a = a.extent[0] * abs_r.m[1][1] + a.extent[1] * abs_r.m[0][1];
+	radius_b = b.extent[1] * abs_r.m[2][2] + b.extent[2] * abs_r.m[2][0];
+	if (fabsf(
+		t[1] * r.m[0][1] -
+		t[0] * r.m[1][1]) >
+		radius_a + radius_b)
+	{
+		return false;
+	}
+
+	// 軸 L = A2 x B2 を判定
+	radius_a = a.extent[0] * abs_r.m[1][2] + a.extent[1] * abs_r.m[0][2];
+	radius_b = b.extent[0] * abs_r.m[2][1] + b.extent[1] * abs_r.m[2][0];
+	if (fabsf(
+		t[1] * r.m[0][2] -
+		t[0] * r.m[1][2]) >
+		radius_a + radius_b)
+	{
+		return false;
+	}
+
+	return true;
 }
 
 bool CheckCollision::Spphere2Capsule(yEngine::Sphere sphere, yEngine::Capsule capsule)
