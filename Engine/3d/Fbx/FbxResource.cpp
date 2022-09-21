@@ -387,13 +387,6 @@ void FbxResource::FetchMaterial(FbxScene *fbx_scene, std::vector<Material> &mate
 				material.texture_filenames[1] =
 					fbx_texture ? fbx_texture->GetRelativeFileName() : "";
 			}
-			FbxProperty fbx_property_specular = fbx_material->FindProperty(FbxSurfaceMaterial::sSpecular);
-			if (fbx_property_specular.IsValid())
-			{
-				const FbxFileTexture *fbx_texture = fbx_property_specular.GetSrcObject<FbxFileTexture>();
-				material.texture_filenames[2] =
-					fbx_texture ? fbx_texture->GetRelativeFileName() : "";
-			}
 			
 			materials.emplace_back(material);
 		}
