@@ -35,23 +35,6 @@ public:
 		XMStoreFloat3(this, temp);
 	}
 
-	//===========================================
-	//
-	//		静的メンバ変数
-	//
-	//===========================================
-
-	static const Vector3 forward;	// (  0,  0,  1 )
-	static const Vector3 back;		// (  0,  0, -1 )
-	static const Vector3 up;		// (  0,  1,  0 )
-	static const Vector3 down;		// (  0, -1,  0 )
-	static const Vector3 right;		// (  1,  0,  0 )
-	static const Vector3 left;		// ( -1,  0,  0 )
-	static const Vector3 zero;		// (  0,  0,  0 )
-	static const Vector3 one;		// (  1,  1,  1 )
-	static const Vector3 positive_infinity;		// (  inf,  inf,  inf )
-	static const Vector3 negative_infinity;		// ( -inf, -inf, -inf )
-
 
 	//===========================================
 	//
@@ -119,6 +102,23 @@ public:
 	/// <returns>2点間の距離</returns>
 	static float Distance(const Vector3 &lhs, const Vector3 &rhs);
 
+
+	//===========================================
+	//
+	//		静的メンバ変数
+	//
+	//===========================================
+
+	static const Vector3 forward;	// (  0,  0,  1 )
+	static const Vector3 back;		// (  0,  0, -1 )
+	static const Vector3 up;		// (  0,  1,  0 )
+	static const Vector3 down;		// (  0, -1,  0 )
+	static const Vector3 right;		// (  1,  0,  0 )
+	static const Vector3 left;		// ( -1,  0,  0 )
+	static const Vector3 zero;		// (  0,  0,  0 )
+	static const Vector3 one;		// (  1,  1,  1 )
+	static const Vector3 positive_infinity;		// (  inf,  inf,  inf )
+	static const Vector3 negative_infinity;		// ( -inf, -inf, -inf )
 
 
 	//===========================================
