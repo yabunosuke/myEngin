@@ -70,7 +70,7 @@ void Object3dComponent::Infomation()
 	}
 
 	if (ImGui::Button("Play Animation")) {
-		object_fbx.get()->PlayAnimation(animation_id,is_loop,1.5f);
+		object_fbx.get()->PlayAnimation(animation_id,is_loop);
 	}
 
 	/*ImGui::ProgressBar(

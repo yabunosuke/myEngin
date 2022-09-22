@@ -10,6 +10,8 @@
 //シーン
 #include "TitleScene.h"
 
+#include "Object/Component/Camera.h"
+
 Looper::Looper() {
 	//最初のシーン
 	OnSceneChanged(Scenes::Title, false);
@@ -63,6 +65,7 @@ bool Looper::Loop()
 	sceneStack.top()->Update();
 
 
+
 	//シーンの描画コマンドを発行
 	sceneStack.top()->PreDrawMultiRenderTarget(DirectXCommon::dev,DirectXCommon::cmdList);	// マルチレンダーターゲットの設定
 	sceneStack.top()->Draw();																	// 描画コマンド発行
@@ -77,14 +80,19 @@ bool Looper::Loop()
 	//バッファクリア
 	DirectXCommon::ResourceBarrierWriting();
 	DirectXCommon::ScreenClear();
-
+	
 	// ポストエフェクトの描画
 	sceneStack.top()->DrawPostEffect(DirectXCommon::cmdList);
-
-
+	
 	imguiManager::GetIns()->Draw();
+	PrimitiveRenderer::GetInstance().DrawBox(
+		DirectXCommon::cmdList,
+		PrimitiveRenderer::Box{ {0,10,0},{15,15,15},{20,20,20} },
+		Camera::main->lock()->viewMatrix.r_ * Camera::main->lock()->projectionMatrix.r_
+	);
 	// 全コマンド実行
 	DirectXCommon::PlayCommandList();
+
 
 	// 計測開始
 	Time::GetInstance()->InstrumentationEnd();

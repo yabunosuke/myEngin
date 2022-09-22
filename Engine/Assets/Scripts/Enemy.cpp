@@ -11,16 +11,19 @@ void Enemy::OnCollisionEnter(Collision &collision)
 {
 	if(collision.gameObject->lock()->name.r_ == "Weapon")
 	{
-		--hp_;
-		if(hp_ <= 0)
+		if(state != AnimationState::DEAD)
 		{
-			state = AnimationState::DEAD;
-			game_object->PlayAnimation(static_cast<int>(state), false);
-		}
-		else
-		{
-			state = AnimationState::DAMAGE;
-			game_object->PlayAnimation(static_cast<int>(state), false);
+			if(hp_ <= 0)
+			{
+				state = AnimationState::DEAD;
+				game_object->PlayAnimation(static_cast<int>(state), false);
+			}
+			else
+			{
+				--hp_;
+				state = AnimationState::DAMAGE;
+ 				game_object->PlayAnimation(static_cast<int>(state), false,true);
+			}
 		}
 	}
 }
@@ -32,7 +35,7 @@ void Enemy::Start()
 		game_object_.lock()->GetComponent<Rigidbody>();
 	game_object =
 		game_object_.lock()->GetComponent<Object3dComponent>().lock()->GetObjectData();
-	game_object->PlayAnimation(static_cast<int>(AnimationState::FIGHT_IDOLE),true,0.0f);
+	game_object->PlayAnimation(static_cast<int>(AnimationState::FIGHT_IDOLE),true,false ,0.0f);
 }
 
 void Enemy::FixedUpdate()

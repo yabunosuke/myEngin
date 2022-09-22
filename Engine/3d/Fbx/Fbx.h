@@ -66,7 +66,7 @@ public:
 	const FbxResource *GetResource() const { return resource_.get(); }
 
 	void UpdateAnimation(float elapsed_time = 0.016f);
-	void PlayAnimation(uint64_t index, bool loop = true, float blend_seconds = 1.0f);
+	void PlayAnimation(uint64_t index, bool loop = true, bool reset = false, float blend_seconds = 1.0f);
 	float GetCurrentAnimationSeconds() const { return current_animation_seconds_; }
 
 	// アニメーション中か判定

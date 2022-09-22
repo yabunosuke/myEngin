@@ -204,10 +204,11 @@ void Fbx::UpdateAnimation(float elapsed_time)
 	}
 }
 
-void Fbx::PlayAnimation(uint64_t index, bool loop, float blend_seconds)
+void Fbx::PlayAnimation(uint64_t index, bool loop, bool reset,float blend_seconds )
 {
 	// 範囲外のアニメーションは行わない
-	if (index == current_animation_index_) return;
+	if (!reset && index == current_animation_index_) return;
+
 	current_animation_index_ = index;
 	current_animation_seconds_ = 0.0f;
 	animation_loop_flag_ = loop;
