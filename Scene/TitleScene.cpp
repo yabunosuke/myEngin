@@ -5,7 +5,7 @@
 #include "Math/Mathf.h"
 //#include "Quaternion.h"
 
-#include "Texture.h"
+#include "oldTexture.h"
 #include "PipelineManager.h"
 #include "PrimitiveRenderer.h"
 #include "Object/GameObject/GameObject.h"
@@ -63,26 +63,19 @@ void TitleScene::Initialize()
 	castle.lock()->transform->lock()->localScale = { 20,20,20 };
 	castle.lock()->transform->lock()->localPosition = { 0,-7,0 };
 
-	auto test = GameObject::CreateObject("Test");
-	test.lock()->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/Test/BotH.fbx");
-	
-	//auto enemy = GameObject::CreateObject("Enemy");
-	//enemy.lock()->AddComponent<Object3dComponent>(
-	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-	//	"Assets/3d/Dwarf/Dwarf.fbx");
-	//enemy.lock()->AddComponent<SphereCollider>(25,Vector3{0,20,0});
-	//enemy.lock()->transform->lock()->localScale = { 0.4f,0.4f,0.4f };
-	//enemy.lock()->transform->lock()->localPosition = { 0.0f,0.0f,20.0f };
-	//enemy.lock()->AddComponent<Enemy>();
-
-
-
-	//auto test = GameObject::CreateObject("test");
+	//auto test = GameObject::CreateObject("Test");
 	//test.lock()->AddComponent<Object3dComponent>(
 	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-	//	"Assets/3d/Test/test.fbx");
+	//	"Assets/3d/Test/BotH.fbx");
+	
+	auto enemy = GameObject::CreateObject("Enemy");
+	enemy.lock()->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/Dwarf/Dwarf.fbx");
+	enemy.lock()->AddComponent<SphereCollider>(25,Vector3{0,20,0});
+	enemy.lock()->transform->lock()->localScale = { 0.4f,0.4f,0.4f };
+	enemy.lock()->transform->lock()->localPosition = { 0.0f,0.0f,20.0f };
+	enemy.lock()->AddComponent<Enemy>();
 
 	auto camera = GameObject::CreateObject("Camera");
 	camera.lock()->AddComponent<Camera>();

@@ -241,8 +241,8 @@ DirectX::XMMATRIX Transform::InverseMatrixAllParent()
     XMMATRIX inverse = DirectX::XMMatrixIdentity();
     if (!parent_.expired())
     {
+		inverse = DirectX::XMMatrixInverse(nullptr, parent_.lock()->world_matrix_);
         inverse *= parent_.lock()->InverseMatrixAllParent();
     }
-    inverse = DirectX::XMMatrixInverse(nullptr, world_matrix_);
     return inverse;
 }

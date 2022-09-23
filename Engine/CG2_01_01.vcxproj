@@ -230,7 +230,7 @@
     <ClCompile Include="PrimitiveRenderer.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene\AbstractScene\AbstractScene.cpp" />
-    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="oldTexture.cpp" />
     <ClCompile Include="Text\Text.cpp" />
     <ClCompile Include="Time\Time.cpp" />
     <ClCompile Include="Weapon.cpp" />
@@ -425,7 +425,7 @@
     <ClInclude Include="Property.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene\AbstractScene\AbstractScene.h" />
-    <ClInclude Include="Texture.h" />
+    <ClInclude Include="oldTexture.h" />
     <ClInclude Include="Text\Text.h" />
     <ClInclude Include="Time\Time.h" />
     <ClInclude Include="Weapon.h" />

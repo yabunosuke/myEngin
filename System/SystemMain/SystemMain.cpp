@@ -8,7 +8,7 @@
 #include "AudioManager.h"
 #include "ModelManager.h"			//モデル
 #include "ImGui/imguiManager.h"
-#include "Texture.h"
+#include "oldTexture.h"
 #include  "PrimitiveRenderer.h"
 #include "PipelineManager.h"
 
@@ -24,7 +24,7 @@ bool SystemMain::Initialize()
 	imguiManager::GetIns()->Initialize();
 
 	// テクスチャデスクリプタヒープ生成
-	Texture::CreateDescriptorHeap(DirectXCommon::dev.Get());
+	oldTexture::CreateDescriptorHeap(DirectXCommon::dev.Get());
 	
 	//Object3d::StaticInitialize(DirectXCommon::dev.Get());//オブジェクト共通データ生成
 	//Model::StaticInitialize(DirectXCommon::dev.Get());	//モデル姿勢的初期化

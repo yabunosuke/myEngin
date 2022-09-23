@@ -48,7 +48,7 @@
     <ClCompile Include="Object3dComponent.cpp" />
     <ClCompile Include="PipelineManager.cpp" />
     <ClCompile Include="PrimitiveRenderer.cpp" />
-    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="oldTexture.cpp" />
     <ClCompile Include="3d\Fbx\Fbx.cpp">
       <Filter>3dオブジェクト\FBX</Filter>
     </ClCompile>
@@ -115,9 +115,6 @@
     <ClCompile Include="Time\Time.cpp">
       <Filter>Time</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Mesh\Mesh.cpp">
-      <Filter>Object\Mesh</Filter>
-    </ClCompile>
     <ClCompile Include="Math\Quaternion.cpp">
       <Filter>Math</Filter>
     </ClCompile>
@@ -178,9 +175,14 @@
     <ClCompile Include="Math\Matrix4x4.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="Math\Vector4.cpp" />
     <ClCompile Include="Assets\Scripts\Enemy.cpp">
       <Filter>Asset\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Vector4.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Mesh\Mesh.cpp">
+      <Filter>Object\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -204,7 +206,7 @@
     <ClInclude Include="Object3dComponent.h" />
     <ClInclude Include="PipelineManager.h" />
     <ClInclude Include="PrimitiveRenderer.h" />
-    <ClInclude Include="Texture.h" />
+    <ClInclude Include="oldTexture.h" />
     <ClInclude Include="3d\Fbx\Fbx.h">
       <Filter>3dオブジェクト\FBX</Filter>
     </ClInclude>
@@ -278,9 +280,6 @@
     <ClInclude Include="Time\Time.h">
       <Filter>Time</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Mesh\Mesh.h">
-      <Filter>Object\Mesh</Filter>
-    </ClInclude>
     <ClInclude Include="Object\Material\Material.h">
       <Filter>Object\Material</Filter>
     </ClInclude>
@@ -341,9 +340,14 @@
     <ClInclude Include="Math\Matrix4x4.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Vector4.h" />
     <ClInclude Include="Assets\Scripts\Enemy.h">
       <Filter>Asset\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector4.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Mesh\Mesh.h">
+      <Filter>Object\Mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -427,9 +431,6 @@
     <Filter Include="Object\Component\Renderer\MeshRenderer">
       <UniqueIdentifier>{3f95c123-9e2e-414d-8adc-f4644083d2f5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Mesh">
-      <UniqueIdentifier>{f042ccec-23fe-472f-8936-e9c520ea0726}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object\Material">
       <UniqueIdentifier>{e4cf7465-6312-45f3-898e-b2312654abed}</UniqueIdentifier>
     </Filter>
@@ -471,6 +472,9 @@
     </Filter>
     <Filter Include="Asset\Weapon">
       <UniqueIdentifier>{a72795d5-cbab-4b3c-89fe-4893789bd37d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Mesh">
+      <UniqueIdentifier>{f3e41ae5-9ea7-4f53-b50e-ff0726bd4ac4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

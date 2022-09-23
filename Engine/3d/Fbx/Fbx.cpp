@@ -1,6 +1,6 @@
 #include "Fbx.h"
 #include "PipelineManager.h"
-#include "Texture.h"
+#include "oldTexture.h"
 #include "ConstantBufferManager/ConstantBufferManager.h"
 #include "3d/DrawFbx.h"
 

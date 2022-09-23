@@ -2,7 +2,7 @@
 #include "WinApp.h"
 #include <DirectXTex.h>
 #include "PipelineManager.h"
-#include "Texture.h"
+#include "oldTexture.h"
 using namespace Microsoft::WRL;
 
 //静的メンバの実態
@@ -26,9 +26,9 @@ Sprite *Sprite::Create(ComPtr<ID3D12Device> dev,int texuer_num,XMFLOAT2 anchorpo
 	XMFLOAT2 size = { 100.0f, 100.0f };
 	
 	//指定番号の画像が読み込み済みなら
-	if (Texture::texture_buffer_[texuer_num]) {
+	if (oldTexture::texture_buffer_[texuer_num]) {
 		//テクスチャ情報取得
-		D3D12_RESOURCE_DESC resDesc = Texture::texture_buffer_[texuer_num]->GetDesc();
+		D3D12_RESOURCE_DESC resDesc = oldTexture::texture_buffer_[texuer_num]->GetDesc();
 		//スプライトの大きさを画像の解像度に合わせる
 		size = { (float)resDesc.Width,(float)resDesc.Height };
 	}
@@ -203,7 +203,7 @@ void Sprite::Draw(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cm
 	// 頂点バッファの設定
 	cmd_list->IASetVertexBuffers(0, 1, &this->vbView);
 
-	ID3D12DescriptorHeap *ppHeaps[] = { Texture::descriptor_heap_.Get() };
+	ID3D12DescriptorHeap *ppHeaps[] = { oldTexture::descriptor_heap_.Get() };
 	// デスクリプタヒープをセット
 	cmd_list->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	// 定数バッファビューをセット
@@ -211,7 +211,7 @@ void Sprite::Draw(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cm
 	// シェーダリソースビューをセット
 	cmd_list->SetGraphicsRootDescriptorTable(
 		1, CD3DX12_GPU_DESCRIPTOR_HANDLE(
-			Texture::descriptor_heap_->GetGPUDescriptorHandleForHeapStart(),
+			oldTexture::descriptor_heap_->GetGPUDescriptorHandleForHeapStart(),
 			texNumber,
 			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
 	// 描画コマンド
@@ -247,8 +247,8 @@ void Sprite::TransferVertices()
 	vertices[RT].pos = { right,	top,	0.0f }; // 右上
 
 	// テクスチャ情報取得
-	if (Texture::texture_buffer_[texNumber]) {
-		D3D12_RESOURCE_DESC resDesc = Texture::texture_buffer_[texNumber]->GetDesc();
+	if (oldTexture::texture_buffer_[texNumber]) {
+		D3D12_RESOURCE_DESC resDesc = oldTexture::texture_buffer_[texNumber]->GetDesc();
 
 		float tex_left = texLeftTop.x / resDesc.Width;
 		float tex_right = (texLeftTop.x + texSize.x) / resDesc.Width;

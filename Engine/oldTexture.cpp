@@ -1,14 +1,14 @@
-#include "Texture.h"
+#include "oldTexture.h"
 #include <DirectXTex.h>
 #include <memory>
 
 using namespace DirectX;
 
-const int Texture::srv_count_;
-std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> Texture::texture_buffer_;
-Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> Texture::descriptor_heap_;
+const int oldTexture::srv_count_;
+std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> oldTexture::texture_buffer_;
+Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> oldTexture::descriptor_heap_;
 
-void Texture::CreateDescriptorHeap(ID3D12Device *dev)
+void oldTexture::CreateDescriptorHeap(ID3D12Device *dev)
 {
 	HRESULT result = S_OK;
 
@@ -23,7 +23,7 @@ void Texture::CreateDescriptorHeap(ID3D12Device *dev)
 	}
 }
 
-int Texture::LoadTextureFromFile(ID3D12Device *dev, const wchar_t *filename)
+int oldTexture::LoadTextureFromFile(ID3D12Device *dev, const wchar_t *filename)
 {
     HRESULT result = S_OK;
 
@@ -91,7 +91,7 @@ int Texture::LoadTextureFromFile(ID3D12Device *dev, const wchar_t *filename)
 	return texture_buffer_.size() - 1;
 }
 
-int Texture::MakeTexture(ID3D12Device *dev, DWORD color, XMFLOAT2 size)
+int oldTexture::MakeTexture(ID3D12Device *dev, DWORD color, XMFLOAT2 size)
 {
 	HRESULT result = S_OK;
 	

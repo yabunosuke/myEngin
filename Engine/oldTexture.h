@@ -4,7 +4,7 @@
 #include <vector>
 #include <DirectXMath.h>
 
-class Texture
+class oldTexture
 {
 private: // エイリアス
 	// Microsoft::WRL::を省略

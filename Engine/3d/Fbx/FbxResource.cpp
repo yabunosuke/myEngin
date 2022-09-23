@@ -1,6 +1,6 @@
 #include "FbxResource.h"
 #include <filesystem>
-#include "Texture.h"
+#include "oldTexture.h"
 
 inline DirectX::XMFLOAT4X4 ToXMFLOAT4x4(const FbxAMatrix& fbxamatrix)
 {
@@ -627,26 +627,26 @@ void FbxResource::CreateComObjects(ID3D12Device *dev)
 				if (texture_path.c_str()[0] == 0) {
 					if (static_cast<TextureType>(i) == TextureType::BASE)
 					{
-						material.texture_id = Texture::MakeTexture(dev, 0x00000000);
+						material.texture_id = oldTexture::MakeTexture(dev, 0x00000000);
 
 					}
 					if (static_cast<TextureType>(i) == TextureType::NORMAL)
 					{
-						material.texture_id = Texture::MakeTexture(dev, 0xff000000);
+						material.texture_id = oldTexture::MakeTexture(dev, 0xff000000);
 
 					}
 
 				}
 				else {
-					material.texture_id = Texture::LoadTextureFromFile(dev, path.c_str());
+					material.texture_id = oldTexture::LoadTextureFromFile(dev, path.c_str());
 				}
 			}
 			else {
-				material.texture_id = Texture::MakeTexture(dev, 0xff000000);
+				material.texture_id = oldTexture::MakeTexture(dev, 0xff000000);
 			}
 
 			material.shader_resource_views[i] = CD3DX12_GPU_DESCRIPTOR_HANDLE(
-				Texture::descriptor_heap_->GetGPUDescriptorHandleForHeapStart(),
+				oldTexture::descriptor_heap_->GetGPUDescriptorHandleForHeapStart(),
 				material.texture_id,
 				dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
 		}

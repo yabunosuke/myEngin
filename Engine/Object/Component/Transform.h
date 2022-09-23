@@ -8,14 +8,6 @@ class Transform :
 	public Component
 {
 public:
-
-	/// <summary>
-	/// ローカル空間からワールド空間への変換
-	/// </summary>
-	/// <param name="position">変換したい座標</param>
-	/// <returns>Vector3 ワールド座標</returns>
-
-public:
 	Transform();
 
 	void Infomation() override;
@@ -156,23 +148,7 @@ public:
 				1.0f
 			};
 
-			world_matrix_ = temp;
-			MatrixDecompose(
-				world_matrix_,
-				world_scale_,
-				world_quaternion_,
-				world_position_
-			);
-
-			local_matrix_ = temp * XMMatrixInverse(nullptr, parent_.lock()->world_matrix_);
-
-			//local_matrix_ = temp * InverseMatrixAllParent()y;
-			MatrixDecompose(
-				local_matrix_,
-				local_scale_,
-				local_quaternion_,
-				local_position_
-			);
+			matrix = temp;
 		}
 	};
 	
@@ -194,22 +170,18 @@ public:
 		yEngine::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
-		[this](Vector3 sca)
+		// ローカルの再計算処理
+		[this](Vector3 assignment_scale)
 		{
-			// 親がいなければそのまま代入
-			if (parent_.expired())
-			{
-				local_scale_ = sca;
-				world_scale_ = sca;
-			}
-			// 親がいれば差分を考慮して代入
-			else
-			{
-				local_scale_ =
-					sca - parent_.lock()->scale;
-				world_scale_ = sca;
+			/*XMMATRIX temp = world_matrix_;
+			temp.r[3] = {
+				assignment_scale.x,
+				assignment_scale.y,
+				assignment_scale.z,
+				1.0f
+			};
 
-			}
+			matrix = temp;*/
 		}
 	};
 
@@ -225,35 +197,22 @@ public:
 		//nullptr
 		[this](XMMATRIX mat)
 		{
-			// 親がいなければそのまま代入
-			if (parent_.expired())
-			{
-				// Matrix代入
-				world_matrix_ = mat;
+			world_matrix_ = mat;
+			MatrixDecompose(
+				world_matrix_,
+				world_scale_,
+				world_quaternion_,
+				world_position_
+			);
 
-				// ワールド各要素再計算
-				MatrixDecompose(
-					world_matrix_,
-					world_scale_,
-					world_quaternion_,
-					world_position_
-				);
+			local_matrix_ = mat * InverseMatrixAllParent();
 
-
-				// ローカルも同じ値
-				local_matrix_ = mat;
-
-				// 各要素再計算
-				local_scale_ = world_scale_;
-				local_quaternion_ = world_quaternion_;
-				local_position_ = world_position_;
-
-			}
-			// 親がいる場合は再計算
-			else
-			{
-
-			}
+			MatrixDecompose(
+				local_matrix_,
+				local_scale_,
+				local_quaternion_,
+				local_position_
+			);
 		}
 	};
 
@@ -291,6 +250,7 @@ private:
 		XMFLOAT3 &position
 	);
 
+	// 全ての親の逆行列を取得する
 	XMMATRIX InverseMatrixAllParent();
 };
 

@@ -1,7 +1,7 @@
 #include "DrawFbx.h"
 #include "PipelineManager.h"
 #include "ConstantBufferManager/ConstantBufferManager.h"
-#include "Texture.h"
+#include "oldTexture.h"
 
 std::vector<std::shared_ptr<FbxResource>>	Renderer::deferred_shading_datas_;
 std::vector<std::shared_ptr<FbxResource>>	Renderer::forward_shading_datas_;
@@ -85,7 +85,7 @@ void Renderer::DrawDeferred(Microsoft::WRL::ComPtr<ID3D12Device> dev, Microsoft:
 
 
 				// デスクリプタヒープのセット
-				ID3D12DescriptorHeap *ppHeaps[] = { Texture::descriptor_heap_.Get() };
+				ID3D12DescriptorHeap *ppHeaps[] = { oldTexture::descriptor_heap_.Get() };
 				cmd_list->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 				// シェーダリソースビューをセット
@@ -170,7 +170,7 @@ void Renderer::DrawForward(Microsoft::WRL::ComPtr<ID3D12Device> dev, Microsoft::
 
 
 				// デスクリプタヒープのセット
-				ID3D12DescriptorHeap *ppHeaps[] = { Texture::descriptor_heap_.Get() };
+				ID3D12DescriptorHeap *ppHeaps[] = { oldTexture::descriptor_heap_.Get() };
 				cmd_list->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 				// シェーダリソースビューをセット
