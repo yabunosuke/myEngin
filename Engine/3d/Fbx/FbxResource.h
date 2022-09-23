@@ -218,7 +218,7 @@ public:
 		/// <returns>index</returns>
 		NodeId indexof(NodeId unique_id) const {
 			int64_t index = 0;
-			for (const int &ix : node_indices) {
+			for (const auto &ix : node_indices) {
 				//ID‚ª‡’v‚µ‚½‚çindex‚ğ•Ô‚·
 				if (ix == unique_id) {
 					return index;

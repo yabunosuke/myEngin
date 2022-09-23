@@ -230,8 +230,19 @@ void Transform::UpdateMatrix()
 void Transform::MatrixDecompose(const XMMATRIX &matrix, XMFLOAT3 &scale, XMFLOAT4 &quaternion, XMFLOAT3 &position)
 {
     XMVECTOR scale_v, rotate_v, position_v;
-    XMMatrixDecompose(&scale_v, &rotate_v, &position_v, matrix);
+    DirectX::XMMatrixDecompose(&scale_v, &rotate_v, &position_v, matrix);
     XMStoreFloat3(&scale, scale_v);
     XMStoreFloat4(&quaternion, rotate_v);
     XMStoreFloat3(&position, position_v);
+}
+
+DirectX::XMMATRIX Transform::InverseMatrixAllParent()
+{
+    XMMATRIX inverse = DirectX::XMMatrixIdentity();
+    if (!parent_.expired())
+    {
+        inverse *= parent_.lock()->InverseMatrixAllParent();
+    }
+    inverse = DirectX::XMMatrixInverse(nullptr, world_matrix_);
+    return inverse;
 }

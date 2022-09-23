@@ -146,8 +146,36 @@ public:
 		yEngine::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
-		nullptr
+		[this](Vector3 assignment_position)
+		{
+			XMMATRIX temp = world_matrix_;
+			temp.r[3] = {
+				assignment_position.x,
+				assignment_position.y,
+				assignment_position.z,
+				1.0f
+			};
+
+			world_matrix_ = temp;
+			MatrixDecompose(
+				world_matrix_,
+				world_scale_,
+				world_quaternion_,
+				world_position_
+			);
+
+			local_matrix_ = temp * XMMatrixInverse(nullptr, parent_.lock()->world_matrix_);
+
+			//local_matrix_ = temp * InverseMatrixAllParent()y;
+			MatrixDecompose(
+				local_matrix_,
+				local_scale_,
+				local_quaternion_,
+				local_position_
+			);
+		}
 	};
+	
 	/// <summary>
 	/// ワールド空間の回転 (get = true, set = true)
 	/// </summary>
@@ -263,8 +291,6 @@ private:
 		XMFLOAT3 &position
 	);
 
-
-
-
+	XMMATRIX InverseMatrixAllParent();
 };
 

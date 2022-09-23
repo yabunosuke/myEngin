@@ -518,7 +518,7 @@ void FbxResource::CreateComObjects(ID3D12Device *dev)
 
 
 		// 頂点インデックス全体のサイズ
-		UINT sizeIB = static_cast<UINT>(sizeof(unsigned short) * mesh.indices.size());
+		uint32_t sizeIB = static_cast<uint32_t>(sizeof(uint32_t) * mesh.indices.size());
 		// インデックスバッファ生成
 		result = dev->CreateCommittedResource(
 			&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
@@ -528,7 +528,7 @@ void FbxResource::CreateComObjects(ID3D12Device *dev)
 			nullptr,
 			IID_PPV_ARGS(&mesh.indexBuffer));
 		// インデックスバッファへのデータ転送
-		unsigned short *indexMap = nullptr;
+		uint32_t *indexMap = nullptr;
 		result = mesh.indexBuffer->Map(0, nullptr, (void **)&indexMap);
 		if (SUCCEEDED(result)) {
 			std::copy(mesh.indices.begin(), mesh.indices.end(), indexMap);
@@ -536,7 +536,7 @@ void FbxResource::CreateComObjects(ID3D12Device *dev)
 		}
 		// インデックスバッファビュー(IBV)の作成
 		mesh.ibView.BufferLocation = mesh.indexBuffer->GetGPUVirtualAddress();
-		mesh.ibView.Format = DXGI_FORMAT_R16_UINT;
+		mesh.ibView.Format = DXGI_FORMAT_R32_UINT;
 		mesh.ibView.SizeInBytes = sizeIB;
 
 		// メッシュ定数バッファの生成

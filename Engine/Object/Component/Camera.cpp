@@ -74,6 +74,13 @@ void Camera::ComponentUpdate()
 		near_plane_,far_plane_
 	);
 
+	ImGui::Begin("test");
+	if (ImGui::Button("zero set test"))
+	{
+		transform_.lock()->position = { 0,0,0 };
+	}
+	ImGui::End();
+
 }
 
 void Camera::ComponentDraw()

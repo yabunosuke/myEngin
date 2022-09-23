@@ -33,8 +33,6 @@
     <ClCompile Include="..\DirectX\Collision\BaseCollider.cpp" />
     <ClCompile Include="..\DirectX\DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="..\DirectX\Input\ControllerInput.cpp" />
-    <ClCompile Include="..\DirectX\Object3d\Model.cpp" />
-    <ClCompile Include="..\DirectX\Object3d\ModelLoader.cpp" />
     <ClCompile Include="..\DirectX\Object3d\ModelManager.cpp" />
     <ClCompile Include="..\DirectX\WinApp\WinApp.cpp" />
     <ClCompile Include="..\Scene\GameScene.cpp" />
@@ -191,8 +189,6 @@
     <ClInclude Include="..\DirectX\Collision\RaycastHit.h" />
     <ClInclude Include="..\DirectX\DirectXCommon\DirectXCommon.h" />
     <ClInclude Include="..\DirectX\Input\ControllerInput.h" />
-    <ClInclude Include="..\DirectX\Object3d\Model.h" />
-    <ClInclude Include="..\DirectX\Object3d\ModelLoader.h" />
     <ClInclude Include="..\DirectX\Object3d\ModelManager.h" />
     <ClInclude Include="..\DirectX\WinApp\WinApp.h" />
     <ClInclude Include="..\Scene\GameScene.h" />
