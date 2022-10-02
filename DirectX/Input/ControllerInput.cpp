@@ -66,7 +66,7 @@ void ControllerInput::Update()
 	}
 
 	static const size_t buttonCount = sizeof(gamepad[0].rgbButtons) / sizeof(gamepad[0].rgbButtons[0]);
-	bool now = false;
+	bool any_button = false;	//‰½‚ç‚©‚Ì“ü—Í‚ª‚ ‚é‚©
 
 	for (size_t i = 0; i < 64; i++)
 	{
@@ -95,30 +95,30 @@ void ControllerInput::Update()
 		{
 			if (i == XBOX_INPUT_LEFT)
 			{
-				now = gamepad[0].rgdwPOV[0] == 4500 * 5 ||
+				any_button = gamepad[0].rgdwPOV[0] == 4500 * 5 ||
 					gamepad[0].rgdwPOV[0] == 4500 * 6 ||
 					gamepad[0].rgdwPOV[0] == 4500 * 7;
 			}
 			else if (i == XBOX_INPUT_RIGHT)
 			{
-				now = gamepad[0].rgdwPOV[0] == 4500 * 1 ||
+				any_button = gamepad[0].rgdwPOV[0] == 4500 * 1 ||
 					gamepad[0].rgdwPOV[0] == 4500 * 2 ||
 					gamepad[0].rgdwPOV[0] == 4500 * 3;
 			}
 			else if (i == XBOX_INPUT_UP)
 			{
-				now = gamepad[0].rgdwPOV[0] == 4500 * 7 ||
+				any_button = gamepad[0].rgdwPOV[0] == 4500 * 7 ||
 					gamepad[0].rgdwPOV[0] == 4500 * 0 ||
 					gamepad[0].rgdwPOV[0] == 4500 * 1;
 			}
 			else if (i == XBOX_INPUT_DOWN)
 			{
-				now = gamepad[0].rgdwPOV[0] == 4500 * 3 ||
+				any_button = gamepad[0].rgdwPOV[0] == 4500 * 3 ||
 					gamepad[0].rgdwPOV[0] == 4500 * 4 ||
 					gamepad[0].rgdwPOV[0] == 4500 * 5;
 			}
 
-			if (now)
+			if (any_button)
 			{
 				if (releasCount[i] != 0)
 				{

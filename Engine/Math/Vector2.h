@@ -200,6 +200,17 @@ public:
 
 		return 0.0f;
 	}
+
+	// ƒLƒƒƒXƒg
+	operator Vector3() const
+	{
+		Vector3 temp{
+			this->x,
+			this->y,
+			0.0f
+		};
+		return temp;
+	}
 };
 
 

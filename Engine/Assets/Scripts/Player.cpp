@@ -55,6 +55,13 @@ void Player::FixedUpdate()
 		// ˆÚ“®
 		regidbody_.lock()->AddForce(-transform_.lock()->GetRight());
 	}
+
+
+	regidbody_.lock()->AddForce(transform_.lock()->GetFront() *
+		-Input::GetAxis(GamePadAxis::AXIS_LY));
+	regidbody_.lock()->AddForce(transform_.lock()->GetRight() *
+		Input::GetAxis(GamePadAxis::AXIS_LX));
+
 }
 
 void Player::Update()
@@ -109,6 +116,7 @@ void Player::Update()
 		}
 	}
 
+
 	if (Input::GetKeyPress(DIK_Q))
 	{
 		spin -= 2;
@@ -120,7 +128,8 @@ void Player::Update()
 		XMStoreFloat4(&transform_.lock()->localQuaternion, XMQuaternionRotationRollPitchYaw(0, spin * Mathf::deg_to_rad, 0));
 	}
 
-	if (Input::GetKeyPressTrigger(DIK_SPACE)) {
+	if (Input::GetKeyPressTrigger(DIK_SPACE) ||
+		Input::GetButtonPressTrigger(GamePadButton::INPUT_A)) {
 		state = AnimationState::SLASH;
 		game_object->PlayAnimation(static_cast<int>(state), false);
 	}
