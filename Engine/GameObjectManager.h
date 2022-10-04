@@ -30,9 +30,6 @@ public:
 	/// </summary>
 	void Draw() const;
 
-	// 親子設定
-	void SetPearentChild(std::weak_ptr<GameObject> pearent, std::weak_ptr<GameObject> child);
-
 	/// <summary>
 	/// IDからオブジェクトを取得
 	/// </summary>

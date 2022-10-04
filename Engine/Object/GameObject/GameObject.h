@@ -138,8 +138,7 @@ public:	//関数
 	/// </summary>
 	void Finalize() {};
 
-	
-
+	void SetParent(std::weak_ptr<GameObject> parent);
 
 	// isBlind
 	void SetIsBlind(bool blind) { isBlind = blind; }
@@ -149,10 +148,8 @@ public:	//関数
 	void Remove() { isRemove = true; }
 
 	// 親オブジェクトの取得
-	void SetPearentObject(std::weak_ptr<GameObject> pearent);
 	std::weak_ptr<GameObject> &GetPearent() { return pearent_game_object_; }
 	// 子のオブジェクトコンテナの取得
-	void SetCildrenObject(std::weak_ptr<GameObject> children) { child_game_object_.emplace_back(children); }
 	std::vector<std::weak_ptr<GameObject>> &GetChildren() { return child_game_object_; }
 
 	/// <summary>

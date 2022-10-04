@@ -46,6 +46,8 @@ void TitleScene::Initialize()
 	player.lock()->transform->lock()->localPosition = { 0.0f,0.0f,-50.0f };
 	player.lock()->transform->lock()->localScale = { 0.4f,0.4f,0.4f };
 
+	auto eye = GameObject::CreateObject("Eye");
+	eye.lock()->SetParent(player);
 	//auto player_light = game_object_manager_->CreateObject("Player light");
 	//player_light.lock()->AddComponent<Light>(light_manager_);
 	//player_light.lock()->transform->lock()->localPosition = { 0.0f,50.0f,0.0f };
@@ -81,8 +83,7 @@ void TitleScene::Initialize()
 	camera.lock()->AddComponent<Camera>();
 	camera.lock()->transform->lock()->localPosition = { 0,200,-400 };
 	XMStoreFloat4(&camera.lock()->transform->lock()->localQuaternion, XMQuaternionRotationRollPitchYaw(0, 0, 0));
-	game_object_manager_->SetPearentChild(player, camera);
-
+	camera.lock()->SetParent(eye);
 
 
 	// •Ší
@@ -90,7 +91,8 @@ void TitleScene::Initialize()
 	weapon.lock()->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/Leona's sword/Models and Textures/sword.fbx");
-	game_object_manager_->SetPearentChild(player, weapon);
+	weapon.lock()->SetParent(player);
+	//game_object_manager_->SetPearentChild(player, weapon);
 	weapon.lock()->AddComponent<Weapon>();
 	weapon.lock()->AddComponent<SphereCollider>(4);
 

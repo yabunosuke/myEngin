@@ -40,11 +40,6 @@ void GameObjectManager::Draw() const
 	}
 }
 
-void GameObjectManager::SetPearentChild(std::weak_ptr<GameObject> pearent, std::weak_ptr<GameObject> child)
-{
-	pearent.lock()->SetCildrenObject(child);
-	child.lock()->SetPearentObject(pearent);
-}
 
 
 GameObject *GameObjectManager::GetGameObject(int id)

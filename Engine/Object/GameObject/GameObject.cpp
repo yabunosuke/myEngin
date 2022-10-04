@@ -49,10 +49,6 @@ bool GameObject::CompareTag(const std::string &tag)
 	return tag_ == tag;
 }
 
-void GameObject::SetPearentObject(std::weak_ptr<GameObject> pearent) {
-	pearent_game_object_ = pearent;
-	transform_.lock()->parent_ = pearent.lock().get()->GetComponent<Transform>();
-}
 
 
 void GameObject::Initialize()
@@ -143,6 +139,16 @@ void GameObject::DrawInspector()
 	}
 
 
+}
+
+void GameObject::SetParent(std::weak_ptr<GameObject> parent)
+{
+	// 子に親をセット
+	pearent_game_object_ = parent;
+	// 親に子をセット
+	parent.lock()->child_game_object_.emplace_back(std::static_pointer_cast<GameObject>((weak_from_this().lock())));
+	// 子のトランスフォームに親のトランスフォームをセットする
+	transform_.lock()->parent_ = parent.lock().get()->GetComponent<Transform>();
 }
 
 void GameObject::AddCollider(std::weak_ptr<Collider> collider)
