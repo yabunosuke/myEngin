@@ -23,7 +23,7 @@ public:
 	// 任意軸周りの回転の指定からクォータニオンを作成
 	Quaternion(const Vector3 &axis_normal, float degree) {
 		float _sin = sin(degree / 2.0f);
-		Quaternion(_sin * axis_normal.x, _sin * axis_normal.y, _sin * axis_normal.z, cos(degree / 2.0f));
+		*this = Quaternion(_sin * axis_normal.x, _sin * axis_normal.y, _sin * axis_normal.z, cos(degree / 2.0f));
 	}
 
 	//	************
@@ -39,6 +39,7 @@ public:
 	/// <param name="to">角度差を測定するクオータニオン</param>
 	/// <returns>float 角度(degree)</returns>
 	static float Angle(const Quaternion &from, const Quaternion &to);
+
 
 	/// <summary>
 	/// 2つの回転の内積を返す
@@ -216,4 +217,27 @@ inline Quaternion operator/(const Quaternion &q, float s)
 {
 	Quaternion result = q;
 	return result /= s;
+}
+
+
+inline Vector3 operator *(const Quaternion &rotation, const Vector3 &point)
+{
+	float x = rotation.x * 2.0f;
+	float y = rotation.y * 2.0f;
+	float z = rotation.z * 2.0f;
+	float xx = rotation.x * x;
+	float yy = rotation.y * y;
+	float zz = rotation.z * z;
+	float xy = rotation.x * y;
+	float xz = rotation.x * z;
+	float yz = rotation.y * z;
+	float wx = rotation.w * x;
+	float wy = rotation.w * y;
+	float wz = rotation.w * z;
+
+	Vector3 res;
+	res.x = (1.0f - (yy + zz)) * point.x + (xy - wz) * point.y + (xz + wy) * point.z;
+	res.y = (xy + wz) * point.x + (1.0f - (xx + zz)) * point.y + (yz - wx) * point.z;
+	res.z = (xz - wy) * point.x + (yz + wx) * point.y + (1.0f - (xx + yy)) * point.z;
+	return res;
 }

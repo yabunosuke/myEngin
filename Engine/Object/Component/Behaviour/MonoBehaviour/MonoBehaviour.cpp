@@ -7,12 +7,18 @@ MonoBehaviour::MonoBehaviour(const std::string &name):
 
 void MonoBehaviour::ComponentInitialize()
 {
-	game_object_.lock()->AddMonoBehaviour(std::static_pointer_cast<MonoBehaviour>(shared_from_this()));
+	game_object_->AddMonoBehaviour(this);
 }
 
 void MonoBehaviour::ComponentFixedUpdate()
 {
 	if (!enabled) return;
+	// 一度だけスタート関数を経由する
+	if (do_start_)
+	{
+		Start();
+		do_start_ = false;
+	}
 	FixedUpdate();
 }
 

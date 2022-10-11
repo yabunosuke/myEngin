@@ -22,18 +22,20 @@ GameObject::GameObject(const std::string &name) :
 	
 }
 
-std::weak_ptr<GameObject> GameObject::CreateObject(const std::string &object_name)
+GameObject* GameObject::CreateObject(const std::string &object_name)
 {
-	std::weak_ptr<GameObject> game_object;
+	GameObject *game_object;
 	// 名前が入っていなければ
-	if (object_name.size() == 0) {
+	if (object_name.size() == 0) 
+	{
 		game_object = Object::CreateObject<GameObject>("GameObject(" + std::to_string(game_object_manager_.lock()->game_objects_.size()) + ")");
 	}
-	else {
+	else 
+	{
 		game_object = Object::CreateObject<GameObject>(object_name);
 	}
 	// 生成時にトランスフォーム
-	game_object.lock()->transform = game_object.lock()->AddComponent<Transform>();
+	game_object->transform_ = game_object->AddComponent<Transform>();
 
 	return game_object_manager_.lock()->game_objects_.emplace_back(game_object);
 }
@@ -65,22 +67,26 @@ void GameObject::FixedUpdate()
 {
 	// 全てのコンポーネントを更新
 	for (const auto &component : component_list_) {
-		component.lock()->CheckFixedUpdate();
+		component->CheckFixedUpdate();
 	}
 }
 
 void GameObject::Update()
 {
 	// 親オブジェクトのアクティブ（親が存在しないときはfalse）
-	bool parent_is_active = !(pearent_game_object_.lock().get() && !pearent_game_object_.lock().get()->active_self_);
+	bool parent_is_active = true;
+	if (pearent_game_object_ != nullptr)
+	{
+		parent_is_active = pearent_game_object_->active_self_;
+	}
 	// 親オブジェクトが非アクティブなときと、自身が非アクティブなときは更新しない
 	if (!parent_is_active || !active_self_) return;
 
 	// コンポーネントの削除
 	auto &itr = component_list_.begin();
 	while (itr != component_list_.end()) {
-		if ((*itr).lock()->GetIsRemove()) {
-			itr->reset();
+		if ((*itr)->GetIsRemove()) {
+			delete *itr;
 			itr = component_list_.erase(itr);
 		}
 		else {
@@ -90,7 +96,7 @@ void GameObject::Update()
 
 	// 全てのコンポーネントを更新
 	for (const auto &component : component_list_) {
-		component.lock()->CheckUpdate();
+		component->CheckUpdate();
 	}
 }
 
@@ -99,7 +105,7 @@ void GameObject::LastUpdate()
 	//アクティブでなければ描画しない
 	if (!active_self_) return;
 	for (auto &component : component_list_) {
-		component.lock()->CheckLustUpdate();
+		component->CheckLustUpdate();
 	}
 }
 
@@ -112,7 +118,7 @@ void GameObject::Draw()
 
 	//全てのコンポーネントを描画
 	for (auto &component : component_list_) {
-		component.lock()->CheckDraw();
+		component->CheckDraw();
 	}
 }
 
@@ -132,7 +138,7 @@ void GameObject::DrawInspector()
 	int i = 0;
 	for (auto &component : component_list_) {
 		ImGui::PushID(i);
-		component.lock()->ImGuiDraw();
+		component->ImGuiDraw();
 		ImGui::Separator();
 		ImGui::PopID();
 		i++;
@@ -141,26 +147,26 @@ void GameObject::DrawInspector()
 
 }
 
-void GameObject::SetParent(std::weak_ptr<GameObject> parent)
+void GameObject::SetParent(GameObject* parent)
 {
 	// 子に親をセット
 	pearent_game_object_ = parent;
 	// 親に子をセット
-	parent.lock()->child_game_object_.emplace_back(std::static_pointer_cast<GameObject>((weak_from_this().lock())));
+	parent->child_game_object_.emplace_back(static_cast<GameObject*>(this));
 	// 子のトランスフォームに親のトランスフォームをセットする
-	transform_.lock()->parent_ = parent.lock().get()->GetComponent<Transform>();
+	transform_->parent_ = parent->GetComponent<Transform>();
 }
 
-void GameObject::AddCollider(std::weak_ptr<Collider> collider)
+void GameObject::AddCollider(Collider *collider)
 {
 	// タグ名で管理
 	colliders_.emplace_back(collider);
 }
 
-void GameObject::RemoveCollider(std::weak_ptr<Collider> collider)
+void GameObject::RemoveCollider(Collider *collider)
 {
-	for (auto col = colliders_.begin(); col != colliders_.end();++col) {
-		if (col->lock() = collider.lock()) {
+	for (auto &col = colliders_.begin(); col != colliders_.end();++col) {
+		if (*col == collider) {
 			colliders_.erase(col);
 			break;
 		}
@@ -168,12 +174,12 @@ void GameObject::RemoveCollider(std::weak_ptr<Collider> collider)
 
 }
 
-void GameObject::AddMonoBehaviour(std::weak_ptr<MonoBehaviour> monobehaviour)
+void GameObject::AddMonoBehaviour(MonoBehaviour *monobehaviour)
 {
 	mono_behaviours_.emplace_back(monobehaviour);
 }
 
-const std::vector<std::weak_ptr<MonoBehaviour>>& GameObject::GetMonoBehaviours()
+const std::vector<MonoBehaviour *>& GameObject::GetMonoBehaviours()
 {
 	return mono_behaviours_;
 }

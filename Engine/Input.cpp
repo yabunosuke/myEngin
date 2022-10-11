@@ -199,10 +199,10 @@ float Input::GetAxis(GamePadAxis axis, const float &dead_zone, const size_t &gam
 	}
 	// デッドゾーンの処理
 
-	if (stick <= dead_min && stick < 0 ||
-		stick >= dead_max && stick > 0)
+	if ((stick <= dead_min && stick < 0) ||
+		(stick >= dead_max && stick > 0))
 	{
-		return static_cast<float>(stick / zone_max_);
+		return static_cast<float>(stick) / static_cast<float>(zone_max_);
 	}
 	else
 	{

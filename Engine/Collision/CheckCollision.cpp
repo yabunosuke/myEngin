@@ -3,24 +3,25 @@
 #include <memory>
 #include "Object/Component/Rigidbody.h"
 #include "Object/Component/Behaviour/MonoBehaviour/MonoBehaviour.h"
-void CheckCollision::CheckColliders(const std::vector<std::weak_ptr<GameObject>> &game_objects)
+void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects)
 {
 
 	// コライダーのイテレーター
 	std::vector<std::weak_ptr<Collider>>::const_iterator collider_it_a;
 	std::vector<std::weak_ptr<Collider>>::const_iterator collider_it_b;
-
+	
 	// 全てのオブジェクトをチェック
 	for (auto object_a = game_objects.begin(); object_a != game_objects.end(); ++object_a)
 	{
-		auto rigidbody_a = object_a->lock()->GetComponent<Rigidbody>();
+	
+		auto rigidbody_a = (*object_a)->GetComponent<Rigidbody>();
 		// Bオブジェクトのイテレータを一つずらす
 		auto object_b = object_a;
 		++object_b;
 
 		for (; object_b != game_objects.end(); ++object_b)
 		{
-			auto rigidbody_b = object_b->lock()->GetComponent<Rigidbody>();
+			auto rigidbody_b = (*object_b)->GetComponent<Rigidbody>();
 
 			// ブロードフェーズ(後ほど実装) 
 			if (false) {
@@ -31,18 +32,19 @@ void CheckCollision::CheckColliders(const std::vector<std::weak_ptr<GameObject>>
 			Vector3 hit_pos = {0,0,0};
 
 			// ナローフェーズ
-			for (std::weak_ptr<Collider> collider_a : object_a->lock().get()->GetColliders())
+			for (auto collider_a : (*object_a)->GetColliders())
 			{
-				for (std::weak_ptr<Collider> collider_b : object_b->lock().get()->GetColliders())
+				for (auto collider_b : (*object_b)->GetColliders())
 				{
 
 					// 当たり判定情報
-					Collision collision_info_a{
-						object_a->lock(),
+					Collision collision_info_a
+					{
+						*object_a,
 						{ 0,20,0 }
 					};
 					Collision collision_info_b{
-						object_b->lock(),
+						*object_b,
 						{ 0,20,0 }
 					};
 
@@ -53,44 +55,44 @@ void CheckCollision::CheckColliders(const std::vector<std::weak_ptr<GameObject>>
 						// Aの処理
 						// 始めて衝突した場合と前回のアップデートで衝突していなかった場合Enter呼び出し
 						if (
-							collider_a.lock()->hitlist_[collider_b.lock()->GetInstanceID()] == false ||
-							collider_a.lock()->hitlist_.count(collider_b.lock()->GetInstanceID()) == 0
+							collider_a->hitlist_[collider_b->GetInstanceID()] == false ||
+							collider_a->hitlist_.count(collider_b->GetInstanceID()) == 0
 							)
 						{
-							for (const auto &script_a : object_a->lock().get()->GetMonoBehaviours()) 
+							for (const auto &script_a : (*object_a)->GetMonoBehaviours())
 							{
-								script_a.lock()->OnCollisionEnter(collision_info_b);
+								script_a->OnCollisionEnter(collision_info_b);
 							}
-							collider_a.lock()->hitlist_[collider_b.lock()->GetInstanceID()] = true;
+							collider_a->hitlist_[collider_b->GetInstanceID()] = true;
 						}
 						// 前回のアップデートで衝突していた場合
 						else
 						{
-							for (const auto &script_a : object_a->lock().get()->GetMonoBehaviours()) 
+							for (const auto &script_a : (*object_a)->GetMonoBehaviours())
 							{
-								script_a.lock()->OnCollisionStay(collision_info_b);
+								script_a->OnCollisionStay(collision_info_b);
 							}
 
 						}
 						// Bの処理
 						// 始めて衝突した場合と前回のアップデートで衝突していなかった場合Enter呼び出し
 						if (
-							collider_b.lock()->hitlist_[collider_a.lock()->GetInstanceID()] == false ||
-							collider_b.lock()->hitlist_.count(collider_a.lock()->GetInstanceID()) == 0
+							collider_b->hitlist_[collider_a->GetInstanceID()] == false ||
+							collider_b->hitlist_.count(collider_a->GetInstanceID()) == 0
 							)
 						{
-							for (const auto &script_b : object_b->lock().get()->GetMonoBehaviours())
+							for (const auto &script_b : (*object_b)->GetMonoBehaviours())
 							{
-								script_b.lock()->OnCollisionEnter(collision_info_a);
+								script_b->OnCollisionEnter(collision_info_a);
 							}
-							collider_b.lock()->hitlist_[collider_a.lock()->GetInstanceID()] = true;
+							collider_b->hitlist_[collider_a->GetInstanceID()] = true;
 						}
 						// 前回のアップデートで衝突していた場合
 						else
 						{
-							for (const auto &script_b : object_b->lock().get()->GetMonoBehaviours())
+							for (const auto &script_b : (*object_b)->GetMonoBehaviours())
 							{
-								script_b.lock()->OnCollisionStay(collision_info_a);
+								script_b->OnCollisionStay(collision_info_a);
 							}
 
 						}
@@ -99,26 +101,26 @@ void CheckCollision::CheckColliders(const std::vector<std::weak_ptr<GameObject>>
 					{
 						// 接触が解除された場合A
 						if (
-							collider_a.lock()->hitlist_.count(collider_b.lock()->GetInstanceID()) == 1 &&
-							collider_a.lock()->hitlist_[collider_b.lock()->GetInstanceID()] == true
+							collider_a->hitlist_.count(collider_b->GetInstanceID()) == 1 &&
+							collider_a->hitlist_[collider_b->GetInstanceID()] == true
 							)
 						{
-							for (const auto &script_a : object_a->lock().get()->GetMonoBehaviours()) {
-								script_a.lock()->OnCollisionExit(collision_info_b);
+							for (const auto &script_a : (*object_a)->GetMonoBehaviours()) {
+								script_a->OnCollisionExit(collision_info_b);
 							}
-							collider_a.lock()->hitlist_[collider_b.lock()->GetInstanceID()] = false;
+							collider_a->hitlist_[collider_b->GetInstanceID()] = false;
 
 						}
 						// 接触が解除された場合B
 						if (
-							collider_b.lock()->hitlist_.count(collider_a.lock()->GetInstanceID()) == 1 &&
-							collider_b.lock()->hitlist_[collider_a.lock()->GetInstanceID()] == true
+							collider_b->hitlist_.count(collider_a->GetInstanceID()) == 1 &&
+							collider_b->hitlist_[collider_a->GetInstanceID()] == true
 							)
 						{
-							for (const auto &script_b : object_b->lock().get()->GetMonoBehaviours()) {
-								script_b.lock()->OnCollisionExit(collision_info_a);
+							for (const auto &script_b : (*object_b)->GetMonoBehaviours()) {
+								script_b->OnCollisionExit(collision_info_a);
 							}
-							collider_b.lock()->hitlist_[collider_a.lock()->GetInstanceID()] = false;
+							collider_b->hitlist_[collider_a->GetInstanceID()] = false;
 
 						}
 					}
@@ -128,18 +130,19 @@ void CheckCollision::CheckColliders(const std::vector<std::weak_ptr<GameObject>>
 
 		}
 	}
+
 }
 
-bool CheckCollision::CheckHit(std::weak_ptr<Collider> a, std::weak_ptr<Collider> b, Vector3 hit_pos)
+bool CheckCollision::CheckHit(Collider *a, Collider *b, Vector3 hit_pos)
 {
-	int collision_pattern = static_cast<int>(a.lock()->collisionType.r_) | static_cast<int>(b.lock()->collisionType.r_);
+	int collision_pattern = static_cast<int>(a->collisionType.r_) | static_cast<int>(b->collisionType.r_);
 
 	if(collision_pattern == static_cast<int>(CollisonType::Sphere))
 	{
-		std::weak_ptr<SphereCollider> sphere_a = std::static_pointer_cast<SphereCollider>(a.lock());
-		std::weak_ptr<SphereCollider> sphere_b = std::static_pointer_cast<SphereCollider>(b.lock());
+		SphereCollider *sphere_a = static_cast<SphereCollider*>(a);
+		SphereCollider *sphere_b = static_cast<SphereCollider*>(b);
 
-		if (Sphere2Sphere(*sphere_a.lock().get(), *sphere_b.lock().get()))
+		if (Sphere2Sphere(*sphere_a, *sphere_b))
 		{
 			return true;
 		}

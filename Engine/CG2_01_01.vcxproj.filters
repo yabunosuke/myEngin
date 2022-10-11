@@ -184,6 +184,9 @@
     <ClCompile Include="Object\Mesh\Mesh.cpp">
       <Filter>Object\Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\CameraController.cpp">
+      <Filter>Asset\CameraController</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -349,6 +352,9 @@
     <ClInclude Include="Object\Mesh\Mesh.h">
       <Filter>Object\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\CameraController.h">
+      <Filter>Asset\CameraController</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
@@ -475,6 +481,9 @@
     </Filter>
     <Filter Include="Object\Mesh">
       <UniqueIdentifier>{f3e41ae5-9ea7-4f53-b50e-ff0726bd4ac4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\CameraController">
+      <UniqueIdentifier>{4872565f-952f-45dc-9d1a-aaccf118a49a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

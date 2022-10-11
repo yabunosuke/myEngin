@@ -95,9 +95,9 @@ void Light::ComponentUpdate()
 	// データを転送用に変換
 
 	light_date_->position = {
-		transform_.lock()->position->x,
-		transform_.lock()->position->y,
-		transform_.lock()->position->z,
+		transform_->position->x,
+		transform_->position->y,
+		transform_->position->z,
 		1.0f
 	};
 
@@ -114,7 +114,7 @@ void Light::ComponentUpdate()
 	case LightType::Directional:
 	{
 		light_date_->light_type = { 0.0f,1.0f,0.0f,0.0f };
-		Vector3 direction_v = transform_.lock()->quaternion->EulerAngles();
+		Vector3 direction_v = transform_->quaternion->EulerAngles();
 		Vector3::Normalize(direction_v);
 		light_date_->direction = {
 			direction_v.x,

@@ -2,6 +2,7 @@
 #include <DirectXMath.h>
 
 #include "Vector3.h"
+#include "Quaternion.h"
 #include "Math/Mathf.h"
 
 class Matrix4x4 :
@@ -44,6 +45,28 @@ public:
 	//
 	//===========================================
 
+	/// <summary>
+	/// 座標から平行移動行列を作成
+	/// </summary>
+	/// <returns></returns>
+	static Matrix4x4 Translation(const Vector3 &translation);
+
+	/// <summary>
+	/// スケールから拡大行列を作成
+	/// </summary>
+	/// <param name="scale"></param>
+	/// <returns></returns>
+	static Matrix4x4 Scale(const Vector3 &scale);
+
+	/// <summary>
+	/// クオータニオンから回転行列を作成
+	/// </summary>
+	/// <returns></returns>
+	static Matrix4x4 Rotate(const Quaternion &quaternion);
+	
+	
+	static Matrix4x4 Inverse(const Quaternion &quaternion);
+
 
 
 	//===========================================
@@ -55,12 +78,24 @@ public:
 	static const Matrix4x4 identity;	// 恒等行列
 	static const Matrix4x4 zero;		// 全ての要素を0にした行列
 
+
+	//===========================================
+	//
+	//　　　メンバ関数
+	//
+	//===========================================
+
+	Matrix4x4 ExtractTranslation();
+	Matrix4x4 ExtractScale();
+	Matrix4x4 ExtractRotation();
+
 	//===========================================
 	//
 	//	  演算子
 	//
 	//===========================================
 
-
 };
 
+Matrix4x4 &operator *=(Matrix4x4 &rhs,const Matrix4x4 &lhs);
+Matrix4x4 &operator *(const Matrix4x4 &rhs,const Matrix4x4 &lhs);

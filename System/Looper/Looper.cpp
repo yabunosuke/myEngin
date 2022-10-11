@@ -85,11 +85,11 @@ bool Looper::Loop()
 	sceneStack.top()->DrawPostEffect(DirectXCommon::cmdList);
 	
 	imguiManager::GetIns()->Draw();
-	PrimitiveRenderer::GetInstance().DrawBox(
+	/*PrimitiveRenderer::GetInstance().DrawBox(
 		DirectXCommon::cmdList,
 		PrimitiveRenderer::Box{ {0,10,0},{15,15,15},{20,20,20} },
-		Camera::main->lock()->viewMatrix.r_ * Camera::main->lock()->projectionMatrix.r_
-	);
+		Camera::main.r_->viewMatrix.r_ * Camera::main.r_->projectionMatrix.r_
+	);*/
 	// 全コマンド実行
 	DirectXCommon::PlayCommandList();
 

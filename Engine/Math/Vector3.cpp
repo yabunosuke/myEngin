@@ -14,7 +14,8 @@ const Vector3 Vector3::negative_infinity{ Mathf::negative_infinity,Mathf::negati
 
 float Vector3::Magnitude() const
 {
-	float magnitude = XMVector3Length(XMLoadFloat3(this)).m128_f32[0];
+	float magnitude = sqrtf(x * x + y * y + z * z);
+	//XMVector3Length(XMLoadFloat3(this)).m128_f32[0];
 
 	return magnitude;
 }
@@ -29,7 +30,13 @@ float Vector3::SqrMagnitude() const
 
 Vector3 Vector3::Normalized() const
 {
-	Vector3 normalized = XMVector3Normalize(XMLoadFloat3(this));
+	float length = this->Magnitude();
+	Vector3 normalized = 
+	{
+		this->x /length,
+		this->y /length,
+		this->z /length,
+	};
 
 	return normalized;
 }
@@ -87,6 +94,22 @@ Vector3 Vector3::Min(const Vector3 &lhs, const Vector3 &rhs)
 	};
 
 	return min;
+}
+
+Vector3 Vector3::MoveTowards(const Vector3 &current, const Vector3 &target, float max_distance_delta)
+{
+	Vector3 next_position{ 0,0,0 };
+	float distance = Vector3::Distance(current, target);
+	if (distance - max_distance_delta > 0.0f)
+	{
+		next_position =
+			current + Vector3(target - current).Normalized() * max_distance_delta;
+	}
+	else
+	{
+		next_position = target;
+	}
+	return next_position;
 }
 
 Vector3 Vector3::ClampMagnitude(const Vector3 &vector, const float &max_length)

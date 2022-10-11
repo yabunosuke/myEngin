@@ -33,7 +33,7 @@ private:
 	}state = AnimationState::T_POSE;
 
     // ç¿ïW
-    std::weak_ptr<Rigidbody> regidbody_;
+    Rigidbody *regidbody_;
     Fbx *game_object{ nullptr };
 
 	int hp_ = 10;

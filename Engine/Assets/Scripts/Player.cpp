@@ -20,9 +20,9 @@ void Player::Start()
 {
 	// ƒŠƒWƒbƒh
 	regidbody_ = 
-		game_object_.lock()->GetComponent<Rigidbody>();
+		game_object_->GetComponent<Rigidbody>();
 	game_object = 
-		game_object_.lock()->GetComponent<Object3dComponent>().lock()->GetObjectData();
+		game_object_->GetComponent<Object3dComponent>()->GetObjectData();
 }
 
 void Player::FixedUpdate()
@@ -33,33 +33,33 @@ void Player::FixedUpdate()
 		if (Input::GetKeyPress(DIK_LSHIFT))
 		{
 
-			regidbody_.lock()->AddForce(transform_.lock()->GetFront());
+			regidbody_->AddForce(transform_->GetFront());
 		}
 		else
 		{
-			regidbody_.lock()->AddForce(transform_.lock()->GetFront());
+			regidbody_->AddForce(transform_->GetFront());
 		}
 
 	}
 	if (Input::GetKeyPress(DIK_S)) {
 		// ˆÚ“®
-		regidbody_.lock()->AddForce(-transform_.lock()->GetFront());
+		regidbody_->AddForce(-transform_->GetFront());
 	}
 	if (Input::GetKeyPress(DIK_D))
 	{
 		// ˆÚ“®
-		regidbody_.lock()->AddForce(transform_.lock()->GetRight());
+		regidbody_->AddForce(transform_->GetRight());
 	}
 	if (Input::GetKeyPress(DIK_A))
 	{
 		// ˆÚ“®
-		regidbody_.lock()->AddForce(-transform_.lock()->GetRight());
+		regidbody_->AddForce(-transform_->GetRight());
 	}
 
 
-	regidbody_.lock()->AddForce(transform_.lock()->GetFront() *
+	regidbody_->AddForce(transform_->GetFront() *
 		-Input::GetAxis(GamePadAxis::AXIS_LY));
-	regidbody_.lock()->AddForce(transform_.lock()->GetRight() *
+	regidbody_->AddForce(transform_->GetRight() *
 		Input::GetAxis(GamePadAxis::AXIS_LX));
 
 }
@@ -120,12 +120,12 @@ void Player::Update()
 	if (Input::GetKeyPress(DIK_Q))
 	{
 		spin -= 2;
-		XMStoreFloat4(&transform_.lock()->localQuaternion, XMQuaternionRotationRollPitchYaw(0, spin * Mathf::deg_to_rad, 0));
+		XMStoreFloat4(&transform_->localQuaternion, XMQuaternionRotationRollPitchYaw(0, spin * Mathf::deg_to_rad, 0));
 	}
 	if (Input::GetKeyPress(DIK_E))
 	{
 		spin += 2;
-		XMStoreFloat4(&transform_.lock()->localQuaternion, XMQuaternionRotationRollPitchYaw(0, spin * Mathf::deg_to_rad, 0));
+		XMStoreFloat4(&transform_->localQuaternion, XMQuaternionRotationRollPitchYaw(0, spin * Mathf::deg_to_rad, 0));
 	}
 
 	if (Input::GetKeyPressTrigger(DIK_SPACE) ||

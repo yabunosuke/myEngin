@@ -10,17 +10,17 @@ SphereCollider::SphereCollider(float radius, Vector3 center)
 void SphereCollider::ComponentInitialize()
 {
 	// オブジェクトにコライダーwaek_ptr渡す
-	game_object_.lock()->AddCollider(std::static_pointer_cast<Collider>(shared_from_this()));
+	game_object_->AddCollider(this);
 }
 
 void SphereCollider::ComponentUpdate()
 {
 	radius = local_radius_ * Mathf::Max(
-		transform_.lock()->scale->x,
-		transform_.lock()->scale->y,
-		transform_.lock()->scale->z
+		transform_->scale->x,
+		transform_->scale->y,
+		transform_->scale->z
 	);
-	center = local_center_ + transform_.lock()->position;
+	center = local_center_ + transform_->position;
 }
 
 void SphereCollider::Infomation()

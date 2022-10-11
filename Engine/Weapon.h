@@ -10,6 +10,6 @@ public:
 	void Start() override;
 
 private:
-	DirectX::XMFLOAT4X4 *hand_bone_;
+	DirectX::XMFLOAT4X4 *hand_bone_ = nullptr;
 };
 

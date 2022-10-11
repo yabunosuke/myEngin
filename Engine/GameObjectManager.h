@@ -41,6 +41,6 @@ public:
 	void Finalize();
 
 	//オブジェクト
-	std::vector<std::weak_ptr<GameObject>> game_objects_;
+	std::vector<GameObject*> game_objects_;
 };
 

@@ -10,15 +10,22 @@ class Transform :
 public:
 	Transform();
 
+
 	void Infomation() override;
 
 	void ComponentUpdate() override;
 	void ComponentDraw() override;
 
+	/// <summary>
+	/// Pointを中心にaxisでangle分回転
+	/// </summary>
+	/// <param name="point">対象になるワールド座標</param>
+	/// <param name="axis">回転軸</param>
+	/// <param name="angle">回転角度</param>
+	void RotateAround(Vector3 point, Vector3 axis, float deg);
+
 	XMMATRIX GetWorldMatrix() { return  world_matrix_; }
 
-
-	
 	Vector3 GetRight() {return Vector3(world_matrix_.r[0]).Normalized();}
 	Vector3 GetUp() {return Vector3(world_matrix_.r[1]).Normalized();}
 	Vector3 GetFront() {return Vector3(world_matrix_.r[2]).Normalized();}
@@ -31,30 +38,6 @@ public:
 	//
 	//===========================================
 
-
-	/// <summary>
-	/// ワールド空間の赤軸 
-	/// (get = true, set = false)
-	/// </summary>
-	
-	///// <summary>
-	///// ワールド空間の座標 (get = true, set = true)
-	///// </summary>
-	//Property<Vector3> position{
-	//	world_position_, AccessorType::AllAccess,
-	//	nullptr,
-	//	// ローカルの再計算処理
-	//	nullptr
-	//};
-	///// <summary>
-	///// ワールド空間の座標 (get = true, set = true)
-	///// </summary>
-	//Property<Vector3> position{
-	//	world_position_, AccessorType::AllAccess,
-	//	nullptr,
-	//	// ローカルの再計算処理
-	//	nullptr
-	//};
 
 	/// <summary>
 	/// ワールド空間の座標 (AllAccess)
@@ -110,12 +93,12 @@ public:
 			);
 
 			// ワールド行列再計算
-			if (parent_.expired()) {
+			if (parent_ == nullptr) {
 				world_matrix_ = local_matrix_;
 			}
 			else {
 				world_matrix_ =
-					local_matrix_ * parent_.lock()->matrix;
+					local_matrix_ * parent_->matrix;
 			}
 
 			// ワールド各要素再計算
@@ -133,7 +116,8 @@ public:
 	/// <summary>
 	/// ワールド空間の座標 (get = true, set = true)
 	/// </summary>
-	yEngine::Property<Vector3> position{
+	yEngine::Property<Vector3> position
+	{
 		world_position_,
 		yEngine::AccessorType::AllAccess,
 		nullptr,
@@ -155,11 +139,34 @@ public:
 	/// <summary>
 	/// ワールド空間の回転 (get = true, set = true)
 	/// </summary>
-	yEngine::Property<Quaternion> quaternion{
+	yEngine::Property<Quaternion> quaternion
+	{
 		world_quaternion_,yEngine::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
-		nullptr
+		//nullptr
+		[this](Quaternion assignment_quaternion)
+		{
+			XMMATRIX temp = world_matrix_;
+
+			//// ローカル行列を計算
+			//XMMATRIX S = DirectX::XMMatrixScaling(
+			//	local_scale_.x,
+			//	local_scale_.y,
+			//	local_scale_.z
+			//);
+			//XMMATRIX R = DirectX::XMMatrixRotationQuaternion(
+			//	XMLoadFloat4(&local_quaternion_)
+			//);
+
+			//XMMATRIX T = DirectX::XMMatrixTranslation(
+			//	local_position_.x,
+			//	local_position_.y,
+			//	local_position_.z
+			//);
+			matrix = temp;
+
+		}
 	};
 	/// <summary>
 	/// ワールド空間のスケール (get = true, set = true)
@@ -216,9 +223,9 @@ public:
 		}
 	};
 
-	std::weak_ptr<Transform> parent_;
+	Transform *parent_{ nullptr };
 
-	XMFLOAT4X4 *user_set_parent_ = nullptr;
+	XMFLOAT4X4 *user_set_parent_{ nullptr };
 
 private:
 	// ローカル座標

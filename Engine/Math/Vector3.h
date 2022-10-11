@@ -80,6 +80,9 @@ public:
 	/// <returns>作成したベクトル</returns>
 	static Vector3 Min(const Vector3 &lhs, const Vector3 &rhs);
 
+	static Vector3 MoveTowards(const Vector3 &current, const Vector3 &target, float max_distance_delta);
+
+
 	/// <summary>
 	/// ベクトルの大きさを制限
 	/// </summary>

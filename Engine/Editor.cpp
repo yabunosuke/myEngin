@@ -158,13 +158,13 @@ void Editor::HierarchyWindow()
 
 }
 
-void Editor::Hierarchy(std::vector<std::shared_ptr<GameObject>>& objects, bool is_child)
+void Editor::Hierarchy(std::vector<GameObject*>& objects, bool is_child)
 {
 	int n = 0;
 	for (const auto &object : objects)
 	{
 		// 親以外は後で表示する
-		if ((object->GetPearent().lock() != nullptr) &&
+		if ((object->GetPearent() != nullptr) &&
 			!is_child)
 		{
 			continue;
@@ -211,70 +211,6 @@ void Editor::Hierarchy(std::vector<std::shared_ptr<GameObject>>& objects, bool i
 			{
 				Hierarchy(object->GetChildren(), true);
 
-
-				ImGui::TreePop();
-			}
-		}
-
-
-		n++;
-		ImGui::PopID();
-	}
-}
-
-void Editor::Hierarchy(std::vector<std::weak_ptr<GameObject>> &objects, bool is_child)
-{
-	int n = 0;
-	for (const auto &object : objects)
-	{
-		// 親以外は後で表示する
-		if ((object.lock()->GetPearent().lock() != nullptr) &&
-			!is_child)
-		{
-			continue;
-		}
-
-		ImGui::PushID(n);
-
-		// 非表示用チェックボックス
-		char bufB[16];
-		sprintf_s(bufB, "##bulind %d", object.lock()->GetInstanceID());
-		bool isBlind = object.lock()->GetIsBlind();
-		if (ImGui::Checkbox(bufB, &isBlind)) {
-			object.lock()->SetIsBlind(isBlind);
-		}
-		ImGui::SameLine();
-
-		// テーブル設定
-		char bufT[64];
-		sprintf_s(bufT, "%s ##table %d", object.lock()->name->c_str(), object.lock()->GetInstanceID());
-		if (ImGui::Selectable(bufT, selected_object_id == object.lock()->GetInstanceID()))
-		{
-			// 選択
-			selected_object_id = object.lock()->GetInstanceID();
-
-		}
-		// 入れ替え処理
-		if (ImGui::IsItemActive() && !ImGui::IsItemHovered())
-		{
-			int n_next = n + (ImGui::GetMouseDragDelta(0).y < 0.f ? -1 : 1);
-			if (n_next >= 0 && n_next < objects.size())
-			{
-				// iterator入れ替え
-				std::swap(objects[n], objects[n_next]);
-				ImGui::ResetMouseDragDelta();
-			}
-		}
-		if (object.lock()->GetChildren().size() > 0)
-		{
-			// 子オブジェクト表示
-			char bufC[64];
-			sprintf_s(bufC, "Child ##child %d", object.lock()->GetInstanceID());
-
-			// 子オブジェクト表示
-			if (ImGui::TreeNode(bufC))
-			{
-				Hierarchy(object.lock()->GetChildren(), true);
 
 				ImGui::TreePop();
 			}

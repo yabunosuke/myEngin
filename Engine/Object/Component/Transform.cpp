@@ -69,8 +69,8 @@ void Transform::Infomation()
 	// 直前のマトリックス
     XMMATRIX old_matrix = world_matrix_;
     ImGuizmo::Manipulate(
-        Camera::main->lock()->viewMatrix->r->m128_f32,
-        Camera::main->lock()->projectionMatrix->r->m128_f32,
+        Camera::main.r_->viewMatrix->r->m128_f32,
+        Camera::main.r_->projectionMatrix->r->m128_f32,
         mCurrentGizmoOperation, mCurrentGizmoMode, world_matrix_.r->m128_f32, NULL, useSnap ? &snap.x : NULL);
     
     // 親がいる場合はローカルに変換しなおす
@@ -107,7 +107,7 @@ void Transform::Infomation()
         ImGui::DragFloat3("Scale", (float *)&local_scale_);
 
     }
-    else if(!parent_.expired())
+    else if(parent_ != nullptr)
     {
 		XMVECTOR scale, rotate, position;
 		XMMatrixDecompose(&scale, &rotate, &position, world_matrix_);
@@ -179,14 +179,47 @@ void Transform::ComponentDraw()
     
 }
 
+void Transform::RotateAround(Vector3 point, Vector3 axis, float deg)
+{
+    Quaternion q = Quaternion(axis, deg * Mathf::deg_to_rad);
+
+    Vector3 distance{ world_position_ - point };
+    
+    Vector3 renge{
+		q *distance
+    };
+    Vector3 assignment_position{
+        point + renge
+    };
+    //// ローカル行列を計算
+    XMMATRIX S = DirectX::XMMatrixScaling(
+        world_scale_.x,
+        world_scale_.y,
+        world_scale_.z
+    );
+    XMMATRIX R = DirectX::XMMatrixRotationQuaternion(
+        XMLoadFloat4(&q)
+    );
+    XMMATRIX T = DirectX::XMMatrixTranslation(
+        assignment_position.x,
+        assignment_position.y,
+        assignment_position.z
+    );
+    XMMATRIX temp = S * R * T;
+    matrix = temp;
+    //Quaternion angle_axis = Quaternion(axis, deg);
+    
+    //Vector3 position = transform_->position;
+
+    //position -= point;
+    //position = angle_axis * position;
+    //position += point;
+
+    //transform_->position = position;
+}
+
 void Transform::UpdateMatrix()
 {
-    //親の情報
-    if (game_object_.lock()->GetPearent().lock().use_count() > 0 &&
-        !parent_.expired())
-    {
-        parent_ = game_object_.lock()->GetPearent().lock()->GetComponent<Transform>();
-    }
     // ローカル行列を計算
     XMMATRIX S = DirectX::XMMatrixScaling(
         local_scale_.x,
@@ -211,9 +244,9 @@ void Transform::UpdateMatrix()
         world_matrix_ = local_matrix_ * user_parent_matrix_;
 
     }
-    else if (!parent_.expired())
+    else if (parent_ != nullptr)
     {
-        world_matrix_ = local_matrix_ * parent_.lock()->GetWorldMatrix();
+        world_matrix_ = local_matrix_ * parent_->GetWorldMatrix();
     }
     else
     {
@@ -239,10 +272,10 @@ void Transform::MatrixDecompose(const XMMATRIX &matrix, XMFLOAT3 &scale, XMFLOAT
 DirectX::XMMATRIX Transform::InverseMatrixAllParent()
 {
     XMMATRIX inverse = DirectX::XMMatrixIdentity();
-    if (!parent_.expired())
+    if (parent_ != nullptr)
     {
-		inverse = DirectX::XMMatrixInverse(nullptr, parent_.lock()->world_matrix_);
-        inverse *= parent_.lock()->InverseMatrixAllParent();
+		inverse = DirectX::XMMatrixInverse(nullptr, parent_->world_matrix_);
+        inverse *= parent_->InverseMatrixAllParent();
     }
     return inverse;
 }

@@ -9,8 +9,7 @@
 #include "Property.h"
 
 
-class Object :
-	public std::enable_shared_from_this<Object>
+class Object
 {
 public:
 	//===========================================
@@ -24,7 +23,7 @@ public:
 	/// </summary>
 	/// <param name="objct">削除するオブジェクト</param>
 	/// <param name="t">削除するまでのディレイ時間</param>
-	static void Destroy(std::weak_ptr<Object> object, float t = 0.0f);
+	static void Destroy(Object *object, float t = 0.0f);
 
 	/// <summary>
 	/// 指定された型に一致するオブジェクトを返す
@@ -50,7 +49,7 @@ public:
 	/// <param name="...parameter">パラメータ</param>
 	/// <returns>オブジェクトのweak_ptr</returns>
 	template<class T, class ...Parameter>
-	static std::weak_ptr<T> CreateObject(Parameter ...parameter);
+	static T *CreateObject(Parameter ...parameter);
 
 
 
@@ -72,7 +71,7 @@ private:
 	/// <summary>
 	/// オブジェクトコンテナ
 	/// </summary>
-	static std::vector<std::shared_ptr<Object>> objects_;
+	static std::vector<std::unique_ptr<Object>> objects_;
 
 
 	// オブジェクトIDの重複回避用
@@ -99,9 +98,9 @@ inline std::weak_ptr<Type> Object::FindObjectOfType(bool include_inactive)
 }
 
 template<class T, class ...Parameter>
-inline std::weak_ptr<T> Object::CreateObject(Parameter ...parameter)
+inline T *Object::CreateObject(Parameter ...parameter)
 {
-	std::shared_ptr<T> temp = std::make_shared<T>(parameter...);
+	T *temp = new T(parameter...);
 	objects_.emplace_back(temp);
-	return  temp;
+	return temp;
 }

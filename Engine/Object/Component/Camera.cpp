@@ -2,9 +2,9 @@
 #include "Object/GameObject/GameObject.h"
 #include "ConstantBufferManager/ConstantBufferManager.h"
 
-std::weak_ptr<Camera> Camera::main_camera_;
-std::vector<std::weak_ptr<Camera>> Camera::cameras_;
-yEngine::Property<std::weak_ptr<Camera>> Camera::main{
+Camera* Camera::main_camera_;
+std::vector<Camera*> Camera::cameras_;
+yEngine::Property<Camera*> Camera::main{
 		main_camera_, yEngine::AccessorType::ReadOnly,
 		nullptr,
 		nullptr
@@ -17,37 +17,63 @@ Camera::Camera():
 
 void Camera::ComponentInitialize()
 {
-	if (main_camera_.expired()) {
-		main_camera_ = std::static_pointer_cast<Camera>(Object::shared_from_this());
+	// メインカメラがなければセットする
+	if (main_camera_ == nullptr) {
+		main_camera_ = this;
 	}
-	cameras_.emplace_back(std::static_pointer_cast<Camera>(Object::shared_from_this()));
+	cameras_.emplace_back(this);
 }
 
 void Camera::ComponentUpdate()
 {
 	// カメラの位置をセット
 	view_position = {
-		transform_.lock()->position->x,
-		transform_.lock()->position->y,
-		transform_.lock()->position->z,
-		1.0f
-	};
-	
-	// 焦点計算
-	XMMATRIX temp = XMMatrixRotationQuaternion(XMLoadFloat4(&transform_.lock()->quaternion));
-	XMVECTOR target = {
-		transform_.lock()->position->x + temp.r[2].m128_f32[0] * focus_,
-		transform_.lock()->position->y + temp.r[2].m128_f32[1] * focus_,
-		transform_.lock()->position->z + temp.r[2].m128_f32[2] * focus_,
+		transform_->position->x,
+		transform_->position->y,
+		transform_->position->z,
 		1.0f
 	};
 
+	// 焦点計算
+	XMMATRIX temp = XMMatrixRotationQuaternion(XMLoadFloat4(&transform_->quaternion));
+	XMVECTOR target;
+	if (target_position_ != nullptr)
+	{
+		target =
+		{
+			target_position_->x,
+			target_position_->y,
+			target_position_->z
+		};
+		Vector3 front = transform_->position - *target_position_;
+		Vector3::Normalize(front);
+		Vector3 right =	Vector3::Cross(Vector3::up, front);
+		Vector3 up =	Vector3::Cross(front,right);
+
+		XMMATRIX assignment_rotate
+		{
+			right.x,right.y,right.z,0.0f,
+			up.x,up.y,up.z,0.0f,
+			front.x,front.y,front.z,0.0f,
+			0.0f,0.0f,0.0f,1.0f
+		};
+		
+	}
+	else //無ければ正面をターゲットにする
+	{
+		target = {
+			transform_->position->x + temp.r[2].m128_f32[0] * focus_,
+			transform_->position->y + temp.r[2].m128_f32[1] * focus_,
+			transform_->position->z + temp.r[2].m128_f32[2] * focus_,
+			1.0f
+		};
+	}
 	// ビュー行列計算
 	switch (projection_type_)
 	{
 	case Camera::Perspective:
 		mat_view = XMMatrixLookAtLH(
-			XMLoadFloat3(&transform_.lock()->position),
+			XMLoadFloat3(&transform_->position),
 			target,
 			XMLoadFloat3(&Vector3::up)
 		);
@@ -77,7 +103,7 @@ void Camera::ComponentUpdate()
 	ImGui::Begin("test");
 	if (ImGui::Button("zero set test"))
 	{
-		transform_.lock()->position = { 0,0,0 };
+		transform_->position = { 0,0,0 };
 	}
 	ImGui::End();
 
@@ -146,9 +172,9 @@ void Camera::BufferTransfer(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cm
 	// 使用しているカメラデータを格納
 	CameraConstantBuffer const_camera_map;
 	{
-		const_camera_map.view_position = main_camera_.lock()->view_position;
+		const_camera_map.view_position = main_camera_->view_position;
 		// ビュープロジェクション
-		DirectX::XMMATRIX view_projection_data = main_camera_.lock()->mat_view * main_camera_.lock()->mat_projection;
+		DirectX::XMMATRIX view_projection_data = main_camera_->mat_view * main_camera_->mat_projection;
 		XMStoreFloat4x4(&const_camera_map.view_projection, view_projection_data);
 		// ビュープロジェクションの逆行列
 		DirectX::XMStoreFloat4x4(&const_camera_map.inv_view_projection, DirectX::XMMatrixInverse(nullptr, view_projection_data));

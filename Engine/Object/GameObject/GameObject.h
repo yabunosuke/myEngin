@@ -63,7 +63,7 @@ public:	//関数
 	//
 	//===========================================
 
-	static std::weak_ptr<GameObject> CreateObject(const std::string &object_name = "");
+	static GameObject *CreateObject(const std::string &object_name = "");
 
 	static void SetGameObjectManager(std::weak_ptr<GameObjectManager> game_object_manager);
 	//===========================================
@@ -80,7 +80,7 @@ public:	//関数
 	/// <param name="...args"></param>
 	/// <returns></returns>
 	template<class T, class... Args>
-	inline std::weak_ptr<T> AddComponent(Args ...args);
+	inline T *AddComponent(Args ...args);
 	/// <summary>
 	/// タグ名の比較
 	/// </summary>
@@ -94,7 +94,7 @@ public:	//関数
 	/// <typeparam name="T"></typeparam>
 	/// <returns></returns>
 	template<class T>
-	std::weak_ptr<T> GetComponent();
+	T *GetComponent();
 
 	/// <summary>
 	/// コンポーネントの取得 調整中
@@ -138,7 +138,7 @@ public:	//関数
 	/// </summary>
 	void Finalize() {};
 
-	void SetParent(std::weak_ptr<GameObject> parent);
+	void SetParent(GameObject *parent);
 
 	// isBlind
 	void SetIsBlind(bool blind) { isBlind = blind; }
@@ -148,25 +148,25 @@ public:	//関数
 	void Remove() { isRemove = true; }
 
 	// 親オブジェクトの取得
-	std::weak_ptr<GameObject> &GetPearent() { return pearent_game_object_; }
+	GameObject* GetPearent() { return pearent_game_object_; }
 	// 子のオブジェクトコンテナの取得
-	std::vector<std::weak_ptr<GameObject>> &GetChildren() { return child_game_object_; }
+	std::vector<GameObject*> &GetChildren() { return child_game_object_; }
 
 	/// <summary>
 	/// コンポーネントリストの取得
 	/// </summary>
 	/// <returns></returns>
-	std::list<std::weak_ptr<Component>> GetComponentList() { return component_list_; }
+	std::list<Component*> GetComponentList() { return component_list_; }
 
 
 	// コライダー
-	void AddCollider(std::weak_ptr<Collider> collider);
-	const std::vector<std::weak_ptr<Collider>> &GetColliders() { return colliders_; }
-	void RemoveCollider(std::weak_ptr<Collider> collider);
+	void AddCollider(Collider *collider);
+	const std::vector<Collider*> &GetColliders() { return colliders_; }
+	void RemoveCollider(Collider *collider);
 
 	// MonoBehaviour
-	void AddMonoBehaviour(std::weak_ptr<MonoBehaviour> monobehaviour);
-	const std::vector<std::weak_ptr<MonoBehaviour>> &GetMonoBehaviours();
+	void AddMonoBehaviour(MonoBehaviour *monobehaviour);
+	const std::vector<MonoBehaviour *> &GetMonoBehaviours();
 	void RemoveMonoBehaviour(std::weak_ptr<MonoBehaviour> monobehaviour);
 
 
@@ -184,11 +184,8 @@ public:	//関数
 	/// ローカルのアクティブ状態 (get = true, set = false)
 	/// </summary>
 	yEngine::Property<bool> activeSelf{ active_self_ ,yEngine::AccessorType::ReadOnly };
-	/// <summary>
-	/// ローカルのアクティブ状態 (get = true, set = false)
-	/// </summary>
-	yEngine::Property<std::weak_ptr<Transform>> transform{ transform_,yEngine::AccessorType::AllAccess };
 
+	Transform *transform_;
 
 private:
 	//===========================================
@@ -210,7 +207,6 @@ private:
 
 
 
-	std::weak_ptr<Transform> transform_;
 
 	// 属しているシーン
 	//std::weak_ptr<AbstractScene> scene_;
@@ -218,15 +214,15 @@ private:
 	std::string tag_ = "Notag";
 
 	// 親オブジェクト
-	std::weak_ptr<GameObject> pearent_game_object_;
+	GameObject *pearent_game_object_{ nullptr };
 	// 子オブジェクトのコンテナ
-	std::vector<std::weak_ptr<GameObject>> child_game_object_;
+	std::vector<GameObject*> child_game_object_;
 	// コンポーネント
-	std::list<std::weak_ptr<Component>> component_list_;
+	std::list<Component*> component_list_;
 	// コライダー
-	std::vector<std::weak_ptr<Collider>> colliders_;
+	std::vector<Collider*> colliders_;
 	// MonoBehaviour
-	std::vector<std::weak_ptr<MonoBehaviour>> mono_behaviours_;
+	std::vector<MonoBehaviour*> mono_behaviours_;
 
 	bool active_self_;				// ローカルのアクティブ状態
 	// 非表示になっているか
@@ -240,19 +236,19 @@ private:
 };
 
 template<class T, class ...Args>
-inline std::weak_ptr<T> GameObject::AddComponent(Args ...args)
+inline T *GameObject::AddComponent(Args ...args)
 {
 
-	std::weak_ptr<T> temp = Object::CreateObject<T>(args...);
+	T *temp = Object::CreateObject<T>(args...);
 	component_list_.emplace_back(temp);
-	temp.lock()->transform_ = GetComponent<Transform>();
-	temp.lock()->game_object_ = std::static_pointer_cast<GameObject>(shared_from_this());
-	temp.lock()->CheckInitialize();
+	temp->transform_ = GetComponent<Transform>();
+	temp->game_object_ = static_cast<GameObject*>(this);
+	temp->CheckInitialize();
 	// コンポーネントを更新順に並び替え
 	component_list_.sort(
-		[](std::weak_ptr<Component> lhs,std::weak_ptr<Component> rhs)
+		[](Component *lhs, Component *rhs)
 		{
-			return static_cast<int>(lhs.lock()->type.r_) < static_cast<int>(rhs.lock()->type.r_);
+			return static_cast<int>(lhs->type.r_) < static_cast<int>(rhs->type.r_);
 		}
 	);
 
@@ -261,13 +257,13 @@ inline std::weak_ptr<T> GameObject::AddComponent(Args ...args)
 }
 
 template<class T>
-inline std::weak_ptr<T> GameObject::GetComponent()
+T *GameObject::GetComponent()
 {
-	std::weak_ptr<T> temp;
-	for (auto &component : component_list_)
+	T *temp = nullptr;
+	for (auto component : component_list_)
 	{
-		temp = std::dynamic_pointer_cast<T>(component.lock());
-		if (!temp.expired())
+		temp = dynamic_cast<T*>(component);
+		if (temp != nullptr)
 		{
 			return temp;
 		}

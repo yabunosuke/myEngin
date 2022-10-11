@@ -41,7 +41,9 @@ Sprite *Sprite::Create(ComPtr<ID3D12Device> dev,int texuer_num,XMFLOAT2 anchorpo
 
 	// ‰Šú‰»
 	if (!sprite->Initialize(dev)) {
-		delete sprite;
+		
+		
+		sprite;
 		assert(0);
 		return nullptr;
 	}

@@ -49,7 +49,7 @@ public:
 	//static DirectX::XMMATRIX GetView() { return  now_camera->mat_view; }
 
 	
-	static yEngine::Property<std::weak_ptr<Camera>> main;
+	static yEngine::Property<Camera*> main;
 	yEngine::Property<DirectX::XMMATRIX> projectionMatrix{
 		mat_projection, yEngine::AccessorType::AllAccess,
 		nullptr,
@@ -61,6 +61,15 @@ public:
 		nullptr,
 		nullptr
 	};
+
+	yEngine::Property<Vector3 *> target
+	{
+		target_position_,
+		yEngine::AccessorType::AllAccess,
+		nullptr,
+		nullptr
+	};
+
 private:
 
 	//===========================================
@@ -70,9 +79,9 @@ private:
 	//===========================================
 
 	// 現在有効なカメラ（カメラコンテナの中で一番上にある有効なカメラ）
-	static std::weak_ptr<Camera> main_camera_;
+	static Camera* main_camera_;
 	// カメラコンテナ
-	static std::vector<std::weak_ptr<Camera>> cameras_;
+	static std::vector<Camera*> cameras_;
 
 
 	//===========================================
@@ -107,5 +116,7 @@ private:
 	float near_plane_		{ 0.3f };			// 描画される最も近い点
 	float far_plane_		{ 1000.0f };		// 描画される最も遠い点
 	float focus_			{ 1.0f };			// 焦点距離;
+
+	Vector3 *target_position_{nullptr};
 };
 

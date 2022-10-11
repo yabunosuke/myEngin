@@ -29,8 +29,8 @@ private:
 	}state = AnimationState::FIGHT_IDOLE;
 
 	// ç¿ïW
-	std::weak_ptr<Rigidbody> regidbody_;
-	Fbx *game_object{ nullptr };
+	Rigidbody *regidbody_;
+	Fbx *model_data_{ nullptr };
 
 	int hp_ = 10;
 };

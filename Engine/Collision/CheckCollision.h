@@ -7,8 +7,8 @@
 class CheckCollision final
 {
 public:
-	static void CheckColliders(const std::vector<std::weak_ptr<GameObject>> &game_objects);
-	static bool CheckHit(std::weak_ptr<Collider> a, std::weak_ptr<Collider> b,Vector3 hit_pos);
+	static void CheckColliders(const std::vector<GameObject *> &game_objects);
+	static bool CheckHit(Collider *a, Collider *b,Vector3 hit_pos);
 
 	// AABB to AABB
 	static bool AABB2AABB(yEngine::AABB a, yEngine::AABB b);

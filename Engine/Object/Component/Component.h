@@ -111,11 +111,11 @@ public:
 
 
 	// ゲームオブジェクト
-	std::weak_ptr<GameObject>game_object_;
+	GameObject *game_object_;
 	// 重複チェック用のタグ
 	std::string tag_ = "";
 	// ゲームオブジェクトが持つTransform
-	std::weak_ptr<Transform>  transform_;
+	Transform *transform_;
 
 
 protected:	//関数

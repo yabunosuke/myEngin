@@ -70,7 +70,7 @@ void Rigidbody::ComponentInitialize()
 
 void Rigidbody::ComponentFixedUpdate()
 {
-	float test_masatu_ = 1.0f;
+	float test_masatu_ = 0.95f;
 
 	velocity_ *= test_masatu_;
 
@@ -82,8 +82,8 @@ void Rigidbody::ComponentFixedUpdate()
 
 	// íÔçRåvéZ
 	velocity_ -= static_cast<float>(drag_ / 100.0f) * velocity_;
-	transform_.lock()->localPosition =
-		transform_.lock()->localPosition
+	transform_->localPosition =
+		transform_->localPosition
 		+ velocity_ * Time::GetInstance()->fixedDeltaTime;
 }
 

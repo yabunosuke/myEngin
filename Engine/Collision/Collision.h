@@ -6,12 +6,12 @@ class Collision
 {
 public:
 	Collision(
-		std::weak_ptr<GameObject> game_object,
+		GameObject* game_object,
 		Vector3 relative_velocity
 		);
 
 	// 衝突した相手のオブジェクト (ReadOnly)
-	yEngine::Property<std::weak_ptr<GameObject>> gameObject
+	yEngine::Property<GameObject*> gameObject
 	{
 		game_object_,
 		yEngine::AccessorType::ReadOnly
@@ -25,8 +25,7 @@ public:
 
 
 private:
-
-	std::weak_ptr<GameObject> game_object_;
+	GameObject* game_object_;
 	Vector3 relative_velocity_;
 };
 
