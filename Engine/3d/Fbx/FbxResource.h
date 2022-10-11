@@ -170,11 +170,11 @@ public:
 	static const int MAX_BONE_INFLUENCES = 4;
 	// 頂点データ構造体
 	struct Vertex {
-		XMFLOAT4				position	= { 0, 0, 0, 1 };
-		XMFLOAT3				normal = { 0, 0, 0 };
-		XMFLOAT3				tangent = { 0, 0, 0 };
-		XMFLOAT3				texcoord = { 0, 0 ,0 };
-		XMFLOAT4				color = { 1, 1, 1, 1 };
+		XMFLOAT4				position	{ 0, 0, 0, 1 };
+		XMFLOAT3				normal		{ 0, 0, 0 };
+		XMFLOAT3				tangent		{ 0, 0, 0 };
+		XMFLOAT3				texcoord	{ 0, 0 ,0 };
+		XMFLOAT4				color		{ 1, 1, 1, 1 };
 		float bone_weights[MAX_BONE_INFLUENCES] = { 1,0,0,0 };
 		uint32_t bone_indices[MAX_BONE_INFLUENCES] {};
 

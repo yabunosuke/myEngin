@@ -25,7 +25,7 @@ void CameraController::FixedUpdate()
 	target_position_ = target_object_->transform_->position.r_;
 
 	float x = Input::GetAxis(GamePadAxis::AXIS_RX);
-	//float y = Input::GetAxis(GamePadAxis::AXIS_RY);
+	float y = Input::GetAxis(GamePadAxis::AXIS_RY);
 
 	// 現在位置とターゲットが重なった場合の処理
 	if (self_position == target_position_)
@@ -63,14 +63,14 @@ void CameraController::FixedUpdate()
 		);
 	}
 
-	//if (y != 0.0f)
-	//{
-	//	transform_->RotateAround(
-	//		target_position_,
-	//		Vector3::right,
-	//		y
-	//	);
-	//}
+	if (y != 0.0f)
+	{
+		transform_->RotateAround(
+			target_position_,
+			Vector3::right,
+			y
+		);
+	}
 }
 
 void CameraController::Update()
