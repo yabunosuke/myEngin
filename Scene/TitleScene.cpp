@@ -81,6 +81,10 @@ void TitleScene::Initialize()
 	camera->AddComponent<CameraController>(eye);
 	//camera->SetParent(eye);
 
+	auto miku_test = GameObject::CreateObject("Miku");
+	miku_test->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/RunMiku/RunMiku.fbx");
 
 	// •Ší
 	auto weapon = GameObject::CreateObject("Weapon");
