@@ -174,16 +174,15 @@ public:
 
 
 	// “Y‚¦š‰‰Zq
-	float operator [](const std::size_t &index) const
+	float &operator [](const std::size_t &index)
 	{
 		if (index == 0) return this->x;
 		if (index == 1) return this->y;
 		if (index == 2) return this->z;
-		if (index == 2) return this->w;
+		if (index == 3) return this->w;
 
 		// ”ÍˆÍŠOQÆ
-
-		return 0.0f;
+		assert(0);
 	}
 };
 

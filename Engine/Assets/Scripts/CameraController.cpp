@@ -56,6 +56,7 @@ void CameraController::FixedUpdate()
 	transform_->position =
 		Vector3::MoveTowards(self_position, target_position_, diff_distance * 0.02f);
 
+
 	// ターゲットを中心に回転する
 	if(input.x != 0.0f)
 	{
@@ -85,6 +86,9 @@ void CameraController::FixedUpdate()
 			input.y
 		);
 	}
+
+	// ターゲットの方を向く
+	transform_->LookAt(target_position_);
 }
 
 void CameraController::Update()

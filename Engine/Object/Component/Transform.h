@@ -149,23 +149,25 @@ public:
 		//nullptr
 		[this](Quaternion assignment_quaternion)
 		{
-			XMMATRIX temp = world_matrix_;
 
-			//// ローカル行列を計算
-			//XMMATRIX S = DirectX::XMMatrixScaling(
-			//	local_scale_.x,
-			//	local_scale_.y,
-			//	local_scale_.z
-			//);
-			//XMMATRIX R = DirectX::XMMatrixRotationQuaternion(
-			//	XMLoadFloat4(&local_quaternion_)
-			//);
+			// ワールド行列を計算
+			XMMATRIX S = DirectX::XMMatrixScaling(
+				world_scale_.x,
+				world_scale_.y,
+				world_scale_.z
+			);
+			XMMATRIX R = DirectX::XMMatrixRotationQuaternion(
+				XMLoadFloat4(&assignment_quaternion)
+			);
 
-			//XMMATRIX T = DirectX::XMMatrixTranslation(
-			//	local_position_.x,
-			//	local_position_.y,
-			//	local_position_.z
-			//);
+			XMMATRIX T = DirectX::XMMatrixTranslation(
+				world_position_.x,
+				world_position_.y,
+				world_position_.z
+			);
+
+			XMMATRIX temp = S * R * T;
+
 			matrix = temp;
 
 		}

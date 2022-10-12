@@ -71,99 +71,114 @@ void Transform::Infomation()
         Camera::main.r_->viewMatrix->r->m128_f32,
         Camera::main.r_->projectionMatrix->r->m128_f32,
         mCurrentGizmoOperation, mCurrentGizmoMode, world_matrix_.r->m128_f32, NULL, useSnap ? &snap.x : NULL);
-    
-    // 親がいる場合はローカルに変換しなおす
-    if (user_set_parent_ != nullptr)
-    {
-        XMVECTOR scale, rotate, position;
-        XMMatrixDecompose(&scale, &rotate, &position, world_matrix_);
 
-        XMVECTOR old_scale, old_rotate, old_position;
-        XMMatrixDecompose(&old_scale, &old_rotate, &old_position, old_matrix);
+    // 座標
+	ImGui::DragFloat3("Position", (float *)&local_position_);
+    // 回転
+	XMFLOAT3 euler = local_quaternion_.EulerAngles();
+	ImGui::DragFloat3("Rotation", &euler.x);
+	XMStoreFloat4(&local_quaternion_,
+		XMQuaternionRotationRollPitchYaw(
+			euler.x * Mathf::deg_to_rad,
+			euler.y * Mathf::deg_to_rad,
+			euler.z * Mathf::deg_to_rad
+		)
+	);
+	// スケール
+	ImGui::DragFloat3("Scale", (float *)&local_scale_);
+  //  
+  //  // 親がいる場合はローカルに変換しなおす
+  //  if (user_set_parent_ != nullptr)
+  //  {
+  //      XMVECTOR scale, rotate, position;
+  //      XMMatrixDecompose(&scale, &rotate, &position, world_matrix_);
 
-        // 差分を移動する
-        XMVECTOR difference_scale = old_scale - scale;
-        local_scale_ += difference_scale;
+  //      XMVECTOR old_scale, old_rotate, old_position;
+  //      XMMatrixDecompose(&old_scale, &old_rotate, &old_position, old_matrix);
 
-        XMStoreFloat4(&local_quaternion_, XMQuaternionMultiply(XMLoadFloat4(&local_quaternion_), XMQuaternionMultiply(old_rotate, XMQuaternionInverse(rotate))));
+  //      // 差分を移動する
+  //      XMVECTOR difference_scale = old_scale - scale;
+  //      local_scale_ += difference_scale;
 
-        XMVECTOR difference_position = old_position - position;
-        local_position_ += difference_position;
+  //      XMStoreFloat4(&local_quaternion_, XMQuaternionMultiply(XMLoadFloat4(&local_quaternion_), XMQuaternionMultiply(old_rotate, XMQuaternionInverse(rotate))));
 
-        // 座標
-        ImGui::DragFloat3("Position", (float *)&local_position_);
-        // 回転
-        XMFLOAT3 euler = local_quaternion_.EulerAngles();
-        ImGui::DragFloat3("Rotation", &euler.x);
-        XMStoreFloat4(&local_quaternion_,
-            XMQuaternionRotationRollPitchYaw(
-                euler.x * Mathf::deg_to_rad,
-                euler.y * Mathf::deg_to_rad,
-                euler.z * Mathf::deg_to_rad
-            )
-        );
-        // スケール
-        ImGui::DragFloat3("Scale", (float *)&local_scale_);
+  //      XMVECTOR difference_position = old_position - position;
+  //      local_position_ += difference_position;
 
-    }
-    else if(parent_ != nullptr)
-    {
-		XMVECTOR scale, rotate, position;
-		XMMatrixDecompose(&scale, &rotate, &position, world_matrix_);
+  //      // 座標
+  //      ImGui::DragFloat3("Position", (float *)&local_position_);
+  //      // 回転
+  //      XMFLOAT3 euler = local_quaternion_.EulerAngles();
+  //      ImGui::DragFloat3("Rotation", &euler.x);
+  //      XMStoreFloat4(&local_quaternion_,
+  //          XMQuaternionRotationRollPitchYaw(
+  //              euler.x * Mathf::deg_to_rad,
+  //              euler.y * Mathf::deg_to_rad,
+  //              euler.z * Mathf::deg_to_rad
+  //          )
+  //      );
+  //      // スケール
+  //      ImGui::DragFloat3("Scale", (float *)&local_scale_);
 
-        XMVECTOR old_scale, old_rotate, old_position;
-        XMMatrixDecompose(&old_scale, &old_rotate, &old_position, old_matrix);
+  //  }
+  //  else if(parent_ != nullptr)
+  //  {
+		//XMVECTOR scale, rotate, position;
+		//XMMatrixDecompose(&scale, &rotate, &position, world_matrix_);
 
-        // 差分を移動する
-        XMVECTOR difference_scale = old_scale - scale;
-        local_scale_ += difference_scale;
+  //      XMVECTOR old_scale, old_rotate, old_position;
+  //      XMMatrixDecompose(&old_scale, &old_rotate, &old_position, old_matrix);
 
-        XMStoreFloat4(&local_quaternion_,XMQuaternionMultiply(XMLoadFloat4(&local_quaternion_),XMQuaternionMultiply(old_rotate , XMQuaternionInverse(rotate))));
+  //      // 差分を移動する
+  //      XMVECTOR difference_scale = old_scale - scale;
+  //      local_scale_ += difference_scale;
 
-        XMVECTOR difference_position = old_position - position;
-        local_position_ += difference_position;
+  //      XMStoreFloat4(&local_quaternion_,XMQuaternionMultiply(XMLoadFloat4(&local_quaternion_),XMQuaternionMultiply(old_rotate , XMQuaternionInverse(rotate))));
 
-        // 座標
-        ImGui::DragFloat3("Position", (float *)&local_position_);
-        // 回転
-        XMFLOAT3 euler = local_quaternion_.EulerAngles();
-        ImGui::DragFloat3("Rotation", &euler.x);
-        XMStoreFloat4(&local_quaternion_,
-            XMQuaternionRotationRollPitchYaw(
-                euler.x * Mathf::deg_to_rad,
-                euler.y * Mathf::deg_to_rad,
-                euler.z * Mathf::deg_to_rad
-            )
-        );
-        // スケール
-        ImGui::DragFloat3("Scale", (float *)&local_scale_);
-    }
-    // 自分が一番上の時
-    else
-    {
-        XMVECTOR scale, rotate, position;
-        XMMatrixDecompose(&scale, &rotate, &position, world_matrix_);
-        XMStoreFloat3(&local_scale_, scale);
-        XMStoreFloat4(&local_quaternion_, rotate);
-        XMStoreFloat3(&local_position_, position);
+  //      XMVECTOR difference_position = old_position - position;
+  //      local_position_ += difference_position;
 
-        //MatrixDecompose(world_matrix_, local_scale_, local_quaternion_, local_position_);
+  //      // 座標
+  //      ImGui::DragFloat3("Position", (float *)&local_position_);
+  //      // 回転
+  //      XMFLOAT3 euler = local_quaternion_.EulerAngles();
+  //      ImGui::DragFloat3("Rotation", &euler.x);
+  //      XMStoreFloat4(&local_quaternion_,
+  //          XMQuaternionRotationRollPitchYaw(
+  //              euler.x * Mathf::deg_to_rad,
+  //              euler.y * Mathf::deg_to_rad,
+  //              euler.z * Mathf::deg_to_rad
+  //          )
+  //      );
+  //      // スケール
+  //      ImGui::DragFloat3("Scale", (float *)&local_scale_);
+  //  }
+  //  // 自分が一番上の時
+  //  else
+  //  {
+  //      XMVECTOR scale, rotate, position;
+  //      XMMatrixDecompose(&scale, &rotate, &position, world_matrix_);
+  //      XMStoreFloat3(&local_scale_, scale);
+  //      XMStoreFloat4(&local_quaternion_, rotate);
+  //      XMStoreFloat3(&local_position_, position);
 
-        // 座標
-        ImGui::DragFloat3("Position", (float *)&local_position_);
-        // 回転
-        XMFLOAT3 euler = local_quaternion_.EulerAngles();
-        ImGui::DragFloat3("Rotation", &euler.x);
-        XMStoreFloat4(&local_quaternion_,
-            XMQuaternionRotationRollPitchYaw(
-                euler.x * Mathf::deg_to_rad,
-                euler.y * Mathf::deg_to_rad,
-                euler.z * Mathf::deg_to_rad
-            )
-        );
-        // スケール
-        ImGui::DragFloat3("Scale", (float *)&local_scale_);
-    }
+  //      //MatrixDecompose(world_matrix_, local_scale_, local_quaternion_, local_position_);
+
+  //      // 座標
+  //      ImGui::DragFloat3("Position", (float *)&local_position_);
+  //      // 回転
+  //      XMFLOAT3 euler = local_quaternion_.EulerAngles();
+  //      ImGui::DragFloat3("Rotation", &euler.x);
+  //      XMStoreFloat4(&local_quaternion_,
+  //          XMQuaternionRotationRollPitchYaw(
+  //              euler.x * Mathf::deg_to_rad,
+  //              euler.y * Mathf::deg_to_rad,
+  //              euler.z * Mathf::deg_to_rad
+  //          )
+  //      );
+  //      // スケール
+  //      ImGui::DragFloat3("Scale", (float *)&local_scale_);
+  //  }
 
     
 }
@@ -224,7 +239,7 @@ void Transform::LookAt(const Vector3 &target)
 	Vector3 right = Vector3::Cross(Vector3::up, front).Normalized();
     Vector3 up = Vector3::Cross(front,right).Normalized();
 
-    XMMATRIX m
+    Matrix4x4 m
     {
         right.x,right.y,right.z,0.0f,
         up.x,up.y,up.z,0.0f,
@@ -232,6 +247,7 @@ void Transform::LookAt(const Vector3 &target)
         0.0f,0.0f,0.0f,1.0f
     };
 
+    quaternion = Matrix4x4::GetRotation(m);
     // クオータニオンの抜出
     //float elem[4];
 }
@@ -244,15 +260,10 @@ void Transform::UpdateMatrix()
         local_scale_.y,
         local_scale_.z
     );
-    XMMATRIX R = DirectX::XMMatrixRotationQuaternion(
-        XMLoadFloat4(&local_quaternion_)
-    );
-
-    XMMATRIX T = DirectX::XMMatrixTranslation(
-        local_position_.x,
-        local_position_.y,
-        local_position_.z
-    );
+    //Matrix4x4 S = Matrix4x4::Scale(local_scale_);
+    Matrix4x4 R = Matrix4x4::Rotate(local_quaternion_);
+    Matrix4x4 T = Matrix4x4::Translation(local_position_);
+    
     local_matrix_ = S * R * T;
 
     // 親がいる場合は親の行列をかける

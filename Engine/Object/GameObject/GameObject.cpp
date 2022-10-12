@@ -22,6 +22,11 @@ GameObject::GameObject(const std::string &name) :
 	
 }
 
+GameObject::~GameObject()
+{
+	int test = 0;
+}
+
 GameObject* GameObject::CreateObject(const std::string &object_name)
 {
 	GameObject *game_object;

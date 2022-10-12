@@ -50,13 +50,12 @@ void TitleScene::Initialize()
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/sword human/Sword man.fbx");
 	player->AddComponent<Rigidbody>();
-	player->AddComponent<Player>();
+	player->AddComponent<PlayerController>();
 	XMStoreFloat4(&player->transform_->localQuaternion, XMQuaternionRotationRollPitchYaw(0, 0, 0));
-	player->transform_->localPosition = { 0.0f,0.0f,-50.0f };
-	player->transform_->localScale = { 0.4f,0.4f,0.4f };
-
+	
 	auto eye = GameObject::CreateObject("Eye");
 	eye->SetParent(player);
+	eye->transform_->localPosition = { 0.0f,150.0f,0.0f };
 
 
 	//auto test = GameObject::CreateObject("Test");
@@ -81,10 +80,10 @@ void TitleScene::Initialize()
 	camera->AddComponent<CameraController>(eye);
 	//camera->SetParent(eye);
 
-	auto miku_test = GameObject::CreateObject("Miku");
-	miku_test->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/RunMiku/RunMiku.fbx");
+	//auto miku_test = GameObject::CreateObject("Miku");
+	//miku_test->AddComponent<Object3dComponent>(
+	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+	//	"Assets/3d/RunMiku/RunMiku.fbx");
 
 	// •Ší
 	auto weapon = GameObject::CreateObject("Weapon");

@@ -7,18 +7,22 @@
 
 class Object3dComponent;
 
-Player::Player():
-MonoBehaviour("Player")
+PlayerController::PlayerController():
+MonoBehaviour("PlayerController")
 {
 }
 
-void Player::OnCollisionEnter(Collision &collision)
+void PlayerController::OnCollisionEnter(Collision &collision)
 {
 
 }
 
-void Player::Start()
+void PlayerController::Start()
 {
+	transform_->localPosition = { 0.0f,0.0f,-50.0f };
+	transform_->localScale = { 0.4f,0.4f,0.4f };
+
+
 	// リジッド
 	regidbody_ = 
 		game_object_->GetComponent<Rigidbody>();
@@ -26,49 +30,69 @@ void Player::Start()
 		game_object_->GetComponent<Object3dComponent>()->GetObjectData();
 }
 
-void Player::FixedUpdate()
+void PlayerController::FixedUpdate()
 {
-	Vector3 camera_forward = Vector3::Scale(Camera::main.r_->transform_->GetFront(), Vector3(1.0f,1.0f,1.0f)).Normalized();
-	// キー入力での移動処理
-	if (Input::GetKeyPress(DIK_W))
+	Vector3 camera_forward = Vector3::Scale(Camera::main.r_->transform_->GetFront(), Vector3(1.0f,0.0f,1.0f)).Normalized();
+	
+	Vector3 move_forward = camera_forward * input_vertical_ + Camera::main.r_->transform_->GetRight() * input_horizontal_;
+	regidbody_->AddForce(move_forward);
+
+	// 回転処理
+	Vector3 target_position;
+	if (regidbody_->velocity_.Magnitude() != 0.0f)
 	{
-		if (Input::GetKeyPress(DIK_LSHIFT))
-		{
-
-			regidbody_->AddForce(transform_->GetFront());
-		}
-		else
-		{
-			regidbody_->AddForce(transform_->GetFront());
-		}
-
+		target_position = Vector3::Scale(regidbody_->velocity_.Normalized(), Vector3(1.0f, 0.0f, 1.0f)) + transform_->position;
 	}
-	if (Input::GetKeyPress(DIK_S)) {
-		// 移動
-		regidbody_->AddForce(-transform_->GetFront());
-	}
-	if (Input::GetKeyPress(DIK_D))
+	else
 	{
-		// 移動
-		regidbody_->AddForce(transform_->GetRight());
+		target_position = transform_->position + transform_->GetFront();
 	}
-	if (Input::GetKeyPress(DIK_A))
-	{
-		// 移動
-		regidbody_->AddForce(-transform_->GetRight());
-	}
+	transform_->LookAt(target_position);
+
+	//// キー入力での移動処理
+	//if (Input::GetKeyPress(DIK_W))
+	//{
+	//	if (Input::GetKeyPress(DIK_LSHIFT))
+	//	{
+
+	//		regidbody_->AddForce(transform_->GetFront());
+	//	}
+	//	else
+	//	{
+	//		regidbody_->AddForce(transform_->GetFront());
+	//	}
+
+	//}
+	//if (Input::GetKeyPress(DIK_S)) {
+	//	// 移動
+	//	regidbody_->AddForce(-transform_->GetFront());
+	//}
+	//if (Input::GetKeyPress(DIK_D))
+	//{
+	//	// 移動
+	//	regidbody_->AddForce(transform_->GetRight());
+	//}
+	//if (Input::GetKeyPress(DIK_A))
+	//{
+	//	// 移動
+	//	regidbody_->AddForce(-transform_->GetRight());
+	//}
 
 
-	regidbody_->AddForce(transform_->GetFront() *
-		-Input::GetAxis(GamePadAxis::AXIS_LY));
-	regidbody_->AddForce(transform_->GetRight() *
-		Input::GetAxis(GamePadAxis::AXIS_LX));
+	//regidbody_->AddForce(transform_->GetFront() *
+	//	-Input::GetAxis(GamePadAxis::AXIS_LY));
+	//regidbody_->AddForce(transform_->GetRight() *
+	//	Input::GetAxis(GamePadAxis::AXIS_LX));
 
 }
 
-void Player::Update()
+void PlayerController::Update()
 {
 	static float spin = 0;
+
+	input_horizontal_ = Input::GetAxis(GamePadAxis::AXIS_LX);
+	input_vertical_ = -Input::GetAxis(GamePadAxis::AXIS_LY);
+
 
 	if (!(Input::GetKeyPress(DIK_W) ||
 		Input::GetKeyPress(DIK_A) ||

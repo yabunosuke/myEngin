@@ -9,6 +9,7 @@
 #include "Collision/CheckCollision.h"
 //シーン
 #include "TitleScene.h"
+#include "GameScene.h"
 
 #include "Object/Component/Camera.h"
 
@@ -120,7 +121,11 @@ void Looper::OnSceneChanged(const Scenes scene, const bool stackClear)
 	case Scenes::Title:
 		sceneStack.push(make_shared<TitleScene>(this));
 		break;
-	
+
+	case Scenes::Game:
+		sceneStack.push(make_shared<GameScene>(this));
+		break;
+
 	default:
 		//存在しないシーンがスタックトップにある際のエラー処理
 		

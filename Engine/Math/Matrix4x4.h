@@ -63,9 +63,9 @@ public:
 	/// <returns></returns>
 	static Matrix4x4 Rotate(const Quaternion &quaternion);
 	
-	
-	static Matrix4x4 Inverse(const Quaternion &quaternion);
+	static Quaternion GetRotation(const Matrix4x4 &rotate_matrix);
 
+	static Matrix4x4 Inverse(const Quaternion &quaternion);
 
 
 	//===========================================
@@ -94,6 +94,17 @@ public:
 	//
 	//===========================================
 
+	operator XMMATRIX() const
+	{
+		XMMATRIX xm_matrix =
+		{
+		 _11,  _12,  _13,  _14,
+		 _21,  _22,  _23,  _24,
+		 _31,  _32,  _33,  _34,
+		 _41,  _42,  _43,  _44
+		};
+		return xm_matrix;
+	}
 };
 
 Matrix4x4 &operator *=(Matrix4x4 &rhs,const Matrix4x4 &lhs);

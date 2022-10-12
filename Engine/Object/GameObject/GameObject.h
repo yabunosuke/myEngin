@@ -49,7 +49,6 @@ public:	//関数
 	/// </summary>
 	/// <param name="name">オブジェクト名</param>
 	GameObject(const std::string &name);
-
 	//===========================================
 	//
 	//		静的メンバ関数

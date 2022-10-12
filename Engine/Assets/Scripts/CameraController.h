@@ -17,7 +17,7 @@ private:
     GameObject *target_object_;
     Vector3 target_position_;
 
-    float radius_distance_{ 150.0f };
+    const float radius_distance_{ 100.0f };
     Vector3 rotate_axis_{0,1,0};
 };
 

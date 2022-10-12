@@ -3,11 +3,11 @@
 #include "Object/Component/Behaviour/MonoBehaviour/MonoBehaviour.h"
 #include "Object/Component/Rigidbody.h"
 
-class Player :
+class PlayerController :
     public MonoBehaviour
 {
 public:
-    Player();
+    PlayerController();
 
 	void OnCollisionEnter(Collision& collision) override;
 
@@ -35,6 +35,10 @@ private:
     // ç¿ïW
     Rigidbody *regidbody_;
     Fbx *game_object{ nullptr };
+
+	// ì¸óÕó 
+	float input_horizontal_{ 0.0f };
+	float input_vertical_{ 0.0f };
 
 	int hp_ = 10;
 };

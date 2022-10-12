@@ -110,7 +110,7 @@ float4 main(VSOutput input) : SV_TARGET
 
 
 
-		float3 light = diffuse + specular + (color_tex.rgb * float3(0.2f, 0.2f, 0.2f));
+		float3 light = diffuse + specular + (color_tex.rgb * float3(0.5f, 0.5f, 0.5f));
 
 		output_color = float4(color_tex.rgb * light, color_tex.w);
 		
