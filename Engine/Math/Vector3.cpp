@@ -98,18 +98,13 @@ Vector3 Vector3::Min(const Vector3 &lhs, const Vector3 &rhs)
 
 Vector3 Vector3::MoveTowards(const Vector3 &current, const Vector3 &target, float max_distance_delta)
 {
-	Vector3 next_position{ 0,0,0 };
+	Vector3 normal{ Vector3(target - current) };
 	float distance = Vector3::Distance(current, target);
 	if (distance - max_distance_delta > 0.0f)
 	{
-		next_position =
-			current + Vector3(target - current).Normalized() * max_distance_delta;
+		return current + normal.Normalized() * max_distance_delta;
 	}
-	else
-	{
-		next_position = target;
-	}
-	return next_position;
+	return target;
 }
 
 Vector3 Vector3::ClampMagnitude(const Vector3 &vector, const float &max_length)
@@ -135,4 +130,15 @@ float Vector3::Distance(const Vector3 &lhs, const Vector3 &rhs)
 	float distance = (lhs - rhs).Magnitude();
 
 	return distance;
+}
+
+Vector3 Vector3::Scale(const Vector3 &lhs, const Vector3 &rhs)
+{
+	Vector3 scale
+	{
+		lhs.x * rhs.x,
+		lhs.y * rhs.y,
+		lhs.z * rhs.z
+	};
+	return scale;
 }

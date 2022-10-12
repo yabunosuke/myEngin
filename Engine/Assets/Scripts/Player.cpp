@@ -3,6 +3,7 @@
 #include "Input.h"
 #include "Object3dComponent.h"
 #include "Object/GameObject/GameObject.h"
+#include "Object/Component/Camera.h"
 
 class Object3dComponent;
 
@@ -27,6 +28,7 @@ void Player::Start()
 
 void Player::FixedUpdate()
 {
+	Vector3 camera_forward = Vector3::Scale(Camera::main.r_->transform_->GetFront(), Vector3(1.0f,1.0f,1.0f)).Normalized();
 	// ƒL[“ü—Í‚Å‚ÌˆÚ“®ˆ—
 	if (Input::GetKeyPress(DIK_W))
 	{

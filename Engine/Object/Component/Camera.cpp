@@ -37,7 +37,7 @@ void Camera::ComponentUpdate()
 	// 焦点計算
 	XMMATRIX temp = XMMatrixRotationQuaternion(XMLoadFloat4(&transform_->quaternion));
 	XMVECTOR target;
-	if (target_position_ != nullptr)
+	/*if (target_position_ != nullptr)
 	{
 		target =
 		{
@@ -57,9 +57,10 @@ void Camera::ComponentUpdate()
 			front.x,front.y,front.z,0.0f,
 			0.0f,0.0f,0.0f,1.0f
 		};
+
 		
-	}
-	else //無ければ正面をターゲットにする
+	}*/
+	//else //無ければ正面をターゲットにする
 	{
 		target = {
 			transform_->position->x + temp.r[2].m128_f32[0] * focus_,

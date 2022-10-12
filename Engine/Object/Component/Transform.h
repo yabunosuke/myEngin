@@ -3,6 +3,7 @@
 #include "Object/Component/Component.h"
 #include "Math/Vector3.h"
 #include "Math/Quaternion.h"
+#include "Math/Matrix4x4.h"
 
 class Transform :
 	public Component
@@ -30,6 +31,7 @@ public:
 	Vector3 GetUp() {return Vector3(world_matrix_.r[1]).Normalized();}
 	Vector3 GetFront() {return Vector3(world_matrix_.r[2]).Normalized();}
 
+	void LookAt(const Vector3 &target);
 
 
 	//===========================================

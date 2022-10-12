@@ -62,14 +62,6 @@ public:
 		nullptr
 	};
 
-	yEngine::Property<Vector3 *> target
-	{
-		target_position_,
-		yEngine::AccessorType::AllAccess,
-		nullptr,
-		nullptr
-	};
-
 private:
 
 	//===========================================
@@ -117,6 +109,5 @@ private:
 	float far_plane_		{ 1000.0f };		// ï`âÊÇ≥ÇÍÇÈç≈Ç‡âìÇ¢ì_
 	float focus_			{ 1.0f };			// è≈ì_ãóó£;
 
-	Vector3 *target_position_{nullptr};
 };
 

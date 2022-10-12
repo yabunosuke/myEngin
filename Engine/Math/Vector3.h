@@ -105,6 +105,7 @@ public:
 	/// <returns>2“_ŠÔ‚Ì‹——£</returns>
 	static float Distance(const Vector3 &lhs, const Vector3 &rhs);
 
+	static Vector3 Scale(const Vector3 &lhs, const Vector3 &rhs);
 
 	//===========================================
 	//

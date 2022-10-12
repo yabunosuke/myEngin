@@ -4,7 +4,6 @@
 #include "Object/GameObject/GameObject.h"
 #include "Camera.h"
 
-
 Transform::Transform() :
 	Component("Transform",  ComponentType::Transform,true)
 {
@@ -191,15 +190,16 @@ void Transform::RotateAround(Vector3 point, Vector3 axis, float deg)
     Vector3 assignment_position{
         point + renge
     };
-    //// ローカル行列を計算
+    // ローカル行列を計算
     XMMATRIX S = DirectX::XMMatrixScaling(
         world_scale_.x,
         world_scale_.y,
         world_scale_.z
     );
     XMMATRIX R = DirectX::XMMatrixRotationQuaternion(
-        XMLoadFloat4(&q)
+        XMLoadFloat4(&quaternion)
     );
+
     XMMATRIX T = DirectX::XMMatrixTranslation(
         assignment_position.x,
         assignment_position.y,
@@ -216,6 +216,24 @@ void Transform::RotateAround(Vector3 point, Vector3 axis, float deg)
     //position += point;
 
     //transform_->position = position;
+}
+
+void Transform::LookAt(const Vector3 &target)
+{
+    Vector3 front = (target - position).Normalized();
+	Vector3 right = Vector3::Cross(Vector3::up, front).Normalized();
+    Vector3 up = Vector3::Cross(front,right).Normalized();
+
+    XMMATRIX m
+    {
+        right.x,right.y,right.z,0.0f,
+        up.x,up.y,up.z,0.0f,
+        front.x,front.y,front.z,0.0f,
+        0.0f,0.0f,0.0f,1.0f
+    };
+
+    // クオータニオンの抜出
+    //float elem[4];
 }
 
 void Transform::UpdateMatrix()

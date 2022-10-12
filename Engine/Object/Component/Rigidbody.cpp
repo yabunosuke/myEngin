@@ -70,7 +70,7 @@ void Rigidbody::ComponentInitialize()
 
 void Rigidbody::ComponentFixedUpdate()
 {
-	float test_masatu_ = 0.95f;
+	float test_masatu_ = 0.99f;
 
 	velocity_ *= test_masatu_;
 
