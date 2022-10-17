@@ -9,6 +9,7 @@
 #include "Component/Manager/LightManager.h"
 #include <wrl.h>
 
+#include "Scene/Manager/CameraManager.h"
 class AbstractScene
 {
 protected:
@@ -66,6 +67,7 @@ public:
 
 	// ゲッター
 	GameObjectManager *GetObjectManager() { return game_object_manager_.get(); }	// オブジェクトマネージャー
+	CameraManager *GeCameraManager() { return camera_manager_.get(); }	// オブジェクトマネージャー
 	//CollisionManager *GetCollisionManager() { return &collision_manager_; }			// 子リジョンマネージャー
 	std::string GetName() { return name; }
 	std::unique_ptr<MulutiRenderTarget> *GetMulutiRenderTarget() { return &muluti_render_target_; }
@@ -73,6 +75,7 @@ public:
 protected:	
 	// オブジェクトマネージャー
 	std::unique_ptr<GameObjectManager> game_object_manager_;
+	std::unique_ptr<CameraManager> camera_manager_;
 	// コリジョンマネージャー
 	//CollisionManager collision_manager_;
 	// ライトマネージャー

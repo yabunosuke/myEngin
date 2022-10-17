@@ -55,7 +55,7 @@ bool Looper::Loop()
 			}
 			// ゲームオブジェクトに現在のマネージャーをセット
 			GameObject::SetGameObjectManager(scene_stack_.top()->GetObjectManager());
-
+			Camera::SetCameraManager(scene_stack_.top()->GeCameraManager());
 			//新しいシーンを初期化
 			scene_stack_.top()->Initialize();
 		}
@@ -65,6 +65,7 @@ bool Looper::Loop()
 			scene_stack_.pop();
 			//scene_stack_.top()->Initialize();
 			GameObject::SetGameObjectManager(scene_stack_.top()->GetObjectManager());
+			Camera::SetCameraManager(scene_stack_.top()->GeCameraManager());
 		}
 
 		editor.Initialize(scene_stack_.top().get());

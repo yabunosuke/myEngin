@@ -40,6 +40,8 @@ public:
 		UINT rootparameta_index
 	);
 
+	static void SetCameraManager(CameraManager *camera_manager);
+
 	//===========================================
 	//
 	//		アクセッサ
@@ -74,8 +76,7 @@ private:
 	// 現在有効なカメラ（カメラコンテナの中で一番上にある有効なカメラ）
 	static Camera* main_camera_;
 	// カメラコンテナ
-	static std::vector<Camera*> cameras_;
-
+	static CameraManager *camera_manager_;
 
 	//===========================================
 	//

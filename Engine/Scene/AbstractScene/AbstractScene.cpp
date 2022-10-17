@@ -18,6 +18,7 @@ AbstractScene::AbstractScene(IoChangedListener *impl,std::string sceneName)
 
 	light_manager_ = std::make_shared<LightManager>();
 	game_object_manager_ = std::make_unique<GameObjectManager>();
+	camera_manager_ = std::make_unique<CameraManager>();
 	//camera_manager_ = std::make_shared<CameraManager>();
 
 

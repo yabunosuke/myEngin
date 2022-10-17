@@ -37,9 +37,11 @@ private:
     Fbx *game_object{ nullptr };
 
 	// “ü—Í—Ê
-	float input_horizontal_{ 0.0f };
-	float input_vertical_{ 0.0f };
+	float input_horizontal_{ 0.0f };	// ‰¡
+	float input_vertical_{ 0.0f };		// c
 
 	int hp_ = 10;
+
+	bool is_dash_ = false;
 };
 

@@ -136,6 +136,10 @@ void GameObject::DrawInspector()
 	if (ImGui::InputText("##", buf, 64,ImGuiInputTextFlags_EnterReturnsTrue)) {
 		name = buf;
 	}
+	ImGui::SameLine();
+	// 静的フラグ
+	ImGui::Checkbox("static", &is_static_);
+
 	ImGui::Separator();
 
 	//コンポーネントの表示

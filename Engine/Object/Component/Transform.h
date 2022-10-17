@@ -184,15 +184,26 @@ public:
 		// ローカルの再計算処理
 		[this](Vector3 assignment_scale)
 		{
-			/*XMMATRIX temp = world_matrix_;
-			temp.r[3] = {
+
+			// ワールド行列を計算
+			XMMATRIX S = DirectX::XMMatrixScaling(
 				assignment_scale.x,
 				assignment_scale.y,
-				assignment_scale.z,
-				1.0f
-			};
+				assignment_scale.z
+			);
+			XMMATRIX R = DirectX::XMMatrixRotationQuaternion(
+				XMLoadFloat4(&world_quaternion_)
+			);
 
-			matrix = temp;*/
+			XMMATRIX T = DirectX::XMMatrixTranslation(
+				world_position_.x,
+				world_position_.y,
+				world_position_.z
+			);
+
+			XMMATRIX temp = S * R * T;
+
+			matrix = temp;
 		}
 	};
 

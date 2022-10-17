@@ -24,7 +24,7 @@ void Rigidbody::Infomation()
 	// 質量
 	ImGui::DragFloat("Mass", &mass_,0.03f);
 	// 力で動く場合の空気抵抗
-	ImGui::DragInt("Drag", &drag_, 1, 0, 100, "%d%%");
+	ImGui::DragFloat("Drag", &drag_, 0.1f, 0.0f, 100.0f, "%.0f%%");
 
 	// トルクで動く場合の空気抵抗
 	ImGui::DragFloat("Angluar Drag", &angular_drag_, 0.03f);
@@ -81,7 +81,7 @@ void Rigidbody::ComponentFixedUpdate()
 	}
 
 	// 抵抗計算
-	velocity_ -= static_cast<float>(drag_ / 100.0f) * velocity_;
+	velocity_ -= drag_ / 100.0f * velocity_;
 	transform_->position =
 		transform_->position
 		+ velocity_ * Time::GetInstance()->fixedDeltaTime;
@@ -91,8 +91,9 @@ void Rigidbody::ComponentUpdate()
 {
 }
 
-void Rigidbody::AddForce(XMFLOAT3 force, ForceMode force_mode)
+void Rigidbody::AddForce(Vector3 force, ForceMode force_mode)
 {
+	if (force.Magnitude() == 0.0f) return;
 	// 質量を考慮して計算
 	if( force_mode == ForceMode::Force ||
 		force_mode == ForceMode::Impulse)

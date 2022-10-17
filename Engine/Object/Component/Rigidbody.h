@@ -23,11 +23,23 @@ public:
 	void ComponentUpdate() override;
 
 
-	void AddForce(XMFLOAT3 force, ForceMode force_mode = ForceMode::Force);
+	void AddForce(Vector3 force, ForceMode force_mode = ForceMode::Force);
 
 	yEngine::Property<Vector3> velocity
 	{
 		velocity_,
+		yEngine::AccessorType::AllAccess,
+		nullptr,
+		[this](Vector3 test)
+		{
+
+			 velocity_ += test;
+		}
+	};
+
+	yEngine::Property<bool> useGravity
+	{
+		use_gravity_,
 		yEngine::AccessorType::AllAccess
 	};
 private:
@@ -35,7 +47,7 @@ private:
 
 	// リジッドボディ
 	float mass_			{ 1.0f };			// 質量
-	int drag_			{ 1 };				// 力で動く場合の空気抵抗係数
+	float drag_			{ 1.0f };				// 力で動く場合の空気抵抗係数
 	float angular_drag_ { 1.0f };			// トルクで動く場合の空気抵抗
 	bool use_gravity_	{ false };			// 重力を使用するか
 

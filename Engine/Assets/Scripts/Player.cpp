@@ -20,7 +20,7 @@ void PlayerController::OnCollisionEnter(Collision &collision)
 void PlayerController::Start()
 {
 	transform_->localPosition = { 0.0f,0.0f,-50.0f };
-	transform_->localScale = { 0.4f,0.4f,0.4f };
+	transform_->scale = { 0.4f,0.4f,0.4f };
 
 
 	// リジッド
@@ -34,7 +34,11 @@ void PlayerController::FixedUpdate()
 {
 	Vector3 camera_forward = Vector3::Scale(Camera::main.r_->transform_->GetFront(), Vector3(1.0f,0.0f,1.0f)).Normalized();
 	
-	Vector3 move_forward = camera_forward * input_vertical_ + Camera::main.r_->transform_->GetRight() * input_horizontal_;
+	Vector3 move_forward = camera_forward * input_vertical_ + Camera::main.r_->transform_->GetRight() * input_horizontal_ * 2.0f;
+	if(is_dash_)
+	{
+		move_forward *= 2.0f;
+	}
 	regidbody_->AddForce(move_forward);
 
 	// 回転処理
@@ -93,7 +97,14 @@ void PlayerController::Update()
 	input_horizontal_ = Input::GetAxis(GamePadAxis::AXIS_LX);
 	input_vertical_ = -Input::GetAxis(GamePadAxis::AXIS_LY);
 
-
+	if(Input::GetAxis(GamePadAxis::AXIS_LZ) < 0.0f)
+	{
+		is_dash_ = true;
+	}
+	else
+	{
+		is_dash_ = false;
+	}
 	if (!(Input::GetKeyPress(DIK_W) ||
 		Input::GetKeyPress(DIK_A) ||
 		Input::GetKeyPress(DIK_S) ||
@@ -154,11 +165,15 @@ void PlayerController::Update()
 		XMStoreFloat4(&transform_->localQuaternion, XMQuaternionRotationRollPitchYaw(0, spin * Mathf::deg_to_rad, 0));
 	}
 
-	if (Input::GetKeyPressTrigger(DIK_SPACE) ||
-		Input::GetButtonPressTrigger(GamePadButton::INPUT_A)) {
+	if (/*Input::GetKeyPressTrigger(DIK_SPACE) ||*/
+		Input::GetButtonPressTrigger(GamePadButton::INPUT_X)) {
 		state = AnimationState::SLASH;
 		game_object->PlayAnimation(static_cast<int>(state), false);
 	}
-
+	// ジャンプ
+	if (Input::GetButtonPressTrigger(GamePadButton::INPUT_A)) {
+		state = AnimationState::Jump;
+		game_object->PlayAnimation(static_cast<int>(state), false);
+	}
 
 }

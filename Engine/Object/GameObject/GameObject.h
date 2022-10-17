@@ -184,6 +184,10 @@ public:	//関数
 	/// ローカルのアクティブ状態 (get = true, set = false)
 	/// </summary>
 	yEngine::Property<bool> activeSelf{ active_self_ ,yEngine::AccessorType::ReadOnly };
+	/// <summary>
+	/// オブジェクトが動かない物ならtrue (get = true, set = true)
+	/// </summary>
+	yEngine::Property<bool> isStatic{ is_static_ ,yEngine::AccessorType::AllAccess };
 
 	Transform *transform_;
 
@@ -204,7 +208,7 @@ private:
 	//
 	//===========================================
 
-
+	bool is_static_ = false;
 
 
 
@@ -238,7 +242,6 @@ private:
 template<class T, class ...Args>
 inline T *GameObject::AddComponent(Args ...args)
 {
-
 	T *temp = Object::CreateObject<T>(args...);
 	component_list_.emplace_back(temp);
 	temp->transform_ = GetComponent<Transform>();

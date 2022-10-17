@@ -216,6 +216,7 @@
     <ClCompile Include="Object\Component\Behaviour\Behaviour.cpp" />
     <ClCompile Include="Object\Component\Behaviour\MonoBehaviour\MonoBehaviour.cpp" />
     <ClCompile Include="Object\Component\Camera.cpp" />
+    <ClCompile Include="Object\Component\Collider\BoxCollider\BoxCollider.cpp" />
     <ClCompile Include="Object\Component\Collider\Collider.cpp" />
     <ClCompile Include="Object\Component\Collider\SphereCollider\SphereCollider.cpp" />
     <ClCompile Include="Object\Component\Component.cpp" />
@@ -232,6 +233,7 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene\AbstractScene\AbstractScene.cpp" />
     <ClCompile Include="oldTexture.cpp" />
+    <ClCompile Include="Scene\Manager\CameraManager.cpp" />
     <ClCompile Include="Text\Text.cpp" />
     <ClCompile Include="Time\Time.cpp" />
     <ClCompile Include="Weapon.cpp" />
@@ -411,6 +413,7 @@
     <ClInclude Include="Object\Component\Behaviour\Behaviour.h" />
     <ClInclude Include="Object\Component\Behaviour\MonoBehaviour\MonoBehaviour.h" />
     <ClInclude Include="Object\Component\Camera.h" />
+    <ClInclude Include="Object\Component\Collider\BoxCollider\BoxCollider.h" />
     <ClInclude Include="Object\Component\Collider\Collider.h" />
     <ClInclude Include="Object\Component\Collider\SphereCollider\SphereCollider.h" />
     <ClInclude Include="Object\Component\Component.h" />
@@ -428,6 +431,7 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene\AbstractScene\AbstractScene.h" />
     <ClInclude Include="oldTexture.h" />
+    <ClInclude Include="Scene\Manager\CameraManager.h" />
     <ClInclude Include="Text\Text.h" />
     <ClInclude Include="Time\Time.h" />
     <ClInclude Include="Weapon.h" />

@@ -1,9 +1,11 @@
 #include "Camera.h"
+#include "../Engine/Scene/Manager/CameraManager.h"
 #include "Object/GameObject/GameObject.h"
 #include "ConstantBufferManager/ConstantBufferManager.h"
 
 Camera* Camera::main_camera_;
-std::vector<Camera*> Camera::cameras_;
+CameraManager *Camera::camera_manager_;
+
 yEngine::Property<Camera*> Camera::main{
 		main_camera_, yEngine::AccessorType::ReadOnly,
 		nullptr,
@@ -22,10 +24,11 @@ Camera::~Camera()
 void Camera::ComponentInitialize()
 {
 	// メインカメラがなければセットする
-	if (main_camera_ == nullptr) {
-		main_camera_ = this;
+	if (camera_manager_->main_camera_ == nullptr) {
+		camera_manager_->main_camera_ = this;
+		main_camera_ = camera_manager_->main_camera_;
 	}
-	cameras_.emplace_back(this);
+	camera_manager_->cameras_.emplace_back(this);
 }
 
 void Camera::ComponentUpdate()
@@ -164,4 +167,10 @@ void Camera::BufferTransfer(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cm
 		BufferName::Camera, &const_camera_map
 		);
 
+}
+
+void Camera::SetCameraManager(CameraManager *camera_manager)
+{
+	camera_manager_ = camera_manager;
+	main_camera_ = camera_manager_->main_camera_;
 }

@@ -115,13 +115,13 @@ void FbxResource::LoadModel(ID3D12Device *dev, const char *fbx_filename)
 			FbxAxisSystem::DirectX.DeepConvertScene(fbx_scene);
 		}
 
-		// メートルに変換
-		FbxSystemUnit scene_unit = fbx_scene->GetGlobalSettings().GetSystemUnit();
-		//scale_factor_ = scene_unit.GetScaleFactor();
-		if (scene_unit != FbxSystemUnit::m) {
-			//FbxSystemUnit::m.ConvertScene(fbx_scene);
-		//	FbxSystemUnit::m.ConvertScene(fbx_scene);
-		}
+		//// メートルに変換
+		//FbxSystemUnit scene_unit = fbx_scene->GetGlobalSettings().GetSystemUnit();
+		////scale_factor_ = scene_unit.GetScaleFactor();
+		//if (scene_unit != FbxSystemUnit::m) {
+		//	//FbxSystemUnit::m.ConvertScene(fbx_scene);
+		////	FbxSystemUnit::m.ConvertScene(fbx_scene);
+		//}
 
 		//ノードの取得
 		std::function<void(FbxNode *)> traverse{ [&](FbxNode *fbx_node) {

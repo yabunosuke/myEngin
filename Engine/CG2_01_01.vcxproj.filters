@@ -43,7 +43,6 @@
     <ClCompile Include="2d\Sprite.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="FileManager.cpp" />
-    <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object3dComponent.cpp" />
     <ClCompile Include="PipelineManager.cpp" />
@@ -187,6 +186,15 @@
     <ClCompile Include="Assets\Scripts\CameraController.cpp">
       <Filter>Asset\CameraController</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Component\Collider\BoxCollider\BoxCollider.cpp">
+      <Filter>Object\Component\Collider\BoxCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Manager\CameraManager.cpp">
+      <Filter>Scene\CameraManager</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectManager.cpp">
+      <Filter>Scene\GameObjectManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -205,7 +213,6 @@
     <ClInclude Include="2d\Sprite.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="FileManager.h" />
-    <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="Object3dComponent.h" />
     <ClInclude Include="PipelineManager.h" />
     <ClInclude Include="PrimitiveRenderer.h" />
@@ -355,6 +362,15 @@
     <ClInclude Include="Assets\Scripts\CameraController.h">
       <Filter>Asset\CameraController</Filter>
     </ClInclude>
+    <ClInclude Include="Object\Component\Collider\BoxCollider\BoxCollider.h">
+      <Filter>Object\Component\Collider\BoxCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Manager\CameraManager.h">
+      <Filter>Scene\CameraManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectManager.h">
+      <Filter>Scene\GameObjectManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
@@ -484,6 +500,12 @@
     </Filter>
     <Filter Include="Asset\CameraController">
       <UniqueIdentifier>{4872565f-952f-45dc-9d1a-aaccf118a49a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\GameObjectManager">
+      <UniqueIdentifier>{b8dcce34-6e68-4147-b157-1678b53ae4a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\CameraManager">
+      <UniqueIdentifier>{cce538fc-ca3b-4da0-8f48-3c0faa063553}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
