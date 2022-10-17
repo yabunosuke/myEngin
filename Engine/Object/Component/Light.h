@@ -34,6 +34,7 @@ public:
 		const float &intensity = 1.0f,
 		const float &indirect_multiplier = 1.0f
 		);
+
 	void Infomation() override;
 
 	void ComponentInitialize() override;

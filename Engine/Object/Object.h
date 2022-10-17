@@ -17,7 +17,6 @@ public:
 	//		静的変数
 	//
 	//===========================================
-	~Object();
 	/// <summary>
 	/// ゲームオブジェクトやコンポーネント、アセットの削除関数
 	/// </summary>
@@ -32,6 +31,7 @@ public:
 	/// <returns></returns>
 	template<class Type>
 	static std::weak_ptr<Type> FindObjectOfType();
+
 
 	/// <summary>
 	/// 指定された型に一致するオブジェクトを返す
@@ -55,7 +55,7 @@ public:
 
 
 	Object();
-	//~Object();
+	virtual ~Object();
 
 	/// <summary>
 	/// インスタンスIDを返す

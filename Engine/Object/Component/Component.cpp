@@ -1,6 +1,10 @@
 #include "Component.h"
 #include "Object/Component/Transform.h"
 
+Component::~Component()
+{
+}
+
 void Component::CheckInitialize()
 {
 	ComponentInitialize();
@@ -42,7 +46,6 @@ Component::Component(std::string name, ComponentType component_id, bool dontRemo
 	this->name = name;
 	tag_ = "Notag";
 }
-
 
 void Component::ImGuiDraw()
 {

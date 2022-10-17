@@ -4,7 +4,7 @@
 class Editor
 {
 public:
-	void Initialize(std::shared_ptr<AbstractScene> nowScene) { this->nowScene = nowScene; }
+	void Initialize(AbstractScene *nowScene) { this->nowScene = nowScene; }
 	void Draw();
 
 	/// <summary>
@@ -55,7 +55,7 @@ private:	//ƒƒjƒ…[
 
 	int selected_object_id = -1;
 
-	std::shared_ptr<AbstractScene> nowScene;
+	AbstractScene *nowScene;
 
 };
 

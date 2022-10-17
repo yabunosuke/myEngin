@@ -5,7 +5,7 @@
 
 Rigidbody::Rigidbody() :
 	Component("Rigidbody", ComponentType::RigitBody),
-	velocity_({ 0,0,0 })
+	velocity_({ 0.0f,0.0f,0.0f })
 {
 	
 }
@@ -70,9 +70,9 @@ void Rigidbody::ComponentInitialize()
 
 void Rigidbody::ComponentFixedUpdate()
 {
-	float test_masatu_ = 0.99f;
+	/*float test_masatu_ = 0.99f;
 
-	velocity_ *= test_masatu_;
+	velocity_ *= test_masatu_;*/
 
 	// èdóÕåvéZ
 	if (use_gravity_)
@@ -82,8 +82,8 @@ void Rigidbody::ComponentFixedUpdate()
 
 	// íÔçRåvéZ
 	velocity_ -= static_cast<float>(drag_ / 100.0f) * velocity_;
-	transform_->localPosition =
-		transform_->localPosition
+	transform_->position =
+		transform_->position
 		+ velocity_ * Time::GetInstance()->fixedDeltaTime;
 }
 

@@ -8,7 +8,7 @@
 #include "GameObjectManager.h"
 
 
-std::weak_ptr<GameObjectManager> GameObject::game_object_manager_;
+GameObjectManager *GameObject::game_object_manager_;
 
 
 GameObject::GameObject(const std::string &name) :
@@ -24,7 +24,6 @@ GameObject::GameObject(const std::string &name) :
 
 GameObject::~GameObject()
 {
-	int test = 0;
 }
 
 GameObject* GameObject::CreateObject(const std::string &object_name)
@@ -33,7 +32,7 @@ GameObject* GameObject::CreateObject(const std::string &object_name)
 	// 名前が入っていなければ
 	if (object_name.size() == 0) 
 	{
-		game_object = Object::CreateObject<GameObject>("GameObject(" + std::to_string(game_object_manager_.lock()->game_objects_.size()) + ")");
+		game_object = Object::CreateObject<GameObject>("GameObject(" + std::to_string(game_object_manager_->game_objects_.size()) + ")");
 	}
 	else 
 	{
@@ -42,10 +41,10 @@ GameObject* GameObject::CreateObject(const std::string &object_name)
 	// 生成時にトランスフォーム
 	game_object->transform_ = game_object->AddComponent<Transform>();
 
-	return game_object_manager_.lock()->game_objects_.emplace_back(game_object);
+	return game_object_manager_->game_objects_.emplace_back(game_object);
 }
 
-void GameObject::SetGameObjectManager(std::weak_ptr<GameObjectManager> game_object_manager)
+void GameObject::SetGameObjectManager(GameObjectManager *game_object_manager)
 {
 	game_object_manager_ = game_object_manager;
 }

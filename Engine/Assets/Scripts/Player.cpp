@@ -39,9 +39,9 @@ void PlayerController::FixedUpdate()
 
 	// ‰ñ“]ˆ—
 	Vector3 target_position;
-	if (regidbody_->velocity_.Magnitude() != 0.0f)
+	if (regidbody_->velocity.r_.Magnitude() != 0.0f)
 	{
-		target_position = Vector3::Scale(regidbody_->velocity_.Normalized(), Vector3(1.0f, 0.0f, 1.0f)) + transform_->position;
+		target_position = Vector3::Scale(regidbody_->velocity.r_.Normalized(), Vector3(1.0f, 0.0f, 1.0f)) + transform_->position;
 	}
 	else
 	{
@@ -159,4 +159,6 @@ void PlayerController::Update()
 		state = AnimationState::SLASH;
 		game_object->PlayAnimation(static_cast<int>(state), false);
 	}
+
+
 }

@@ -59,18 +59,43 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 							collider_a->hitlist_.count(collider_b->GetInstanceID()) == 0
 							)
 						{
-							for (const auto &script_a : (*object_a)->GetMonoBehaviours())
+							// どちらかがトリガーならトリガー処理
+							if (collider_a->isTrigger.r_ || collider_b->isTrigger.r_)
 							{
-								script_a->OnCollisionEnter(collision_info_b);
+								for (const auto &script_a : (*object_a)->GetMonoBehaviours())
+								{
+									script_a->OnTriggerEnter(collision_info_b);
+								}
 							}
+							// コリジョン処理
+							else
+							{
+								for (const auto &script_a : (*object_a)->GetMonoBehaviours())
+								{
+									script_a->OnCollisionEnter(collision_info_b);
+								}
+							}
+
 							collider_a->hitlist_[collider_b->GetInstanceID()] = true;
 						}
 						// 前回のアップデートで衝突していた場合
 						else
 						{
-							for (const auto &script_a : (*object_a)->GetMonoBehaviours())
+							// どちらかがトリガーならトリガー処理
+							if (collider_a->isTrigger.r_ || collider_b->isTrigger.r_)
 							{
-								script_a->OnCollisionStay(collision_info_b);
+								for (const auto &script_a : (*object_a)->GetMonoBehaviours())
+								{
+									script_a->OnTriggerStay(collision_info_b);
+								}
+							}
+							// コリジョン処理
+							else
+							{
+								for (const auto &script_a : (*object_a)->GetMonoBehaviours())
+								{
+									script_a->OnCollisionStay(collision_info_b);
+								}
 							}
 
 						}
@@ -81,21 +106,43 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 							collider_b->hitlist_.count(collider_a->GetInstanceID()) == 0
 							)
 						{
-							for (const auto &script_b : (*object_b)->GetMonoBehaviours())
+							if (collider_a->isTrigger.r_ || collider_b->isTrigger.r_)
 							{
-								script_b->OnCollisionEnter(collision_info_a);
+								for (const auto &script_b : (*object_b)->GetMonoBehaviours())
+								{
+									script_b->OnTriggerEnter(collision_info_a);
+								}
+							}
+							else
+							{
+								for (const auto &script_b : (*object_b)->GetMonoBehaviours())
+								{
+									script_b->OnCollisionEnter(collision_info_a);
+								}
 							}
 							collider_b->hitlist_[collider_a->GetInstanceID()] = true;
 						}
 						// 前回のアップデートで衝突していた場合
 						else
 						{
-							for (const auto &script_b : (*object_b)->GetMonoBehaviours())
-							{
-								script_b->OnCollisionStay(collision_info_a);
-							}
 
+							if (collider_a->isTrigger.r_ || collider_b->isTrigger.r_)
+							{
+								for (const auto &script_b : (*object_b)->GetMonoBehaviours())
+								{
+									script_b->OnTriggerStay(collision_info_a);
+								}
+							}
+							else
+							{
+								for (const auto &script_b : (*object_b)->GetMonoBehaviours())
+								{
+									script_b->OnCollisionStay(collision_info_a);
+								}
+							}
 						}
+
+
 					}
 					else
 					{

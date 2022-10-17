@@ -43,6 +43,8 @@ protected: // エイリアス
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
+
+	~Component() override;
 	/// <summary>
 	/// アクティブなときだけ初期化
 	/// </summary>
@@ -120,7 +122,6 @@ public:
 
 protected:	//関数
 	Component(std::string name, ComponentType component_id,bool dontRemove = false);
-
 	/// <summary>
 	/// 初期化
 	/// </summary>

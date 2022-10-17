@@ -60,7 +60,7 @@ public:
 	std::map<int, bool> hitlist_;
 protected:
 	// コライダーがトリガーかどうか
-	bool is_trigger_ = false;
+	bool is_trigger_{ false };
 	CollisonType collision_type_ = CollisonType::None;
 
 };

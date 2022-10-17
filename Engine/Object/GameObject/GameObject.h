@@ -49,6 +49,7 @@ public:	//関数
 	/// </summary>
 	/// <param name="name">オブジェクト名</param>
 	GameObject(const std::string &name);
+	~GameObject() override;
 	//===========================================
 	//
 	//		静的メンバ関数
@@ -64,7 +65,7 @@ public:	//関数
 
 	static GameObject *CreateObject(const std::string &object_name = "");
 
-	static void SetGameObjectManager(std::weak_ptr<GameObjectManager> game_object_manager);
+	static void SetGameObjectManager(GameObjectManager *game_object_manager);
 	//===========================================
 	//
 	//		メンバ関数
@@ -100,8 +101,8 @@ public:	//関数
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	/// <returns></returns>
-	template<class T>
-	std::vector<std::weak_ptr<T>>  GetComponents();
+	/*template<class T>
+	std::vector<std::weak_ptr<T>>  GetComponents();*/
 
 
 
@@ -194,7 +195,7 @@ private:
 	//===========================================
 
 	// ゲームオブジェクトマネージャーのポインタ
-	static std::weak_ptr<GameObjectManager> game_object_manager_;
+	static GameObjectManager *game_object_manager_;
 	//static std::vector<std::shared_ptr<GameObject>> game_objects_;	// オブジェクトコンテナ
 
 	//===========================================
@@ -271,9 +272,9 @@ T *GameObject::GetComponent()
 	return temp;
 }
 
-template<class T>
-inline std::vector<std::weak_ptr<T>> GameObject::GetComponents()
-{
-	std::vector<std::weak_ptr<T>> components;
-	return std::weak_ptr<T>();
-}
+//template<class T>
+//inline std::vector<std::weak_ptr<T>> GameObject::GetComponents()
+//{
+//	std::vector<std::weak_ptr<T>> components;
+//	return std::weak_ptr<T>();
+//}

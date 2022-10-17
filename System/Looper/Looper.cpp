@@ -13,10 +13,11 @@
 
 #include "Object/Component/Camera.h"
 
+
+
 Looper::Looper() {
 	//最初のシーン
 	OnSceneChanged(Scenes::Title, false);
-	editor.Initialize(sceneStack.top());
 	//KeyboardInput::GetIns()->Initialize();
 	Input::Initialize();
 }
@@ -43,13 +44,13 @@ bool Looper::Loop()
 	{
 		for (int i = 0; Time::GetInstance()->CheckFixedUpdate(); ++i)
 		{
-			sceneStack.top()->FixedUpdate();
+			scene_stack_.top()->FixedUpdate();
 
 			// 経過時間を減少させる
 			Time::GetInstance()->SubFixedTimer();
 
 			// 当たり判定
-			CheckCollision::CheckColliders(sceneStack.top()->GetObjectManager().lock()->game_objects_);
+			CheckCollision::CheckColliders(scene_stack_.top()->GetObjectManager()->game_objects_);
 
 			// 5回処理して改善しなければ強制的に離脱
 			if(i >=10)
@@ -63,27 +64,27 @@ bool Looper::Loop()
 
 
 	//シーンの更新
-	sceneStack.top()->Update();
+	scene_stack_.top()->Update();
 
 
 
 	//シーンの描画コマンドを発行
-	sceneStack.top()->PreDrawMultiRenderTarget(DirectXCommon::dev,DirectXCommon::cmdList);	// マルチレンダーターゲットの設定
-	sceneStack.top()->Draw();																	// 描画コマンド発行
-	sceneStack.top()->PostDrawMultiRenderTarget(DirectXCommon::cmdList);						// 設定終了
+	scene_stack_.top()->PreDrawMultiRenderTarget(DirectXCommon::dev,DirectXCommon::cmdList);	// マルチレンダーターゲットの設定
+	scene_stack_.top()->Draw();																	// 描画コマンド発行
+	scene_stack_.top()->PostDrawMultiRenderTarget(DirectXCommon::cmdList);						// 設定終了
 	// ここまでの描画はマルチレンダーターゲットの対象
 
-	sceneStack.top()->PreDrawPostEffect(DirectXCommon::dev,DirectXCommon::cmdList);				// ポストエフェクトの設定
-	sceneStack.top()->DrawMulutiRenderTarget(DirectXCommon::dev, DirectXCommon::cmdList);		// ディファ―レンダリング描画
+	scene_stack_.top()->PreDrawPostEffect(DirectXCommon::dev,DirectXCommon::cmdList);				// ポストエフェクトの設定
+	scene_stack_.top()->DrawMulutiRenderTarget(DirectXCommon::dev, DirectXCommon::cmdList);		// ディファ―レンダリング描画
 
-	sceneStack.top()->PostDrawPoseEffect(DirectXCommon::cmdList);								// 設定終了
+	scene_stack_.top()->PostDrawPoseEffect(DirectXCommon::cmdList);								// 設定終了
 
 	//バッファクリア
 	DirectXCommon::ResourceBarrierWriting();
 	DirectXCommon::ScreenClear();
 	
 	// ポストエフェクトの描画
-	sceneStack.top()->DrawPostEffect(DirectXCommon::cmdList);
+	scene_stack_.top()->DrawPostEffect(DirectXCommon::cmdList);
 	
 	imguiManager::GetIns()->Draw();
 	/*PrimitiveRenderer::GetInstance().DrawBox(
@@ -108,22 +109,22 @@ bool Looper::Loop()
 void Looper::OnSceneChanged(const Scenes scene, const bool stackClear)
 {
 	//現在のシーンを終了
-	if(sceneStack.size() != 0)
+	if(scene_stack_.size() != 0)
 	{
-		sceneStack.top()->Finalize();
+		scene_stack_.top()->Finalize();
 	}
 	if (stackClear == true) {				//スタックをクリアする設定なら
-		while (!sceneStack.empty()) {	//スタックがからになるまでポップする
-			sceneStack.pop();
+		while (!scene_stack_.empty()) {	//スタックがからになるまでポップする
+			scene_stack_.pop();
 		}
 	}
 	switch (scene) {
 	case Scenes::Title:
-		sceneStack.push(make_shared<TitleScene>(this));
+		scene_stack_.push(make_unique<TitleScene>(this));
 		break;
 
 	case Scenes::Game:
-		sceneStack.push(make_shared<GameScene>(this));
+		scene_stack_.push(make_unique<GameScene>(this));
 		break;
 
 	default:
@@ -132,19 +133,19 @@ void Looper::OnSceneChanged(const Scenes scene, const bool stackClear)
 		break;
 	}
 	// ゲームオブジェクトに現在のマネージャーをセット
-	GameObject::SetGameObjectManager(sceneStack.top()->GetObjectManager());
+	GameObject::SetGameObjectManager(scene_stack_.top()->GetObjectManager());
 
 	//新しいシーンを初期化
-	sceneStack.top()->Initialize();
-	editor.Initialize(sceneStack.top());
+	scene_stack_.top()->Initialize();
+	editor.Initialize(scene_stack_.top().get());
 
 }
 
 void Looper::SceneStackPop()
 {
-	sceneStack.top()->Finalize();
-	sceneStack.pop();
-	sceneStack.top()->Initialize();
+	scene_stack_.top()->Finalize();
+	scene_stack_.pop();
+	scene_stack_.top()->Initialize();
 }
 
 

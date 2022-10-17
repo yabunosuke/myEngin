@@ -14,6 +14,8 @@
 
 #include "Time/Time.h"
 
+#include "../Engine/Object/Object.h"
+
 
 bool SystemMain::Initialize()
 {

@@ -1,6 +1,12 @@
 #pragma once
 
-enum class Scenes;
+enum class Scenes {
+	Test,
+	Title,
+	Tutorial,
+	Game,
+	MAX
+};
 
 class IoChangedListener		//‰¼‘zƒNƒ‰ƒX
 {

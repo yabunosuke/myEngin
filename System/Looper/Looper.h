@@ -9,13 +9,6 @@
 
 using namespace std;
 
-enum class Scenes {
-	Test,
-	Title,
-	Tutorial,
-	Game,
-	MAX
-};
 
 class Looper
 	: public IoChangedListener {	
@@ -35,7 +28,7 @@ public:
 	
 private:
 	//シーンスタック
-	stack<shared_ptr<AbstractScene>> sceneStack;
+	stack<unique_ptr<AbstractScene>> scene_stack_;
 
 private:	//メニュー
 	Editor editor;

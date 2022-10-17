@@ -16,6 +16,7 @@ protected:
 	IoChangedListener *implSceneChanged;
 public:
 	AbstractScene(IoChangedListener *impl,std::string sceneName);
+	~AbstractScene();
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -64,14 +65,14 @@ public:
 
 
 	// ゲッター
-	std::weak_ptr<GameObjectManager> GetObjectManager() { return game_object_manager_; }	// オブジェクトマネージャー
+	GameObjectManager *GetObjectManager() { return game_object_manager_.get(); }	// オブジェクトマネージャー
 	//CollisionManager *GetCollisionManager() { return &collision_manager_; }			// 子リジョンマネージャー
 	std::string GetName() { return name; }
 	std::unique_ptr<MulutiRenderTarget> *GetMulutiRenderTarget() { return &muluti_render_target_; }
 
-protected:
+protected:	
 	// オブジェクトマネージャー
-	std::shared_ptr<GameObjectManager> game_object_manager_;
+	std::unique_ptr<GameObjectManager> game_object_manager_;
 	// コリジョンマネージャー
 	//CollisionManager collision_manager_;
 	// ライトマネージャー

@@ -6,6 +6,7 @@ class GameScene :
 {
 public:
 	explicit GameScene(IoChangedListener *impl);
+	void Initialize() override;
 	void Update() override;
 };
 

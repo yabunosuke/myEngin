@@ -10,7 +10,7 @@ class Transform :
 {
 public:
 	Transform();
-
+	~Transform();
 
 	void Infomation() override;
 

@@ -19,6 +19,7 @@ public:
 	//===========================================
 
 	Camera();
+	~Camera();
 
 	void ComponentInitialize() override;
 	void ComponentUpdate() override;

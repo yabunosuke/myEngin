@@ -15,6 +15,10 @@ Camera::Camera():
 {
 }
 
+Camera::~Camera()
+{
+}
+
 void Camera::ComponentInitialize()
 {
 	// メインカメラがなければセットする

@@ -17,10 +17,15 @@ AbstractScene::AbstractScene(IoChangedListener *impl,std::string sceneName)
 	muluti_render_target_->InitializeMulutiRenderTarget(DirectXCommon::dev);
 
 	light_manager_ = std::make_shared<LightManager>();
-	game_object_manager_ = std::make_shared<GameObjectManager>();
+	game_object_manager_ = std::make_unique<GameObjectManager>();
 	//camera_manager_ = std::make_shared<CameraManager>();
 
 
+}
+
+AbstractScene::~AbstractScene()
+{
+	
 }
 
 

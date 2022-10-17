@@ -9,6 +9,10 @@ Transform::Transform() :
 {
 }
 
+Transform::~Transform()
+{
+}
+
 void Transform::Infomation()
 {
     // リセットボタン
