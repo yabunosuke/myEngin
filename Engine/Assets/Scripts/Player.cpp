@@ -19,7 +19,8 @@ void PlayerController::OnCollisionEnter(Collision &collision)
 
 void PlayerController::Start()
 {
-	transform_->localPosition = { 0.0f,0.0f,-50.0f };
+	transform_->position = { 0.0f,0.0f,-50.0f };
+
 	transform_->scale = { 0.4f,0.4f,0.4f };
 
 

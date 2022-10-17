@@ -31,13 +31,6 @@ public:
 	//		静的関数
 	//
 	//===========================================
-	
-	// バッファに一番上のカメラ情報を転送 
-	/*static void BufferTransfer(
-		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list,
-		UINT subresource,
-		UINT rootparameta_index
-	);*/
 
 	static void SetCameraManager(CameraManager *camera_manager);
 

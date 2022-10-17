@@ -192,7 +192,7 @@
     <ClCompile Include="Scene\Manager\CameraManager.cpp">
       <Filter>Scene\CameraManager</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjectManager.cpp">
+    <ClCompile Include="Scene\Manager\GameObjectManager.cpp">
       <Filter>Scene\GameObjectManager</Filter>
     </ClCompile>
   </ItemGroup>
@@ -368,7 +368,8 @@
     <ClInclude Include="Scene\Manager\CameraManager.h">
       <Filter>Scene\CameraManager</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjectManager.h">
+    <ClInclude Include="Scene\Manager\GameObjectManager.h">
+
       <Filter>Scene\GameObjectManager</Filter>
     </ClInclude>
   </ItemGroup>

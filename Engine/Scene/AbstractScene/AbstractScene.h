@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include "IoChangedListener.h"
-#include "GameObjectManager.h"
+#include "Scene/Manager/GameObjectManager.h"
 #include "2d/PostEffect.h"
 #include "MultiRenderTarget/MulutiRenderTarget.h"
 

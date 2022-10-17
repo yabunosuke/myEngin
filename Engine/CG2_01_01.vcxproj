@@ -192,7 +192,6 @@
     <ClCompile Include="ConstantBufferManager\ConstantBufferManager.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="FileManager.cpp" />
-    <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imguiManager.cpp" />
     <ClCompile Include="ImGui\ImGuizmo.cpp" />
@@ -234,6 +233,7 @@
     <ClCompile Include="Scene\AbstractScene\AbstractScene.cpp" />
     <ClCompile Include="oldTexture.cpp" />
     <ClCompile Include="Scene\Manager\CameraManager.cpp" />
+    <ClCompile Include="Scene\Manager\GameObjectManager.cpp" />
     <ClCompile Include="Text\Text.cpp" />
     <ClCompile Include="Time\Time.cpp" />
     <ClCompile Include="Weapon.cpp" />
@@ -390,7 +390,6 @@
     <ClInclude Include="ConstantBufferManager\ConstantBufferManager.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="FileManager.h" />
-    <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
     <ClInclude Include="ImGui\imguiManager.h" />
@@ -432,6 +431,7 @@
     <ClInclude Include="Scene\AbstractScene\AbstractScene.h" />
     <ClInclude Include="oldTexture.h" />
     <ClInclude Include="Scene\Manager\CameraManager.h" />
+    <ClInclude Include="Scene\Manager\GameObjectManager.h" />
     <ClInclude Include="Text\Text.h" />
     <ClInclude Include="Time\Time.h" />
     <ClInclude Include="Weapon.h" />

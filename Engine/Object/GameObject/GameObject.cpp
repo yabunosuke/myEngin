@@ -5,7 +5,7 @@
 
 #include "Object/Component/Collider/Collider.h"
 #include "Object/Component/Behaviour/MonoBehaviour/MonoBehaviour.h"
-#include "GameObjectManager.h"
+#include "Scene/Manager/GameObjectManager.h"
 
 
 GameObjectManager *GameObject::game_object_manager_;

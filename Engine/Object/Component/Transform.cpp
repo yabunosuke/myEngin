@@ -50,27 +50,11 @@ void Transform::Infomation()
     static bool useSnap(false);
     ImGui::Checkbox("", &useSnap);
     ImGui::SameLine();
-    XMFLOAT3 snap;
-    switch (mCurrentGizmoOperation)
-    {
-    case ImGuizmo::TRANSLATE:
-        snap = {1,1,1};
-        ImGui::InputFloat3("Snap", &snap.x);
-        break;
-    case ImGuizmo::ROTATE:
-        snap = { 1,1,1 };
-        ImGui::InputFloat("Angle Snap", &snap.x);
-        break;
-    case ImGuizmo::SCALE:
-        snap = { 1,1,1 };
-        ImGui::InputFloat("Scale Snap", &snap.x);
-        break;
-    }
+    XMFLOAT3 snap{1,1,1};
     ImGuiIO &io = ImGui::GetIO();
     ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 
 	// 直前のマトリックス
-    XMMATRIX old_matrix = world_matrix_;
     ImGuizmo::Manipulate(
         Camera::main.r_->viewMatrix->r->m128_f32,
         Camera::main.r_->projectionMatrix->r->m128_f32,
@@ -90,7 +74,6 @@ void Transform::Infomation()
 	);
 	// スケール
 	ImGui::DragFloat3("Scale", (float *)&local_scale_);
-    UpdateMatrix();
 }
 
 void Transform::ComponentUpdate()
@@ -159,7 +142,6 @@ void Transform::LookAt(const Vector3 &target)
 
     quaternion = Matrix4x4::GetRotation(m);
     // クオータニオンの抜出
-    //float elem[4];
 }
 
 void Transform::UpdateMatrix()

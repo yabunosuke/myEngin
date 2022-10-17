@@ -44,6 +44,8 @@ void TitleScene::Initialize()
 	title->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/temp/title.fbx");
+	XMStoreFloat4(&title->transform_->localQuaternion, XMQuaternionRotationRollPitchYaw(90.0f * Mathf::deg_to_rad, 180.0f * Mathf::deg_to_rad, 0));
+
 }
 
 void TitleScene::Update()
