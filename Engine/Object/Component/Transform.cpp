@@ -56,8 +56,8 @@ void Transform::Infomation()
 
 	// 直前のマトリックス
     ImGuizmo::Manipulate(
-        Camera::main.r_->viewMatrix->r->m128_f32,
-        Camera::main.r_->projectionMatrix->r->m128_f32,
+        Camera::main.r_->view_matrix.r->m128_f32,
+        Camera::main.r_->projection_matrix.r->m128_f32,
         mCurrentGizmoOperation, mCurrentGizmoMode, world_matrix_.r->m128_f32, NULL, useSnap ? &snap.x : NULL);
 
     // 座標

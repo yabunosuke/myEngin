@@ -40,25 +40,28 @@ public:
 	//
 	//===========================================
 
-	//static DirectX::XMMATRIX GetProjection() { return  now_camera->mat_projection; }
-	//static DirectX::XMMATRIX GetView() { return  now_camera->mat_view; }
+	//static DirectX::XMMATRIX GetProjection() { return  now_camera->projection_matrix; }
+	//static DirectX::XMMATRIX GetView() { return  now_camera->view_matrix; }
 
 	
 	static yEngine::Property<Camera*> main;
 
+	DirectX::XMFLOAT4 view_position;
+	DirectX::XMMATRIX view_matrix;
+	DirectX::XMMATRIX projection_matrix;
 	yEngine::Property<DirectX::XMFLOAT4> viewPosition{
 		view_position, yEngine::AccessorType::AllAccess,
 		nullptr,
 		nullptr
 	};
-	yEngine::Property<DirectX::XMMATRIX> projectionMatrix{
-		mat_projection, yEngine::AccessorType::AllAccess,
+	yEngine::Property<DirectX::XMMATRIX> viewMatrix{
+		view_matrix,
+		yEngine::AccessorType::AllAccess,
 		nullptr,
 		nullptr
 	};
-	yEngine::Property<DirectX::XMMATRIX> viewMatrix{
-		mat_view,
-		yEngine::AccessorType::AllAccess,
+	yEngine::Property<DirectX::XMMATRIX> projectionMatrix{
+		projection_matrix, yEngine::AccessorType::AllAccess,
 		nullptr,
 		nullptr
 	};
@@ -82,9 +85,6 @@ private:
 	//
 	//===========================================
 
-	DirectX::XMFLOAT4 view_position;
-	DirectX::XMMATRIX mat_view;
-	DirectX::XMMATRIX mat_projection;
 
 	// ‰æ–ÊƒNƒŠƒA•û–@
 	enum class ClearFlag

@@ -54,7 +54,7 @@ void Camera::ComponentUpdate()
 	switch (projection_type_)
 	{
 	case Camera::Perspective:
-		mat_view = XMMatrixLookAtLH(
+		view_matrix = XMMatrixLookAtLH(
 			XMLoadFloat3(&transform_->position),
 			target,
 			XMLoadFloat3(&Vector3::up)
@@ -63,7 +63,7 @@ void Camera::ComponentUpdate()
 		break;
 
 	case Camera::Orthographic:
-		mat_view = XMMatrixOrthographicLH(
+		view_matrix = XMMatrixOrthographicLH(
 			10 * view_point_size_,
 			10 * view_point_size_,
 			near_plane_,
@@ -76,7 +76,7 @@ void Camera::ComponentUpdate()
 	}
 
 	// プロジェクション行列計算
-	mat_projection = XMMatrixPerspectiveFovLH(
+	projection_matrix = XMMatrixPerspectiveFovLH(
 		fov_of_view_ * Mathf::deg_to_rad,
 		static_cast<float>(WinApp::windowWidth) / static_cast<float>(WinApp::windowHeight),
 		near_plane_,far_plane_
@@ -156,7 +156,7 @@ void Camera::Infomation()
 //	{
 //		const_camera_map.view_position = main_camera_->view_position;
 //		// ビュープロジェクション
-//		DirectX::XMMATRIX view_projection_data = main_camera_->mat_view * main_camera_->mat_projection;
+//		DirectX::XMMATRIX view_projection_data = main_camera_->view_matrix * main_camera_->projection_matrix;
 //		XMStoreFloat4x4(&const_camera_map.view_projection, view_projection_data);
 //		// ビュープロジェクションの逆行列
 //		DirectX::XMStoreFloat4x4(&const_camera_map.inv_view_projection, DirectX::XMMatrixInverse(nullptr, view_projection_data));
