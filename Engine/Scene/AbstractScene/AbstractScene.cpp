@@ -4,7 +4,7 @@
 #include "3d/DrawFbx.h"
 #include "Object/Component/Light.h"
 
-#include "Object/Component/Camera.h"
+#include "../Manager/CameraManager.h"
 
 AbstractScene::AbstractScene(IoChangedListener *impl,std::string sceneName)
 	:implSceneChanged(impl),
@@ -70,7 +70,7 @@ void AbstractScene::Draw() const
 
 	//カメラマネージャをセット
 	PipelineManager::GetInstance()->SetPipline(DirectXCommon::cmdList, "GBuffer");
-	Camera::BufferTransfer(DirectXCommon::cmdList, 0, 0);
+	CameraManager::BufferTransfer(DirectXCommon::cmdList, 0, 0);
 	//camera_manager_->BufferTransfer(DirectXCommon::cmdList, 0, 0);
 	// モデルを描画
 	Renderer::GetIns()->DrawDeferred(DirectXCommon::dev,DirectXCommon::cmdList);

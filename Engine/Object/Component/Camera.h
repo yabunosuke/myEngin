@@ -11,7 +11,6 @@ class Camera :
     public Component
 {
 public:
-
 	//===========================================
 	//
 	//		コンストラクタ
@@ -34,11 +33,11 @@ public:
 	//===========================================
 	
 	// バッファに一番上のカメラ情報を転送 
-	static void BufferTransfer(
+	/*static void BufferTransfer(
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list,
 		UINT subresource,
 		UINT rootparameta_index
-	);
+	);*/
 
 	static void SetCameraManager(CameraManager *camera_manager);
 
@@ -53,6 +52,12 @@ public:
 
 	
 	static yEngine::Property<Camera*> main;
+
+	yEngine::Property<DirectX::XMFLOAT4> viewPosition{
+		view_position, yEngine::AccessorType::AllAccess,
+		nullptr,
+		nullptr
+	};
 	yEngine::Property<DirectX::XMMATRIX> projectionMatrix{
 		mat_projection, yEngine::AccessorType::AllAccess,
 		nullptr,
@@ -80,7 +85,7 @@ private:
 
 	//===========================================
 	//
-	//		静的メンバ変数
+	//		メンバ変数
 	//
 	//===========================================
 

@@ -147,27 +147,27 @@ void Camera::Infomation()
 	}
 
 }
-
-void Camera::BufferTransfer(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list, UINT subresource, UINT rootparameta_index)
-{
-
-	// 使用しているカメラデータを格納
-	CameraConstantBuffer const_camera_map;
-	{
-		const_camera_map.view_position = main_camera_->view_position;
-		// ビュープロジェクション
-		DirectX::XMMATRIX view_projection_data = main_camera_->mat_view * main_camera_->mat_projection;
-		XMStoreFloat4x4(&const_camera_map.view_projection, view_projection_data);
-		// ビュープロジェクションの逆行列
-		DirectX::XMStoreFloat4x4(&const_camera_map.inv_view_projection, DirectX::XMMatrixInverse(nullptr, view_projection_data));
-
-	}
-	ConstantBufferManager::GetInstance()->BufferTransfer<CameraConstantBuffer>(
-		cmd_list, subresource, rootparameta_index,
-		BufferName::Camera, &const_camera_map
-		);
-
-}
+//
+//void Camera::BufferTransfer(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list, UINT subresource, UINT rootparameta_index)
+//{
+//
+//	// 使用しているカメラデータを格納
+//	CameraConstantBuffer const_camera_map;
+//	{
+//		const_camera_map.view_position = main_camera_->view_position;
+//		// ビュープロジェクション
+//		DirectX::XMMATRIX view_projection_data = main_camera_->mat_view * main_camera_->mat_projection;
+//		XMStoreFloat4x4(&const_camera_map.view_projection, view_projection_data);
+//		// ビュープロジェクションの逆行列
+//		DirectX::XMStoreFloat4x4(&const_camera_map.inv_view_projection, DirectX::XMMatrixInverse(nullptr, view_projection_data));
+//
+//	}
+//	ConstantBufferManager::GetInstance()->BufferTransfer<CameraConstantBuffer>(
+//		cmd_list, subresource, rootparameta_index,
+//		BufferName::Camera, &const_camera_map
+//		);
+//
+//}
 
 void Camera::SetCameraManager(CameraManager *camera_manager)
 {
