@@ -1,6 +1,7 @@
 #include "GameScene.h"
 #include "Object3dComponent.h"
 #include "DirectXCommon.h"
+#include "Object/Component/Camera.h"
 
 GameScene::GameScene(IoChangedListener *impl)
 	: AbstractScene(impl, "GameScene")
@@ -9,6 +10,11 @@ GameScene::GameScene(IoChangedListener *impl)
 
 void GameScene::Initialize()
 {
+
+	// ƒJƒƒ‰
+	auto camera = GameObject::CreateObject("CameraObject");
+	camera->AddComponent<Camera>();
+	camera->transform_->localPosition = { 0,200,-400 };
 	// é
 	auto castle = GameObject::CreateObject("Castle");
 	castle->AddComponent<Object3dComponent>(
@@ -18,8 +24,9 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
-	if (Input::GetButtonPressTrigger(GamePadButton::INPUT_A))
+	AbstractScene::Update();
+	if (Input::GetButtonPressTrigger(GamePadButton::INPUT_X))
 	{
-		
+		implSceneChanged->SceneStackPop();
 	}
 }

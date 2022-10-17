@@ -40,39 +40,13 @@ void Camera::ComponentUpdate()
 
 	// 焦点計算
 	XMMATRIX temp = XMMatrixRotationQuaternion(XMLoadFloat4(&transform_->quaternion));
-	XMVECTOR target;
-	/*if (target_position_ != nullptr)
+	XMVECTOR target
 	{
-		target =
-		{
-			target_position_->x,
-			target_position_->y,
-			target_position_->z
-		};
-		Vector3 front = transform_->position - *target_position_;
-		Vector3::Normalize(front);
-		Vector3 right =	Vector3::Cross(Vector3::up, front);
-		Vector3 up =	Vector3::Cross(front,right);
-
-		XMMATRIX assignment_rotate
-		{
-			right.x,right.y,right.z,0.0f,
-			up.x,up.y,up.z,0.0f,
-			front.x,front.y,front.z,0.0f,
-			0.0f,0.0f,0.0f,1.0f
-		};
-
-		
-	}*/
-	//else //無ければ正面をターゲットにする
-	{
-		target = {
 			transform_->position->x + temp.r[2].m128_f32[0] * focus_,
 			transform_->position->y + temp.r[2].m128_f32[1] * focus_,
 			transform_->position->z + temp.r[2].m128_f32[2] * focus_,
 			1.0f
-		};
-	}
+	};
 	// ビュー行列計算
 	switch (projection_type_)
 	{

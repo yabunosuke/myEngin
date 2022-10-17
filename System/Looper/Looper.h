@@ -27,6 +27,19 @@ public:
 	void SceneStackPop() override;	//ポップアウト
 	
 private:
+	enum class ChangeType
+	{
+		None,
+		Push,
+		Pop
+	};
+	struct SceneChangeData
+	{
+		ChangeType type;
+		Scenes scene_name;
+		bool is_clear;
+	}scene_change_data_{};
+
 	//シーンスタック
 	stack<unique_ptr<AbstractScene>> scene_stack_;
 
