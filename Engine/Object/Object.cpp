@@ -15,8 +15,15 @@ Object::~Object()
 }
 
 
-void Object::Destroy(Object *object, float t)
+void Object::Destroy(Object *destroy_object, float t)
 {
-	//object.lock().reset();
+	for(auto &object : objects_)
+	{
+		if(destroy_object->instance_id_ == object->instance_id_)
+		{
+			object.reset();
+			return;
+		}
+	}
 }
 

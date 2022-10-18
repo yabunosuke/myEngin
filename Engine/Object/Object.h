@@ -22,7 +22,7 @@ public:
 	/// </summary>
 	/// <param name="objct">削除するオブジェクト</param>
 	/// <param name="t">削除するまでのディレイ時間</param>
-	static void Destroy(Object *object, float t = 0.0f);
+	static void Destroy(Object *destroy_object, float t = 0.0f);
 
 	/// <summary>
 	/// 指定された型に一致するオブジェクトを返す
@@ -82,6 +82,8 @@ private:
 	// オブジェクト名
 	std::string name_;
 
+	// 削除までの時間
+	float destroy_timer_{0.0f};
 };
 
 template<class Type>

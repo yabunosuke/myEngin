@@ -1,6 +1,7 @@
 #include "Enemy.h"
 
 #include "Object3dComponent.h"
+#include "Time/Time.h"
 
 Enemy::Enemy() :
 MonoBehaviour("Enemy")
@@ -48,10 +49,20 @@ void Enemy::FixedUpdate()
 			model_data_->PlayAnimation(static_cast<int>(state));
 		}
 	}
+
+
+	if (hp_<=0)
+	{
+		destroy_timer_test_ += Time::GetInstance()->fixedDeltaTime;
+	}
 }
 
 void Enemy::Update()
 {
+	if(destroy_timer_test_ >= 1.0f)
+	{
+		Destroy(this);
+	}
 }
 
 void Enemy::Infomation()

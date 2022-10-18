@@ -195,6 +195,7 @@
     <ClCompile Include="Scene\Manager\GameObjectManager.cpp">
       <Filter>Scene\GameObjectManager</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\EnemyBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -369,9 +370,9 @@
       <Filter>Scene\CameraManager</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Manager\GameObjectManager.h">
-
       <Filter>Scene\GameObjectManager</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\EnemyBase.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />

@@ -108,7 +108,7 @@ void GameScene::Initialize()
 void GameScene::Update()
 {
 	AbstractScene::Update();
-	if (Input::GetButtonPressTrigger(GamePadButton::INPUT_START))
+	if (game_object_manager_->GetGameObject("Enemy") == nullptr)
 	{
 		implSceneChanged->SceneStackPop();
 	}

@@ -53,25 +53,31 @@ void Transform::Infomation()
     XMFLOAT3 snap{1,1,1};
     ImGuiIO &io = ImGui::GetIO();
     ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-
 	// 直前のマトリックス
-    ImGuizmo::Manipulate(
-        Camera::main.r_->view_matrix.r->m128_f32,
-        Camera::main.r_->projection_matrix.r->m128_f32,
-        mCurrentGizmoOperation, mCurrentGizmoMode, world_matrix_.r->m128_f32, NULL, useSnap ? &snap.x : NULL);
-
+    auto next_matrix = world_matrix_;
+    if(
+	ImGuizmo::Manipulate(
+        Camera::main.r_->viewMatrix->r->m128_f32,
+        Camera::main.r_->projectionMatrix->r->m128_f32,
+        mCurrentGizmoOperation, mCurrentGizmoMode, next_matrix.r->m128_f32, NULL, useSnap ? &snap.x : NULL)
+        )
+    {
+        matrix = next_matrix;
+    }
+    
     // 座標
-	ImGui::DragFloat3("Position", (float *)&local_position_);
+    ImGui::DragFloat3("Position", (float *)&local_position_);
+	
     // 回転
 	XMFLOAT3 euler = local_quaternion_.EulerAngles();
-	ImGui::DragFloat3("Rotation", &euler.x);
-	XMStoreFloat4(&local_quaternion_,
-		XMQuaternionRotationRollPitchYaw(
-			euler.x * Mathf::deg_to_rad,
-			euler.y * Mathf::deg_to_rad,
-			euler.z * Mathf::deg_to_rad
-		)
-	);
+    if (ImGui::DragFloat3("Rotation", &euler.x))
+    {
+        local_quaternion_ = Quaternion::Euler(
+            euler.x * Mathf::deg_to_rad,
+            euler.y * Mathf::deg_to_rad,
+            euler.z * Mathf::deg_to_rad
+        );
+    }
 	// スケール
 	ImGui::DragFloat3("Scale", (float *)&local_scale_);
 }

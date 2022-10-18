@@ -32,6 +32,7 @@ private:
 	Rigidbody *regidbody_;
 	Fbx *model_data_{ nullptr };
 
+	float destroy_timer_test_{ 0.0f };//‰¼
 	int hp_ = 10;
 };
 

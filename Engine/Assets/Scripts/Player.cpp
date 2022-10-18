@@ -100,7 +100,25 @@ void PlayerController::Update()
 
 	if(Input::GetAxis(GamePadAxis::AXIS_LZ) < 0.0f)
 	{
+		if(is_dash_ == false)
+		{
+			Vector3 first_dush;;
+			if (input_horizontal_ != 0.0f||
+				input_vertical_ != 0.0f
+				)
+			{
+				Vector3 camera_forward = Vector3::Scale(Camera::main.r_->transform_->GetFront(), Vector3(1.0f, 0.0f, 1.0f)).Normalized();
+
+				first_dush = camera_forward * input_vertical_ + Camera::main.r_->transform_->GetRight() * input_horizontal_;
+			}
+			else
+			{
+				first_dush = -Vector3::Scale(transform_->GetFront(), Vector3(1.0f, 0.0f, 1.0f)).Normalized();
+			}
+			regidbody_->AddForce(first_dush * 100.0f);
+		}
 		is_dash_ = true;
+
 	}
 	else
 	{

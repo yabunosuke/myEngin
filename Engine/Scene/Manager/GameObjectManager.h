@@ -37,6 +37,7 @@ public:
 	/// IDからオブジェクトを取得
 	/// </summary>
 	GameObject *GetGameObject(int id);
+	GameObject *GetGameObject(const std::string &name);
 
 	/// <summary>
 	/// 有効なオブジェクトを全てファイナライズ

@@ -100,5 +100,9 @@ Vector3 Quaternion::EulerAngles() const
 	ty *= 180.0f / DirectX::XM_PI;
 	tz *= 180.0f / DirectX::XM_PI;
 
+	if (tx == -0.0) tx = 0.0f;
+	if (ty == -0.0) ty = 0.0f;
+	if (tz == -0.0) tz = 0.0f;
+		
 	return Vector3(tx, ty, tz);
 }

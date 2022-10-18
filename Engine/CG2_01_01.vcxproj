@@ -184,6 +184,7 @@
     <ClCompile Include="3d\Fbx\FbxResource.cpp" />
     <ClCompile Include="Assets\Scripts\CameraController.cpp" />
     <ClCompile Include="Assets\Scripts\Enemy.cpp" />
+    <ClCompile Include="Assets\Scripts\EnemyBase.cpp" />
     <ClCompile Include="Assets\Scripts\Player.cpp" />
     <ClCompile Include="Collision\CheckCollision.cpp" />
     <ClCompile Include="Collision\Collision.cpp" />
@@ -380,6 +381,7 @@
     <ClInclude Include="3d\Fbx\FbxResource.h" />
     <ClInclude Include="Assets\Scripts\CameraController.h" />
     <ClInclude Include="Assets\Scripts\Enemy.h" />
+    <ClInclude Include="Assets\Scripts\EnemyBase.h" />
     <ClInclude Include="Assets\Scripts\Player.h" />
     <ClInclude Include="Collision\CheckCollision.h" />
     <ClInclude Include="Collision\Collision.h" />

@@ -58,6 +58,18 @@ GameObject *GameObjectManager::GetGameObject(int id)
 	return nullptr;
 }
 
+GameObject *GameObjectManager::GetGameObject(const std::string &name)
+{
+	for (const auto &object : game_objects_)
+	{
+		if (name == object->name.r_) {
+			return object;
+		}
+	}
+
+	return nullptr;
+}
+
 void GameObjectManager::Finalize()
 {
 }
