@@ -1,12 +1,13 @@
 #include "EnemyBase.h"
 
-EnemyBase::EnemyBase():
-MonoBehaviour("Enemy Base")
+EnemyBase::EnemyBase(const std::string &name):
+MonoBehaviour(name)
 {
 }
 
 void EnemyBase::OnCollisionEnter(Collision &collision)
 {
+	
 }
 
 void EnemyBase::Start()
@@ -14,6 +15,7 @@ void EnemyBase::Start()
 	// ƒŠƒWƒbƒh
 	regidbody_ =
 		game_object_->GetComponent<Rigidbody>();
+	transform_->scale = { 40,40,40 };
 }
 
 void EnemyBase::FixedUpdate()

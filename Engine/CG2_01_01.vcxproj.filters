@@ -195,7 +195,13 @@
     <ClCompile Include="Scene\Manager\GameObjectManager.cpp">
       <Filter>Scene\GameObjectManager</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\EnemyBase.cpp" />
+    <ClCompile Include="Assets\Scripts\EnemyBase.cpp">
+      <Filter>Asset\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\PlayerBullet.cpp" />
+    <ClCompile Include="Assets\Scripts\FlyEnemy.cpp">
+      <Filter>Asset\Enemy\FlyEnemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -372,7 +378,16 @@
     <ClInclude Include="Scene\Manager\GameObjectManager.h">
       <Filter>Scene\GameObjectManager</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\EnemyBase.h" />
+    <ClInclude Include="Assets\Scripts\EnemyBase.h">
+      <Filter>Asset\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\PlayerBullet.h" />
+    <ClInclude Include="Assets\Scripts\FlyEnemy.h">
+      <Filter>Asset\Enemy\FlyEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\ContactPoint.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
@@ -508,6 +523,9 @@
     </Filter>
     <Filter Include="Scene\CameraManager">
       <UniqueIdentifier>{cce538fc-ca3b-4da0-8f48-3c0faa063553}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Enemy\FlyEnemy">
+      <UniqueIdentifier>{84816d05-04a3-40d7-94e1-ecb56ea38e4e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

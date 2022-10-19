@@ -1,5 +1,7 @@
 #pragma once
 #include "Object/GameObject/GameObject.h"
+#include "Object/Component/Collider/Collider.h"
+#include "ContactPoint.h"
 #include <memory>
 #include "Property.h"
 class Collision
@@ -10,7 +12,7 @@ public:
 		Vector3 relative_velocity
 		);
 
-	// 衝突した相手のオブジェクト (ReadOnly)
+	// コライダーが衝突した相手のオブジェクト (ReadOnly)
 	yEngine::Property<GameObject*> gameObject
 	{
 		game_object_,
@@ -22,10 +24,19 @@ public:
 		relative_velocity_,
 		yEngine::AccessorType::ReadOnly
 	};
+	yEngine::Property<bool> childHit
+	{
+		is_child_hit_,
+		yEngine::AccessorType::AllAccess
+	};
 
 
 private:
-	GameObject* game_object_;
-	Vector3 relative_velocity_;
+	
+	Collider *collider_;	// ヒットしたコライダー
+	std::vector<ContactPoint> contacts_;	
+	GameObject *game_object_;
+	Vector3 relative_velocity_;	
+	bool is_child_hit_;
 };
 

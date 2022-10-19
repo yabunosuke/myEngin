@@ -185,7 +185,9 @@
     <ClCompile Include="Assets\Scripts\CameraController.cpp" />
     <ClCompile Include="Assets\Scripts\Enemy.cpp" />
     <ClCompile Include="Assets\Scripts\EnemyBase.cpp" />
+    <ClCompile Include="Assets\Scripts\FlyEnemy.cpp" />
     <ClCompile Include="Assets\Scripts\Player.cpp" />
+    <ClCompile Include="Assets\Scripts\PlayerBullet.cpp" />
     <ClCompile Include="Collision\CheckCollision.cpp" />
     <ClCompile Include="Collision\Collision.cpp" />
     <ClCompile Include="Component\Manager\LightManager.cpp" />
@@ -382,9 +384,12 @@
     <ClInclude Include="Assets\Scripts\CameraController.h" />
     <ClInclude Include="Assets\Scripts\Enemy.h" />
     <ClInclude Include="Assets\Scripts\EnemyBase.h" />
+    <ClInclude Include="Assets\Scripts\FlyEnemy.h" />
     <ClInclude Include="Assets\Scripts\Player.h" />
+    <ClInclude Include="Assets\Scripts\PlayerBullet.h" />
     <ClInclude Include="Collision\CheckCollision.h" />
     <ClInclude Include="Collision\Collision.h" />
+    <ClInclude Include="Collision\ContactPoint.h" />
     <ClInclude Include="Collision\Primitive.h" />
     <ClInclude Include="Component\Manager\LightManager.h" />
     <ClInclude Include="ConstantBufferManager\ConstantBuffer.h" />

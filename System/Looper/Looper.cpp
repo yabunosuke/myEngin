@@ -24,6 +24,10 @@ Looper::Looper() {
 
 bool Looper::Loop()
 {
+
+	// 計測開始
+	Time::GetInstance()->InstrumentationStart();
+
 	// 遷移更新
 	if (scene_change_data_.type != ChangeType::None)
 	{
@@ -73,10 +77,7 @@ bool Looper::Loop()
 		scene_change_data_.scene_name = Scenes::MAX;
 		scene_change_data_.is_clear = false;
 	}
-
-	// 計測開始
-	Time::GetInstance()->InstrumentationStart();
-	// ImGui描画前処理
+// ImGui描画前処理
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
@@ -116,7 +117,8 @@ bool Looper::Loop()
 	//シーンの更新
 	scene_stack_.top()->Update();
 
-
+	// 削除処理
+	Object::Destroyer();
 
 	//シーンの描画コマンドを発行
 	scene_stack_.top()->PreDrawMultiRenderTarget(DirectXCommon::dev,DirectXCommon::cmdList);	// マルチレンダーターゲットの設定
@@ -146,7 +148,7 @@ bool Looper::Loop()
 	DirectXCommon::PlayCommandList();
 
 
-	// 計測開始
+	// 計測終了
 	Time::GetInstance()->InstrumentationEnd();
 
 	

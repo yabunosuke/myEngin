@@ -51,10 +51,10 @@ void Enemy::FixedUpdate()
 	}
 
 
-	if (hp_<=0)
-	{
-		destroy_timer_test_ += Time::GetInstance()->fixedDeltaTime;
-	}
+	//if (hp_<=0)
+	//{
+	//	destroy_timer_test_ += Time::GetInstance()->fixedDeltaTime;
+	//}
 }
 
 void Enemy::Update()

@@ -7,7 +7,7 @@ class EnemyBase :
     public MonoBehaviour
 {
 public:
-	EnemyBase();
+	EnemyBase(const std::string &name);
 
     void OnCollisionEnter(Collision &collision) override;
 
@@ -17,7 +17,7 @@ public:
 
 	void Infomation() override;
 
-private:
+protected:
 
 	Rigidbody *regidbody_{ nullptr };
 	// ‘Ì—Í

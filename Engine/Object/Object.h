@@ -12,6 +12,9 @@
 class Object
 {
 public:
+	
+	Object();
+	virtual ~Object();
 	//===========================================
 	//
 	//		静的変数
@@ -52,10 +55,7 @@ public:
 	static T *CreateObject(Parameter ...parameter);
 
 
-
-
-	Object();
-	virtual ~Object();
+	static void Destroyer();
 
 	/// <summary>
 	/// インスタンスIDを返す
@@ -66,13 +66,16 @@ public:
 	/// オブジェクト名 (AllAccess)
 	/// </summary>
 	yEngine::Property<std::string> name{ name_ ,yEngine::AccessorType::AllAccess };
+
+protected:
+	virtual void DestoryRelated() {};
+
 private:
 
 	/// <summary>
 	/// オブジェクトコンテナ
 	/// </summary>
 	static std::vector<std::unique_ptr<Object>> objects_;
-
 
 	// オブジェクトIDの重複回避用
 	static int static_id_;
@@ -83,7 +86,8 @@ private:
 	std::string name_;
 
 	// 削除までの時間
-	float destroy_timer_{0.0f};
+	float destroy_timer_{ 0.0f };
+	bool is_destroy_ = false;
 };
 
 template<class Type>

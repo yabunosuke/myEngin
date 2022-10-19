@@ -45,7 +45,11 @@ void TitleScene::Initialize()
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/temp/title.fbx");
 	XMStoreFloat4(&title->transform_->localQuaternion, XMQuaternionRotationRollPitchYaw(90.0f * Mathf::deg_to_rad, 180.0f * Mathf::deg_to_rad, 0));
-
+	auto ctitle = GameObject::CreateObject("Title");
+	ctitle->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/temp/title.fbx");
+	ctitle->SetParent(title);
 }
 
 void TitleScene::Update()

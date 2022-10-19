@@ -1,4 +1,5 @@
 #pragma once
+#include "Collision.h"
 
 #include "Object/GameObject/GameObject.h"
 #include "Object/Component/Collider/SphereCollider/SphereCollider.h"
@@ -23,5 +24,7 @@ public:
 	static float SqDistancePointSegment(Vector3 start,Vector3 end,Vector3 point);
 
 private:
-
+	// ©•ª‚Æe‚ÌOnCollision‚ğŒÄ‚Ño‚·
+	static void OnCollisionEnter(GameObject *object,Collision &collision_data);
+	static void OnCollisionStay(GameObject *object,Collision &collision_data);
 };

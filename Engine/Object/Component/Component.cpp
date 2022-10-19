@@ -1,8 +1,21 @@
 #include "Component.h"
 #include "Object/Component/Transform.h"
+#include "Object/GameObject/GameObject.h"
 
 Component::~Component()
 {
+	if (game_object_ != nullptr)
+	{
+		auto component = game_object_->GetComponentList().begin();
+		for (; component != game_object_->GetComponentList().end(); ++component)
+		{
+			if (*component == this)
+			{
+				game_object_->GetComponentList().erase(component);
+				break;
+			}
+		}
+	}
 }
 
 void Component::CheckInitialize()
@@ -37,7 +50,6 @@ void Component::CheckFinalize()
 
 Component::Component(std::string name, ComponentType component_id, bool dontRemove):
 	isDontRemove(dontRemove),
-	isRemove(false),
 	type_(component_id)
 {
 
@@ -53,10 +65,14 @@ void Component::ImGuiDraw()
 	if (ImGui::TreeNode(name->c_str())) {
 		ImGui::Separator();
 		Infomation();
-		if (!isDontRemove) {
-			isRemove = ImGui::Button("Remove");
+		if (!isDontRemove) 
+		{
+			if (ImGui::Button("Remove"))
+			{
+				Destroy(this);
+			}
+
 		}
 		ImGui::TreePop();
 	}
-	
 }

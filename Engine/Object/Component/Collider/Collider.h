@@ -18,7 +18,7 @@ class Collider :
 {
 public:
 	Collider();
-	
+	~Collider();
 	/// <summary>
 	/// XV
 	/// </summary>

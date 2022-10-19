@@ -27,9 +27,9 @@ public:
 
 	XMMATRIX GetWorldMatrix() { return  world_matrix_; }
 
-	Vector3 GetRight() {return Vector3(world_matrix_.r[0]).Normalized();}
-	Vector3 GetUp() {return Vector3(world_matrix_.r[1]).Normalized();}
-	Vector3 GetFront() {return Vector3(world_matrix_.r[2]).Normalized();}
+	Vector3 GetRight() { return Vector3(world_matrix_.r[0]).Normalized(); }
+	Vector3 GetUp() { return Vector3(world_matrix_.r[1]).Normalized(); }
+	Vector3 GetFront() { return Vector3(world_matrix_.r[2]).Normalized(); }
 
 	void LookAt(const Vector3 &target);
 
@@ -137,7 +137,7 @@ public:
 			matrix = temp;
 		}
 	};
-	
+
 	/// <summary>
 	/// ワールド空間の回転 (get = true, set = true)
 	/// </summary>
@@ -264,7 +264,7 @@ private:
 	// 行列更新
 	void UpdateMatrix();
 
-	 //行列から各要素に変換
+	//行列から各要素に変換
 	void MatrixDecompose(
 		const XMMATRIX &matrix,
 		XMFLOAT3 &scale,
@@ -275,4 +275,3 @@ private:
 	// 全ての親の逆行列を取得する
 	XMMATRIX InverseMatrixAllParent();
 };
-

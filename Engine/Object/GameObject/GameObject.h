@@ -22,12 +22,11 @@
 
 #include "Property.h"
 
-// コライダー
 class Collider;
 class MonoBehaviour;
 class GameObjectManager;
 
-class GameObject :
+class GameObject final :
 public Object
 {
 private:
@@ -144,9 +143,6 @@ public:	//関数
 	void SetIsBlind(bool blind) { isBlind = blind; }
 	bool GetIsBlind() { return isBlind; }
 
-	// 削除
-	void Remove() { isRemove = true; }
-
 	// 親オブジェクトの取得
 	GameObject* GetPearent() { return pearent_game_object_; }
 	// 子のオブジェクトコンテナの取得
@@ -156,7 +152,7 @@ public:	//関数
 	/// コンポーネントリストの取得
 	/// </summary>
 	/// <returns></returns>
-	std::list<Component*> GetComponentList() { return component_list_; }
+	std::list<Component*> &GetComponentList() { return component_list_; }
 
 
 	// コライダー
@@ -204,6 +200,14 @@ private:
 
 	//===========================================
 	//
+	//		メンバ関数
+	//
+	//===========================================
+
+	void DestoryRelated() override;
+
+	//===========================================
+	//
 	//		メンバ変数
 	//
 	//===========================================
@@ -231,12 +235,6 @@ private:
 	bool active_self_;				// ローカルのアクティブ状態
 	// 非表示になっているか
 	bool isBlind;
-	// 削除するか
-	bool isRemove;
-
-	
-
-
 };
 
 template<class T, class ...Args>

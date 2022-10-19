@@ -106,12 +106,6 @@ public:
 		return static_cast<int>(type_) != static_cast<int>(component.type_);
 	}
 
-
-	// isRemove
-	void Remove() { isRemove = true; }
-	bool GetIsRemove() { return isRemove; }
-
-
 	// ゲームオブジェクト
 	GameObject *game_object_;
 	// 重複チェック用のタグ
@@ -152,19 +146,11 @@ protected:	//関数
 	/// </summary>
 	virtual void Infomation() {};
 
-
-
-
 	
-
-	// リムーブフラグ
-	bool isRemove;
 	// 削除不可
 	bool isDontRemove;
 private:
-	//
+
 	ComponentType type_ = ComponentType::None;
 
-public:	// アクセッサ
-	
 };

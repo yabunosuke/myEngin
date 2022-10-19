@@ -20,6 +20,7 @@
 #include "Object/Component/Camera.h"
 #include "Assets/Scripts/Player.h"
 #include "Assets/Scripts/Enemy.h"
+#include "Assets/Scripts/FlyEnemy.h"
 #include "Assets/Scripts/CameraController.h"
 #include "Weapon.h"
 
@@ -58,6 +59,7 @@ void GameScene::Initialize()
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/sword human/Sword man.fbx");
 	player->AddComponent<Rigidbody>();
+	player->AddComponent<SphereCollider>(25, Vector3{ 0,20,0 });
 	player->AddComponent<PlayerController>();
 	XMStoreFloat4(&player->transform_->localQuaternion, XMQuaternionRotationRollPitchYaw(0, 0, 0));
 
@@ -76,9 +78,26 @@ void GameScene::Initialize()
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/Dwarf/Dwarf.fbx");
 	enemy->AddComponent<SphereCollider>(25, Vector3{ 0,20,0 });
-	enemy->transform_->localScale = { 0.4f,0.4f,0.4f };
+	enemy->AddComponent<Rigidbody>();
+	enemy->transform_->scale = { 0.4f,0.4f,0.4f };
 	enemy->transform_->localPosition = { 0.0f,0.0f,20.0f };
 	enemy->AddComponent<Enemy>();
+	srand(time(NULL));
+	for (int i = 0; i < 10; ++i)
+	{
+		
+		auto fly_enemy = GameObject::CreateObject("FlyEnemy");
+		fly_enemy->AddComponent<Object3dComponent>(
+			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+			"Assets/3d/Suzy.fbx");
+		fly_enemy->AddComponent<SphereCollider>();
+		fly_enemy->AddComponent<Rigidbody>();
+		fly_enemy->AddComponent<FlyEnemy>();
+		fly_enemy->transform_->position = {static_cast<float>(rand() % 1000 - 500),40.0f,static_cast<float>(rand() % 1000 - 500) };
+		auto enemy_eye = GameObject::CreateObject("EnemyEye");
+		enemy_eye->AddComponent<SphereCollider>(40, Vector3{ 0,20,0 });
+		enemy_eye->SetParent(fly_enemy);
+	}
 
 	// ƒJƒƒ‰
 	auto camera = GameObject::CreateObject("CameraObject");
@@ -108,7 +127,7 @@ void GameScene::Initialize()
 void GameScene::Update()
 {
 	AbstractScene::Update();
-	if (game_object_manager_->GetGameObject("Enemy") == nullptr)
+	if (Input::GetButtonPressTrigger(GamePadButton::INPUT_START))
 	{
 		implSceneChanged->SceneStackPop();
 	}

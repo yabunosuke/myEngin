@@ -228,7 +228,7 @@ void Editor::DrawInspector()
 
 	auto *selectObject = nowScene->GetObjectManager()->GetGameObject(selected_object_id);
 
-	// ID—‡‚¤•¨‚ª‚È‚¯‚ê‚Î–¢•\¦
+	// ID‚É‡‚¤•¨‚ª‚È‚¯‚ê‚Î–¢•\¦
 	if (selectObject == nullptr) {
 		ImGui::End();
 		return;

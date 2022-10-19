@@ -103,12 +103,6 @@ float4 main(VSOutput input) : SV_TARGET
 			}
 		}
 
-		
-
-
-
-
-
 
 		float3 light = diffuse + specular ;
 

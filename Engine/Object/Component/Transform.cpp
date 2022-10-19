@@ -47,8 +47,6 @@ void Transform::Infomation()
         if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
             mCurrentGizmoMode = ImGuizmo::WORLD;
     }
-    static bool useSnap(false);
-    ImGui::Checkbox("", &useSnap);
     ImGui::SameLine();
     XMFLOAT3 snap{1,1,1};
     ImGuiIO &io = ImGui::GetIO();
@@ -59,7 +57,7 @@ void Transform::Infomation()
 	ImGuizmo::Manipulate(
         Camera::main.r_->viewMatrix->r->m128_f32,
         Camera::main.r_->projectionMatrix->r->m128_f32,
-        mCurrentGizmoOperation, mCurrentGizmoMode, next_matrix.r->m128_f32, NULL, useSnap ? &snap.x : NULL)
+        mCurrentGizmoOperation, mCurrentGizmoMode, next_matrix.r->m128_f32, NULL, false ? &snap.x : NULL)
         )
     {
         matrix = next_matrix;

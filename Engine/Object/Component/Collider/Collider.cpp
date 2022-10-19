@@ -5,8 +5,15 @@
 Collider::Collider():
 	Component("Collider", ComponentType::Collider)
 {
-	
-	//collision_manager_ = std::make_shared<CollisionManager>(*scene->GetCollisionManager());
+}
+
+Collider::~Collider()
+{
+	if (&game_object_ != nullptr)
+	{
+		return;
+	}
+	game_object_->RemoveCollider(this);
 }
 
 

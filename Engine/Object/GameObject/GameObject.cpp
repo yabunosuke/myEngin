@@ -13,8 +13,7 @@ GameObjectManager *GameObject::game_object_manager_;
 
 GameObject::GameObject(const std::string &name) :
 	active_self_(true),
-	isBlind(false),
-	isRemove(false)
+	isBlind(false)
 {
 	// 名前をセット
 	this->name = name;
@@ -24,6 +23,53 @@ GameObject::GameObject(const std::string &name) :
 
 GameObject::~GameObject()
 {
+
+	// component削除
+	if (component_list_.size() != 0)
+	{
+		for (auto &component : component_list_)
+		{
+			component->game_object_ = nullptr;
+		}
+	}
+
+	// 子のオブジェクトも破棄
+	if (child_game_object_.size() != 0)
+	{
+		for (auto &child : child_game_object_)
+		{
+			child->pearent_game_object_ = nullptr;
+		}
+	}
+
+	// 親がいる場合は親のリストから削除
+	if (pearent_game_object_ != nullptr)
+	{
+		auto game_obj = pearent_game_object_->child_game_object_.begin();
+		for (; game_obj != pearent_game_object_->child_game_object_.end(); ++game_obj)
+		{
+			if (*game_obj == this)
+			{
+				pearent_game_object_->child_game_object_.erase(game_obj);
+				break;
+			}
+		}
+	}
+
+	// ゲームオブジェクトマネージャーから削除
+	if (game_object_manager_->game_objects_.size() != 0)
+	{
+		auto game_obj = game_object_manager_->game_objects_.begin();
+		for (; game_obj != game_object_manager_->game_objects_.end(); ++game_obj)
+		{
+			if (*game_obj == this)
+			{
+				game_object_manager_->game_objects_.erase(game_obj);
+				break;
+			}
+
+		}
+	}
 }
 
 GameObject* GameObject::CreateObject(const std::string &object_name)
@@ -86,17 +132,6 @@ void GameObject::Update()
 	// 親オブジェクトが非アクティブなときと、自身が非アクティブなときは更新しない
 	if (!parent_is_active || !active_self_) return;
 
-	// コンポーネントの削除
-	auto &itr = component_list_.begin();
-	while (itr != component_list_.end()) {
-		if ((*itr)->GetIsRemove()) {
-			delete *itr;
-			itr = component_list_.erase(itr);
-		}
-		else {
-			++itr;
-		}
-	}
 
 	// 全てのコンポーネントを更新
 	for (const auto &component : component_list_) {
@@ -111,6 +146,18 @@ void GameObject::LastUpdate()
 	for (auto &component : component_list_) {
 		component->CheckLustUpdate();
 	}
+
+	//// コンポーネントの削除
+	//auto &itr = component_list_.begin();
+	//while (itr != component_list_.end()) {
+	//	if ((*itr)->GetIsRemove()) {
+	//		delete *itr;
+	//		itr = component_list_.erase(itr);
+	//	}
+	//	else {
+	//		++itr;
+	//	}
+	//}
 }
 
 void GameObject::Draw()
@@ -138,8 +185,11 @@ void GameObject::DrawInspector()
 	}
 	ImGui::SameLine();
 	// 静的フラグ
-	ImGui::Checkbox("static", &is_static_);
-
+	ImGui::Checkbox("Static", &is_static_);
+	if (ImGui::Button("Remove"))
+	{
+		Object::Destroy(this);
+	}
 	ImGui::Separator();
 
 	//コンポーネントの表示
@@ -173,6 +223,7 @@ void GameObject::AddCollider(Collider *collider)
 
 void GameObject::RemoveCollider(Collider *collider)
 {
+	if (colliders_.size() == 0) return;
 	for (auto &col = colliders_.begin(); col != colliders_.end();++col) {
 		if (*col == collider) {
 			colliders_.erase(col);
@@ -194,4 +245,28 @@ const std::vector<MonoBehaviour *>& GameObject::GetMonoBehaviours()
 
 void GameObject::RemoveMonoBehaviour(std::weak_ptr<MonoBehaviour> monobehaviour)
 {
+}
+
+void GameObject::DestoryRelated()
+{
+	// component削除
+	if (component_list_.size() != 0)
+	{
+		for (auto &component : component_list_)
+		{
+			component->game_object_ = nullptr;
+			Destroy(component);
+		}
+	}
+
+	// 子のオブジェクトも破棄
+	if (child_game_object_.size() != 0)
+	{
+		for (auto &child : child_game_object_)
+		{
+			child->pearent_game_object_ = nullptr;
+			Destroy(child);
+			child->DestoryRelated();
+		}
+	}
 }

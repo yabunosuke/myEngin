@@ -1,5 +1,4 @@
 #include "CheckCollision.h"
-#include "Collision.h"
 #include <memory>
 #include "Object/Component/Rigidbody.h"
 #include "Object/Component/Behaviour/MonoBehaviour/MonoBehaviour.h"
@@ -63,6 +62,7 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 							if(is_trigger)
 							{
 								// A
+
 								for (const auto &script_a : (*object_a)->GetMonoBehaviours())
 								{
 									script_a->OnTriggerEnter(collision_info_b);
@@ -77,17 +77,9 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 							// コリジョン
 							else
 							{
-								// A
-								for (const auto &script_a : (*object_a)->GetMonoBehaviours())
-								{
-									script_a->OnCollisionEnter(collision_info_b);
-								}
 
-								// B
-								for (const auto &script_b : (*object_b)->GetMonoBehaviours())
-								{
-									script_b->OnCollisionEnter(collision_info_a);
-								}
+								OnCollisionEnter(*object_a, collision_info_b);
+								OnCollisionEnter(*object_b, collision_info_a);
 							}
 							// 衝突記憶
 							collider_a->hitlist_[collider_b->GetInstanceID()] = true;
@@ -114,17 +106,20 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 							// コリジョン
 							else
 							{
-								// A
-								for (const auto &script_a : (*object_a)->GetMonoBehaviours())
-								{
-									script_a->OnCollisionStay(collision_info_b);
-								}
 
-								// B
-								for (const auto &script_b : (*object_b)->GetMonoBehaviours())
-								{
-									script_b->OnCollisionStay(collision_info_a);
-								}
+								OnCollisionStay(*object_a, collision_info_b);
+								OnCollisionStay(*object_b, collision_info_a);
+								//// A
+								//for (const auto &script_a : (*object_a)->GetMonoBehaviours())
+								//{
+								//	script_a->OnCollisionStay(collision_info_b);
+								//}
+
+								//// B
+								//for (const auto &script_b : (*object_b)->GetMonoBehaviours())
+								//{
+								//	script_b->OnCollisionStay(collision_info_a);
+								//}
 							}
 						}
 
@@ -389,4 +384,33 @@ float CheckCollision::SqDistancePointSegment(Vector3 start, Vector3 end, Vector3
 
 	// pointが線分上に射影される場合
 	return Vector3::Dot(start_to_point, start_to_point) - e * e / f;
+}
+
+void CheckCollision::OnCollisionEnter(GameObject *object, Collision &collision_data)
+{
+	// 自分オブジェクトにあるスクリプト呼び出し
+	for (const auto &script_a : object->GetMonoBehaviours())
+	{
+		script_a->OnCollisionEnter(collision_data);
+	}
+	// 親がいれば再起呼び出し
+	if (object->GetPearent() != nullptr)
+	{
+		OnCollisionEnter(object->GetPearent(), collision_data);
+	}
+}
+
+void CheckCollision::OnCollisionStay(GameObject *object, Collision &collision_data)
+{
+	// 自分オブジェクトにあるスクリプト呼び出し
+	for (const auto &script_a : object->GetMonoBehaviours())
+	{
+		script_a->OnCollisionStay(collision_data);
+	}
+	collision_data.childHit = true;
+	// 親がいれば再起呼び出し
+	if (object->GetPearent() != nullptr)
+	{
+		OnCollisionStay(object->GetPearent(), collision_data);
+	}
 }
