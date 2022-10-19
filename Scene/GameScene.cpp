@@ -35,7 +35,7 @@ void GameScene::Initialize()
 
 	// ÉâÉCÉg
 	auto directional_light_ = GameObject::CreateObject("Directional Light");
-	directional_light_->AddComponent<Light>(light_manager_, LightType::Directional);
+	directional_light_->AddComponent<Light>(LightType::Directional);
 	XMStoreFloat4(&directional_light_->transform_->localQuaternion, XMQuaternionRotationRollPitchYaw(45, 45, 0));
 
 	//// èÈ

@@ -67,8 +67,9 @@ public:
 
 	// ゲッター
 	GameObjectManager *GetObjectManager() { return game_object_manager_.get(); }	// オブジェクトマネージャー
-	CameraManager *GeCameraManager() { return camera_manager_.get(); }	// オブジェクトマネージャー
-	//CollisionManager *GetCollisionManager() { return &collision_manager_; }			// 子リジョンマネージャー
+	CameraManager *GetCameraManager() { return camera_manager_.get(); }				// カメラマネージャー
+	LightManager *GetLightManager() { return light_manager_.get(); }				// ライトマネージャー
+	//CollisionManager *GetCollisionManager() { return &collision_manager_; }			// コリジョンマネージャー
 	std::string GetName() { return name; }
 	std::unique_ptr<MulutiRenderTarget> *GetMulutiRenderTarget() { return &muluti_render_target_; }
 
@@ -79,7 +80,7 @@ protected:
 	// コリジョンマネージャー
 	//CollisionManager collision_manager_;
 	// ライトマネージャー
-	std::shared_ptr<LightManager> light_manager_;
+	std::unique_ptr<LightManager> light_manager_;
 	// ポストエフェクト
 	std::unique_ptr<PostEffect> post_effect_;
 	// マルチレンダーターゲット

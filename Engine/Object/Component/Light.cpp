@@ -3,9 +3,10 @@
 #include "Object/GameObject/GameObject.h"
 #include "Component/Manager/LightManager.h"
 
+LightManager *Light::scene_light_manager_;
+
 
 Light::Light(
-	std::weak_ptr<LightManager> light_manager,							// ライトマネージャ
 	const LightType &type, 
 	const float &range,
 	const XMFLOAT2 &spot_angle,
@@ -21,7 +22,7 @@ Light::Light(
 
 
 	// マネージャをセット
-	light_manager.lock()->AddLight(light_date_);
+	scene_light_manager_->AddLight(light_date_);
 
 
 	switch (type)
@@ -36,6 +37,11 @@ Light::Light(
 	default:
 		break;
 	}
+}
+
+void Light::SetLightManager(LightManager *light_manager)
+{
+	scene_light_manager_ = light_manager;
 }
 
 void Light::Infomation()
@@ -128,17 +134,4 @@ void Light::ComponentUpdate()
 		break;
 	}
 
-	//// バッファ転送用のデータに変換
-	//light_data_ ={
-	//	// 共通項目
-	//	select_light_type,	// ライトのタイプ
-	//	color_,				// ライトの色
-
-	//	// 一部共通項目
-	//	game_object_->GetComponent<Transform>()
-
-	//	// ポイントライト用項目
-
-
-	//};
 }

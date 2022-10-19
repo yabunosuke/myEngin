@@ -12,7 +12,6 @@ public:
 
 	// ライトコンポーネントをリストに追加
 	void AddLight(std::weak_ptr<LightDate> light);
-	
 	/// <summary>
 	/// ライトをバッファに転送
 	/// </summary>

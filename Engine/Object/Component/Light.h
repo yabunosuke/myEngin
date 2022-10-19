@@ -26,7 +26,6 @@ class Light :
 {
 public:
 	Light(
-		std::weak_ptr<LightManager> light_manager,							// ライトマネージャ
 		const LightType &type = LightType::Point,
 		const float &range = 10.0f,
 		const XMFLOAT2 &spot_angle = { 21.80208f , 30.0f},
@@ -34,6 +33,13 @@ public:
 		const float &intensity = 1.0f,
 		const float &indirect_multiplier = 1.0f
 		);
+
+
+
+	static void SetLightManager(LightManager *light_manager);
+
+
+
 
 	void Infomation() override;
 
@@ -45,6 +51,11 @@ public:
 
 private:
 
+	/// <summary>
+	/// 現在シーンに設定されているマネージャ
+	/// </summary>
+	static LightManager *scene_light_manager_;
+
 	// 転送用のライトデータ
 	std::shared_ptr<LightDate> light_date_;
 
@@ -55,6 +66,7 @@ private:
 
 	float indirect_multiplier_ = 1.0f;		// 間接光の強さ
 	ShadowType shadow_type_;		// 影の種類
+
 
 };
 

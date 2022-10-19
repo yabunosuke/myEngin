@@ -47,7 +47,6 @@ void Transform::Infomation()
         if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
             mCurrentGizmoMode = ImGuizmo::WORLD;
     }
-    ImGui::SameLine();
     XMFLOAT3 snap{1,1,1};
     ImGuiIO &io = ImGui::GetIO();
     ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
@@ -65,15 +64,15 @@ void Transform::Infomation()
     
     // 座標
     ImGui::DragFloat3("Position", (float *)&local_position_);
-	
+
     // 回転
-	XMFLOAT3 euler = local_quaternion_.EulerAngles();
+	XMFLOAT3 euler = local_quaternion_.EulerAngles() /** Mathf::rad_to_deg*/;
     if (ImGui::DragFloat3("Rotation", &euler.x))
     {
         local_quaternion_ = Quaternion::Euler(
-            euler.x * Mathf::deg_to_rad,
-            euler.y * Mathf::deg_to_rad,
-            euler.z * Mathf::deg_to_rad
+            euler.x,// * Mathf::deg_to_rad,
+            euler.y,// * Mathf::deg_to_rad,
+            euler.z //* Mathf::deg_to_rad
         );
     }
 	// スケール

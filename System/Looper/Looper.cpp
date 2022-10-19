@@ -5,13 +5,14 @@
 #include "Input.h"
 #include "PrimitiveRenderer.h"
 #include "Time/Time.h"
-#include "Object/GameObject/GameObject.h"
 #include "Collision/CheckCollision.h"
 //シーン
 #include "TitleScene.h"
 #include "GameScene.h"
 
+#include "Object/GameObject/GameObject.h"
 #include "Object/Component/Camera.h"
+#include "Object/Component/Light.h"
 
 
 
@@ -59,7 +60,8 @@ bool Looper::Loop()
 			}
 			// ゲームオブジェクトに現在のマネージャーをセット
 			GameObject::SetGameObjectManager(scene_stack_.top()->GetObjectManager());
-			Camera::SetCameraManager(scene_stack_.top()->GeCameraManager());
+			Camera::SetCameraManager(scene_stack_.top()->GetCameraManager());
+			Light::SetLightManager(scene_stack_.top()->GetLightManager());
 			//新しいシーンを初期化
 			scene_stack_.top()->Initialize();
 		}
@@ -69,7 +71,8 @@ bool Looper::Loop()
 			scene_stack_.pop();
 			//scene_stack_.top()->Initialize();
 			GameObject::SetGameObjectManager(scene_stack_.top()->GetObjectManager());
-			Camera::SetCameraManager(scene_stack_.top()->GeCameraManager());
+			Camera::SetCameraManager(scene_stack_.top()->GetCameraManager());
+			Light::SetLightManager(scene_stack_.top()->GetLightManager());
 		}
 
 		editor.Initialize(scene_stack_.top().get());

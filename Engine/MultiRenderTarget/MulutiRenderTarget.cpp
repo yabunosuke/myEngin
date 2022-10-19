@@ -259,7 +259,7 @@ void MulutiRenderTarget::PreDrawScene(ComPtr<ID3D12Device> dev,ComPtr<ID3D12Grap
 void MulutiRenderTarget::DrawRenderTarget(
 	ComPtr<ID3D12GraphicsCommandList> cmd_list,
 	ComPtr<ID3D12Device> dev,
-	const std::weak_ptr<LightManager> light_manager
+	LightManager *light_manager
 )
 {
 	
@@ -306,7 +306,7 @@ void MulutiRenderTarget::DrawRenderTarget(
 	ConstantBufferManager::GetInstance()->BufferTransfer<TestBuffer>(cmd_list,0,1, BufferName::Test, &constMap);
 
 	// ライト転送
-	light_manager.lock()->BufferTransfer(cmd_list, 0, 2);
+	light_manager->BufferTransfer(cmd_list, 0, 2);
 
 	// プリミティブ形状を設定
 	cmd_list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);

@@ -16,7 +16,7 @@ AbstractScene::AbstractScene(IoChangedListener *impl,std::string sceneName)
 	muluti_render_target_ = std::make_unique<MulutiRenderTarget>();
 	muluti_render_target_->InitializeMulutiRenderTarget(DirectXCommon::dev);
 
-	light_manager_ = std::make_shared<LightManager>();
+	light_manager_ = std::make_unique<LightManager>();
 	game_object_manager_ = std::make_unique<GameObjectManager>();
 	camera_manager_ = std::make_unique<CameraManager>();
 	//camera_manager_ = std::make_shared<CameraManager>();
@@ -112,7 +112,7 @@ void AbstractScene::DrawMulutiRenderTarget(Microsoft::WRL::ComPtr<ID3D12Device>d
 	muluti_render_target_->DrawRenderTarget(
 		cmd_list,
 		dev,
-		light_manager_
+		light_manager_.get()
 		);
 }
 

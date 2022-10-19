@@ -41,7 +41,7 @@ public:
 	void DrawRenderTarget(
 		ComPtr<ID3D12GraphicsCommandList> cmd_list,
 		ComPtr<ID3D12Device> dev,
-		const std::weak_ptr<LightManager> light_manager
+		LightManager *light_manager
 	);
 	void PostDraw(ComPtr<ID3D12GraphicsCommandList> cmd_list);
 

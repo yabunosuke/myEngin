@@ -50,12 +50,13 @@ public:
 	/// <summary>
 	/// オイラーをクオータニオンに変換
 	/// </summary>
+	/// <param name="">roll,pitch,yaw(rad)</param>
 	/// <returns>Quaternion 変換した値</returns>
 	static Quaternion Euler(const float &roll, const float &pitch, const float &yaw);
 	/// <summary>
 	/// オイラーをクオータニオンに変換
 	/// </summary>
-	/// <param name="rotation_vector">回転ベクトル（degree）</param>
+	/// <param name="">roll,pitch,yaw(rad)</param>
 	/// <returns>Quaternion 変換した値</returns>
 	static Quaternion Euler(const Vector3 &rotation_vector);
 

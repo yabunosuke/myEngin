@@ -19,13 +19,14 @@ Quaternion Quaternion::Euler(const float &roll, const float &pitch, const float 
 	float cz = cos(0.5f * yaw);
 	float sz = sin(0.5f * yaw);
 
-	Quaternion temp = {
-		-cx * sy * sz + sx * cy * cz,
-		cx *sy *cz + sx * cy * sz,
-		sx *sy *cz + cx * cy * sz,
-		-sx * sy * sz + cx * cy * cz
+	Quaternion quaternion
+	{
+		cx * sy * sz + cy * cz * sx,
+		cx * cz * sy - cy * sx * sz,
+		cx * cy * sz - cz * sx * sy,
+		sx * sy * sz + cx * cy * cz
 	};
-	return temp;
+	return quaternion;
 }
 
 Quaternion Quaternion::Euler(const Vector3 &rotation_vector)
@@ -49,60 +50,101 @@ Quaternion Quaternion::Normalized() const
 
 Vector3 Quaternion::EulerAngles() const
 {
+    Quaternion r = *this;
+    float x = r.x;
+    float y = r.y;
+    float z = r.z;
+    float w = r.w;
 
-	Quaternion q = *this;
-	float x = q.x;
-	float y = q.y;
-	float z = q.z;
-	float w = q.w;
+    float x2 = x * x;
+    float y2 = y * y;
+    float z2 = z * z;
 
-	float x2 = x * x;
-	float y2 = y * y;
-	float z2 = z * z;
+    float xy = x * y;
+    float xz = x * z;
+    float yz = y * z;
+    float wx = w * x;
+    float wy = w * y;
+    float wz = w * z;
 
-	float xy = x * y;
-	float xz = x * z;
-	float yz = y * z;
-	float wx = w * x;
-	float wy = w * y;
-	float wz = w * z;
+    // 1 - 2y^2 - 2z^2
+    float m00 = 1.0f - (2.0f * y2) - (2.0f * z2);
 
-	float m00 = 1.0f - (2.0f * y2) - (2.0f * z2);
-	float m01 = (2.0f * xy) + (2.0f * wz);
-	float m10 = (2.0f * xy) - (2.0f * wz);
-	float m11 = 1.0f - (2.0f * x2) - (2.0f * z2);
-	float m20 = (2.0f * xz) + (2.0f * wy);
-	float m21 = (2.0f * yz) - (2.0f * wx);
-	float m22 = 1.0f - (2.0f * x2) - (2.0f * y2);
+    // 2xy + 2wz
+    float m01 = (2.0f * xy) + (2.0f * wz);
 
-	float tx, ty, tz;
+    // 2xy - 2wz
+    float m10 = (2.0f * xy) - (2.0f * wz);
 
-	if (Mathf::Approximately(m21, 1.0f))
+    // 1 - 2x^2 - 2z^2
+    float m11 = 1.0f - (2.0f * x2) - (2.0f * z2);
+
+    // 2xz + 2wy
+    float m20 = (2.0f * xz) + (2.0f * wy);
+
+    // 2yz+2wx
+    float m21 = (2.0f * yz) - (2.0f * wx);
+
+    // 1 - 2x^2 - 2y^2
+    float m22 = 1.0f - (2.0f * x2) - (2.0f * y2);
+
+
+    float tx, ty, tz;
+
+    if (Mathf::Approximately(m21, 1.0f))
+    {
+        tx = Mathf::pi/ 2.0f;
+        ty = 0;
+        tz = atan2f(m10, m00);
+    }
+    else if (Mathf::Approximately(m21, -1.0f))
+    {
+        tx = -Mathf::pi / 2.0f;
+        ty = 0;
+        tz = atan2f(m10, m00);
+    }
+    else
+    {
+		tx = asinf(-m21);
+		ty = atan2f(m20, m22);
+		tz = atan2f(m01, m11);
+    }
+
+	Vector3 euler
 	{
-		tx = XM_PI / 2.0f;
-		ty = 0;
-		tz = atan2(m10, m00);
-	}
-	else if (Mathf::Approximately(m21, -1.0f))
+		tx,ty,tz
+	};
+    return euler;
+
+
+	/*Quaternion q = *this;
+
+	float sin_roll = 2.0f * (q.x * q.y + q.z * q.w);
+	float cos_roll = 1.0f - 2.0f * (q.y * q.y + q.z * q.z);
+	float rool = atan2f(sin_roll, cos_roll);
+	
+	float sinp = 2.0f * (q.x * q.z - q.w * q.y);
+	float pitch;
+	if (fabsf(sinp) >= 1.0f)
 	{
-		tx = -XM_PI / 2.0f;
-		ty = 0;
-		tz = atan2(m10, m00);
+		pitch = copysign(Mathf::pi / 2.0f, sinp);
 	}
 	else
 	{
-		tx = asin(-m21);
-		ty = atan2(m20, m22);
-		tz = atan2(m01, m11);
+		pitch = asinf(sinp);
 	}
 
-	tx *= 180.0f / DirectX::XM_PI;
-	ty *= 180.0f / DirectX::XM_PI;
-	tz *= 180.0f / DirectX::XM_PI;
+	float sin_yaw = 2.0f * (q.x * q.z + q.y * q.z);
+	float cos_yaw = 1.0f - 2.0f * (q.z * q.z + q.w * q.w);
+	float yaw = atan2f(sin_yaw, cos_yaw);
 
-	if (tx == -0.0) tx = 0.0f;
-	if (ty == -0.0) ty = 0.0f;
-	if (tz == -0.0) tz = 0.0f;
-		
-	return Vector3(tx, ty, tz);
+	Vector3 euler
+	{
+		rool,
+		pitch,
+		yaw
+	};
+
+	return euler;*/
+
 }
