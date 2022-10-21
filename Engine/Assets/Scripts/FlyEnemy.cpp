@@ -14,6 +14,10 @@ void FlyEnemy::OnCollisionEnter(Collision &collision)
 	{
 		transform_->scale = transform_->scale - Vector3{ 2,2,2 };
 		--hp_;
+		if (hp_ < 0.0f)
+		{
+			Destroy(this);
+		}
 	}
 }
 

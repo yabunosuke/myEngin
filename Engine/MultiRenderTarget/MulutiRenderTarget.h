@@ -4,7 +4,7 @@
 #include <DirectXMath.h>
 #include <wrl.h>
 
-#include "Component/Manager/LightManager.h"
+#include "Scene/Manager/LightManager.h"
 
 // サブクラス
 enum class RenderName

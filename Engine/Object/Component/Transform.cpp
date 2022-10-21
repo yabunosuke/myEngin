@@ -66,13 +66,12 @@ void Transform::Infomation()
     ImGui::DragFloat3("Position", (float *)&local_position_);
 
     // âÒì]
-	XMFLOAT3 euler = local_quaternion_.EulerAngles() /** Mathf::rad_to_deg*/;
+	Vector3 euler = local_quaternion_.EulerAngles() * Mathf::rad_to_deg;
     if (ImGui::DragFloat3("Rotation", &euler.x))
     {
+        euler *= Mathf::deg_to_rad;
         local_quaternion_ = Quaternion::Euler(
-            euler.x,// * Mathf::deg_to_rad,
-            euler.y,// * Mathf::deg_to_rad,
-            euler.z //* Mathf::deg_to_rad
+			euler
         );
     }
 	// ÉXÉPÅ[Éã

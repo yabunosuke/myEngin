@@ -97,9 +97,6 @@
     <ClCompile Include="Math\Vector3.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="Component\Manager\LightManager.cpp">
-      <Filter>Component\Light</Filter>
-    </ClCompile>
     <ClCompile Include="3d\DrawFbx.cpp" />
     <ClCompile Include="Object\Object.cpp">
       <Filter>Object</Filter>
@@ -202,6 +199,9 @@
     <ClCompile Include="Assets\Scripts\FlyEnemy.cpp">
       <Filter>Asset\Enemy\FlyEnemy</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\Manager\LightManager.cpp">
+      <Filter>Scene\LightManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -275,9 +275,6 @@
     </ClInclude>
     <ClInclude Include="Math\Vector3.h">
       <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Component\Manager\LightManager.h">
-      <Filter>Component\Light</Filter>
     </ClInclude>
     <ClInclude Include="3d\DrawFbx.h" />
     <ClInclude Include="Math\Quaternion.h">
@@ -388,6 +385,9 @@
     <ClInclude Include="Collision\ContactPoint.h">
       <Filter>Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Scene\Manager\LightManager.h">
+      <Filter>Scene\LightManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
@@ -421,9 +421,6 @@
     </Filter>
     <Filter Include="Shader\3d\GBuffer">
       <UniqueIdentifier>{78e17c48-f1f1-4d1a-a8e3-c11914db4dd1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Light">
-      <UniqueIdentifier>{4d82daf8-73cd-4bca-b2e5-3b7ca64206ec}</UniqueIdentifier>
     </Filter>
     <Filter Include="ConstantBufferManager">
       <UniqueIdentifier>{4b06ebc0-7122-4445-ae2a-40faa339a3a0}</UniqueIdentifier>
@@ -526,6 +523,9 @@
     </Filter>
     <Filter Include="Asset\Enemy\FlyEnemy">
       <UniqueIdentifier>{84816d05-04a3-40d7-94e1-ecb56ea38e4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\LightManager">
+      <UniqueIdentifier>{30c8dcd7-f188-454e-9545-289315d964bc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
