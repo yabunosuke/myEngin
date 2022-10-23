@@ -53,9 +53,9 @@ void Rigidbody::Infomation()
 		// Velocity
 		ImGui::DragFloat3("Velocity", &velocity_.x);
 		// Angular Velocity
-		ImGui::DragFloat3("Angular Velocity", &velocity_.x);
+		//ImGui::DragFloat3("Angular Velocity", &velocity_.x);
 		// Velocity
-		ImGui::DragFloat3("Velocity", &velocity_.x);
+		//ImGui::DragFloat3("Velocity", &velocity_.x);
 
 
 		ImGui::EndDisabled();
@@ -77,14 +77,14 @@ void Rigidbody::ComponentFixedUpdate()
 	// d—ÍŒvŽZ
 	if (use_gravity_)
 	{
-		velocity_ += Vector3::down * 9.8f * Time::GetInstance()->fixedDeltaTime;
+		velocity = velocity + Vector3::down * 9.8f * Time::GetInstance()->fixedDeltaTime;
 	}
 
 	// ’ïRŒvŽZ
-	velocity_ -= drag_ / 100.0f * velocity_;
+	velocity = velocity - drag_ / 100.0f * velocity;
 	transform_->position =
 		transform_->position
-		+ velocity_ * Time::GetInstance()->fixedDeltaTime;
+		+ velocity * Time::GetInstance()->fixedDeltaTime;
 }
 
 void Rigidbody::ComponentUpdate()
@@ -98,13 +98,13 @@ void Rigidbody::AddForce(Vector3 force, ForceMode force_mode)
 	if( force_mode == ForceMode::Force ||
 		force_mode == ForceMode::Impulse)
 	{
-		velocity_ += force / mass_;
+		velocity = velocity + force / mass_;
 
 	}
 	// Ž¿—Ê‚ð–³Ž‹‚µ‚ÄŒvŽZ
 	else
 	{
-		velocity_ += force;
+		velocity = velocity+ force;
 	}
 
 }

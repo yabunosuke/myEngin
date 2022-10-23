@@ -1,8 +1,5 @@
 #include "GameObjectManager.h"
 
-GameObjectManager::~GameObjectManager()
-{
-}
 
 void GameObjectManager::Initialize()
 {

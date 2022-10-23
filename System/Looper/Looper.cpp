@@ -168,47 +168,11 @@ void Looper::OnSceneChanged(const Scenes scene, const bool stackClear)
 	scene_change_data_.type = ChangeType::Push;
 	scene_change_data_.scene_name = scene;
 	scene_change_data_.is_clear = stackClear;
-
-	////現在のシーンを終了
-	//if(scene_stack_.size() != 0)
-	//{
-	//	scene_stack_.top()->Finalize();
-	//}
-	//if (stackClear == true) {				//スタックをクリアする設定なら
-	//	while (!scene_stack_.empty()) {	//スタックがからになるまでポップする
-	//		scene_stack_.pop();
-	//	}
-	//}
-	//switch (scene) {
-	//case Scenes::Title:
-	//	scene_stack_.push(make_unique<TitleScene>(this));
-	//	break;
-
-	//case Scenes::Game:
-	//	scene_stack_.push(make_unique<GameScene>(this));
-	//	break;
-
-	//default:
-	//	//存在しないシーンがスタックトップにある際のエラー処理
-	//	
-	//	break;
-	//}
-	//// ゲームオブジェクトに現在のマネージャーをセット
-	//GameObject::SetGameObjectManager(scene_stack_.top()->GetObjectManager());
-
-	////新しいシーンを初期化
-	//scene_stack_.top()->Initialize();
-	//editor.Initialize(scene_stack_.top().get());
-
 }
 
 void Looper::SceneStackPop()
 {
 	scene_change_data_.type = ChangeType::Pop;
-	//scene_stack_.top()->Finalize();
-	//scene_stack_.pop();
-	//GameObject::SetGameObjectManager(scene_stack_.top()->GetObjectManager());
-	////scene_stack_.top()->Initialize();
 }
 
 

@@ -3,10 +3,11 @@
 #include "../Engine/Object/Component/Camera.h"
 
 
-void LightManager::AddLight(std::weak_ptr<LightDate> light)
+void LightManager::AddLight(LightDate *light)
 {
 	light_list_.emplace_back(light);
 }
+
 
 
 void LightManager::BufferTransfer(
@@ -25,7 +26,7 @@ void LightManager::BufferTransfer(
 	if(light_list_.size() > LIGHT_MAX)
 	{
 		std::copy_n(
-			light_list_.begin()->lock().get(),
+			light_list_[0],
 			LIGHT_MAX,
 			const_light_map.light);
 	}
@@ -35,7 +36,7 @@ void LightManager::BufferTransfer(
 		int i = 0;
 		for(; i < light_list_.size();++i)
 		{
-			const_light_map.light[i] = *light_list_[i].lock().get();
+			const_light_map.light[i] = *light_list_[i];
 		}
 		const_light_map.light[i + 1].is_active = false;
 	}
@@ -52,7 +53,7 @@ void LightManager::BufferTransfer(
 
 }
 
-bool LightManager::active(const std::weak_ptr<LightDate> &lhs, const std::weak_ptr<LightDate> &rhs)
+bool LightManager::active(const LightDate *lhs, const LightDate *rhs)
 {
-	return lhs.lock()->is_active < rhs.lock()->is_active;
+	return lhs->is_active < rhs->is_active;
 }

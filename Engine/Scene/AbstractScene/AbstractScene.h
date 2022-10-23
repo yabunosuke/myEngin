@@ -6,7 +6,7 @@
 #include "MultiRenderTarget/MulutiRenderTarget.h"
 
 
-#include "Component/Manager/LightManager.h"
+#include "Scene/Manager/LightManager.h"
 #include <wrl.h>
 
 #include "Scene/Manager/CameraManager.h"

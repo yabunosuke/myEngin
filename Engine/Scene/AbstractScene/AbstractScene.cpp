@@ -26,7 +26,10 @@ AbstractScene::AbstractScene(IoChangedListener *impl,std::string sceneName)
 
 AbstractScene::~AbstractScene()
 {
-	
+	for (auto &object : game_object_manager_->game_objects_)
+	{
+		Object::Destroy(object);
+	}
 }
 
 
@@ -128,5 +131,4 @@ void AbstractScene::DrawPostEffect(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandL
 
 void AbstractScene::Finalize()
 {
-
 }

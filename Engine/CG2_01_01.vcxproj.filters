@@ -123,23 +123,17 @@
     <ClCompile Include="Object\Component\Renderer\MeshRenderer\MeshRenderer.cpp">
       <Filter>Object\Component\Renderer\MeshRenderer</Filter>
     </ClCompile>
-    <ClCompile Include="Weapon.cpp">
-      <Filter>Component\UserComponent</Filter>
-    </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>Input</Filter>
     </ClCompile>
     <ClCompile Include="Object\Component\Camera.cpp">
-      <Filter>Component\Camera</Filter>
+      <Filter>Object\Component\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Object\Component\Transform.cpp">
-      <Filter>Component\Transform</Filter>
+      <Filter>Object\Component\Transform</Filter>
     </ClCompile>
     <ClCompile Include="Object\Component\Rigidbody.cpp">
-      <Filter>Component\Rigidbody</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\Component\Component.cpp">
-      <Filter>Component</Filter>
+      <Filter>Object\Component\Rigidbody</Filter>
     </ClCompile>
     <ClCompile Include="Math\Vector2.cpp">
       <Filter>Math</Filter>
@@ -201,6 +195,15 @@
     </ClCompile>
     <ClCompile Include="Scene\Manager\LightManager.cpp">
       <Filter>Scene\LightManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>Asset\Wepon</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Drone.cpp">
+      <Filter>Asset\Drone</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Component\Component.cpp">
+      <Filter>Object\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -303,23 +306,17 @@
     <ClInclude Include="Object\Component\Renderer\MeshRenderer\MeshRenderer.h">
       <Filter>Object\Component\Renderer\MeshRenderer</Filter>
     </ClInclude>
-    <ClInclude Include="Weapon.h">
-      <Filter>Component\UserComponent</Filter>
-    </ClInclude>
     <ClInclude Include="Input.h">
       <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="Object\Component\Camera.h">
-      <Filter>Component\Camera</Filter>
+      <Filter>Object\Component\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Object\Component\Transform.h">
-      <Filter>Component\Transform</Filter>
+      <Filter>Object\Component\Transform</Filter>
     </ClInclude>
     <ClInclude Include="Object\Component\Rigidbody.h">
-      <Filter>Component\Rigidbody</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\Component\Component.h">
-      <Filter>Component</Filter>
+      <Filter>Object\Component\Rigidbody</Filter>
     </ClInclude>
     <ClInclude Include="Math\Vector2.h">
       <Filter>Math</Filter>
@@ -388,6 +385,15 @@
     <ClInclude Include="Scene\Manager\LightManager.h">
       <Filter>Scene\LightManager</Filter>
     </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>Asset\Wepon</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Drone.h">
+      <Filter>Asset\Drone</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Component\Component.h">
+      <Filter>Object\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
@@ -410,9 +416,6 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{4ef49560-38b2-4aab-b6aa-ef9eb7dca403}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component">
-      <UniqueIdentifier>{6edb4b60-ed34-4532-98c2-83abcc593ec6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ImGui">
       <UniqueIdentifier>{357a0535-ec4c-419d-b10b-1d80c80d6beb}</UniqueIdentifier>
     </Filter>
@@ -425,15 +428,6 @@
     <Filter Include="ConstantBufferManager">
       <UniqueIdentifier>{4b06ebc0-7122-4445-ae2a-40faa339a3a0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Rigidbody">
-      <UniqueIdentifier>{f59d614d-d1fb-48a4-9e4e-fd847a29aeaa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Transform">
-      <UniqueIdentifier>{e07596c2-9c32-458f-9501-dc4c7567705f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Camera">
-      <UniqueIdentifier>{8629037c-d168-4720-b5cc-18ebc4d5aa22}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Math">
       <UniqueIdentifier>{0628c83e-2193-4e75-86c3-c0372e26b97f}</UniqueIdentifier>
     </Filter>
@@ -442,9 +436,6 @@
     </Filter>
     <Filter Include="3dオブジェクト\FBX">
       <UniqueIdentifier>{c8ac2e1d-f171-4050-b7ba-dc176938b264}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\UserComponent">
-      <UniqueIdentifier>{8d2edc7d-c0bb-44e0-b8cd-da5ccde7b80d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Time">
       <UniqueIdentifier>{086a8f6d-1484-4859-8da9-6fab5f0e4ef3}</UniqueIdentifier>
@@ -506,9 +497,6 @@
     <Filter Include="Asset\Enemy">
       <UniqueIdentifier>{4b3fea8a-9cd3-41e8-bf72-ae70a19930f0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Asset\Weapon">
-      <UniqueIdentifier>{a72795d5-cbab-4b3c-89fe-4893789bd37d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object\Mesh">
       <UniqueIdentifier>{f3e41ae5-9ea7-4f53-b50e-ff0726bd4ac4}</UniqueIdentifier>
     </Filter>
@@ -526,6 +514,21 @@
     </Filter>
     <Filter Include="Scene\LightManager">
       <UniqueIdentifier>{30c8dcd7-f188-454e-9545-289315d964bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Wepon">
+      <UniqueIdentifier>{066e1d04-c7bd-4dcd-bdbb-20b52fc8d7ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Drone">
+      <UniqueIdentifier>{07f111dd-7fea-46bc-a4eb-96c038b797d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component\Rigidbody">
+      <UniqueIdentifier>{f59d614d-d1fb-48a4-9e4e-fd847a29aeaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component\Camera">
+      <UniqueIdentifier>{8629037c-d168-4720-b5cc-18ebc4d5aa22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component\Transform">
+      <UniqueIdentifier>{e07596c2-9c32-458f-9501-dc4c7567705f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

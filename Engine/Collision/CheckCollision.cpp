@@ -109,17 +109,7 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 
 								OnCollisionStay(*object_a, collision_info_b);
 								OnCollisionStay(*object_b, collision_info_a);
-								//// A
-								//for (const auto &script_a : (*object_a)->GetMonoBehaviours())
-								//{
-								//	script_a->OnCollisionStay(collision_info_b);
-								//}
-
-								//// B
-								//for (const auto &script_b : (*object_b)->GetMonoBehaviours())
-								//{
-								//	script_b->OnCollisionStay(collision_info_a);
-								//}
+								
 							}
 						}
 
@@ -192,11 +182,16 @@ bool CheckCollision::CheckHit(Collider *a, Collider *b, Vector3 hit_pos)
 
 bool CheckCollision::AABB2AABB(yEngine::AABB a, yEngine::AABB b)
 {
-	if (fabsf(a.center[0] - b.center[0]) > (a.radius[0] + b.radius[0]))	return true;
-	if (fabsf(a.center[1] - b.center[1]) > (a.radius[1] + b.radius[1]))	return true;
-	if (fabsf(a.center[2] - b.center[2]) > (a.radius[2] + b.radius[2]))	return true;
+	if (fabsf(a.center[0] - b.center[0]) > (a.radius[0] + b.radius[0]))	return false;
+	if (fabsf(a.center[1] - b.center[1]) > (a.radius[1] + b.radius[1]))	return false;
+	if (fabsf(a.center[2] - b.center[2]) > (a.radius[2] + b.radius[2]))	return false;
 	
-	return false;
+	return true;
+}
+
+void CheckCollision::ExtremePointsAlongDirection(const Vector3 &dir, Vector3 point[], int n, int *min, int *max)
+{
+
 }
 
 bool CheckCollision::Sphere2Sphere(yEngine::Sphere a, yEngine::Sphere b)

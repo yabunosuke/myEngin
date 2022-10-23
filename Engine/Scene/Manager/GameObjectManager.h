@@ -8,8 +8,6 @@ class GameObjectManager
 {
 public:
 
-	~GameObjectManager();
-
 	/// <summary>
 	/// 有効なオブジェクトを初期化
 	/// </summary>

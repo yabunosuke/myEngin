@@ -10,8 +10,8 @@ class LightManager
 {
 public:
 
-	// ライトコンポーネントをリストに追加
-	void AddLight(std::weak_ptr<LightDate> light);
+	// ライトをリストに追加
+	void AddLight(LightDate *light);
 	/// <summary>
 	/// ライトをバッファに転送
 	/// </summary>
@@ -21,11 +21,12 @@ public:
 		UINT rootparameta_index
 		);
 
+	std::vector<LightDate *> &GetLightList() { return light_list_; }
 private:
 	// ソート用関数
-	static bool active(const std::weak_ptr<LightDate> &lhs, const std::weak_ptr<LightDate> &rhs);
+	static bool active(const LightDate *lhs, const LightDate *rhs);
 
 
-	std::vector<std::weak_ptr<LightDate>> light_list_;
+	std::vector<LightDate *> light_list_;
 };
 

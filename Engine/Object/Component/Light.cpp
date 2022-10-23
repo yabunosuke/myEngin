@@ -1,7 +1,7 @@
 #include "Light.h"
 
 #include "Object/GameObject/GameObject.h"
-#include "Component/Manager/LightManager.h"
+#include "Scene/Manager/LightManager.h"
 
 LightManager *Light::scene_light_manager_;
 
@@ -17,12 +17,12 @@ Light::Light(
 	light_type_(type)
 {
 	// 転送用のライトデータ
-	light_date_ = std::make_shared<LightDate>();
+	light_date_ = std::make_unique<LightDate>();
 	light_date_->intensity = intensity;
 
 
-	// マネージャをセット
-	scene_light_manager_->AddLight(light_date_);
+	// マネージャにセット
+	scene_light_manager_->AddLight(light_date_.get());
 
 
 	switch (type)
@@ -36,6 +36,25 @@ Light::Light(
 	case LightType::Point:
 	default:
 		break;
+	}
+}
+
+Light::~Light()
+{
+
+	// ゲームオブジェクトマネージャーから削除
+	if (scene_light_manager_->GetLightList().size() != 0)
+	{
+		auto light = scene_light_manager_->GetLightList().begin();
+		for (; light != scene_light_manager_->GetLightList().end(); ++light)
+		{
+			if (*light == this->light_date_.get())
+			{
+				scene_light_manager_->GetLightList().erase(light);
+				break;
+			}
+
+		}
 	}
 }
 

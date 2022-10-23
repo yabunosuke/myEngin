@@ -33,7 +33,7 @@ public:
 		const float &intensity = 1.0f,
 		const float &indirect_multiplier = 1.0f
 		);
-
+	~Light();
 
 
 	static void SetLightManager(LightManager *light_manager);
@@ -46,8 +46,7 @@ public:
 	void ComponentInitialize() override;
 	void ComponentUpdate() override;
 
-	std::weak_ptr<LightDate> GetLightDate() { return light_date_; }
-
+	LightDate *GetLightDate() { return light_date_.get(); }
 
 private:
 
@@ -57,8 +56,8 @@ private:
 	static LightManager *scene_light_manager_;
 
 	// 転送用のライトデータ
-	std::shared_ptr<LightDate> light_date_;
-
+	//std::shared_ptr<LightDate> light_date_;
+	std::unique_ptr<LightDate> light_date_;
 
 	// ライトの設定
 	LightType light_type_;		// ライトの種類

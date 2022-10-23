@@ -183,6 +183,7 @@
     <ClCompile Include="3d\Fbx\Fbx.cpp" />
     <ClCompile Include="3d\Fbx\FbxResource.cpp" />
     <ClCompile Include="Assets\Scripts\CameraController.cpp" />
+    <ClCompile Include="Assets\Scripts\Drone.cpp" />
     <ClCompile Include="Assets\Scripts\Enemy.cpp" />
     <ClCompile Include="Assets\Scripts\EnemyBase.cpp" />
     <ClCompile Include="Assets\Scripts\FlyEnemy.cpp" />
@@ -382,6 +383,7 @@
     <ClInclude Include="3d\Fbx\Fbx.h" />
     <ClInclude Include="3d\Fbx\FbxResource.h" />
     <ClInclude Include="Assets\Scripts\CameraController.h" />
+    <ClInclude Include="Assets\Scripts\Drone.h" />
     <ClInclude Include="Assets\Scripts\Enemy.h" />
     <ClInclude Include="Assets\Scripts\EnemyBase.h" />
     <ClInclude Include="Assets\Scripts\FlyEnemy.h" />

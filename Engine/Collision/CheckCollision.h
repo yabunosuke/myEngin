@@ -13,8 +13,17 @@ public:
 
 	// AABB to AABB
 	static bool AABB2AABB(yEngine::AABB a, yEngine::AABB b);
+	static void ExtremePointsAlongDirection(
+		const Vector3 &dir,
+		Vector3 point[],
+		int n,
+		int *min, int *max
+	);
 	// Sphere to Sphere
 	static bool Sphere2Sphere(yEngine::Sphere a, yEngine::Sphere b);
+	static yEngine::Sphere MostSeparatedPointsOnAABB(
+
+	);
 	// OBB to OBBÅiñ¢é¿ëïÅj
 	static bool OBB2OBB(yEngine::OBB a, yEngine::OBB b);
 	// Sphere to Capsule

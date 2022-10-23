@@ -73,7 +73,7 @@ void GameScene::Initialize()
 	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 	//	"Assets/3d/Test/BotH.fbx");
 
-	auto enemy = GameObject::CreateObject("Enemy");
+	/*auto enemy = GameObject::CreateObject("Enemy");
 	enemy->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/Dwarf/Dwarf.fbx");
@@ -81,9 +81,9 @@ void GameScene::Initialize()
 	enemy->AddComponent<Rigidbody>();
 	enemy->transform_->scale = { 0.4f,0.4f,0.4f };
 	enemy->transform_->localPosition = { 0.0f,0.0f,20.0f };
-	enemy->AddComponent<Enemy>();
+	enemy->AddComponent<Enemy>();*/
 	srand(time(NULL));
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < 0; ++i)
 	{
 		
 		auto fly_enemy = GameObject::CreateObject("FlyEnemy");

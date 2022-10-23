@@ -16,7 +16,7 @@ void FlyEnemy::OnCollisionEnter(Collision &collision)
 		--hp_;
 		if (hp_ < 0.0f)
 		{
-			Destroy(this);
+			Destroy(game_object_);
 		}
 	}
 }
