@@ -79,12 +79,11 @@ void Rigidbody::ComponentFixedUpdate()
 	{
 		velocity = velocity + Vector3::down * 9.8f * Time::GetInstance()->fixedDeltaTime;
 	}
-
 	// ’ïRŒvŽZ
-	velocity = velocity - drag_ / 100.0f * velocity;
+	velocity = velocity - ((drag_ / 100.0f) * velocity);
 	transform_->position =
 		transform_->position
-		+ velocity * Time::GetInstance()->fixedDeltaTime;
+		+ (velocity * Time::GetInstance()->fixedDeltaTime);
 }
 
 void Rigidbody::ComponentUpdate()

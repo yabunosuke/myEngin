@@ -3,6 +3,39 @@
 #include "Object/Component/Behaviour/MonoBehaviour/MonoBehaviour.h"
 #include "Object/Component/Rigidbody.h"
 
+enum class PlayerState
+{
+	// 通常時
+	IDOLE,
+
+	// 歩行
+	WALK_FRONT,
+	WALK_RIGHT,
+	WALK_LEFT,
+	WALK_BACK,
+	
+	// ダッシュ
+	DASH_FRONT,
+	DASH_RIGHT,
+	DASH_LEFT,
+	DASH_BACK,
+
+	// ジャンプ
+	JUMP,
+
+	// 緊急回避
+	DODGE_FRONT,
+	DODGE_RIGHT,
+	DODGE_LEFT,
+	DODGE_BACK,
+
+	// 攻撃
+	MELEE_ATTACK_1,
+	MELEE_ATTACK_2,
+	MELEE_ATTACK_3,
+
+};
+
 class PlayerController :
     public MonoBehaviour
 {
@@ -14,7 +47,6 @@ public:
 	void Start() override;
     void FixedUpdate() override;
     void Update() override;
-
 
 private:
 	// アニメーションステート

@@ -23,7 +23,6 @@ void PlayerController::Start()
 
 	transform_->scale = { 0.4f,0.4f,0.4f };
 
-
 	// ƒŠƒWƒbƒh
 	regidbody_ = 
 		game_object_->GetComponent<Rigidbody>();
@@ -33,6 +32,7 @@ void PlayerController::Start()
 
 void PlayerController::FixedUpdate()
 {
+
 	Vector3 camera_forward = Vector3::Scale(Camera::main.r_->transform_->GetFront(), Vector3(1.0f,0.0f,1.0f)).Normalized();
 	
 	Vector3 move_forward = camera_forward * input_vertical_ + Camera::main.r_->transform_->GetRight() * input_horizontal_ * 2.0f;
@@ -40,13 +40,22 @@ void PlayerController::FixedUpdate()
 	{
 		move_forward *= 2.0f;
 	}
-	regidbody_->AddForce(move_forward);
+	if (input_horizontal_ != 0.0f ||
+		input_vertical_ != 0.0f)
+	{
+		regidbody_->AddForce(move_forward);
+	}
 
 	// ‰ñ“]ˆ—
 	Vector3 target_position;
-	if (regidbody_->velocity.r_.Magnitude() != 0.0f)
+	if (
+		regidbody_->velocity.r_.Magnitude() != 0.0f&&
+		regidbody_->velocity.r_.x !=0.0f &&
+		regidbody_->velocity.r_.z !=0.0f
+		)
 	{
 		target_position = Vector3::Scale(regidbody_->velocity.r_.Normalized(), Vector3(1.0f, 0.0f, 1.0f)) + transform_->position;
+		
 	}
 	else
 	{

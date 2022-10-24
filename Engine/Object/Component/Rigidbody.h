@@ -30,11 +30,8 @@ public:
 		velocity_,
 		yEngine::AccessorType::AllAccess,
 		nullptr,
-		[this](Vector3 test)
-		{
-
-			 velocity_ += test;
-		}
+		nullptr,
+	
 	};
 
 	yEngine::Property<bool> useGravity

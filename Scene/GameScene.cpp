@@ -14,7 +14,6 @@
 // コンポーネント
 #include "Object3dComponent.h"
 #include "Object/Component/Collider/SphereCollider/SphereCollider.h"
-#include "Object/Component/Collider/SphereCollider/SphereCollider.h"
 #include "Object/Component/Light.h"
 #include "Object/Component/Rigidbody.h"
 #include "Object/Component/Camera.h"

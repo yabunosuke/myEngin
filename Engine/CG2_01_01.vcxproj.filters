@@ -177,9 +177,6 @@
     <ClCompile Include="Assets\Scripts\CameraController.cpp">
       <Filter>Asset\CameraController</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Component\Collider\BoxCollider\BoxCollider.cpp">
-      <Filter>Object\Component\Collider\BoxCollider</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\Manager\CameraManager.cpp">
       <Filter>Scene\CameraManager</Filter>
     </ClCompile>
@@ -189,7 +186,6 @@
     <ClCompile Include="Assets\Scripts\EnemyBase.cpp">
       <Filter>Asset\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\PlayerBullet.cpp" />
     <ClCompile Include="Assets\Scripts\FlyEnemy.cpp">
       <Filter>Asset\Enemy\FlyEnemy</Filter>
     </ClCompile>
@@ -204,6 +200,9 @@
     </ClCompile>
     <ClCompile Include="Object\Component\Component.cpp">
       <Filter>Object\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Component\Collider\OBBCollider\OBBCollider.cpp">
+      <Filter>Object\Component\Collider\OBBCollider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -363,9 +362,6 @@
     <ClInclude Include="Assets\Scripts\CameraController.h">
       <Filter>Asset\CameraController</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Component\Collider\BoxCollider\BoxCollider.h">
-      <Filter>Object\Component\Collider\BoxCollider</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\Manager\CameraManager.h">
       <Filter>Scene\CameraManager</Filter>
     </ClInclude>
@@ -375,7 +371,6 @@
     <ClInclude Include="Assets\Scripts\EnemyBase.h">
       <Filter>Asset\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\PlayerBullet.h" />
     <ClInclude Include="Assets\Scripts\FlyEnemy.h">
       <Filter>Asset\Enemy\FlyEnemy</Filter>
     </ClInclude>
@@ -393,6 +388,9 @@
     </ClInclude>
     <ClInclude Include="Object\Component\Component.h">
       <Filter>Object\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Component\Collider\OBBCollider\OBBCollider.h">
+      <Filter>Object\Component\Collider\OBBCollider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -470,9 +468,6 @@
     <Filter Include="Object\Component\Behaviour\MonoBehaviour">
       <UniqueIdentifier>{537ee50a-d73d-4e91-ae68-62d90cde5286}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Component\Collider\BoxCollider">
-      <UniqueIdentifier>{263bddcc-a9e2-434b-b5f4-5de3c9cab0bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object\Component\Collider\SphereCollider">
       <UniqueIdentifier>{aa42154a-021f-408c-b5aa-32e70e35dae4}</UniqueIdentifier>
     </Filter>
@@ -529,6 +524,9 @@
     </Filter>
     <Filter Include="Object\Component\Transform">
       <UniqueIdentifier>{e07596c2-9c32-458f-9501-dc4c7567705f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component\Collider\OBBCollider">
+      <UniqueIdentifier>{263bddcc-a9e2-434b-b5f4-5de3c9cab0bc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

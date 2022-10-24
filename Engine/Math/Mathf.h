@@ -23,10 +23,10 @@ namespace Mathf
 	/// </summary>
 	/// <param name="tolerance">‹–—e”ÍˆÍ</param>
 	/// <returns>bool ‹ßŽ—</returns>
-	inline static bool Approximately(const float &lhs, const float &rhs, const float &tolerance = 0.01f)
+	inline static bool Approximately(const float &lhs, const float &rhs, const float &tolerance = epsilon)
 	{
-		float difference = lhs - rhs;
-		if (fabsf(difference) < tolerance)
+		float difference = fabsf(lhs - rhs);
+		if (difference < tolerance)
 		{
 			return true;
 		}

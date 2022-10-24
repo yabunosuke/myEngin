@@ -14,10 +14,10 @@
 // コンポーネント
 #include "Object3dComponent.h"
 #include "Object/Component/Collider/SphereCollider/SphereCollider.h"
-#include "Object/Component/Collider/SphereCollider/SphereCollider.h"
 #include "Object/Component/Light.h"
 #include "Object/Component/Rigidbody.h"
 #include "Object/Component/Camera.h"
+#include "Object/Component/Collider/OBBCollider/OBBCollider.h"
 #include "Assets/Scripts/Player.h"
 #include "Assets/Scripts/Enemy.h"
 #include "Assets/Scripts/CameraController.h"
@@ -44,16 +44,21 @@ void TitleScene::Initialize()
 	title->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/temp/title.fbx");
-	XMStoreFloat4(&title->transform_->localQuaternion, XMQuaternionRotationRollPitchYaw(90.0f * Mathf::deg_to_rad, 180.0f * Mathf::deg_to_rad, 0));
-	auto ctitle = GameObject::CreateObject("Title");
-	ctitle->AddComponent<Object3dComponent>(
+	title->AddComponent<OBBCollider>();
+	title->AddComponent<Rigidbody>();
+	//XMStoreFloat4(&title->transform_->localQuaternion, XMQuaternionRotationRollPitchYaw(90.0f * Mathf::deg_to_rad, 180.0f * Mathf::deg_to_rad, 0));
+	
+	auto title2 = GameObject::CreateObject("Title");
+	title2->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/temp/title.fbx");
-	ctitle->SetParent(title);
+	title2->AddComponent<OBBCollider>();
+	//ctitle->SetParent(title);
 }
 
 void TitleScene::Update()
 {
+
 	AbstractScene::Update();
 	if (Input::GetButtonPressTrigger(GamePadButton::INPUT_START))
 	{

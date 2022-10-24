@@ -12,12 +12,12 @@ float Quaternion::Dot(const Quaternion &lhs, const Quaternion &rhs)
 
 Quaternion Quaternion::Euler(const float &roll, const float &pitch, const float &yaw)
 {
-	float cx = cos(0.5f * roll);
-	float sx = sin(0.5f * roll);
-	float cy = cos(0.5f * pitch);
-	float sy = sin(0.5f * pitch);
-	float cz = cos(0.5f * yaw);
-	float sz = sin(0.5f * yaw);
+	float cx = cosf(0.5f * roll);
+	float sx = sinf(0.5f * roll);
+	float cy = cosf(0.5f * pitch);
+	float sy = sinf(0.5f * pitch);
+	float cz = cosf(0.5f * yaw);
+	float sz = sinf(0.5f * yaw);
 
 	Quaternion quaternion
 	{
@@ -93,13 +93,13 @@ Vector3 Quaternion::EulerAngles() const
 
     if (Mathf::Approximately(m21, 1.0f))
     {
-        tx = Mathf::pi/ 2.0f;
+        tx = -Mathf::pi/ 2.0f;
         ty = 0;
         tz = atan2f(m10, m00);
     }
     else if (Mathf::Approximately(m21, -1.0f))
     {
-        tx = -Mathf::pi / 2.0f;
+        tx = Mathf::pi / 2.0f;
         ty = 0;
         tz = atan2f(m10, m00);
     }
@@ -110,41 +110,11 @@ Vector3 Quaternion::EulerAngles() const
 		tz = atan2f(m01, m11);
     }
 
+
 	Vector3 euler
 	{
 		tx,ty,tz
 	};
     return euler;
-
-
-	/*Quaternion q = *this;
-
-	float sin_roll = 2.0f * (q.x * q.y + q.z * q.w);
-	float cos_roll = 1.0f - 2.0f * (q.y * q.y + q.z * q.z);
-	float rool = atan2f(sin_roll, cos_roll);
-	
-	float sinp = 2.0f * (q.x * q.z - q.w * q.y);
-	float pitch;
-	if (fabsf(sinp) >= 1.0f)
-	{
-		pitch = copysign(Mathf::pi / 2.0f, sinp);
-	}
-	else
-	{
-		pitch = asinf(sinp);
-	}
-
-	float sin_yaw = 2.0f * (q.x * q.z + q.y * q.z);
-	float cos_yaw = 1.0f - 2.0f * (q.z * q.z + q.w * q.w);
-	float yaw = atan2f(sin_yaw, cos_yaw);
-
-	Vector3 euler
-	{
-		rool,
-		pitch,
-		yaw
-	};
-
-	return euler;*/
 
 }

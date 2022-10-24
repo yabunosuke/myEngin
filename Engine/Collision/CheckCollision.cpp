@@ -175,7 +175,27 @@ bool CheckCollision::CheckHit(Collider *a, Collider *b, Vector3 hit_pos)
 		{
 			return true;
 		}
+		else
+		{
+			return false;
+		}
 	}
+
+	if (collision_pattern == static_cast<int>(CollisonType::OBB))
+	{
+		OBBCollider *obb_a = static_cast<OBBCollider *>(a);
+		OBBCollider *obb_b = static_cast<OBBCollider *>(b);
+
+		if (OBB2OBB(*obb_a, *obb_b))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 
 	return false;
 }
