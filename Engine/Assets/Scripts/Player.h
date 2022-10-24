@@ -12,10 +12,7 @@ enum class PlayerState
 	WALK,
 	
 	// ダッシュ
-	DASH_FRONT,
-	DASH_RIGHT,
-	DASH_LEFT,
-	DASH_BACK,
+	DASH,
 
 	// ジャンプ
 	JUMP,
@@ -39,6 +36,7 @@ public:
     PlayerController();
 
 	void OnCollisionEnter(Collision& collision) override;
+	void OnCollisionStay(Collision& collision) override;
 
 	void Start() override;
     void FixedUpdate() override;
@@ -48,14 +46,16 @@ private:
 	PlayerState player_state_ = PlayerState::IDOLE;
 	void Idole(bool is_fixed);
 	void Walk(bool is_fixed);
+	void Dash(bool is_fixed);
 	void Jump(bool is_fixed);
-	void DodgeBack(bool is_fixed);
+	void Dodge(bool is_fixed);
 	void MeleeAttack1(bool is_fixed);
 
 	std::map<PlayerState,void(PlayerController::*)(bool)> state_update_;
 
 	bool can_jump_{true};		// ジャンプ可能Flag
 	bool is_dash_ {false};
+	bool is_dodge_{ false };
 
 	// アニメーションステート
 	enum class AnimationState {

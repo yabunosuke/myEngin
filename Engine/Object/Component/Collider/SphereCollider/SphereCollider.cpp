@@ -28,4 +28,17 @@ void SphereCollider::Infomation()
 	ImGui::Checkbox("IsTrigger", &is_trigger_);
 	ImGui::DragFloat3("Center", reinterpret_cast<float*>(&local_center_.x));
 	ImGui::DragFloat("Radius", &local_radius_);
+
+	if (ImGui::TreeNode("Info")) {
+		// 操作不可、確認用
+		ImGui::BeginDisabled();
+		// 実際の中心
+		ImGui::DragFloat3("World Center", &center.x);
+		// 実際のスケール
+		ImGui::DragFloat("World Extent", &radius);
+
+		ImGui::EndDisabled();
+
+		ImGui::TreePop();
+	}
 }

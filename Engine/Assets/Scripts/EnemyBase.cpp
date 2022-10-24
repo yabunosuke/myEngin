@@ -5,10 +5,6 @@ MonoBehaviour(name)
 {
 }
 
-void EnemyBase::OnCollisionEnter(Collision &collision)
-{
-	
-}
 
 void EnemyBase::Start()
 {

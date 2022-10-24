@@ -7,11 +7,11 @@ class Drone :
 {
 public:
 
-    Drone();
+    Drone(Vector3 *axis_pos);
     void Start() override;
     void FixedUpdate() override;
     void Update() override;
 private:
-
+    Vector3 *axis_pos_;
 };
 

@@ -8,7 +8,7 @@ MonoBehaviour("Enemy")
 {
 }
 
-void Enemy::OnCollisionEnter(Collision &collision)
+void Enemy::OnTriggerEnter(Collision &collision)
 {
 	if (collision.gameObject.r_->name.r_ == "Weapon")
 	{
@@ -24,6 +24,24 @@ void Enemy::OnCollisionEnter(Collision &collision)
 				--hp_;
 				state = AnimationState::DAMAGE;
 				model_data_->PlayAnimation(static_cast<int>(state), false,true);
+			}
+		}
+	}
+
+	if (collision.gameObject.r_->name.r_ == "Bullet")
+	{
+		if (state != AnimationState::DEAD)
+		{
+			if (hp_ <= 0)
+			{
+				state = AnimationState::DEAD;
+				model_data_->PlayAnimation(static_cast<int>(state), false);
+			}
+			else
+			{
+				--hp_;
+				state = AnimationState::DAMAGE;
+				model_data_->PlayAnimation(static_cast<int>(state), false, true);
 			}
 		}
 	}

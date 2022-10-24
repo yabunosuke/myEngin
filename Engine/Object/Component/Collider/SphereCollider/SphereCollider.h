@@ -18,6 +18,11 @@ public:
     /// </summary>
     void Infomation() override;
 
+    yEngine::Property<Vector3> offset
+    {
+	local_center_,
+        yEngine::AccessorType::AllAccess
+    };
 
 private:
     Vector3 local_center_{ 0,0,0 };   // ƒ[ƒJƒ‹‚Ì’†‰›

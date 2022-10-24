@@ -35,17 +35,31 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 			{
 				for (auto collider_b : (*object_b)->GetColliders())
 				{
-
 					// 当たり判定情報
 					Collision collision_info_a
 					{
 						*object_a,
-						{ 0,20,0 }
+						collider_b,
+						{0,0,0}
 					};
 					Collision collision_info_b{
 						*object_b,
-						{ 0,20,0 }
+						collider_a,
+						{ 0,0,0 }
 					};
+
+					Rigidbody *a_rigidbody = (*object_a)->GetComponent<Rigidbody>();
+					Rigidbody *b_rigidbody = (*object_b)->GetComponent<Rigidbody>();
+
+					// 両方にRigidbodyがあれば速度の差を計算する
+					if (
+						a_rigidbody != nullptr &&
+						b_rigidbody != nullptr
+						)
+					{
+						collision_info_a.relative_velocity_ = a_rigidbody->velocity - b_rigidbody->velocity;
+						collision_info_b.relative_velocity_ = b_rigidbody->velocity - a_rigidbody->velocity;
+					}
 
 					bool is_trigger = collider_a->isTrigger.r_ || collider_b->isTrigger.r_;
 
@@ -61,25 +75,16 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 							// トリガー
 							if(is_trigger)
 							{
-								// A
-
-								for (const auto &script_a : (*object_a)->GetMonoBehaviours())
-								{
-									script_a->OnTriggerEnter(collision_info_b);
-								}
-
-								// B
-								for (const auto &script_b : (*object_b)->GetMonoBehaviours())
-								{
-									script_b->OnTriggerEnter(collision_info_a);
-								}
+								OnTriggerEnter(*object_a, collision_info_b, hit_pos);
+								OnTriggerEnter(*object_b, collision_info_a, hit_pos);
 							}
 							// コリジョン
 							else
 							{
 
-								OnCollisionEnter(*object_a, collision_info_b);
-								OnCollisionEnter(*object_b, collision_info_a);
+
+								OnCollisionEnter(*object_a, collision_info_b,hit_pos);
+								OnCollisionEnter(*object_b, collision_info_a,hit_pos);
 							}
 							// 衝突記憶
 							collider_a->hitlist_[collider_b->GetInstanceID()] = true;
@@ -91,25 +96,14 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 							// トリガー
 							if (is_trigger)
 							{
-								// A
-								for (const auto &script_a : (*object_a)->GetMonoBehaviours())
-								{
-									script_a->OnTriggerStay(collision_info_b);
-								}
-
-								// B
-								for (const auto &script_b : (*object_b)->GetMonoBehaviours())
-								{
-									script_b->OnTriggerStay(collision_info_a);
-								}
+								OnTriggerStay(*object_a, collision_info_b, hit_pos);
+								OnTriggerStay(*object_b, collision_info_a, hit_pos);
 							}
 							// コリジョン
 							else
 							{
-
-								OnCollisionStay(*object_a, collision_info_b);
-								OnCollisionStay(*object_b, collision_info_a);
-								
+								OnCollisionStay(*object_a, collision_info_b,hit_pos);
+								OnCollisionStay(*object_b, collision_info_a,hit_pos);
 							}
 						}
 
@@ -166,34 +160,39 @@ bool CheckCollision::CheckHit(Collider *a, Collider *b, Vector3 hit_pos)
 {
 	int collision_pattern = static_cast<int>(a->collisionType.r_) | static_cast<int>(b->collisionType.r_);
 
+	// Sphere to Sphere
 	if(collision_pattern == static_cast<int>(CollisonType::Sphere))
 	{
 		SphereCollider *sphere_a = static_cast<SphereCollider*>(a);
 		SphereCollider *sphere_b = static_cast<SphereCollider*>(b);
 
-		if (Sphere2Sphere(*sphere_a, *sphere_b))
+		return Sphere2Sphere(*sphere_a, *sphere_b, hit_pos);
+	}
+
+	if(collision_pattern == (static_cast<int>(CollisonType::Sphere) | static_cast<int>(CollisonType::OBB)))
+	{
+		SphereCollider *sphere;
+		OBBCollider *obb;
+		if((sphere = dynamic_cast<SphereCollider *>(a)) != nullptr )
 		{
-			return true;
+			obb = dynamic_cast<OBBCollider *>(b);
 		}
 		else
 		{
-			return false;
+			sphere = static_cast<SphereCollider *>(b);
+			obb = static_cast<OBBCollider *>(a);
 		}
-	}
+		Vector3 closest_point;
 
+		return  Sphere2OBB(*sphere, *obb, closest_point);
+	}
 	if (collision_pattern == static_cast<int>(CollisonType::OBB))
 	{
 		OBBCollider *obb_a = static_cast<OBBCollider *>(a);
 		OBBCollider *obb_b = static_cast<OBBCollider *>(b);
 
-		if (OBB2OBB(*obb_a, *obb_b))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return  OBB2OBB(*obb_a, *obb_b);
+		
 	}
 
 
@@ -214,13 +213,56 @@ void CheckCollision::ExtremePointsAlongDirection(const Vector3 &dir, Vector3 poi
 
 }
 
-bool CheckCollision::Sphere2Sphere(yEngine::Sphere a, yEngine::Sphere b)
+bool CheckCollision::Sphere2Sphere(yEngine::Sphere a, yEngine::Sphere b,Vector3 & hit_pos)
 {
 	Vector3 distance = a.center - b.center;
 	float distance2 = Vector3::Dot(distance, distance);
 	float radius_sum = a.radius + b.radius;
 
-	return distance2 <= radius_sum * radius_sum;
+	bool is_hit = distance2 <= radius_sum * radius_sum;
+
+	if(is_hit)
+	{
+		// 中心を衝突地点とする
+		hit_pos = a.center + distance / 2.0f;
+	}
+
+	return is_hit;
+}
+
+void CheckCollision::ClosestPtPoint2OBB(const Vector3 &point, const yEngine::OBB &obb, Vector3 &closest_point)
+{
+	Vector3 d = point - obb.center;
+
+	closest_point = obb.center;
+
+	// 各軸に対して
+	for(int i = 0;i < 3;++i)
+	{
+		// ボックスの中心から軸に沿った距離を得る
+		float dist = Vector3::Dot(d, obb.unidirectional[i]);
+		// ボックスの範囲よりも距離が大きい場合、ボックスまでクランプ
+		if(dist >obb.extent[i])
+		{
+			dist = obb.extent[i];
+		}
+		if(dist < -obb.extent[i])
+		{
+			dist = -obb.extent[i];
+		}
+
+		closest_point += dist * obb.unidirectional[i];
+	}
+}
+
+bool CheckCollision::Sphere2OBB(const yEngine::Sphere &sphere, const yEngine::OBB &obb, Vector3 &closest_point)
+{
+	ClosestPtPoint2OBB(sphere.center, obb, closest_point);
+
+	Vector3 v = closest_point - sphere.center;
+
+
+	return Vector3::Dot(v,v) <= sphere.radius * sphere.radius;
 }
 
 bool CheckCollision::OBB2OBB(yEngine::OBB a, yEngine::OBB b) 
@@ -401,7 +443,37 @@ float CheckCollision::SqDistancePointSegment(Vector3 start, Vector3 end, Vector3
 	return Vector3::Dot(start_to_point, start_to_point) - e * e / f;
 }
 
-void CheckCollision::OnCollisionEnter(GameObject *object, Collision &collision_data)
+void CheckCollision::OnTriggerEnter(GameObject *object, Collision &collision_data, const Vector3 &hit_pos)
+{
+	// 自分オブジェクトにあるスクリプト呼び出し
+	for (const auto &script : object->GetMonoBehaviours())
+	{
+		script->OnTriggerEnter(collision_data);
+	}
+
+	// 親がいれば再起呼び出し
+	if (object->GetPearent() != nullptr)
+	{
+		OnTriggerEnter(object->GetPearent(), collision_data, hit_pos);
+	}
+}
+
+void CheckCollision::OnTriggerStay(GameObject *object, Collision &collision_data, const Vector3 &hit_pos)
+{
+	// 自分オブジェクトにあるスクリプト呼び出し
+	for (const auto &script : object->GetMonoBehaviours())
+	{
+		script->OnTriggerStay(collision_data);
+	}
+
+	// 親がいれば再起呼び出し
+	if (object->GetPearent() != nullptr)
+	{
+		OnTriggerStay(object->GetPearent(), collision_data, hit_pos);
+	}
+}
+
+void CheckCollision::OnCollisionEnter(GameObject *object, Collision &collision_data,const Vector3 &hit_pos)
 {
 	// 自分オブジェクトにあるスクリプト呼び出し
 	for (const auto &script_a : object->GetMonoBehaviours())
@@ -411,11 +483,11 @@ void CheckCollision::OnCollisionEnter(GameObject *object, Collision &collision_d
 	// 親がいれば再起呼び出し
 	if (object->GetPearent() != nullptr)
 	{
-		OnCollisionEnter(object->GetPearent(), collision_data);
+		OnCollisionEnter(object->GetPearent(), collision_data, hit_pos);
 	}
 }
 
-void CheckCollision::OnCollisionStay(GameObject *object, Collision &collision_data)
+void CheckCollision::OnCollisionStay(GameObject *object, Collision &collision_data, const Vector3 &hit_pos)
 {
 	// 自分オブジェクトにあるスクリプト呼び出し
 	for (const auto &script_a : object->GetMonoBehaviours())
@@ -426,6 +498,6 @@ void CheckCollision::OnCollisionStay(GameObject *object, Collision &collision_da
 	// 親がいれば再起呼び出し
 	if (object->GetPearent() != nullptr)
 	{
-		OnCollisionStay(object->GetPearent(), collision_data);
+		OnCollisionStay(object->GetPearent(), collision_data, hit_pos);
 	}
 }

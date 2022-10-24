@@ -67,6 +67,19 @@ GameObject *GameObjectManager::GetGameObject(const std::string &name)
 	return nullptr;
 }
 
+void GameObjectManager::AddObjects()
+{
+	if(add_objects_.size() != 0)
+	{
+		for(int i =  0; i < add_objects_.size();++i)
+		{
+			game_objects_.emplace_back(add_objects_[i]);
+		}
+		add_objects_.clear();
+	}
+
+}
+
 void GameObjectManager::Finalize()
 {
 }

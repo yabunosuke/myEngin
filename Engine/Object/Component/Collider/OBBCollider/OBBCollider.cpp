@@ -31,6 +31,7 @@ void OBBCollider::ComponentUpdate()
 
 void OBBCollider::Infomation()
 {
+	ImGui::Checkbox("IsTrigger", &is_trigger_);
 	ImGui::DragFloat3("Center", &local_center_.x);
 	ImGui::DragFloat3("Extent", &local_extent_.x);
 

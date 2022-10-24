@@ -87,7 +87,7 @@ GameObject* GameObject::CreateObject(const std::string &object_name)
 	// 生成時にトランスフォーム
 	game_object->transform_ = game_object->AddComponent<Transform>();
 
-	return game_object_manager_->game_objects_.emplace_back(game_object);
+	return game_object_manager_->add_objects_.emplace_back(game_object);
 }
 
 void GameObject::SetGameObjectManager(GameObjectManager *game_object_manager)
@@ -105,12 +105,7 @@ bool GameObject::CompareTag(const std::string &tag)
 
 void GameObject::Initialize()
 {
-	/*scripts_.clear();
-	for (auto component : component_list_) {
-		if (dynamic_cast<ScriptComponent *>(component.lock().get())) {
-			scripts_.emplace_back(component);
-		}
-	}*/
+	
 }
 
 void GameObject::FixedUpdate()

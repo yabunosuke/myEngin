@@ -6,7 +6,7 @@ class OBBCollider final :
     public yEngine::OBB
 {
 public:
-    OBBCollider(Quaternion q = {0.0f,1.0f,0.0f,0.0f}, Vector3 extent = { 1.0f, 1.0f, 1.0f }, Vector3 center = { 0.0f,0.0f,0.0f });
+    OBBCollider(Quaternion q = {0.0f,0.0f,0.0f,0.0f}, Vector3 extent = { 1.0f, 1.0f, 1.0f }, Vector3 center = { 0.0f,0.0f,0.0f });
 	/// <summary>
 	/// èâä˙âª
 	/// </summary>

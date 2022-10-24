@@ -8,8 +8,7 @@ class EnemyBase :
 {
 public:
 	EnemyBase(const std::string &name);
-
-    void OnCollisionEnter(Collision &collision) override;
+	
 
 	void Start() override;
 	void FixedUpdate() override;

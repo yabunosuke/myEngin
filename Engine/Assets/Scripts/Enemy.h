@@ -9,7 +9,7 @@ class Enemy :
 public:
 	Enemy();
 
-	void OnCollisionEnter(Collision &collision) override;
+	void OnTriggerEnter(Collision &collision) override;
 
 	void Start() override;
 	void FixedUpdate() override;

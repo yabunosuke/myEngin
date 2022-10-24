@@ -37,6 +37,8 @@ public:
 	GameObject *GetGameObject(int id);
 	GameObject *GetGameObject(const std::string &name);
 
+	void AddObjects();
+
 	/// <summary>
 	/// 有効なオブジェクトを全てファイナライズ
 	/// </summary>
@@ -44,5 +46,6 @@ public:
 
 	//オブジェクト
 	std::vector<GameObject*> game_objects_;
+	std::vector<GameObject*> add_objects_;	// 一時格納コンテナ
 };
 

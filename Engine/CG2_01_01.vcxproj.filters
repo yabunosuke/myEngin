@@ -204,6 +204,9 @@
     <ClCompile Include="Object\Component\Collider\OBBCollider\OBBCollider.cpp">
       <Filter>Object\Component\Collider\OBBCollider</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerBullet.cpp">
+      <Filter>Asset\Drone</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -391,6 +394,9 @@
     </ClInclude>
     <ClInclude Include="Object\Component\Collider\OBBCollider\OBBCollider.h">
       <Filter>Object\Component\Collider\OBBCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerBullet.h">
+      <Filter>Asset\Drone</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,8 @@ public:
 	FlyEnemy();
 
 	void OnCollisionEnter(Collision &collision) override;
-	void OnCollisionStay(Collision &collision) override;
+	void OnTriggerEnter(Collision &collision) override;
+	void OnTriggerStay(Collision &collision) override;
 
 	void Start() override;
 	void FixedUpdate() override;

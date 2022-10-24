@@ -48,7 +48,6 @@ public:
 		local_position_,
 		yEngine::AccessorType::AllAccess,
 		nullptr,
-		// ローカルの再計算処理
 		nullptr
 	};
 	/// <summary>
@@ -245,7 +244,7 @@ public:
 private:
 	// ローカル座標
 	Vector3		local_position_ = { 0,0,0 };			// ローカル座標
-	Quaternion	local_quaternion_ = { 0,1,0,0, };	// ローカル回転（クオータニオン）
+	Quaternion	local_quaternion_ = { 0,0,0,0, };	// ローカル回転（クオータニオン）
 	Vector3		local_scale_ = { 1,1,1 };			// ローカル拡大
 	XMMATRIX local_matrix_ = XMMatrixIdentity();		// ローカル行列
 

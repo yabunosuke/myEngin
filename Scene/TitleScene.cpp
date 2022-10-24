@@ -18,10 +18,6 @@
 #include "Object/Component/Rigidbody.h"
 #include "Object/Component/Camera.h"
 #include "Object/Component/Collider/OBBCollider/OBBCollider.h"
-#include "Assets/Scripts/Player.h"
-#include "Assets/Scripts/Enemy.h"
-#include "Assets/Scripts/CameraController.h"
-#include "Weapon.h"
 
 
 
@@ -44,16 +40,9 @@ void TitleScene::Initialize()
 	title->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/temp/title.fbx");
-	title->AddComponent<OBBCollider>();
+	title->AddComponent<SphereCollider>();
 	title->AddComponent<Rigidbody>();
-	//XMStoreFloat4(&title->transform_->localQuaternion, XMQuaternionRotationRollPitchYaw(90.0f * Mathf::deg_to_rad, 180.0f * Mathf::deg_to_rad, 0));
-	
-	auto title2 = GameObject::CreateObject("Title");
-	title2->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/temp/title.fbx");
-	title2->AddComponent<OBBCollider>();
-	//ctitle->SetParent(title);
+	title->transform_->quaternion = Quaternion::Euler(90.0f*Mathf::deg_to_rad, 180.0f * Mathf::deg_to_rad, 0);
 }
 
 void TitleScene::Update()

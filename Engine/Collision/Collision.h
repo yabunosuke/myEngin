@@ -3,12 +3,17 @@
 #include "Object/Component/Collider/Collider.h"
 #include "ContactPoint.h"
 #include <memory>
+
 #include "Property.h"
+
 class Collision
 {
 public:
+	friend class CheckCollision;
+
 	Collision(
-		GameObject* game_object,
+		GameObject* game_object,		// 衝突した相手のオブジェクト
+		Collider *collider,				// 衝突したコライダー(自分)
 		Vector3 relative_velocity
 		);
 
@@ -16,6 +21,12 @@ public:
 	yEngine::Property<GameObject*> gameObject
 	{
 		game_object_,
+		yEngine::AccessorType::ReadOnly
+	};
+	// 衝突したコライダー (ReadOnly)
+	yEngine::Property<Collider *> collider
+	{
+		collider_,
 		yEngine::AccessorType::ReadOnly
 	};
 	// 衝突した2つのオブジェクトの相対的な速度 (ReadOnly)
@@ -32,10 +43,9 @@ public:
 
 
 private:
-	
-	Collider *collider_;	// ヒットしたコライダー
+	GameObject *game_object_;	
+	Collider *collider_;		// ヒットしたコライダー
 	std::vector<ContactPoint> contacts_;	
-	GameObject *game_object_;
 	Vector3 relative_velocity_;	
 	bool is_child_hit_;
 };

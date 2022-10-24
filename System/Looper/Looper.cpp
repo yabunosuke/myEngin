@@ -90,6 +90,9 @@ bool Looper::Loop()
 	editor.Draw();
 
 
+	// 追加処理
+	scene_stack_.top()->GetObjectManager()->AddObjects();
+
 	//キーボード更新
 	//KeyboardInput::GetIns()->Update();
 	Input::Update();

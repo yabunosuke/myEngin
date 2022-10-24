@@ -230,6 +230,7 @@
     <ClCompile Include="Object\Mesh\Mesh.cpp" />
     <ClCompile Include="Object\Object.cpp" />
     <ClCompile Include="PipelineManager.cpp" />
+    <ClCompile Include="PlayerBullet.cpp" />
     <ClCompile Include="PrimitiveRenderer.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene\AbstractScene\AbstractScene.cpp" />
@@ -431,6 +432,7 @@
     <ClInclude Include="Object\Mesh\Mesh.h" />
     <ClInclude Include="Object\Object.h" />
     <ClInclude Include="PipelineManager.h" />
+    <ClInclude Include="PlayerBullet.h" />
     <ClInclude Include="PrimitiveRenderer.h" />
     <ClInclude Include="Property.h" />
     <ClInclude Include="Renderer.h" />

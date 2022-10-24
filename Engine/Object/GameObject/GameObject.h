@@ -198,6 +198,9 @@ private:
 	static GameObjectManager *game_object_manager_;
 	//static std::vector<std::shared_ptr<GameObject>> game_objects_;	// オブジェクトコンテナ
 
+	static std::vector<GameObject*> add_object_list_;
+
+
 	//===========================================
 	//
 	//		メンバ関数
@@ -243,7 +246,7 @@ inline T *GameObject::AddComponent(Args ...args)
 	T *temp = Object::CreateObject<T>(args...);
 	component_list_.emplace_back(temp);
 	temp->transform_ = GetComponent<Transform>();
-	temp->game_object_ = static_cast<GameObject*>(this);
+	temp->game_object_ = this;
 	temp->CheckInitialize();
 	// コンポーネントを更新順に並び替え
 	component_list_.sort(
