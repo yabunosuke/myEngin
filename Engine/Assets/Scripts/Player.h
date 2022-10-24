@@ -9,10 +9,7 @@ enum class PlayerState
 	IDOLE,
 
 	// 歩行
-	WALK_FRONT,
-	WALK_RIGHT,
-	WALK_LEFT,
-	WALK_BACK,
+	WALK,
 	
 	// ダッシュ
 	DASH_FRONT,
@@ -24,16 +21,15 @@ enum class PlayerState
 	JUMP,
 
 	// 緊急回避
-	DODGE_FRONT,
-	DODGE_RIGHT,
-	DODGE_LEFT,
-	DODGE_BACK,
+	DODGE,
 
 	// 攻撃
 	MELEE_ATTACK_1,
 	MELEE_ATTACK_2,
 	MELEE_ATTACK_3,
 
+
+	MAX,
 };
 
 class PlayerController :
@@ -49,6 +45,18 @@ public:
     void Update() override;
 
 private:
+	PlayerState player_state_ = PlayerState::IDOLE;
+	void Idole(bool is_fixed);
+	void Walk(bool is_fixed);
+	void Jump(bool is_fixed);
+	void DodgeBack(bool is_fixed);
+	void MeleeAttack1(bool is_fixed);
+
+	std::map<PlayerState,void(PlayerController::*)(bool)> state_update_;
+
+	bool can_jump_{true};		// ジャンプ可能Flag
+	bool is_dash_ {false};
+
 	// アニメーションステート
 	enum class AnimationState {
 		NONE = -1,
@@ -62,11 +70,11 @@ private:
 		WALK_LEFT,
 		WALK_RIGHT,
 		MAX
-	}state = AnimationState::T_POSE;
+	}animation_state_ = AnimationState::T_POSE;
 
     // 座標
     Rigidbody *regidbody_;
-    Fbx *game_object{ nullptr };
+    Fbx *model_data_{ nullptr };
 
 	// 入力量
 	float input_horizontal_{ 0.0f };	// 横
@@ -74,6 +82,5 @@ private:
 
 	int hp_ = 10;
 
-	bool is_dash_ = false;
 };
 

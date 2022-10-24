@@ -94,18 +94,23 @@ void Rigidbody::AddForce(Vector3 force, ForceMode force_mode)
 {
 	if (force.Magnitude() == 0.0f) return;
 	// Ž¿—Ê‚ðl—¶‚µ‚ÄŒvŽZ
-	if( force_mode == ForceMode::Force ||
-		force_mode == ForceMode::Impulse)
+	switch (force_mode)
 	{
+	case ForceMode::Force:
+		velocity = velocity + force / mass_ * Time::GetInstance()->fixedDeltaTime;
+		break;
+	case ForceMode::Acceleration:
+		velocity = velocity + force * Time::GetInstance()->fixedDeltaTime;
+		break;
+	case ForceMode::Impulse:
 		velocity = velocity + force / mass_;
-
+		break;
+	case ForceMode::VelocityChange:
+		velocity = velocity + force;
+		break;
+	default:
+		break;
 	}
-	// Ž¿—Ê‚ð–³Ž‹‚µ‚ÄŒvŽZ
-	else
-	{
-		velocity = velocity+ force;
-	}
-
 }
 
 
