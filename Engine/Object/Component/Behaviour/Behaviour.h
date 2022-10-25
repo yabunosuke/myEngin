@@ -21,7 +21,7 @@ public:
 
     yEngine::Property<bool> enabled
     {
-        enabled_,
+        &enabled_,
         yEngine::AccessorType::AllAccess
     };
 

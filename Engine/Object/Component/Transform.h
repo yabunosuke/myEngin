@@ -45,7 +45,7 @@ public:
 	/// ワールド空間の座標 (AllAccess)
 	/// </summary>
 	yEngine::Property<Vector3> localPosition{
-		local_position_,
+		&local_position_,
 		yEngine::AccessorType::AllAccess,
 		nullptr,
 		nullptr
@@ -54,7 +54,7 @@ public:
 	/// ワールド空間の回転 (AllAccess)
 	/// </summary>
 	yEngine::Property<Quaternion> localQuaternion{
-		local_quaternion_,
+		&local_quaternion_,
 		yEngine::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
@@ -64,7 +64,7 @@ public:
 	/// ワールド空間の座標 (AllAccess)
 	/// </summary>
 	yEngine::Property<Vector3> localScale{
-		local_scale_,
+		&local_scale_,
 		yEngine::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
@@ -75,7 +75,7 @@ public:
 	/// ローカル空間のマトリックス (get = true, set = true)
 	/// </summary>
 	yEngine::Property<XMMATRIX> local_matrix{
-		local_matrix_,
+		&local_matrix_,
 		yEngine::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
@@ -119,7 +119,7 @@ public:
 	/// </summary>
 	yEngine::Property<Vector3> position
 	{
-		world_position_,
+		&world_position_,
 		yEngine::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
@@ -142,7 +142,8 @@ public:
 	/// </summary>
 	yEngine::Property<Quaternion> quaternion
 	{
-		world_quaternion_,yEngine::AccessorType::AllAccess,
+		&world_quaternion_,
+		yEngine::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
 		//nullptr
@@ -176,7 +177,7 @@ public:
 	/// </summary>
 	yEngine::Property<Vector3> scale
 	{
-		world_scale_,
+		&world_scale_,
 		yEngine::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
@@ -211,7 +212,7 @@ public:
 	/// </summary>
 	yEngine::Property<XMMATRIX> matrix
 	{
-		world_matrix_,
+		&world_matrix_,
 		yEngine::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理

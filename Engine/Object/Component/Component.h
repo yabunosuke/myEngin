@@ -87,7 +87,7 @@ public:
 	/// <summary>
 	/// コンポーネント識別 (get = true, set = false)
 	/// </summary>
-	yEngine::Property<ComponentType> type{ type_,yEngine::AccessorType::ReadOnly };
+	yEngine::Property<ComponentType> type{ &type_,yEngine::AccessorType::ReadOnly };
 
 
 

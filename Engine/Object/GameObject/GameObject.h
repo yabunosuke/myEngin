@@ -175,15 +175,15 @@ public:	//関数
 	/// <summary>
 	/// オブジェクト識別タグ (get = true, set = true)
 	/// </summary>
-	yEngine::Property<std::string> tag{ tag_ ,yEngine::AccessorType::AllAccess };
+	yEngine::Property<std::string> tag{ &tag_ ,yEngine::AccessorType::AllAccess };
 	/// <summary>
 	/// ローカルのアクティブ状態 (get = true, set = false)
 	/// </summary>
-	yEngine::Property<bool> activeSelf{ active_self_ ,yEngine::AccessorType::ReadOnly };
+	yEngine::Property<bool> activeSelf{ &active_self_ ,yEngine::AccessorType::ReadOnly };
 	/// <summary>
 	/// オブジェクトが動かない物ならtrue (get = true, set = true)
 	/// </summary>
-	yEngine::Property<bool> isStatic{ is_static_ ,yEngine::AccessorType::AllAccess };
+	yEngine::Property<bool> isStatic{ &is_static_ ,yEngine::AccessorType::AllAccess };
 
 	Transform *transform_;
 

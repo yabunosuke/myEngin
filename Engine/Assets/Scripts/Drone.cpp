@@ -5,6 +5,7 @@
 #include "PlayerBullet.h"
 #include "Object/Component/Camera.h"
 #include "Object/Component/Collider/SphereCollider/SphereCollider.h"
+#include "Object/Component/Light.h"
 
 
 Drone::Drone(Vector3 *axis_pos):
@@ -43,6 +44,10 @@ void Drone::Update()
 			auto c = bullet->AddComponent<SphereCollider>();
 			c->isTrigger = true;
 			bullet->AddComponent<PlayerBullet>(transform_->position.r_, transform_->quaternion.r_);
+			auto light = bullet->AddComponent<Light>();
+			light->color = {0,0,1,1};
+			light->intensity = 5.0f;
+			light->range = 80.0f;
 		}
 		++shot_interval;
 	}

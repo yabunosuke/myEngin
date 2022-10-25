@@ -27,7 +27,7 @@ public:
 
 	yEngine::Property<Vector3> velocity
 	{
-		velocity_,
+		&velocity_,
 		yEngine::AccessorType::AllAccess,
 		nullptr,
 		nullptr,
@@ -36,7 +36,7 @@ public:
 
 	yEngine::Property<bool> useGravity
 	{
-		use_gravity_,
+		&use_gravity_,
 		yEngine::AccessorType::AllAccess
 	};
 private:

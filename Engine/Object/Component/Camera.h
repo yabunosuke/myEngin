@@ -50,18 +50,18 @@ public:
 	DirectX::XMMATRIX view_matrix;
 	DirectX::XMMATRIX projection_matrix;
 	yEngine::Property<DirectX::XMFLOAT4> viewPosition{
-		view_position, yEngine::AccessorType::AllAccess,
+		&view_position, yEngine::AccessorType::AllAccess,
 		nullptr,
 		nullptr
 	};
 	yEngine::Property<DirectX::XMMATRIX> viewMatrix{
-		view_matrix,
+		&view_matrix,
 		yEngine::AccessorType::AllAccess,
 		nullptr,
 		nullptr
 	};
 	yEngine::Property<DirectX::XMMATRIX> projectionMatrix{
-		projection_matrix, yEngine::AccessorType::AllAccess,
+		&projection_matrix, yEngine::AccessorType::AllAccess,
 		nullptr,
 		nullptr
 	};

@@ -65,7 +65,7 @@ public:
 	/// <summary>
 	/// オブジェクト名 (AllAccess)
 	/// </summary>
-	yEngine::Property<std::string> name{ name_ ,yEngine::AccessorType::AllAccess };
+	yEngine::Property<std::string> name{ &name_ ,yEngine::AccessorType::AllAccess };
 
 protected:
 	virtual void DestoryRelated() {};

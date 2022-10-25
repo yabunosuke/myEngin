@@ -20,24 +20,24 @@ public:
 	// コライダーが衝突した相手のオブジェクト (ReadOnly)
 	yEngine::Property<GameObject*> gameObject
 	{
-		game_object_,
+		&game_object_,
 		yEngine::AccessorType::ReadOnly
 	};
 	// 衝突したコライダー (ReadOnly)
 	yEngine::Property<Collider *> collider
 	{
-		collider_,
+		&collider_,
 		yEngine::AccessorType::ReadOnly
 	};
 	// 衝突した2つのオブジェクトの相対的な速度 (ReadOnly)
 	yEngine::Property<Vector3> relativeVelocity
 	{
-		relative_velocity_,
+		&relative_velocity_,
 		yEngine::AccessorType::ReadOnly
 	};
 	yEngine::Property<bool> childHit
 	{
-		is_child_hit_,
+		&is_child_hit_,
 		yEngine::AccessorType::AllAccess
 	};
 

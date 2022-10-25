@@ -20,7 +20,7 @@ public:
 
     yEngine::Property<Vector3> offset
     {
-	local_center_,
+	    &local_center_,
         yEngine::AccessorType::AllAccess
     };
 

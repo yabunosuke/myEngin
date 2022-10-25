@@ -42,7 +42,7 @@ Light::Light(
 Light::~Light()
 {
 
-	// ゲームオブジェクトマネージャーから削除
+	// ライトマネージャーから削除
 	if (scene_light_manager_->GetLightList().size() != 0)
 	{
 		auto light = scene_light_manager_->GetLightList().begin();
@@ -53,7 +53,6 @@ Light::~Light()
 				scene_light_manager_->GetLightList().erase(light);
 				break;
 			}
-
 		}
 	}
 }

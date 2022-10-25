@@ -21,11 +21,11 @@ namespace yEngine
         Property() = default;
         //Property(const Property &other) {  };
         Property(
-            ReferenceT &r,
+            ReferenceT *r,
             AccessorType type = AccessorType::AllAccess,
             std::function<ReferenceT()> get = nullptr,
             std::function<void(ReferenceT value)> set = nullptr) :
-            r_(r),
+            r_(*r),
             access_type_(type),
             get_(get),
             set_(set)

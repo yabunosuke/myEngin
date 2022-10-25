@@ -7,7 +7,7 @@ Camera* Camera::main_camera_;
 CameraManager *Camera::camera_manager_;
 
 yEngine::Property<Camera*> Camera::main{
-		main_camera_, yEngine::AccessorType::ReadOnly,
+		&main_camera_, yEngine::AccessorType::ReadOnly,
 		nullptr,
 		nullptr
 };

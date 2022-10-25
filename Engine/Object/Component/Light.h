@@ -48,6 +48,78 @@ public:
 
 	LightDate *GetLightDate() { return light_date_.get(); }
 
+	/// <summary>
+	/// カラー（AllAccess）
+	/// </summary>
+	yEngine::Property<XMFLOAT4> color
+	{
+		nullptr,
+		yEngine::AccessorType::AllAccess,
+		[this]() {return light_date_->color; },
+		[this](XMFLOAT4 color) {light_date_->color = color; }
+	};
+
+
+	/// <summary>
+	/// タイプ（AllAccess）
+	/// </summary>
+	yEngine::Property<float> intensity
+	{
+		nullptr,
+		yEngine::AccessorType::AllAccess,
+		[this]()
+		{
+			return light_date_->intensity;
+		},
+		[this](float intensity) 
+		{
+			light_date_->intensity = intensity;
+		}
+	};
+
+
+	/// <summary>
+	/// レンジ（AllAccess）
+	/// </summary>
+	yEngine::Property<float> range
+	{
+		nullptr,
+		yEngine::AccessorType::AllAccess,
+		[this]() {return light_date_->range; },
+		[this](float range) {light_date_->range = range; }
+	};
+
+	/// <summary>
+	/// タイプ（AllAccess）
+	/// </summary>
+	yEngine::Property<LightType> type
+	{
+		nullptr,
+		yEngine::AccessorType::AllAccess,
+		[this]() {
+			if(light_date_->light_type.x) return LightType::Spot;
+			if(light_date_->light_type.y) return LightType::Directional;
+			if(light_date_->light_type.z) return LightType::Point;
+		},
+		[this](LightType type) {
+			switch (type)
+			{
+				case LightType::Spot:
+					light_date_->light_type.x = 1;
+					break;
+				case LightType::Directional:
+					light_date_->light_type.y = 1;
+					break;
+				case LightType::Point:
+					light_date_->light_type.z = 1;
+					break;
+				default:
+					break;
+			}
+		}
+	};
+
+
 private:
 
 	/// <summary>
@@ -55,8 +127,8 @@ private:
 	/// </summary>
 	static LightManager *scene_light_manager_;
 
+
 	// 転送用のライトデータ
-	//std::shared_ptr<LightDate> light_date_;
 	std::unique_ptr<LightDate> light_date_;
 
 	// ライトの設定
