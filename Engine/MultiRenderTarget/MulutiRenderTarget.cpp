@@ -24,7 +24,8 @@ void MulutiRenderTarget::InitializeMulutiRenderTarget(ComPtr<ID3D12Device> dev)
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&vertex_buffer_));
-	// 頂点データ
+	assert(SUCCEEDED(result));
+		// 頂点データ
 	VertexPosUv vertices[4] = {
 		{{-1.0f, -1.0f, 0.0f},{0.0f, 1.0f}}, //左下
 		{{-1.0f, +1.0f, 0.0f},{0.0f, 0.0f}}, //左上

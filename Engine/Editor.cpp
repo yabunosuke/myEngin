@@ -11,6 +11,8 @@
 #include "DirectXCommon.h"
 #include "Time/Time.h"
 
+#include <sstream>
+
 void Editor::Draw()
 {
 	//プルダウンメニュー
@@ -173,18 +175,18 @@ void Editor::Hierarchy(std::vector<GameObject*>& objects, bool is_child)
 		ImGui::PushID(n);
 
 		// 非表示用チェックボックス
-		char bufB[16];
-		sprintf_s(bufB, "##bulind %d", object->GetInstanceID());
+		std::ostringstream instance_id;
+		instance_id << "##bulind" << object->GetInstanceID();
 		bool isBlind = object->GetIsBlind();
-		if (ImGui::Checkbox(bufB, &isBlind)) {
+		if (ImGui::Checkbox(instance_id.str().c_str(), &isBlind)) {
 			object->SetIsBlind(isBlind);
 		}
 		ImGui::SameLine();
 
 		// テーブル設定
-		char bufT[64];
-		sprintf_s(bufT, "%s ##table %d", object->name->c_str(), object->GetInstanceID());
-		if (ImGui::Selectable(bufT, selected_object_id == object->GetInstanceID()))
+		std::ostringstream tabele_id;
+		tabele_id << object->name->c_str() <<"##bulind" << object->GetInstanceID();
+		if (ImGui::Selectable(tabele_id.str().c_str(), selected_object_id == object->GetInstanceID()))
 		{
 			// 選択
 			selected_object_id = object->GetInstanceID();
@@ -205,9 +207,9 @@ void Editor::Hierarchy(std::vector<GameObject*>& objects, bool is_child)
 		// 子オブジェクト表示
 		if(object->GetChildren().size() > 0)
 		{
-			char bufC[64];
-			sprintf_s(bufC, "Child ##child %d",  object->GetInstanceID());
-			if (ImGui::TreeNode(bufC))
+			std::ostringstream child_id;
+			child_id << "Child ##child" << object->GetInstanceID();
+			if (ImGui::TreeNode(child_id.str().c_str()))
 			{
 				Hierarchy(object->GetChildren(), true);
 

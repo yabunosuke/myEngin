@@ -335,7 +335,7 @@ void PlayerController::Walk(bool is_fixed)
 		// カメラの正面ベクトル
 		Vector3 camera_forward = Vector3::Scale(Camera::main.r_->transform_->GetFront(), Vector3(1.0f, 0.0f, 1.0f)).Normalized();
 
-		Vector3 move_forward = (camera_forward * input_vertical_ + Camera::main.r_->transform_->GetRight() * input_horizontal_).Normalized() * 25.0f;
+		Vector3 move_forward = (camera_forward * input_vertical_ + Camera::main.r_->transform_->GetRight() * input_horizontal_).Normalized() * 30.0f;
 		
 		if (input_horizontal_ != 0.0f ||
 			input_vertical_ != 0.0f)
@@ -378,10 +378,8 @@ void PlayerController::Dash(bool is_fixed)
 		}
 
 		// 入力が無くなったらIdoleに戻る
-		if (
-			input_horizontal_ == 0.0f &&
-			input_vertical_ == 0.0f
-			)
+		if (input_horizontal_ == 0.0f &&
+			input_vertical_ == 0.0f	)
 		{
 			player_state_ = PlayerState::IDOLE;
 			return;
@@ -403,12 +401,12 @@ void PlayerController::Dash(bool is_fixed)
 		// カメラの正面ベクトル
 		Vector3 camera_forward = Vector3::Scale(Camera::main.r_->transform_->GetFront(), Vector3(1.0f, 0.0f, 1.0f)).Normalized();
 
-		Vector3 move_forward = (camera_forward * input_vertical_ + Camera::main.r_->transform_->GetRight() * input_horizontal_).Normalized() * 25.0f;
+		Vector3 move_forward = (camera_forward * input_vertical_ + Camera::main.r_->transform_->GetRight() * input_horizontal_).Normalized() * 70.0f;
 
 		if (input_horizontal_ != 0.0f ||
 			input_vertical_ != 0.0f)
 		{
-			regidbody_->AddForce(move_forward * 1.8f, ForceMode::Acceleration);
+			regidbody_->AddForce(move_forward, ForceMode::Acceleration);
 		}
 
 

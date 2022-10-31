@@ -26,12 +26,12 @@ Sprite *Sprite::Create(ComPtr<ID3D12Device> dev,int texuer_num,XMFLOAT2 anchorpo
 	XMFLOAT2 size = { 100.0f, 100.0f };
 	
 	//指定番号の画像が読み込み済みなら
-	if (oldTexture::texture_buffer_[texuer_num]) {
+	//if (TextureManager::texture_buffer_[texuer_num]) {
 		//テクスチャ情報取得
-		D3D12_RESOURCE_DESC resDesc = oldTexture::texture_buffer_[texuer_num]->GetDesc();
+		D3D12_RESOURCE_DESC resDesc = TextureManager::GetInstance()->GetResoureDesc(texuer_num);
 		//スプライトの大きさを画像の解像度に合わせる
 		size = { (float)resDesc.Width,(float)resDesc.Height };
-	}
+	//}
 	
 	//新しいスプライトを作る
 	Sprite *sprite = new Sprite(texuer_num, {0,0}, size, { 1, 1, 1, 1 }, anchorpoint, isFlipX, isFlipY);
@@ -205,17 +205,10 @@ void Sprite::Draw(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cm
 	// 頂点バッファの設定
 	cmd_list->IASetVertexBuffers(0, 1, &this->vbView);
 
-	ID3D12DescriptorHeap *ppHeaps[] = { oldTexture::descriptor_heap_.Get() };
-	// デスクリプタヒープをセット
-	cmd_list->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
+	TextureManager::GetInstance()->SetGraphicsRootDescriptorTable(cmd_list.Get(), 1, texNumber);
 	// 定数バッファビューをセット
 	cmd_list->SetGraphicsRootConstantBufferView(0, this->constBuff->GetGPUVirtualAddress());
-	// シェーダリソースビューをセット
-	cmd_list->SetGraphicsRootDescriptorTable(
-		1, CD3DX12_GPU_DESCRIPTOR_HANDLE(
-			oldTexture::descriptor_heap_->GetGPUDescriptorHandleForHeapStart(),
-			texNumber,
-			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
 	// 描画コマンド
 	cmd_list->DrawInstanced(4, 1, 0, 0);
 }
@@ -249,8 +242,8 @@ void Sprite::TransferVertices()
 	vertices[RT].pos = { right,	top,	0.0f }; // 右上
 
 	// テクスチャ情報取得
-	if (oldTexture::texture_buffer_[texNumber]) {
-		D3D12_RESOURCE_DESC resDesc = oldTexture::texture_buffer_[texNumber]->GetDesc();
+	//if (TextureManager::texture_buffer_[texNumber]) {
+		D3D12_RESOURCE_DESC resDesc = TextureManager::GetInstance()->GetResoureDesc(texNumber);
 
 		float tex_left = texLeftTop.x / resDesc.Width;
 		float tex_right = (texLeftTop.x + texSize.x) / resDesc.Width;
@@ -261,7 +254,7 @@ void Sprite::TransferVertices()
 		vertices[LT].uv = { tex_left,	tex_top }; // 左上
 		vertices[RB].uv = { tex_right,	tex_bottom }; // 右下
 		vertices[RT].uv = { tex_right,	tex_top }; // 右上
-	}
+	//}
 
 	// 頂点バッファへのデータ転送
 	VertexPosUv *vertMap = nullptr;

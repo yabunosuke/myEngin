@@ -55,6 +55,17 @@ public:	//関数
 	//
 	//===========================================
 
+	static GameObject *CreateObject(const std::string &object_name = "");
+
+	static void SetGameObjectManager(GameObjectManager *game_object_manager);
+
+	/// <summary>
+	/// オブジェクトを名前で検索して返す。
+	/// </summary>
+	/// <param name="name">検索するオブジェクト名</param>
+	/// <returns>発見したオブジェクトのポインタ。
+	/// 見つからなかった場合はnullptrを返す。</returns>
+	static GameObject *Find(const std::string &name);
 
 	//===========================================
 	//
@@ -62,9 +73,6 @@ public:	//関数
 	//
 	//===========================================
 
-	static GameObject *CreateObject(const std::string &object_name = "");
-
-	static void SetGameObjectManager(GameObjectManager *game_object_manager);
 	//===========================================
 	//
 	//		メンバ関数
@@ -164,14 +172,35 @@ public:	//関数
 	void AddMonoBehaviour(MonoBehaviour *monobehaviour);
 	const std::vector<MonoBehaviour *> &GetMonoBehaviours();
 	void RemoveMonoBehaviour(std::weak_ptr<MonoBehaviour> monobehaviour);
-
-
-	/// <summary>
-	/// 所属しているシーン (get = true, set = false)
-	/// </summary>
-	//Property<std::weak_ptr<AbstractScene>> scene{ scene_ ,AccessorType::ReadOnly };
-
 	
+	/// <summary>
+	/// 一番上の親を取得する( ReadOnly )
+	/// </summary>
+	yEngine::Property<GameObject *> top
+	{
+		nullptr, yEngine::AccessorType::ReadOnly,
+		[this]()
+		{
+
+			std::function<GameObject *(GameObject *)> parent_acquisition{
+				[&](GameObject *object)
+				{
+					auto pearent = object->pearent_game_object_;
+					if (pearent != nullptr)
+					{
+						parent_acquisition(pearent);
+					}
+					else
+					{
+						return object;
+					}
+				} 
+			};
+			return parent_acquisition(this);
+		},
+		nullptr
+	};
+
 	/// <summary>
 	/// オブジェクト識別タグ (get = true, set = true)
 	/// </summary>
@@ -184,6 +213,7 @@ public:	//関数
 	/// オブジェクトが動かない物ならtrue (get = true, set = true)
 	/// </summary>
 	yEngine::Property<bool> isStatic{ &is_static_ ,yEngine::AccessorType::AllAccess };
+
 
 	Transform *transform_;
 

@@ -50,6 +50,9 @@ void Rigidbody::Infomation()
 	if (ImGui::TreeNode("Info")) {
 		// 操作不可、確認用
 		ImGui::BeginDisabled();
+		//
+		float speed = velocity->Magnitude();
+		ImGui::DragFloat("Speed", &speed);
 		// Velocity
 		ImGui::DragFloat3("Velocity", &velocity_.x);
 		// Angular Velocity
@@ -90,7 +93,7 @@ void Rigidbody::ComponentUpdate()
 {
 }
 
-void Rigidbody::AddForce(Vector3 force, ForceMode force_mode)
+void Rigidbody::AddForce(const Vector3 &force, ForceMode force_mode)
 {
 	if (force.Magnitude() == 0.0f) return;
 	// 質量を考慮して計算
@@ -111,6 +114,19 @@ void Rigidbody::AddForce(Vector3 force, ForceMode force_mode)
 	default:
 		break;
 	}
+}
+
+void Rigidbody::AddForce(float x, float y, float z, ForceMode force_mode)
+{
+	Vector3 force{ x,y,z };
+	AddForce(force, force_mode);
+}
+
+bool Rigidbody::IsSleep()
+{
+	// 運動エネルギー
+	float e = 0.5f * mass_ * pow(velocity_.Magnitude(), 2.0f);
+	return e < sleep_threshold_;
 }
 
 

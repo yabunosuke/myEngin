@@ -58,7 +58,8 @@ void GameScene::Initialize()
 				DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 				"Assets/3d/Dungeon/fbx walls/floor_big.fbx");
 			floor->AddComponent<OBBCollider>(Quaternion{ 0.0f,0.0f,0.0f,0.0f }, Vector3{ 1100.0f,1.0f,1100.0f });
-			//floor->transform_->position = { i * 600.0f,0,j * 600.0f };
+			floor->transform_->position = { 1500.0f,0,1500.0f };
+			floor->transform_->scale = { 10.0f,1.0f,10.0f };
 			//floor->SetParent(floors);
 			//floors->AddComponent<OBBCollider>()
 		}
@@ -72,6 +73,13 @@ void GameScene::Initialize()
 	player->AddComponent<Rigidbody>();
 	player->AddComponent<SphereCollider>(25, Vector3{ 0,20,0 });
 	player->AddComponent<PlayerController>();
+	auto player_light = GameObject::CreateObject("Player Light");
+	player_light->transform_->localPosition = { 0.0f,10.0f,0.0f };
+	auto ligh_info = player_light->AddComponent<Light>();
+	ligh_info->range = 10.0f;
+	ligh_info->intensity = 25.0f;
+	player_light->SetParent(player);
+
 	XMStoreFloat4(&player->transform_->localQuaternion, XMQuaternionRotationRollPitchYaw(0, 0, 0));
 
 	auto eye = GameObject::CreateObject("Eye");
@@ -95,16 +103,20 @@ void GameScene::Initialize()
 	enemy->AddComponent<Enemy>();
 
 	srand(time(NULL));
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < 0; ++i)
 	{
 		auto fly_enemy = GameObject::CreateObject("FlyEnemy");
 		fly_enemy->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 			"Assets/3d/Suzy.fbx");
-		auto collider = fly_enemy->AddComponent<SphereCollider>();
+		auto collider = fly_enemy->AddComponent<SphereCollider>(3,Vector3{0,10,0});
 		fly_enemy->AddComponent<Rigidbody>();
 		fly_enemy->AddComponent<FlyEnemy>();
 		fly_enemy->transform_->position = {static_cast<float>(rand() % 1000 - 500),40.0f,static_cast<float>(rand() % 1000 - 500) };
+		auto light = fly_enemy->AddComponent<Light>();
+		light->color = { 1,0,0,1 };
+		light->range = 200.0f;
+		light->intensity = 4.0f;
 		auto enemy_eye = GameObject::CreateObject("EnemyEye");
 		auto collider_eye = enemy_eye->AddComponent<SphereCollider>(40, Vector3{ 0,20,0 });
 		collider_eye->isTrigger = true;

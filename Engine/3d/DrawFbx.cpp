@@ -64,6 +64,7 @@ void Renderer::DrawDeferred(Microsoft::WRL::ComPtr<ID3D12Device> dev, Microsoft:
 			// プリミティブ形状を設定
 			cmd_list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+			int subset_count = 0;
 			// サブセット単位で描画
 			for (const FbxResource::Subset &subset : mesh.subsets) {
 				// サブセット定数バッファビューを0番にセット
@@ -83,16 +84,13 @@ void Renderer::DrawDeferred(Microsoft::WRL::ComPtr<ID3D12Device> dev, Microsoft:
 					subset.subset_constant_buffer_->Unmap(0, nullptr);
 				}
 
-
-				// デスクリプタヒープのセット
-				ID3D12DescriptorHeap *ppHeaps[] = { oldTexture::descriptor_heap_.Get() };
-				cmd_list->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
 				// シェーダリソースビューをセット
-				cmd_list->SetGraphicsRootDescriptorTable(3, subset.material->shader_resource_views[0]);
+				TextureManager::GetInstance()->SetGraphicsRootDescriptorTable(cmd_list.Get(), 3, subset.material->texture_id[subset_count]);
 
 				//描画コマンド
 				cmd_list->DrawIndexedInstanced(subset.index_count, 1, subset.start_index, 0, 0);
+
+				++subset_count;
 			}
 
 		}
@@ -170,11 +168,7 @@ void Renderer::DrawForward(Microsoft::WRL::ComPtr<ID3D12Device> dev, Microsoft::
 
 
 				// デスクリプタヒープのセット
-				ID3D12DescriptorHeap *ppHeaps[] = { oldTexture::descriptor_heap_.Get() };
-				cmd_list->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
-				// シェーダリソースビューをセット
-				cmd_list->SetGraphicsRootDescriptorTable(3, subset.material->shader_resource_views[0]);
+				//TextureManager::GetInstance()->SetGraphicsRootDescriptorTable(cmd_list.Get(), 3, subset.material->texture_id);
 
 				//描画コマンド
 				cmd_list->DrawIndexedInstanced(subset.index_count, 1, subset.start_index, 0, 0);

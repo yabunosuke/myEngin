@@ -1,6 +1,5 @@
 #include "CheckCollision.h"
 #include <memory>
-#include "Object/Component/Rigidbody.h"
 #include "Object/Component/Behaviour/MonoBehaviour/MonoBehaviour.h"
 void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects)
 {
@@ -12,15 +11,32 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 	// 全てのオブジェクトをチェック
 	for (auto object_a = game_objects.begin(); object_a != game_objects.end(); ++object_a)
 	{
-	
+		// 一番上のオブジェクトのリジッドボディ
+		auto rigidbody_top_a =
+			static_cast<GameObject *>((*object_a)->top)->GetComponent<Rigidbody>();
+		// Aオブジェクトのリジッドボディ
 		auto rigidbody_a = (*object_a)->GetComponent<Rigidbody>();
+
 		// Bオブジェクトのイテレータを一つずらす
 		auto object_b = object_a;
 		++object_b;
 
 		for (; object_b != game_objects.end(); ++object_b)
 		{
+
+			// 一番上のオブジェクトのリジッドボディ
+			auto rigidbody_top_b =
+				static_cast<GameObject *>((*object_b)->top)->GetComponent<Rigidbody>();
+			// Aオブジェクトのリジッドボディ
 			auto rigidbody_b = (*object_b)->GetComponent<Rigidbody>();
+
+			// 両方ともリジッドボディがない場合は処理を行わない
+			if (rigidbody_top_a == nullptr &&
+				rigidbody_top_b == nullptr)
+			{
+				continue;
+			}
+
 
 			// ブロードフェーズ(後ほど実装) 
 			if (false) {
@@ -36,16 +52,19 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 				for (auto collider_b : (*object_b)->GetColliders())
 				{
 					// 当たり判定情報
+					// Aに送る情報
 					Collision collision_info_a
+					{
+						*object_b,
+						collider_a,
+						{ 0,0,0 }
+					};
+					// Bに送る情報
+					Collision collision_info_b
 					{
 						*object_a,
 						collider_b,
 						{0,0,0}
-					};
-					Collision collision_info_b{
-						*object_b,
-						collider_a,
-						{ 0,0,0 }
 					};
 
 					Rigidbody *a_rigidbody = (*object_a)->GetComponent<Rigidbody>();
@@ -57,14 +76,16 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 						b_rigidbody != nullptr
 						)
 					{
-						collision_info_a.relative_velocity_ = a_rigidbody->velocity - b_rigidbody->velocity;
-						collision_info_b.relative_velocity_ = b_rigidbody->velocity - a_rigidbody->velocity;
+						collision_info_b.relative_velocity_ = a_rigidbody->velocity - b_rigidbody->velocity;
+						collision_info_a.relative_velocity_ = b_rigidbody->velocity - a_rigidbody->velocity;
 					}
+
+
 
 					bool is_trigger = collider_a->isTrigger.r_ || collider_b->isTrigger.r_;
 
 					// 衝突判定
-					if (CheckHit(collider_a, collider_b, hit_pos))
+					if (CheckHit(collider_a, collider_b, collision_info_a.contact_point_, collision_info_b.contact_point_))
 					{
 						// 接触した瞬間
 						if (
@@ -75,16 +96,18 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 							// トリガー
 							if(is_trigger)
 							{
-								OnTriggerEnter(*object_a, collision_info_b, hit_pos);
-								OnTriggerEnter(*object_b, collision_info_a, hit_pos);
+								OnTriggerEnter(*object_a, collision_info_a, hit_pos);
+								OnTriggerEnter(*object_b, collision_info_b, hit_pos);
 							}
 							// コリジョン
 							else
 							{
+								// 押し戻し処理
+								OnCollisionEnter(*object_a, collision_info_a,hit_pos);
+								OnCollisionEnter(*object_b, collision_info_b,hit_pos);
 
-
-								OnCollisionEnter(*object_a, collision_info_b,hit_pos);
-								OnCollisionEnter(*object_b, collision_info_a,hit_pos);
+								// 衝突解消
+								//HitResponse(*object_a, *object_b, collision_info_a.contact_point_, collision_info_b.contact_point_);
 							}
 							// 衝突記憶
 							collider_a->hitlist_[collider_b->GetInstanceID()] = true;
@@ -96,16 +119,27 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 							// トリガー
 							if (is_trigger)
 							{
-								OnTriggerStay(*object_a, collision_info_b, hit_pos);
-								OnTriggerStay(*object_b, collision_info_a, hit_pos);
+								OnTriggerStay(*object_a, collision_info_a, hit_pos);
+								OnTriggerStay(*object_b, collision_info_b, hit_pos);
 							}
 							// コリジョン
 							else
 							{
-								OnCollisionStay(*object_a, collision_info_b,hit_pos);
-								OnCollisionStay(*object_b, collision_info_a,hit_pos);
+								OnCollisionStay(*object_a, collision_info_a,hit_pos);
+								OnCollisionStay(*object_b, collision_info_b,hit_pos);
+
+								// 衝突解消
+								HitResponse(
+									*object_a,
+									rigidbody_top_a,
+									collision_info_a.contact_point_,
+									*object_b, 
+									rigidbody_top_b,
+									collision_info_b.contact_point_);
 							}
 						}
+
+						// 押し戻し処理
 
 					}
 					// 離脱判定
@@ -122,12 +156,12 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 							{
 								// A
 								for (const auto &script_a : (*object_a)->GetMonoBehaviours()) {
-									script_a->OnTriggerExit(collision_info_b);
+									script_a->OnTriggerExit(collision_info_a);
 								}
 
 								// B
 								for (const auto &script_b : (*object_b)->GetMonoBehaviours()) {
-									script_b->OnTriggerExit(collision_info_a);
+									script_b->OnTriggerExit(collision_info_b);
 								}
 							}
 							// コリジョン
@@ -135,12 +169,12 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 							{
 								// A
 								for (const auto &script_a : (*object_a)->GetMonoBehaviours()) {
-									script_a->OnCollisionExit(collision_info_b);
+									script_a->OnCollisionExit(collision_info_a);
 								}
 
 								// B
 								for (const auto &script_b : (*object_b)->GetMonoBehaviours()) {
-									script_b->OnCollisionExit(collision_info_a);
+									script_b->OnCollisionExit(collision_info_b);
 								}
 
 							}
@@ -156,17 +190,19 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 	}
 }
 
-bool CheckCollision::CheckHit(Collider *a, Collider *b, Vector3 hit_pos)
+bool CheckCollision::CheckHit(Collider *a, Collider *b, ContactPoint &contact_a, ContactPoint &contact_b)
 {
 	int collision_pattern = static_cast<int>(a->collisionType.r_) | static_cast<int>(b->collisionType.r_);
 
+	bool is_hit{ false };
 	// Sphere to Sphere
 	if(collision_pattern == static_cast<int>(CollisonType::Sphere))
 	{
 		SphereCollider *sphere_a = static_cast<SphereCollider*>(a);
 		SphereCollider *sphere_b = static_cast<SphereCollider*>(b);
 
-		return Sphere2Sphere(*sphere_a, *sphere_b, hit_pos);
+		is_hit = Sphere2Sphere(*sphere_a, *sphere_b, contact_a, contact_b);
+		return is_hit;
 	}
 
 	if(collision_pattern == (static_cast<int>(CollisonType::Sphere) | static_cast<int>(CollisonType::OBB)))
@@ -213,7 +249,7 @@ void CheckCollision::ExtremePointsAlongDirection(const Vector3 &dir, Vector3 poi
 
 }
 
-bool CheckCollision::Sphere2Sphere(yEngine::Sphere a, yEngine::Sphere b,Vector3 & hit_pos)
+bool CheckCollision::Sphere2Sphere(const yEngine::Sphere &a, const yEngine::Sphere &b, ContactPoint &contact_a, ContactPoint &contact_b)
 {
 	Vector3 distance = a.center - b.center;
 	float distance2 = Vector3::Dot(distance, distance);
@@ -223,8 +259,14 @@ bool CheckCollision::Sphere2Sphere(yEngine::Sphere a, yEngine::Sphere b,Vector3 
 
 	if(is_hit)
 	{
-		// 中心を衝突地点とする
-		hit_pos = a.center + distance / 2.0f;
+		// 衝突地点
+		Vector3 hit_pos{ a.center + distance / 2.0f };
+		contact_a.point = hit_pos;
+		contact_b.point = hit_pos;
+
+		// 法線
+		contact_a.normal = (hit_pos - b.center).Normalized();
+		contact_b.normal = (hit_pos - a.center).Normalized();
 	}
 
 	return is_hit;
@@ -501,3 +543,40 @@ void CheckCollision::OnCollisionStay(GameObject *object, Collision &collision_da
 		OnCollisionStay(object->GetPearent(), collision_data, hit_pos);
 	}
 }
+
+void CheckCollision::HitResponse(
+	GameObject *object_a,
+	Rigidbody *rigidbody_a,
+	const ContactPoint &contact_a,
+
+	GameObject *object_b,
+	Rigidbody *rigidbody_b,
+	const ContactPoint &contact_b
+)
+{
+	return;
+
+	// 押し戻し量
+	Vector3 penalty_a{ 0,0,0 };
+	Vector3 penalty_b{ 0,0,0 };
+
+	// 一番上のオブジェクトのトランスフォームを変化させる
+	GameObject *top_parent_a{ object_a->top };
+	GameObject *top_parent_b{ object_b->top };
+
+	// ペナルティ計算
+	penalty_a = contact_a.point + Vector3{0, 1, 0};
+	penalty_b = contact_b.point + Vector3{0, -1, 0};
+
+	// 押し戻し
+	top_parent_a->transform_->position  = top_parent_a->transform_->position + penalty_a;
+	top_parent_b->transform_->position  = top_parent_b->transform_->position + penalty_b;
+
+	// 移動量への干渉
+
+	float dynamic_friction;
+	float static_friction;
+	float bounciness;
+
+}
+

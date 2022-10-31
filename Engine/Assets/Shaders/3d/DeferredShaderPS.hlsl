@@ -7,6 +7,7 @@ Texture2D metal_roughness_texture_2d	: register(t2);
 Texture2D depth_texture_2d				: register(t3);
 Texture2D position_texture_2d			: register(t4);
 Texture2D id_texture_2d					: register(t5);
+//Texture2D panorama_sky_box				: register(t6);
 
 SamplerState texture_sampler : register(s0);
 
@@ -27,6 +28,7 @@ float4 main(VSOutput input) : SV_TARGET
 	float4 depth_tex =				depth_texture_2d.Sample(texture_sampler, input.texcoord);
 	float4 position_tex =			position_texture_2d.Sample(texture_sampler, input.texcoord);
 	float4 id_tex =					id_texture_2d.Sample(texture_sampler, input.texcoord);
+	//float4 sky_box =				panorama_sky_box.Sample(texture_sampler, input.texcoord);
 
 	/// ‰¼ŒvŽZ
 	if (id_tex.r != 0) {
@@ -111,6 +113,7 @@ float4 main(VSOutput input) : SV_TARGET
 
 		return output_color;
 	}
+
 
 	return float4(1, 1, 0, 1);
 }

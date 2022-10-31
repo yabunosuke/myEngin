@@ -848,9 +848,10 @@ void PipelineManager::CreateDeferredPpline(ComPtr<ID3D12Device> dev)
 	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0～255指定のRGBA
 	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
 
+	const int k_register_max{6};
 	// デスクリプタレンジ
-	CD3DX12_DESCRIPTOR_RANGE desc_range_srv[6]{};
-	for (int i = 0; i < 6; ++i)
+	CD3DX12_DESCRIPTOR_RANGE desc_range_srv[k_register_max]{};
+	for (int i = 0; i < k_register_max; ++i)
 	{
 		desc_range_srv[i].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, i); // tレジスタ
 	}

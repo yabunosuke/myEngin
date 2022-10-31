@@ -29,6 +29,13 @@ public:
 		&collider_,
 		yEngine::AccessorType::ReadOnly
 	};
+	// 衝突地点の情報
+	yEngine::Property<ContactPoint> contactPoint
+	{
+		&contact_point_,
+		yEngine::AccessorType::ReadOnly
+	};
+	
 	// 衝突した2つのオブジェクトの相対的な速度 (ReadOnly)
 	yEngine::Property<Vector3> relativeVelocity
 	{
@@ -45,7 +52,7 @@ public:
 private:
 	GameObject *game_object_;	
 	Collider *collider_;		// ヒットしたコライダー
-	std::vector<ContactPoint> contacts_;	
+	ContactPoint contact_point_;	
 	Vector3 relative_velocity_;	
 	bool is_child_hit_;
 };

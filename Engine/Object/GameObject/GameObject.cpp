@@ -95,6 +95,18 @@ void GameObject::SetGameObjectManager(GameObjectManager *game_object_manager)
 	game_object_manager_ = game_object_manager;
 }
 
+GameObject *GameObject::Find(const std::string &name)
+{
+	for (const auto &object : game_object_manager_->game_objects_)
+	{
+		if (object->name == name)
+		{
+			return object;
+		}
+	}
+	return nullptr;
+}
+
 
 bool GameObject::CompareTag(const std::string &tag)
 {

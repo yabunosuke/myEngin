@@ -26,8 +26,10 @@ bool SystemMain::Initialize()
 	imguiManager::GetIns()->Initialize();
 
 	// テクスチャデスクリプタヒープ生成
-	oldTexture::CreateDescriptorHeap(DirectXCommon::dev.Get());
-	
+	TextureManager::GetInstance()->CreateDescriptorHeap(DirectXCommon::dev.Get());
+	// パラノマスカイボックスロード
+	TextureManager::LoadTexture(DirectXCommon::dev.Get(), L"Assets/2d/Panorama-V01.png");
+
 	//Object3d::StaticInitialize(DirectXCommon::dev.Get());//オブジェクト共通データ生成
 	//Model::StaticInitialize(DirectXCommon::dev.Get());	//モデル姿勢的初期化
 

@@ -78,6 +78,12 @@ namespace yEngine
             return r_ - v;
         }
 
+        // 比較演算子
+        bool operator ==(const ReferenceT &v) const
+        {
+            return r_ == v;
+        }
+
 
         ReferenceT &r_;                                           // 値
         AccessorType access_type_;                                // アクセスタイプ

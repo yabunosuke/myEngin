@@ -627,28 +627,28 @@ void FbxResource::CreateComObjects(ID3D12Device *dev)
 				if (texture_path.c_str()[0] == 0) {
 					if (static_cast<TextureType>(i) == TextureType::BASE)
 					{
-						material.texture_id = oldTexture::MakeTexture(dev, 0x00000000);
+						material.texture_id[i] = TextureManager::MakeTexture(dev, 0x00000000);
 
 					}
 					if (static_cast<TextureType>(i) == TextureType::NORMAL)
 					{
-						material.texture_id = oldTexture::MakeTexture(dev, 0xff000000);
+						material.texture_id[i] = TextureManager::MakeTexture(dev, 0xff000000);
 
 					}
 
 				}
 				else {
-					material.texture_id = oldTexture::LoadTextureFromFile(dev, path.c_str());
+					material.texture_id[i] = TextureManager::GetInstance()->LoadTexture(dev, path.c_str());
 				}
 			}
 			else {
-				material.texture_id = oldTexture::MakeTexture(dev, 0xff000000);
+				material.texture_id[i] = TextureManager::MakeTexture(dev, 0xff000000);
 			}
 
-			material.shader_resource_views[i] = CD3DX12_GPU_DESCRIPTOR_HANDLE(
-				oldTexture::descriptor_heap_->GetGPUDescriptorHandleForHeapStart(),
-				material.texture_id,
-				dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
+			//material.shader_resource_views = CD3DX12_GPU_DESCRIPTOR_HANDLE(
+			//	TextureManager::descriptor_heap_->GetGPUDescriptorHandleForHeapStart(),
+			//	material.texture_id,
+			//	dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
 		}
 	}
 }

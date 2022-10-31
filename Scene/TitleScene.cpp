@@ -43,6 +43,13 @@ void TitleScene::Initialize()
 	title->AddComponent<SphereCollider>();
 	title->AddComponent<Rigidbody>();
 	title->transform_->quaternion = Quaternion::Euler(90.0f*Mathf::deg_to_rad, 180.0f * Mathf::deg_to_rad, 0);
+	auto child_test= GameObject::CreateObject("Title");
+	child_test->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/temp/title.fbx");
+	child_test->AddComponent<SphereCollider>();
+	child_test->AddComponent<Rigidbody>();
+
 }
 
 void TitleScene::Update()

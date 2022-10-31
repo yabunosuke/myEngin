@@ -48,7 +48,7 @@ public:
 	/// <summary>
 	/// マルチレンダーの数
 	/// </summary>
-	static const int buffer_count_ = 6;
+	static const int buffer_count_{ 6 };
 
 
 private:
@@ -66,13 +66,15 @@ private:
 	ComPtr<ID3D12Resource> depth_buffer_;
 	// テクスチャバッファ
 	ComPtr<ID3D12Resource> texture_buffer_[buffer_count_];
-	DXGI_FORMAT format_list_[buffer_count_] = {
+	DXGI_FORMAT format_list_[buffer_count_]
+	{
 		DXGI_FORMAT_R8G8B8A8_UNORM,
 		DXGI_FORMAT_R16G16B16A16_FLOAT,
 		DXGI_FORMAT_R8G8B8A8_UNORM,
 		DXGI_FORMAT_R32G32B32A32_FLOAT,
 		DXGI_FORMAT_R32G32B32A32_FLOAT,
 		DXGI_FORMAT_R16G16B16A16_FLOAT,
+		//DXGI_FORMAT_R32G32B32A32_FLOAT,		// skybox
 	};
 	// SRVデスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descriputor_heap_SRV_;

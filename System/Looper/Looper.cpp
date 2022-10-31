@@ -134,7 +134,6 @@ bool Looper::Loop()
 
 	scene_stack_.top()->PreDrawPostEffect(DirectXCommon::dev,DirectXCommon::cmdList);				// ポストエフェクトの設定
 	scene_stack_.top()->DrawMulutiRenderTarget(DirectXCommon::dev, DirectXCommon::cmdList);		// ディファ―レンダリング描画
-
 	scene_stack_.top()->PostDrawPoseEffect(DirectXCommon::cmdList);								// 設定終了
 
 	//バッファクリア
