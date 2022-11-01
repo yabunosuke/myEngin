@@ -20,6 +20,7 @@ void Drone::Start()
 }
 
 void Drone::FixedUpdate()
+
 {
 	Vector3 camera_right = Vector3::Scale(Camera::main.r_->transform_->GetRight(), Vector3(1.0f, 1.0f, 1.0f)).Normalized();
 	transform_->position = *axis_pos_ + camera_right * 40.0f + Vector3::up * 40.0f;

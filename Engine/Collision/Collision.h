@@ -11,11 +11,6 @@ class Collision
 public:
 	friend class CheckCollision;
 
-	Collision(
-		GameObject* game_object,		// 衝突した相手のオブジェクト
-		Collider *collider,				// 衝突したコライダー(自分)
-		Vector3 relative_velocity
-		);
 
 	// コライダーが衝突した相手のオブジェクト (ReadOnly)
 	yEngine::Property<GameObject*> gameObject

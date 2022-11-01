@@ -8,9 +8,9 @@ MonoBehaviour("Enemy")
 {
 }
 
-void Enemy::OnTriggerEnter(Collision &collision)
+void Enemy::OnTriggerEnter(Collider &other)
 {
-	if (collision.gameObject.r_->name.r_ == "Weapon")
+	if (other.game_object_->name == "Weapon")
 	{
 		if(state != AnimationState::DEAD)
 		{
@@ -28,7 +28,7 @@ void Enemy::OnTriggerEnter(Collision &collision)
 		}
 	}
 
-	if (collision.gameObject.r_->name.r_ == "Bullet")
+	if (other.game_object_->name.r_ == "Bullet")
 	{
 		if (state != AnimationState::DEAD)
 		{

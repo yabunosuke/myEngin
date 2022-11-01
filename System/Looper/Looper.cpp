@@ -103,11 +103,12 @@ bool Looper::Loop()
 		{
 			scene_stack_.top()->FixedUpdate();
 
-			// 経過時間を減少させる
-			Time::GetInstance()->SubFixedTimer();
-
 			// 当たり判定
 			CheckCollision::CheckColliders(scene_stack_.top()->GetObjectManager()->game_objects_);
+
+
+			// 経過時間を減少させる
+			Time::GetInstance()->SubFixedTimer();
 
 			// 5回処理して改善しなければ強制的に離脱
 			if(i >=10)

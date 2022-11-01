@@ -12,10 +12,10 @@ void FlyEnemy::OnCollisionEnter(Collision &collision)
 
 }
 
-void FlyEnemy::OnTriggerEnter(Collision &collision)
+void FlyEnemy::OnTriggerEnter(Collider &other)
 {
 
-	if ((collision.gameObject.r_->name.r_ == "Weapon") && collision.collider.r_->game_object_->name.r_ == "FlyEnemy")
+	if ((other.game_object_->name == "Weapon") && other.game_object_->name == "FlyEnemy")
 	{
 		transform_->scale = transform_->scale - Vector3{ 2,2,2 };
 		--hp_;
@@ -25,7 +25,7 @@ void FlyEnemy::OnTriggerEnter(Collision &collision)
 		}
 	}
 
-	if ((collision.gameObject.r_->name.r_ == "Bullet") && collision.collider.r_->game_object_->name.r_ == "FlyEnemy")
+	if ((other.game_object_->name == "Bullet") && other.game_object_->name == "FlyEnemy")
 	{
 		transform_->scale = transform_->scale - Vector3{ 2,2,2 };
 		--hp_;
@@ -39,11 +39,11 @@ void FlyEnemy::OnTriggerEnter(Collision &collision)
 
 }
 
-void FlyEnemy::OnTriggerStay(Collision &collision)
+void FlyEnemy::OnTriggerStay(Collider &other)
 {
-	if (collision.gameObject.r_->name.r_ == "Player")
+	if (other.game_object_->name.r_ == "Player")
 	{
-		transform_->LookAt(collision.gameObject.r_->transform_->position);
+		transform_->LookAt(other.game_object_->transform_->position);
 	}
 }
 

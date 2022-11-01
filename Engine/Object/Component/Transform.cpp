@@ -18,11 +18,8 @@ void Transform::Infomation()
     // リセットボタン
     if(ImGui::Button("Reset"))
     {
-        local_position_ = { 0,0,0 };		// 座標
-        local_quaternion_ = { 0,0,0,0, };		// クオータニオン回転
-        local_scale_ = { 1,1,1 };		// 拡大
-
-        UpdateMatrix();
+        localMatrix = XMMatrixIdentity();
+        matrix = XMMatrixIdentity();
     }
 
     // ギズモ

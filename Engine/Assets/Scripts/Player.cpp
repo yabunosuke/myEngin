@@ -42,21 +42,21 @@ void PlayerController::OnCollisionEnter(Collision &collision)
 
 void PlayerController::OnCollisionStay(Collision &collision)
 {
-	if(collision.gameObject.r_->name.r_ == "Floor" && collision.collider.r_->game_object_->name.r_ == "Player")
-	{
-		//Vector3 penalty = collision.gameObject.r_->transform_->position.r_ - transform_->position.r_;
-		//transform_->position = {
-		//	transform_->position.r_.x,
-		//	transform_->position.r_.y + penalty.y,
-		//	//collision.gameObject.r_->transform_->position.r_.y /*+ dynamic_cast<SphereCollider*>(collision.collider.r_)->radius*/,
-		//	transform_->position.r_.z};
-		if(player_state_ == PlayerState::JUMP)
-		{
-			player_state_ = PlayerState::IDOLE;
-		}
-		can_jump_ = true;
+	//if(collision.gameObject.r_->name == "Floor" && collision.collider.r_->game_object_->name == "Player")
+	//{
+	//	//Vector3 penalty = collision.gameObject.r_->transform_->position.r_ - transform_->position.r_;
+	//	//transform_->position = {
+	//	//	transform_->position.r_.x,
+	//	//	transform_->position.r_.y + penalty.y,
+	//	//	//collision.gameObject.r_->transform_->position.r_.y /*+ dynamic_cast<SphereCollider*>(collision.collider.r_)->radius*/,
+	//	//	transform_->position.r_.z};
+	//	//if(player_state_ == PlayerState::JUMP)
+	//	{
+	//		player_state_ = PlayerState::IDOLE;
+	//	}
+	//	can_jump_ = true;
 
-	}
+	//}
 }
 
 void PlayerController::Start()

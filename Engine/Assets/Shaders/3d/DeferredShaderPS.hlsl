@@ -114,7 +114,6 @@ float4 main(VSOutput input) : SV_TARGET
 		return output_color;
 	}
 
-
 	return float4(1, 1, 0, 1);
 }
 

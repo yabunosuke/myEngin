@@ -43,15 +43,15 @@ public:
     /// <summary>
     /// G‚ê‚½uŠÔ‚ÉŒÄ‚Ño‚³‚ê‚é
     /// </summary>
-    virtual void OnTriggerEnter(Collision &collision) {};
+    virtual void OnTriggerEnter(Collider &other) {};
     /// <summary>
     /// —£‚ê‚½uŠÔ‚ÉŒÄ‚Ño‚³‚ê‚é
     /// </summary>
-    virtual void OnTriggerExit(Collision &collision) {};
+    virtual void OnTriggerExit(Collider &other) {};
     /// <summary>
     /// U‚ê‚Ä‚¢‚éŠÔŒÄ‚Ño‚³‚ê‚é
     /// </summary>
-    virtual void OnTriggerStay(Collision &collision) {};
+    virtual void OnTriggerStay(Collider &other) {};
 private:
     bool do_start_ = true;
 };

@@ -54,6 +54,7 @@ void GameScene::Initialize()
 		//for (int j = 0; j < 4; ++j)
 		{
 			auto floor = GameObject::CreateObject("Floor");
+			floor->isStatic = true;
 			floor->AddComponent<Object3dComponent>(
 				DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 				"Assets/3d/Dungeon/fbx walls/floor_big.fbx");
@@ -71,7 +72,7 @@ void GameScene::Initialize()
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/sword human/Sword man.fbx");
 	player->AddComponent<Rigidbody>();
-	player->AddComponent<SphereCollider>(25, Vector3{ 0,20,0 });
+	player->AddComponent<SphereCollider>(25, Vector3{ 0,5,0 });
 	player->AddComponent<PlayerController>();
 	auto player_light = GameObject::CreateObject("Player Light");
 	player_light->transform_->localPosition = { 0.0f,10.0f,0.0f };

@@ -250,7 +250,6 @@ void MulutiRenderTarget::PreDrawScene(ComPtr<ID3D12Device> dev,ComPtr<ID3D12Grap
 	{
 		//全画面クリア
 		cmd_list->ClearRenderTargetView(rtvHs[i], clear_color_, 0, nullptr);
-		
 	}
 	//深度バッファのクリア
 	cmd_list->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
@@ -263,7 +262,6 @@ void MulutiRenderTarget::DrawRenderTarget(
 	LightManager *light_manager
 )
 {
-	
 	//頂点バッファへのデータ転送
 	HRESULT result = S_FALSE;
 	// 左下、左上、右下、右上
@@ -318,10 +316,6 @@ void MulutiRenderTarget::DrawRenderTarget(
 		descriputor_heap_SRV_.Get()
 	};
 	cmd_list->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-	// 定数バッファビューをセット
-	//ConstantBufferManager::GetInstance()->SetBuffer(cmd_list, 1, BufferName::Test);
-	//cmd_list->SetGraphicsRootConstantBufferView(1, this->constant_buffer_->GetGPUVirtualAddress());
-	// シェーダリソースビューをセット
 
 	cmd_list->SetGraphicsRootDescriptorTable(
 		0,

@@ -17,10 +17,14 @@ enum class RigidbodyInterpolation
 	Extrapolate,	// 外挿補間を行う
 };
 
+
 class Rigidbody :
 	public Component
 {
 public:
+	friend class CheckCollision;
+
+
 	Rigidbody();
 
 	void Infomation() override;
@@ -73,7 +77,7 @@ private:
 
 	float dinamic_friction_{ 0.6f };		// 動くオブジェクトに対する摩擦
 	float static_friction_{ 0.6f };			// 静止したオブジェクトに対する摩擦
-	float bounciness_{ 0.0f };				// 反発係数
+	float bounciness_{ 0.8f };				// 反発係数
 	enum class FrictionCombine				// 衝突したオブジェクト間の摩擦をどう処理するか
 	{
 		Average,	// 平均

@@ -74,7 +74,7 @@ public:
 	/// <summary>
 	/// ローカル空間のマトリックス (get = true, set = true)
 	/// </summary>
-	yEngine::Property<XMMATRIX> local_matrix{
+	yEngine::Property<XMMATRIX> localMatrix{
 		&local_matrix_,
 		yEngine::AccessorType::AllAccess,
 		nullptr,

@@ -35,7 +35,6 @@ public:
 	
 
 	MulutiRenderTarget();
-
 	void InitializeMulutiRenderTarget(ComPtr<ID3D12Device> dev);
 	void PreDrawScene(ComPtr<ID3D12Device> dev,ComPtr<ID3D12GraphicsCommandList> cmd_list);
 	void DrawRenderTarget(

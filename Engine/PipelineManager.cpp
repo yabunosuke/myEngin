@@ -853,7 +853,9 @@ void PipelineManager::CreateDeferredPpline(ComPtr<ID3D12Device> dev)
 	CD3DX12_DESCRIPTOR_RANGE desc_range_srv[k_register_max]{};
 	for (int i = 0; i < k_register_max; ++i)
 	{
+
 		desc_range_srv[i].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, i); // tレジスタ
+		
 	}
 
 	// ルートパラメータ

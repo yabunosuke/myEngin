@@ -41,15 +41,17 @@ void TitleScene::Initialize()
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/temp/title.fbx");
 	title->AddComponent<SphereCollider>();
-	title->AddComponent<Rigidbody>();
+	Rigidbody *rg = title->AddComponent<Rigidbody>();
+	rg->useGravity = true;
 	title->transform_->quaternion = Quaternion::Euler(90.0f*Mathf::deg_to_rad, 180.0f * Mathf::deg_to_rad, 0);
+	title->transform_->position = {0,20,0};
 	auto child_test= GameObject::CreateObject("Title");
 	child_test->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/temp/title.fbx");
 	child_test->AddComponent<SphereCollider>();
 	child_test->AddComponent<Rigidbody>();
-
+	child_test->isStatic = true;
 }
 
 void TitleScene::Update()

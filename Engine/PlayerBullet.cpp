@@ -19,6 +19,7 @@ void PlayerBullet::Start()
 void PlayerBullet::FixedUpdate()
 {
 	rigidbody_->AddForce(transform_->GetFront() * 10.0f, ForceMode::VelocityChange);
+	transform_->LookAt(transform_->position + rigidbody_->velocity);
 	live_timer_ += Time::GetInstance()->deltaTime;
 
 	if(live_timer_ >= 4.0f)
