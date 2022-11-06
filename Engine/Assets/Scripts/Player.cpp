@@ -26,7 +26,7 @@ MonoBehaviour("PlayerController")
 
 void PlayerController::OnCollisionEnter(Collision &collision)
 {
-	if (collision.gameObject.r_->tag == "Floor")
+	if (Vector3::Dot(collision.contactPoint->normal,{0,1,0}) >= 0.8f)
 	{
 		transform_->position = {
 			transform_->position.r_.x,

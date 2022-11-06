@@ -202,16 +202,25 @@ public:
 	}
 	bool operator !=(const Vector3 &vector) const { return !(*this == vector); }
 
+	
+
 	// 添え字演算子
+	float &operator [](const std::size_t &index)
+	{
+		if (index == 0) return this->x;
+		if (index == 1) return this->y;
+		if (index == 2) return this->z;
+		// 範囲外参照
+		assert(0);
+	}
+
 	float operator [](const std::size_t &index) const
 	{
 		if (index == 0) return this->x;
 		if (index == 1) return this->y;
 		if (index == 2) return this->z;
-
 		// 範囲外参照
-		
-		return 0.0f;
+		assert(0);
 	}
 };
 
