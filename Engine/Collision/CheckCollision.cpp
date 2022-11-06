@@ -55,18 +55,18 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 
 			Vector3 hit_pos = {0,0,0};
 
+			// 当たり判定情報
+			Collision collision_info_a;		// Aに送る情報
+			Collision collision_info_b;		// Bに送る情報
+
+			Rigidbody *a_rigidbody = (*object_a)->GetComponent<Rigidbody>();
+			Rigidbody *b_rigidbody = (*object_b)->GetComponent<Rigidbody>();
+
 			// ナローフェーズ
 			for (auto collider_a : (*object_a)->GetColliders())
 			{
 				for (auto collider_b : (*object_b)->GetColliders())
 				{
-					// 当たり判定情報
-					Collision collision_info_a;		// Aに送る情報
-					Collision collision_info_b;		// Bに送る情報
-
-					Rigidbody *a_rigidbody = (*object_a)->GetComponent<Rigidbody>();
-					Rigidbody *b_rigidbody = (*object_b)->GetComponent<Rigidbody>();
-
 
 					// 侵入度
 					Vector3 intrusion_a;		 // Bに対するAの侵入度
@@ -471,7 +471,7 @@ bool CheckCollision::Sphere2OBB(
 			if (max < temp)
 			{
 				max = temp;
-				normal = obb.unidirectional[i];
+				normal = -obb.unidirectional[i];
 			}
 		}
 
@@ -752,8 +752,8 @@ void CheckCollision::HitResponse(
 	Vector3 penalty_a;
 	Vector3 penalty_b;
 
-	float k{ 0.9f };
-	float d{ -0.9f };
+	float k{ 0.95f };
+	float d{ -0.95f };
 
 	if (intrusion_a.Magnitude() < 0.2f)
 	{
@@ -779,9 +779,19 @@ void CheckCollision::HitResponse(
 	// aだけ動的な場合
 	else if(!is_static_a  && is_static_b)
 	{
-		auto intrsion = intrusion_a * k;
-		auto r = Vector3::Scale(rigidbody_a->velocity * d, collision_data_a.contactPoint->normal);
+
 		penalty_b = { 0,0,0 };
+		auto intrsion = intrusion_a * k;
+		Vector3 r = Vector3::Scale(rigidbody_a->velocity, intrusion_a.Normalized());
+		if (Vector3::Dot(r, rigidbody_a->velocity) > 0.0f)
+		{
+			r *= d;
+		}
+		else
+		{
+			r *= -d;
+		}
+		penalty_a = intrsion + r;
 
 	}
 	// bだけ動的な場合
@@ -789,8 +799,16 @@ void CheckCollision::HitResponse(
 	{
 		penalty_a = { 0,0,0 };
 		auto intrsion = intrusion_b * k;
-		auto r = Vector3::Scale(rigidbody_b->velocity * d, collision_data_b.contactPoint->normal);
-		penalty_b = intrsion + r ;
+		Vector3 r = Vector3::Scale(rigidbody_b->velocity, intrusion_b.Normalized());
+		if (Vector3::Dot(r, rigidbody_b->velocity) > 0.0f)
+		{
+			r *= d;
+		}
+		else
+		{
+			r *= -d;
+		}
+		penalty_b = intrsion + r;
 
 	}
 

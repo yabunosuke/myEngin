@@ -28,10 +28,6 @@ void PlayerController::OnCollisionEnter(Collision &collision)
 {
 	if (Vector3::Dot(collision.contactPoint->normal,{0,1,0}) >= 0.8f)
 	{
-		transform_->position = {
-			transform_->position.r_.x,
-			collision.gameObject.r_->transform_->position.r_.y /*+ dynamic_cast<SphereCollider*>(collision.collider.r_)->radius*/,
-			transform_->position.r_.z };
 		if (player_state_ == PlayerState::JUMP)
 		{
 			player_state_ = PlayerState::IDOLE;
