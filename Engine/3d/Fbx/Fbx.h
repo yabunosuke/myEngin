@@ -3,6 +3,7 @@
 #include <d3d12.h>
 #include <d3dx12.h>
 #include <memory>
+#include <map>
 #include "FbxResource.h"
 
 class Fbx
@@ -90,6 +91,5 @@ private:
 
 
 	XMFLOAT4 color_ = { 1,1,1,1 };	//ÉJÉâÅ[
-	
 };
 

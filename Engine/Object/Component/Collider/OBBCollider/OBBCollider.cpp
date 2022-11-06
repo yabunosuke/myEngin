@@ -1,4 +1,5 @@
 #include "OBBCollider.h"
+#include "Object/GameObject/GameObject.h"
 
 OBBCollider::OBBCollider(Quaternion q, Vector3 extent, Vector3 center)
 {
@@ -15,14 +16,30 @@ void OBBCollider::ComponentInitialize()
 
 void OBBCollider::ComponentUpdate()
 {
+	// ローカル行列を計算
+	XMMATRIX S = DirectX::XMMatrixScaling(
+		local_extent_.x,
+		local_extent_.y,
+		local_extent_.z
+	);
+	XMMATRIX R = XMMatrixIdentity();
+
+	XMMATRIX T = DirectX::XMMatrixTranslation(
+		local_center_.x,
+		local_center_.y,
+		local_center_.z
+	);
+
+	XMMATRIX mat = S * R * T * transform_->matrix;
+
+	
 	// 半径にスケール適応
 	extent = Vector3::Scale(local_extent_ *0.5f, transform_->scale);
 	// オフセット適応
-	center = local_center_ + transform_->position;
-	auto test = local_quaternion_ * Vector3::forward;
+	center = mat.r[3];
 
 	// 回転適応
-	Quaternion q = transform_->quaternion * local_quaternion_;
+	Quaternion q = transform_->quaternion;
 	unidirectional[0] = Vector3::Normalize(Vector3(q * Vector3::right));
 	unidirectional[1] = Vector3::Normalize(Vector3(q * Vector3::up));
 	unidirectional[2] = Vector3::Normalize(Vector3(q * Vector3::forward));

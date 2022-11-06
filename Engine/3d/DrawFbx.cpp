@@ -64,7 +64,6 @@ void Renderer::DrawDeferred(Microsoft::WRL::ComPtr<ID3D12Device> dev, Microsoft:
 			// プリミティブ形状を設定
 			cmd_list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-			int subset_count = 0;
 			// サブセット単位で描画
 			for (const FbxResource::Subset &subset : mesh.subsets) {
 				// サブセット定数バッファビューを0番にセット
@@ -85,12 +84,13 @@ void Renderer::DrawDeferred(Microsoft::WRL::ComPtr<ID3D12Device> dev, Microsoft:
 				}
 
 				// シェーダリソースビューをセット
-				TextureManager::GetInstance()->SetGraphicsRootDescriptorTable(cmd_list.Get(), 3, subset.material->texture_id[subset_count]);
+				TextureManager::GetInstance()->SetGraphicsRootDescriptorTable(cmd_list.Get(), 3, subset.material->texture_id[0]);
+				TextureManager::GetInstance()->SetGraphicsRootDescriptorTable(cmd_list.Get(), 4, subset.material->texture_id[1]);
+				TextureManager::GetInstance()->SetGraphicsRootDescriptorTable(cmd_list.Get(), 5, subset.material->texture_id[2]);
 
 				//描画コマンド
 				cmd_list->DrawIndexedInstanced(subset.index_count, 1, subset.start_index, 0, 0);
 
-				++subset_count;
 			}
 
 		}
@@ -147,7 +147,7 @@ void Renderer::DrawForward(Microsoft::WRL::ComPtr<ID3D12Device> dev, Microsoft::
 			// プリミティブ形状を設定
 			cmd_list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-			// サブセット単位で描画
+			// サブセットで描画
 			for (const FbxResource::Subset &subset : mesh.subsets) {
 				// サブセット定数バッファビューを0番にセット
 				cmd_list->SetGraphicsRootConstantBufferView(2, subset.subset_constant_buffer_->GetGPUVirtualAddress());

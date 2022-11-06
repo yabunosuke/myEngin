@@ -168,7 +168,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\DirectX\AudioManager\AudioManager.cpp" />
-    <ClCompile Include="..\DirectX\Collision\BaseCollider.cpp" />
     <ClCompile Include="..\DirectX\DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="..\DirectX\Input\ControllerInput.cpp" />
     <ClCompile Include="..\DirectX\Object3d\ModelManager.cpp" />
@@ -187,6 +186,7 @@
     <ClCompile Include="Assets\Scripts\Enemy.cpp" />
     <ClCompile Include="Assets\Scripts\EnemyBase.cpp" />
     <ClCompile Include="Assets\Scripts\FlyEnemy.cpp" />
+    <ClCompile Include="Assets\Scripts\FlyEnemyEye.cpp" />
     <ClCompile Include="Assets\Scripts\Player.cpp" />
     <ClCompile Include="Collision\CheckCollision.cpp" />
     <ClCompile Include="Collision\Collision.cpp" />
@@ -325,6 +325,18 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="Assets\Shaders\SkyBoxPS.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\SkyBoxVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="Assets\Shaders\TilingPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
@@ -366,8 +378,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
-    <ClInclude Include="..\DirectX\Collision\BaseCollider.h" />
-    <ClInclude Include="..\DirectX\Collision\RaycastHit.h" />
     <ClInclude Include="..\DirectX\DirectXCommon\DirectXCommon.h" />
     <ClInclude Include="..\DirectX\Input\ControllerInput.h" />
     <ClInclude Include="..\DirectX\Object3d\ModelManager.h" />
@@ -387,6 +397,7 @@
     <ClInclude Include="Assets\Scripts\Enemy.h" />
     <ClInclude Include="Assets\Scripts\EnemyBase.h" />
     <ClInclude Include="Assets\Scripts\FlyEnemy.h" />
+    <ClInclude Include="Assets\Scripts\FlyEnemyEye.h" />
     <ClInclude Include="Assets\Scripts\Player.h" />
     <ClInclude Include="Collision\CheckCollision.h" />
     <ClInclude Include="Collision\Collision.h" />
@@ -449,6 +460,7 @@
     <None Include="Assets\Shaders\3d\DeferredShader.hlsli" />
     <None Include="Assets\Shaders\3d\GBuffer.hlsli" />
     <None Include="Assets\Shaders\PostEffect.hlsli" />
+    <None Include="Assets\Shaders\SkyBox.hlsli" />
     <None Include="Liner.hlsli" />
     <None Include="Sprite.hlsli" />
   </ItemGroup>

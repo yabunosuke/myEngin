@@ -16,6 +16,7 @@ enum class PlayerState
 
 	// ジャンプ
 	JUMP,
+	JUMP_DROP,	//ジャンプ後の落下
 
 	// 緊急回避
 	DODGE,
@@ -48,6 +49,7 @@ private:
 	void Walk(bool is_fixed);
 	void Dash(bool is_fixed);
 	void Jump(bool is_fixed);
+	void JumpDrop(bool is_fixed);
 	void Dodge(bool is_fixed);
 	void MeleeAttack1(bool is_fixed);
 

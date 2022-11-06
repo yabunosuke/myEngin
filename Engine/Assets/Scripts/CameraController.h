@@ -9,6 +9,7 @@ public:
     void Start() override;
     void FixedUpdate() override;
     void Update() override;
+    void Infomation() override;
 
 private:
     
@@ -17,7 +18,7 @@ private:
     GameObject *target_object_;
     Vector3 target_position_;
 
-    const float radius_distance_{ 100.0f };
+    float radius_distance_{ 2.0f };
     Vector3 rotate_axis_{0,1,0};
 };
 

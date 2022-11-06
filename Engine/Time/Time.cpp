@@ -1,5 +1,7 @@
 #include "Time.h"
 #include <thread>
+#include <ImGui/imgui.h>
+
 Time *Time::time_instance_ = nullptr;	// インスタンス
 
 
@@ -47,6 +49,8 @@ double Time::InstrumentationEnd()
     time_ += delta_time_;
     // 経過フレーム数増加
     ++frame_count_;
+
+
 
     return delta_time_;
 }

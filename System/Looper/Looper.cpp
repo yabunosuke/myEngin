@@ -13,14 +13,20 @@
 #include "Object/GameObject/GameObject.h"
 #include "Object/Component/Camera.h"
 #include "Object/Component/Light.h"
+#include "oldTexture.h"
 
-
+Sprite *sprite;
+int sprite_num;
 
 Looper::Looper() {
 	//最初のシーン
 	OnSceneChanged(Scenes::Title, false);
 	//KeyboardInput::GetIns()->Initialize();
 	Input::Initialize();
+
+	sprite_num = TextureManager::LoadTexture(DirectXCommon::dev.Get(), L"Assets/2d/Panorama-V01.png");
+	sprite = Sprite::Create(DirectXCommon::dev, sprite_num);
+
 }
 
 bool Looper::Loop()
@@ -101,8 +107,8 @@ bool Looper::Loop()
 	{
 		for (int i = 0; Time::GetInstance()->CheckFixedUpdate(); ++i)
 		{
-			scene_stack_.top()->FixedUpdate();
 
+			scene_stack_.top()->FixedUpdate();
 			// 当たり判定
 			CheckCollision::CheckColliders(scene_stack_.top()->GetObjectManager()->game_objects_);
 
@@ -134,6 +140,8 @@ bool Looper::Loop()
 	// ここまでの描画はマルチレンダーターゲットの対象
 
 	scene_stack_.top()->PreDrawPostEffect(DirectXCommon::dev,DirectXCommon::cmdList);				// ポストエフェクトの設定
+	// スカイボックス描画
+	sprite->Draw(DirectXCommon::dev, DirectXCommon::cmdList, "SkyBox");
 	scene_stack_.top()->DrawMulutiRenderTarget(DirectXCommon::dev, DirectXCommon::cmdList);		// ディファ―レンダリング描画
 	scene_stack_.top()->PostDrawPoseEffect(DirectXCommon::cmdList);								// 設定終了
 
@@ -141,8 +149,14 @@ bool Looper::Loop()
 	DirectXCommon::ResourceBarrierWriting();
 	DirectXCommon::ScreenClear();
 	
+
 	// ポストエフェクトの描画
 	scene_stack_.top()->DrawPostEffect(DirectXCommon::cmdList);
+
+	ImGui::Begin("fps");
+	float fps = 1.0f/static_cast<float>(Time::GetInstance()->time);
+	ImGui::DragFloat("FPS", &fps);
+	ImGui::End();
 	
 	imguiManager::GetIns()->Draw();
 	/*PrimitiveRenderer::GetInstance().DrawBox(

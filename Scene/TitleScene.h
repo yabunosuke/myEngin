@@ -1,6 +1,4 @@
 #pragma once
-#include "2d/Sprite.h"
-
 #include "Scene/AbstractScene/AbstractScene.h"
 #include <vector>
 #include <string>
@@ -12,5 +10,7 @@ public:
 	explicit TitleScene(IoChangedListener *impl);
 	void Initialize() override;
 	void Update() override;
+	void Draw() const override;
+
 };
 

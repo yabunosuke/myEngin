@@ -59,6 +59,10 @@ public:
 	void PostDrawPoseEffect(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list);
 
 	virtual void DrawPostEffect(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list);
+
+
+	void DrawSkyBox(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list);
+
 	/// <summary>
 	/// èIóπ
 	/// </summary>

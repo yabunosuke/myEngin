@@ -74,7 +74,6 @@ void AbstractScene::Draw() const
 	//カメラマネージャをセット
 	PipelineManager::GetInstance()->SetPipline(DirectXCommon::cmdList, "GBuffer");
 	CameraManager::BufferTransfer(DirectXCommon::cmdList, 0, 0);
-	//camera_manager_->BufferTransfer(DirectXCommon::cmdList, 0, 0);
 	// モデルを描画
 	Renderer::GetIns()->DrawDeferred(DirectXCommon::dev,DirectXCommon::cmdList);
 
@@ -127,6 +126,13 @@ void AbstractScene::PostDrawPoseEffect(Microsoft::WRL::ComPtr<ID3D12GraphicsComm
 void AbstractScene::DrawPostEffect(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list)
 {
 	post_effect_->DrawPostEffect(cmd_list);
+}
+
+void AbstractScene::DrawSkyBox(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list)
+{
+	PipelineManager::GetInstance()->SetPipline(cmd_list, "SkyBox");
+
+
 }
 
 void AbstractScene::Finalize()

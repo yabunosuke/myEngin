@@ -35,7 +35,6 @@ void TextureManager::SetGraphicsRootDescriptorTable(
 	// シェーダリソースビューをセット
 	cmd_list->SetGraphicsRootDescriptorTable(
 		root_param_index, textures_[texture_handle].gpu_desc_handle_SRV);
-
 }
 
 

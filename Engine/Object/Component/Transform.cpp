@@ -60,7 +60,7 @@ void Transform::Infomation()
     }
     
     // 座標
-    if(ImGui::DragFloat3("Position", (float *)&local_position_))
+    if(ImGui::DragFloat3("Position", (float *)&local_position_),0.2f)
     {
         UpdateMatrix();
 
@@ -68,7 +68,7 @@ void Transform::Infomation()
 
     // 回転
 	Vector3 euler = local_quaternion_.EulerAngles() * Mathf::rad_to_deg;
-    if (ImGui::DragFloat3("Rotation", &euler.x))
+    if (ImGui::DragFloat3("Rotation", &euler.x), 0.2f)
     {
         euler *= Mathf::deg_to_rad;
         local_quaternion_ = Quaternion::Euler(
@@ -77,7 +77,7 @@ void Transform::Infomation()
         UpdateMatrix();
     }
 	// スケール
-	if(ImGui::DragFloat3("Scale", (float *)&local_scale_))
+	if(ImGui::DragFloat3("Scale", (float *)&local_scale_), 0.2f)
     {
         UpdateMatrix();
 

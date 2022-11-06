@@ -10,6 +10,7 @@ class CameraManager;
 class Camera :
     public Component
 {
+	friend class CameraManager;
 public:
 	//===========================================
 	//
@@ -94,6 +95,8 @@ private:
 		DepthOnly,
 		DontColor
 	}clear_flag_;
+
+	uint32_t sky_box_image_handle_{0};
 	
 	XMFLOAT4 background_color_	{ 0,0,1,1 };	// ”wŒi‚ÌF
 

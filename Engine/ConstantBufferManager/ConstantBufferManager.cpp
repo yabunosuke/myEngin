@@ -12,7 +12,7 @@ ConstantBufferManager::ConstantBufferManager(ComPtr<ID3D12Device> dev)
 
     AddConstantBuffer(sizeof(CameraConstantBuffer),BufferName::Camera, dev);    // カメラバッファ
     AddConstantBuffer(sizeof(LightConstBufferData),BufferName::Light, dev);     // ライトバッファ
-
+    AddConstantBuffer(sizeof(SpriteDate), BufferName::Sprite, dev); // スプライト用
 
 	instance = this;
 }

@@ -50,7 +50,6 @@ namespace yEngine
         // 参照渡しオーバーロード
         ReferenceT *operator &()const
         {
-
             return &r_;
         }
 

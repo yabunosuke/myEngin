@@ -27,7 +27,8 @@ public:
 	void CreateGBufferPipline(ComPtr<ID3D12Device> dev);
 	// スプライト用パイプライン
 	void CreateSpriutePipline(ComPtr<ID3D12Device> dev, const std::string &pipline_name);
-
+	// スカイボックス用パイプライン
+	void CreateSkyBoxPipline(ComPtr<ID3D12Device> dev);
 	// ポストエフェクト用パイプライン
 	void CreatePostEffectPipline(ComPtr<ID3D12Device> dev, const std::string &pipline_name);
 	// マルチレンダーターゲット用パイプライン

@@ -1,7 +1,6 @@
 
 #include "GameObject.h"
 #include "ImGui/imguiManager.h"
-#include "BaseCollider.h"
 
 #include "Object/Component/Collider/Collider.h"
 #include "Object/Component/Behaviour/MonoBehaviour/MonoBehaviour.h"

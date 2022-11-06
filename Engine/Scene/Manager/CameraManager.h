@@ -10,6 +10,7 @@ public:
 		UINT rootparameta_index
 	);
 
+
 	Camera *main_camera_;
 	//オブジェクト
 	std::vector<Camera *> cameras_;

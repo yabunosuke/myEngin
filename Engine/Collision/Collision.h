@@ -12,13 +12,13 @@ public:
 	friend class CheckCollision;
 
 
-	// コライダーが衝突した相手のオブジェクト (ReadOnly)
+	// 衝突したオブジェクト情報 (ReadOnly)
 	yEngine::Property<GameObject*> gameObject
 	{
 		&game_object_,
 		yEngine::AccessorType::ReadOnly
 	};
-	// 衝突したコライダー (ReadOnly)
+	// 衝突したコライダー情報 (ReadOnly)
 	yEngine::Property<Collider *> collider
 	{
 		&collider_,

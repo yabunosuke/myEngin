@@ -1,4 +1,5 @@
 #include "SphereCollider.h"
+#include "Object/GameObject/GameObject.h"
 
 SphereCollider::SphereCollider(float radius, Vector3 center)
 {

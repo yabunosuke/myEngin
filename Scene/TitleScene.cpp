@@ -32,7 +32,7 @@ void TitleScene::Initialize()
 	// ƒJƒƒ‰
 	auto camera = GameObject::CreateObject("CameraObject");
 	camera->AddComponent<Camera>();
-	camera->transform_->localPosition = { 0,200,-400 };
+	camera->transform_->localPosition = { 0,10,-10 };
 	XMStoreFloat4(&camera->transform_->localQuaternion, XMQuaternionRotationRollPitchYaw(0, 0, 0));
 
 
@@ -52,6 +52,7 @@ void TitleScene::Initialize()
 	child_test->AddComponent<SphereCollider>();
 	child_test->AddComponent<Rigidbody>();
 	child_test->isStatic = true;
+
 }
 
 void TitleScene::Update()
@@ -62,6 +63,11 @@ void TitleScene::Update()
 	{
 		implSceneChanged->OnSceneChanged(Scenes::Game);
 	}
+}
+
+void TitleScene::Draw() const
+{
+	AbstractScene::Draw();
 }
 
 

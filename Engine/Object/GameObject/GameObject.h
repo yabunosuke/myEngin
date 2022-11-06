@@ -19,7 +19,6 @@
 //コンポーネント基底クラス
 #include "Object/Component/Component.h"
 
-
 #include "Property.h"
 
 class Collider;
@@ -265,7 +264,7 @@ private:
 	// MonoBehaviour
 	std::vector<MonoBehaviour*> mono_behaviours_;
 
-	bool active_self_;				// ローカルのアクティブ状態
+	bool active_self_{true};				// ローカルのアクティブ状態
 	// 非表示になっているか
 	bool isBlind;
 };

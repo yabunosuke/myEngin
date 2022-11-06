@@ -1,6 +1,7 @@
 #pragma once
 #include "Object/Component/Component.h"
-#include "BaseCollider.h"
+#include "Math/Mathf.h"
+#include "Math/Quaternion.h"
 #include <map>
 
 enum class CollisonType
@@ -62,6 +63,5 @@ protected:
 	// コライダーがトリガーかどうか
 	bool is_trigger_{ false };
 	CollisonType collision_type_ = CollisonType::None;
-
 };
 

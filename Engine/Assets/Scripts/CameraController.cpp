@@ -94,3 +94,8 @@ void CameraController::FixedUpdate()
 void CameraController::Update()
 {
 }
+
+void CameraController::Infomation()
+{
+	ImGui::DragFloat("Distance", &radius_distance_);
+}

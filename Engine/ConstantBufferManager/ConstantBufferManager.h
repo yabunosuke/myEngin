@@ -9,6 +9,7 @@ enum class BufferName
 	Test,
 	Light,
 	Camera,
+	Sprite,
 	MAX,
 };
 

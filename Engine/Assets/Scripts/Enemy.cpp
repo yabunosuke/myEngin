@@ -10,6 +10,7 @@ MonoBehaviour("Enemy")
 
 void Enemy::OnTriggerEnter(Collider &other)
 {
+	if (model_data_ == nullptr) return;
 	if (other.game_object_->name == "Weapon")
 	{
 		if(state != AnimationState::DEAD)
@@ -66,6 +67,7 @@ void Enemy::FixedUpdate()
 			state = AnimationState::FIGHT_IDOLE;
 			model_data_->PlayAnimation(static_cast<int>(state));
 		}
+
 	}
 
 
@@ -77,6 +79,7 @@ void Enemy::FixedUpdate()
 
 void Enemy::Update()
 {
+
 	if(destroy_timer_test_ >= 1.0f)
 	{
 		Destroy(this);

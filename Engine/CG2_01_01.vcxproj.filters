@@ -27,10 +27,15 @@
     <FxCompile Include="Assets\Shaders\3d\DeferredShaderVS.hlsl">
       <Filter>Shader\3d\GBuffer</Filter>
     </FxCompile>
+    <FxCompile Include="Assets\Shaders\SkyBoxPS.hlsl">
+      <Filter>Shader\3d</Filter>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\SkyBoxVS.hlsl">
+      <Filter>Shader\3d</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\DirectX\AudioManager\AudioManager.cpp" />
-    <ClCompile Include="..\DirectX\Collision\BaseCollider.cpp" />
     <ClCompile Include="..\DirectX\DirectXCommon\DirectXCommon.cpp" />
     <ClCompile Include="..\DirectX\Input\ControllerInput.cpp" />
     <ClCompile Include="..\DirectX\Object3d\ModelManager.cpp" />
@@ -207,11 +212,12 @@
     <ClCompile Include="PlayerBullet.cpp">
       <Filter>Asset\Drone</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\FlyEnemyEye.cpp">
+      <Filter>Asset\Enemy\FlyEnemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
-    <ClInclude Include="..\DirectX\Collision\BaseCollider.h" />
-    <ClInclude Include="..\DirectX\Collision\RaycastHit.h" />
     <ClInclude Include="..\DirectX\DirectXCommon\DirectXCommon.h" />
     <ClInclude Include="..\DirectX\Input\ControllerInput.h" />
     <ClInclude Include="..\DirectX\Object3d\ModelManager.h" />
@@ -398,6 +404,9 @@
     <ClInclude Include="PlayerBullet.h">
       <Filter>Asset\Drone</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\FlyEnemyEye.h">
+      <Filter>Asset\Enemy\FlyEnemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
@@ -408,6 +417,9 @@
     </None>
     <None Include="Assets\Shaders\3d\DeferredShader.hlsli">
       <Filter>Shader\3d\GBuffer</Filter>
+    </None>
+    <None Include="Assets\Shaders\SkyBox.hlsli">
+      <Filter>Shader\3d</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

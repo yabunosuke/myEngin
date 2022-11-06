@@ -14,10 +14,9 @@ void FlyEnemy::OnCollisionEnter(Collision &collision)
 
 void FlyEnemy::OnTriggerEnter(Collider &other)
 {
-
-	if ((other.game_object_->name == "Weapon") && other.game_object_->name == "FlyEnemy")
+	if ((other.game_object_->tag == "Weapon"))
 	{
-		transform_->scale = transform_->scale - Vector3{ 2,2,2 };
+		transform_->scale = transform_->scale - Vector3{ 20.0f,20.0f ,20.0f };
 		--hp_;
 		if (hp_ < 0.0f)
 		{
@@ -25,33 +24,14 @@ void FlyEnemy::OnTriggerEnter(Collider &other)
 		}
 	}
 
-	if ((other.game_object_->name == "Bullet") && other.game_object_->name == "FlyEnemy")
-	{
-		transform_->scale = transform_->scale - Vector3{ 2,2,2 };
-		--hp_;
-		if (hp_ < 0.0f)
-		{
-			Destroy(game_object_);
-		}
-	}
-
-
-
 }
 
-void FlyEnemy::OnTriggerStay(Collider &other)
-{
-	if (other.game_object_->name.r_ == "Player")
-	{
-		transform_->LookAt(other.game_object_->transform_->position);
-	}
-}
 
 void FlyEnemy::Start()
 {
 	regidbody_ =
 		game_object_->GetComponent<Rigidbody>();
-	transform_->scale = { 20,20,20 };
+	transform_->scale = { 100.0f,100.0f ,100.0f };
 }
 
 void FlyEnemy::FixedUpdate()

@@ -1,6 +1,9 @@
 #pragma once
 #include <DirectXMath.h>
-
+struct SpriteDate {
+	DirectX::XMFLOAT4 color; //色(RGBA)
+	DirectX::XMMATRIX mat;	//3D変換行列
+};
 
 // 定数バッファ用データ構造体
 struct TestBuffer {
