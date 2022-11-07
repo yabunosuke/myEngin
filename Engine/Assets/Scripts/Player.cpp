@@ -28,11 +28,6 @@ void PlayerController::OnCollisionEnter(Collision &collision)
 {
 	if (Vector3::Dot(collision.contactPoint->normal,{0,1,0}) >= 0.8f)
 	{
-		if (player_state_ == PlayerState::JUMP)
-		{
-			player_state_ = PlayerState::IDOLE;
-		}
-		can_jump_ = true;
 
 	}
 }
@@ -44,23 +39,9 @@ void PlayerController::OnCollisionStay(Collision &collision)
 		if(player_state_ == PlayerState::JUMP_DROP)
 		{
 			player_state_ = PlayerState::IDOLE;
+			can_jump_ = true;
 		}
-		can_jump_ = true;
 	}
-	//{
-	//	//Vector3 penalty = collision.gameObject.r_->transform_->position.r_ - transform_->position.r_;
-	//	//transform_->position = {
-	//	//	transform_->position.r_.x,
-	//	//	transform_->position.r_.y + penalty.y,
-	//	//	//collision.gameObject.r_->transform_->position.r_.y /*+ dynamic_cast<SphereCollider*>(collision.collider.r_)->radius*/,
-	//	//	transform_->position.r_.z};
-	//	//if(player_state_ == PlayerState::JUMP)
-	//	{
-	//		player_state_ = PlayerState::IDOLE;
-	//	}
-	//	can_jump_ = true;
-
-	//}
 }
 
 void PlayerController::Start()
@@ -306,7 +287,7 @@ void PlayerController::Jump(bool is_fixed)
 	{
 		if (can_jump_)
 		{
-			regidbody_->AddForce(Vector3::up * 2.0f, ForceMode::Impulse);
+			regidbody_->AddForce(Vector3::up * 3.0f, ForceMode::Impulse);
 			can_jump_ = false;
 			model_data_->PlayAnimation(static_cast<int>(AnimationState::Jump),false);
 		}
@@ -342,7 +323,7 @@ void PlayerController::Jump(bool is_fixed)
 		}
 		transform_->LookAt(target_position);
 
-		if (regidbody_->velocity->y < 0.0f)
+		if (regidbody_->velocity->y <= Mathf::epsilon)
 		{
 			player_state_ = PlayerState::JUMP_DROP;
 		}

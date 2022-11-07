@@ -45,7 +45,7 @@ public:
 		Collision &collision_b
 	);
 	// ì_Ç…ëŒÇ∑ÇÈOBBÇÃç≈ãﬂê⁄ì_
-	static void ClosestPtPoint2OBB(const Vector3 &point, const yEngine::OBB &obb, Vector3 &closest_point);
+	static void ClosestPtPoint2OBB(const Vector3 &point, const yEngine::OBB &obb, Vector3 &closest_point,Vector3 &normal);
 	// Sphere to OBB
 	static bool Sphere2OBB(
 		bool is_trigger,

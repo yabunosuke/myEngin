@@ -16,7 +16,7 @@ void SphereCollider::ComponentInitialize()
 
 void SphereCollider::ComponentUpdate()
 {
-	radius = local_radius_ * Mathf::Max(
+	radius = local_radius_ / 2.0f * Mathf::Max(
 		transform_->scale->x,
 		transform_->scale->y,
 		transform_->scale->z

@@ -68,6 +68,10 @@ namespace yEngine
             }
         }
 
+        ReferenceT operator -() const
+        {
+            return get_ ? -this->get_() : -r_;
+        }
         ReferenceT operator +(const ReferenceT &v) const
         {
             return get_ ? this->get_() + v : r_ + v;

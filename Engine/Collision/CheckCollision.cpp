@@ -379,12 +379,12 @@ bool CheckCollision::Sphere2Sphere(
 	return is_hit;
 }
 
-void CheckCollision::ClosestPtPoint2OBB(const Vector3 &point, const yEngine::OBB &obb, Vector3 &closest_point)
+void CheckCollision::ClosestPtPoint2OBB(const Vector3 &point, const yEngine::OBB &obb, Vector3 &closest_point,Vector3 &normal)
 {
 	Vector3 d = point - obb.center;
 
 	closest_point = obb.center;
-
+	float max{0.0f};
 	// 各軸に対して
 	for(int i = 0;i < 3;++i)
 	{
@@ -393,13 +393,26 @@ void CheckCollision::ClosestPtPoint2OBB(const Vector3 &point, const yEngine::OBB
 		// ボックスの範囲よりも距離が大きい場合、ボックスまでクランプ
 		if(dist >obb.extent[i])
 		{
+			if (max < dist)
+			{
+				max = dist;
+				normal = obb.unidirectional[i];
+			}
 			dist = obb.extent[i];
-		}
-		if(dist < -obb.extent[i])
-		{
-			dist = -obb.extent[i];
+
 		}
 
+
+		if(dist < -obb.extent[i])
+		{
+			if (max < -dist)
+			{
+				max = dist;
+				normal = -obb.unidirectional[i];
+			}
+			dist = -obb.extent[i];
+
+		}
 		closest_point += dist * obb.unidirectional[i];
 	}
 }
@@ -418,66 +431,49 @@ bool CheckCollision::Sphere2OBB(
 	Vector3 &closest_point
 )
 {
-	ClosestPtPoint2OBB(sphere.center, obb, closest_point);
-
+	bool is_hit{false};
+	Vector3 normal{ 0,0,0 };
+	ClosestPtPoint2OBB(sphere.center, obb, closest_point,normal);
+	
 	Vector3 v = closest_point - sphere.center;
 
-	bool is_hit = Vector3::Dot(v, v) <= sphere.radius * sphere.radius;
+	is_hit = Vector3::Dot(v, v) <= sphere.radius * sphere.radius;
 
 	// トリガーなら処理を中断
 	if (is_trigger) return is_hit;
 
 	if (is_hit)
 	{
-		// 最近接点
-		Vector3 recently_contact_sphere		// AオブジェクトのBに最も近い点
+		collision_sphere.contact_point_.point = closest_point;
+		Vector3 closent_obb_2_radius{};
+		if(Vector3::Dot(closest_point - sphere.center,normal) <= 0.0f)
 		{
-			(closest_point - sphere.center).Normalized() * sphere.radius + sphere.center
-		};
-		Vector3 recently_contact_obb		// BオブジェクトのAに最も近い点
-		{
-			closest_point
-		};
+			// 侵入度
 
-		if (!isfinite(recently_contact_sphere.Magnitude()))
-		{
-			recently_contact_sphere = Vector3::zero;
+			//球から衝突点
+			closent_obb_2_radius =
+				(closest_point - sphere.center).Normalized() * sphere.radius + sphere.center;
+			intrusion_obb = closent_obb_2_radius - closest_point;
+			intrusion_sphere = closest_point - closent_obb_2_radius;
+			
 		}
-		if (!isfinite(recently_contact_obb.Magnitude()))
+		else
 		{
-			recently_contact_obb = Vector3::zero;
-		}
 
-		// 侵入度
-		intrusion_sphere = (recently_contact_obb - recently_contact_sphere);
-		intrusion_obb = (recently_contact_sphere - recently_contact_obb);
+			//球から衝突点
+			closent_obb_2_radius =
+				( sphere.center - closest_point).Normalized() * sphere.radius + sphere.center;
+			intrusion_obb = closent_obb_2_radius - closest_point;
+			intrusion_sphere = closest_point - closent_obb_2_radius;
+
+		}
 
 		// 衝突法線
-		Vector3 hitvec{ (sphere.center- closest_point).Normalized()};
-		float max{0.0f};
-		Vector3 normal{0,0,0};
-		for (int i = 0; i < 3;++i)
-		{
-			float temp = Vector3::Dot(hitvec, obb.unidirectional[i]);
-			if (max < temp)
-			{
-				max = temp;
-				normal = obb.unidirectional[i];
-			}
-		}
-		for (int i = 0; i < 3; ++i)
-		{
-			float temp = Vector3::Dot(hitvec, -obb.unidirectional[i]);
-			if (max < temp)
-			{
-				max = temp;
-				normal = -obb.unidirectional[i];
-			}
-		}
+		
 
 
 		collision_sphere.contact_point_.normal = normal;
-		collision_obb.contact_point_.normal = (closest_point - sphere.center).Normalized();
+		collision_obb.contact_point_.normal = (closent_obb_2_radius - sphere.center).Normalized();
 
 
 	}
@@ -710,6 +706,13 @@ void CheckCollision::HitResponse(
 	Collision &collision_data_b
 	)
 {
+
+
+
+	//// めり込み量確認
+	//if (intrusion_a.Magnitude() <= 0.05f) return;
+	//// めり込み量確認
+	//if (intrusion_b.Magnitude() <= 0.05f) return;
 	
 	// 一番上のオブジェクトのトランスフォームを変化させる
 	GameObject *top_parent_a{ object_a->top };
@@ -752,13 +755,9 @@ void CheckCollision::HitResponse(
 	Vector3 penalty_a;
 	Vector3 penalty_b;
 
-	float k{ 0.95f };
-	float d{ -0.95f };
-
-	if (intrusion_a.Magnitude() < 0.2f)
-	{
-		return;
-	}
+	float k{ 0.9f };
+	float d{ 1.0f };
+	
 
 	// どちらも動く場合
 	if (!is_static_a && !is_static_b)
@@ -785,49 +784,72 @@ void CheckCollision::HitResponse(
 		Vector3 r = Vector3::Scale(rigidbody_a->velocity, intrusion_a.Normalized());
 		if (Vector3::Dot(r, rigidbody_a->velocity) > 0.0f)
 		{
-			r *= d;
+			r *= -d;
 		}
 		else
 		{
-			r *= -d;
+			r *= d;
 		}
 		penalty_a = intrsion + r;
+		rigidbody_a->velocity += penalty_a;
 
 	}
 	// bだけ動的な場合
 	else if (is_static_a && !is_static_b)
 	{
-		penalty_a = { 0,0,0 };
-		auto intrsion = intrusion_b * k;
-		Vector3 r = Vector3::Scale(rigidbody_b->velocity, intrusion_b.Normalized());
-		if (Vector3::Dot(r, rigidbody_b->velocity) > 0.0f)
+		// めり込み量確認
+		if (intrusion_b.Magnitude() <= Mathf::epsilon)
 		{
-			r *= d;
+			return;
 		}
-		else
+		if(Vector3::Dot(rigidbody_b->velocity->Normalized(), collision_data_b.contactPoint->normal)>=0.0f)
 		{
-			r *= -d;
+			return;
 		}
-		penalty_b = intrsion + r;
+		// めり込みが一定以上ならペナルティを課す
+		float K{ 1.0f };
+		float B{ 1.0f };
+		Vector3 d{ intrusion_b };
+		Vector3 relative_velocity{ Vector3::Scale(-rigidbody_b->velocity,collision_data_b.contactPoint->normal) };
+
+
+		penalty_b = K * d + B * relative_velocity;
+		rigidbody_b->velocity += penalty_b;
+
+		// 跳ね返りベクトル
+		/*Vector3 reflect {Vector3::Reflect(rigidbody_b->velocity,collision_data_b.contactPoint->normal) };
+		rigidbody_b->velocity = reflect;*/
+
+		//	Vector3 normal{ intrusion_b.Normalized() };
+	//	Vector3 v12{ rigidbody_b->velocity };
+
+
+	//	auto intrsion = intrusion_b;// *k;
+	//	Vector3 n = intrusion_b.Normalized();
+	//	Vector3 r = Vector3::Scale(rigidbody_b->velocity, n);
+	//	if (Vector3::Dot(r, rigidbody_b->velocity) > 0.0f)
+	//	{
+	//		r *= -d;
+	//	}
+	//	else
+	//	{
+	//		r *= d;
+	//	}
+
+	//	penalty_b = intrsion + r;
+	//	rigidbody_b->velocity += penalty_b;
 
 	}
 
 	
-	if (rigidbody_a)
+	/*if (rigidbody_a)
 	{
-		if (penalty_a.Magnitude() > 0.1f)
-		{
-			rigidbody_a->velocity += penalty_a;
-
-		}
+		rigidbody_a->velocity += penalty_a;
 	}
 	if (rigidbody_b)
 	{
-		if (penalty_b.Magnitude() > 0.1f)
-		{
-			rigidbody_b->velocity += penalty_b;
-		}
-	}
+		rigidbody_b->velocity += penalty_b;
+	}*/
 
 }
 

@@ -26,6 +26,6 @@ public:
 
 private:
     Vector3 local_center_{ 0,0,0 };   // ローカルの中央
-    float local_radius_{1.0f};  // ローカルの半径
+    float local_radius_{1.0f};  // ローカルの直径
 };
 
