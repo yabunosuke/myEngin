@@ -16,7 +16,7 @@ void FlyEnemy::OnTriggerEnter(Collider &other)
 {
 	if ((other.game_object_->tag == "Weapon"))
 	{
-		transform_->scale = transform_->scale - Vector3{ 20.0f,20.0f ,20.0f };
+		transform_->scale = transform_->scale - Vector3{ 5.0f,5.0f ,5.0f };
 		--hp_;
 		if (hp_ < 0.0f)
 		{
@@ -31,7 +31,7 @@ void FlyEnemy::Start()
 {
 	regidbody_ =
 		game_object_->GetComponent<Rigidbody>();
-	transform_->scale = { 100.0f,100.0f ,100.0f };
+	transform_->scale = { 50.0f,50.0f ,50.0f };
 }
 
 void FlyEnemy::FixedUpdate()

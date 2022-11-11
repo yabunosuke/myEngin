@@ -46,7 +46,8 @@ void PlayerController::OnCollisionStay(Collision &collision)
 
 void PlayerController::Awake()
 {
-	transform_->position = { 0.0f,0.0f,0.0f };
+	transform_->position = { 0.0f,0.0f,20.0f };
+	transform_->quaternion = Quaternion::Euler(0, 180.0f * Mathf::deg_to_rad, 0);
 }
 
 void PlayerController::Start()

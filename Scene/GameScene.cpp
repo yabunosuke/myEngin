@@ -68,19 +68,22 @@ void GameScene::Initialize()
 
 	for (int i = 0; i < 2; ++i)
 	{
-		for (int j = 0; j < 2; ++j)
+		auto pillar_big = GameObject::CreateObject("Pillar big");
+		pillar_big->tag = "Pillar";
+		pillar_big->isStatic = true;
+		pillar_big->AddComponent<Object3dComponent>(
+			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+			"Assets/3d/Dungeon/fbx walls/pillar_big.fbx");
+		pillar_big->AddComponent<OBBCollider>(Quaternion{ 0,0,0,0 }, Vector3{ 1.0f,4.5f,1.0f }, Vector3{ 0,2.25f,0 });
+		if (i == 0)
 		{
-			if (i == 0 && j == 0)continue;;
-			auto pillar_big = GameObject::CreateObject("Pillar big");
-			pillar_big->tag = "Pillar";
-			pillar_big->isStatic = true;
-			pillar_big->AddComponent<Object3dComponent>(
-				DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-				"Assets/3d/Dungeon/fbx walls/pillar_big.fbx");
-			pillar_big->AddComponent<OBBCollider>(Quaternion{ 0,0,0,0 }, Vector3{ 1.0f,4.5f,1.0f }, Vector3{ 0,2.25f,0 });
-			pillar_big->transform_->position = { i * 40.0f / 3.0f,-0.2f,j * 40.0f / 3.0f }; 
+			pillar_big->transform_->position = { -2.0f,0,6.0f };
 		}
-	
+		else
+		{
+			pillar_big->transform_->position = { 2.0f,0,6.0f };
+
+		}
 	}
 
 	for (int i = 0; i < 2; ++i)
@@ -122,20 +125,71 @@ void GameScene::Initialize()
 			"Assets/3d/Dungeon/fbx walls/Wall.fbx");
 	}
 
+	float buf[2]{ -2.0f,2.0f };
 	for (int i = 0; i < 2; ++i)
 	{
-		auto wall = GameObject::CreateObject("Wall Small");
+		auto wall = GameObject::CreateObject("Wall");
 		wall->AddComponent<OBBCollider>(Quaternion{ 0,0,0,0 }, Vector3{ 0.5f,4.5f,6.0f }, Vector3{ 0.25f,2.25f,-3 });
 		wall->isStatic = true;
-		wall->transform_->position = { i * 6.0f,-0.2f,6.0 };
+		wall->transform_->position = { i * 6.0f + buf[i],-0.2f,6.0};
 		wall->transform_->quaternion = Quaternion::Euler(0, 90.0f * Mathf::deg_to_rad, 0);
 		wall->tag = "Wall";
 		wall->isStatic = true;
 		wall->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-			"Assets/3d/Dungeon/fbx walls/wall_small.fbx");
+			"Assets/3d/Dungeon/fbx walls/wall.fbx");
 	}
 
+	auto road_one = GameObject::CreateObject("corner_one");
+	int buf_z{ 0 };
+	for (int i = 0; i < 6; ++i)
+	{
+		if (i % 2 == 0)
+		{
+			++buf_z;
+
+
+			auto floor2_big = GameObject::CreateObject("Floor2 big");
+			floor2_big->AddComponent<Object3dComponent>(
+				DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+				"Assets/3d/Dungeon/fbx walls/floor2_big.fbx");
+			floor2_big->AddComponent<OBBCollider>(Quaternion{ 0.0f,0.0f,0.0f,0.0f }, Vector3{ 6.0f,1.0f,6.0f }, Vector3{ -3.0f,-0.5f,-3.0f });
+			floor2_big->transform_->position = { 3.0f,0.0f, 12.0f + 6.0f * (buf_z - 1) };
+			floor2_big->SetParent(floors);
+
+		}
+		auto wall = GameObject::CreateObject("Wall");
+		wall->AddComponent<OBBCollider>(Quaternion{ 0,0,0,0 }, Vector3{ 0.5f,4.5f,6.0f }, Vector3{ 0.25f,2.25f,-3 });
+		wall->isStatic = true;
+		if (i < 3)
+		{
+			wall->transform_->position = { buf[0],-0.2f,6.0f * i + 6.0f };
+			wall->transform_->quaternion = Quaternion::Euler(0, 180.0f * Mathf::deg_to_rad, 0);
+		}
+		else
+		{
+			wall->transform_->position = { buf[1],-0.2f,6.0f * (i - 3) + 12.0f };
+		}
+		wall->tag = "Wall";
+		wall->isStatic = true;
+		wall->AddComponent<Object3dComponent>(
+			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+			"Assets/3d/Dungeon/fbx walls/wall.fbx");
+		wall->SetParent(road_one);
+		
+	}
+
+	auto wall = GameObject::CreateObject("Wall");
+	wall->AddComponent<OBBCollider>(Quaternion{ 0,0,0,0 }, Vector3{ 0.5f,4.5f,6.0f }, Vector3{ 0.25f,2.25f,-3 });
+	wall->isStatic = true;
+	wall->transform_->position = { 4.0f,-0.2f,24.0 };
+	wall->transform_->quaternion = Quaternion::Euler(0, 90.0f * Mathf::deg_to_rad, 0);
+	wall->tag = "Wall";
+	wall->isStatic = true;
+	wall->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/Dungeon/fbx walls/wall.fbx");
+	wall->SetParent(road_one);
 
 	// プレイヤー
 	auto player = GameObject::CreateObject("Player");
@@ -153,7 +207,17 @@ void GameScene::Initialize()
 	ligh_info->intensity = 1.0f;
 	player_light->SetParent(player);
 
-	XMStoreFloat4(&player->transform_->localQuaternion, XMQuaternionRotationRollPitchYaw(0, 0, 0));
+
+
+	auto enemy = GameObject::CreateObject("Enemy");
+	enemy->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/Dwarf/Dwarf.fbx");
+	auto enemy_rg = enemy->AddComponent<Rigidbody>();
+	enemy_rg->useGravity = true;
+	enemy->AddComponent<Enemy>();
+	enemy->transform_->position = { 0.0f,1.0f,0.0f };
+	enemy->AddComponent<SphereCollider>(1, Vector3{ 0,0.5f,0 });
 
 	auto eye = GameObject::CreateObject("Eye");
 	eye->transform_->localPosition = {0, 1.4f, 0.0f};
@@ -165,17 +229,8 @@ void GameScene::Initialize()
 		"Assets/3d/Drone/drone.fbx");
 	drone->AddComponent<Drone>(&player->transform_->position.r_);
 
-	/*auto enemy = GameObject::CreateObject("Enemy");
-	enemy->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/Dwarf/Dwarf.fbx");
-	enemy->AddComponent<SphereCollider>(1, Vector3{ 0,0.7f,0 });
-	auto enemy_rg = enemy->AddComponent<Rigidbody>();
-	enemy_rg->useGravity = true;
-	enemy->transform_->position = { 8.0f,0.0f,6.0f };
-	enemy->AddComponent<Enemy>();*/
 
-	/*srand(time(NULL));
+	srand(time(NULL));
 	for (int i = 0; i < 3; ++i)
 	{
 		auto fly_enemy = GameObject::CreateObject("FlyEnemy");
@@ -195,12 +250,12 @@ void GameScene::Initialize()
 		auto collider_eye = enemy_eye->AddComponent<SphereCollider>(4, Vector3{ 0,2,0 });
 		collider_eye->isTrigger = true;
 		enemy_eye->SetParent(fly_enemy);
-	}*/
+	}
 
 	// カメラ
 	auto camera = GameObject::CreateObject("CameraObject");
 	camera->AddComponent<Camera>();
-	camera->transform_->localPosition = { 0,200,-400 };
+	camera->transform_->localPosition = { 0,10,26 };
 	XMStoreFloat4(&camera->transform_->localQuaternion, XMQuaternionRotationRollPitchYaw(0, 0, 0));
 	camera->AddComponent<CameraController>(eye);
 	//camera->SetParent(eye);
