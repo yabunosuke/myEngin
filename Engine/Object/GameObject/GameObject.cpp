@@ -241,6 +241,7 @@ void GameObject::RemoveCollider(Collider *collider)
 
 void GameObject::AddMonoBehaviour(MonoBehaviour *monobehaviour)
 {
+	monobehaviour->Awake();
 	mono_behaviours_.emplace_back(monobehaviour);
 }
 

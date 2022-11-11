@@ -4,8 +4,7 @@
 #include "Time/Time.h"
 
 Rigidbody::Rigidbody() :
-	Component("Rigidbody", ComponentType::RigitBody),
-	velocity_({ 0.0f,0.0f,0.0f })
+	Component("Rigidbody", ComponentType::RigitBody)
 {
 	
 }

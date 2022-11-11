@@ -39,11 +39,23 @@ public:
 	void OnCollisionEnter(Collision& collision) override;
 	void OnCollisionStay(Collision& collision) override;
 
+	void Awake() override;
 	void Start() override;
     void FixedUpdate() override;
     void Update() override;
 
 private:
+	yEngine::Property<PlayerState> playerState
+	{
+		&player_state_,
+		yEngine::AccessorType::AllAccess,
+		nullptr,
+		[&](PlayerState next_state)
+		{
+			player_state_ = next_state;
+			(this->*state_update_[next_state])(false);
+		}
+	};
 	PlayerState player_state_ = PlayerState::IDOLE;
 	void Idole(bool is_fixed);
 	void Walk(bool is_fixed);

@@ -8,7 +8,7 @@
 #include "AudioManager.h"
 #include "ModelManager.h"			//ƒ‚ƒfƒ‹
 #include "ImGui/imguiManager.h"
-#include "oldTexture.h"
+#include "Texture.h"
 #include  "PrimitiveRenderer.h"
 #include "PipelineManager.h"
 

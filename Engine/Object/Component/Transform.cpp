@@ -68,7 +68,7 @@ void Transform::Infomation()
 
     // ‰ñ“]
 	Vector3 euler = local_quaternion_.EulerAngles() * Mathf::rad_to_deg;
-    if (ImGui::DragFloat3("Rotation", &euler.x), 0.2f)
+    if (ImGui::DragFloat3("Rotation", (float *)&euler), 0.2f)
     {
         euler *= Mathf::deg_to_rad;
         local_quaternion_ = Quaternion::Euler(

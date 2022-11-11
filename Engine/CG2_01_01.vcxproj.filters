@@ -52,7 +52,6 @@
     <ClCompile Include="Object3dComponent.cpp" />
     <ClCompile Include="PipelineManager.cpp" />
     <ClCompile Include="PrimitiveRenderer.cpp" />
-    <ClCompile Include="oldTexture.cpp" />
     <ClCompile Include="3d\Fbx\Fbx.cpp">
       <Filter>3dオブジェクト\FBX</Filter>
     </ClCompile>
@@ -215,6 +214,9 @@
     <ClCompile Include="Assets\Scripts\FlyEnemyEye.cpp">
       <Filter>Asset\Enemy\FlyEnemy</Filter>
     </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>ResourceManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -234,7 +236,6 @@
     <ClInclude Include="Object3dComponent.h" />
     <ClInclude Include="PipelineManager.h" />
     <ClInclude Include="PrimitiveRenderer.h" />
-    <ClInclude Include="oldTexture.h" />
     <ClInclude Include="3d\Fbx\Fbx.h">
       <Filter>3dオブジェクト\FBX</Filter>
     </ClInclude>
@@ -407,6 +408,12 @@
     <ClInclude Include="Assets\Scripts\FlyEnemyEye.h">
       <Filter>Asset\Enemy\FlyEnemy</Filter>
     </ClInclude>
+    <ClInclude Include="Object\GameObject\Layer.h">
+      <Filter>Object\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>ResourceManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
@@ -545,6 +552,9 @@
     </Filter>
     <Filter Include="Object\Component\Collider\OBBCollider">
       <UniqueIdentifier>{263bddcc-a9e2-434b-b5f4-5de3c9cab0bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourceManager">
+      <UniqueIdentifier>{666a3a27-8557-42c3-bfc3-e8d2b576eec9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

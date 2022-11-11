@@ -234,7 +234,7 @@
     <ClCompile Include="PrimitiveRenderer.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene\AbstractScene\AbstractScene.cpp" />
-    <ClCompile Include="oldTexture.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Scene\Manager\CameraManager.cpp" />
     <ClCompile Include="Scene\Manager\GameObjectManager.cpp" />
     <ClCompile Include="Scene\Manager\LightManager.cpp" />
@@ -439,6 +439,7 @@
     <ClInclude Include="Object\Component\Rigidbody.h" />
     <ClInclude Include="Object\Component\Transform.h" />
     <ClInclude Include="Object\GameObject\GameObject.h" />
+    <ClInclude Include="Object\GameObject\Layer.h" />
     <ClInclude Include="Object\Material\Material.h" />
     <ClInclude Include="Object\Mesh\Mesh.h" />
     <ClInclude Include="Object\Object.h" />
@@ -448,7 +449,7 @@
     <ClInclude Include="Property.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene\AbstractScene\AbstractScene.h" />
-    <ClInclude Include="oldTexture.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Scene\Manager\CameraManager.h" />
     <ClInclude Include="Scene\Manager\GameObjectManager.h" />
     <ClInclude Include="Scene\Manager\LightManager.h" />

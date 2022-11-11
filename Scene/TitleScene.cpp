@@ -33,8 +33,7 @@ void TitleScene::Initialize()
 	auto camera = GameObject::CreateObject("CameraObject");
 	camera->AddComponent<Camera>();
 	camera->transform_->localPosition = { 0,10,-10 };
-	XMStoreFloat4(&camera->transform_->localQuaternion, XMQuaternionRotationRollPitchYaw(0, 0, 0));
-
+	camera->transform_->localQuaternion = Quaternion::Euler(0, 0, 0);
 
 	auto title = GameObject::CreateObject("Title");
 	title->AddComponent<Object3dComponent>(

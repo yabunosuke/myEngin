@@ -92,7 +92,7 @@ public:
 	/// <summary>
 	/// タイプ（AllAccess）
 	/// </summary>
-	yEngine::Property<LightType> type
+	yEngine::Property<LightType> lighttype
 	{
 		nullptr,
 		yEngine::AccessorType::AllAccess,

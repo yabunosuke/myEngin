@@ -1,6 +1,6 @@
 #include "FbxResource.h"
 #include <filesystem>
-#include "oldTexture.h"
+#include "Texture.h"
 
 inline DirectX::XMFLOAT4X4 ToXMFLOAT4x4(const FbxAMatrix& fbxamatrix)
 {

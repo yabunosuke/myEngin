@@ -36,20 +36,21 @@ void PlayerController::OnCollisionStay(Collision &collision)
 {
 	if (Vector3::Dot(collision.contactPoint->normal,Vector3::up) >=0.8f)
 	{
-		if(player_state_ == PlayerState::JUMP_DROP)
+		if(playerState == PlayerState::JUMP_DROP)
 		{
-			player_state_ = PlayerState::IDOLE;
+			playerState = PlayerState::IDOLE;
 			can_jump_ = true;
 		}
 	}
 }
 
+void PlayerController::Awake()
+{
+	transform_->position = { 0.0f,0.0f,0.0f };
+}
+
 void PlayerController::Start()
 {
-
-	transform_->position = { 0.0f,10.0f,0.0f };
-
-
 	// リジッド
 	regidbody_ = 
 		game_object_->GetComponent<Rigidbody>();
@@ -60,7 +61,7 @@ void PlayerController::Start()
 
 void PlayerController::FixedUpdate()
 {
-	(this->*state_update_[player_state_])(true);
+	(this->*state_update_[playerState])(true);
 
 }
 
@@ -70,7 +71,7 @@ void PlayerController::Update()
 	input_horizontal_ = Input::GetAxis(GamePadAxis::AXIS_LX);
 	input_vertical_ = -Input::GetAxis(GamePadAxis::AXIS_LY);
 
-	(this->*state_update_[player_state_])(false);
+	(this->*state_update_[playerState])(false);
 	
 }
 
@@ -87,7 +88,7 @@ void PlayerController::Idole(bool is_fixed)
 			input_vertical_ != 0.0f
 			)
 		{
-			player_state_ = PlayerState::WALK;
+			playerState = PlayerState::WALK;
 			return;
 		}
 
@@ -96,7 +97,7 @@ void PlayerController::Idole(bool is_fixed)
 			Input::GetButtonPressTrigger(GamePadButton::INPUT_X)
 			)
 		{
-			player_state_ = PlayerState::MELEE_ATTACK_1;
+			playerState = PlayerState::MELEE_ATTACK_1;
 			return;
 		}
 
@@ -106,7 +107,7 @@ void PlayerController::Idole(bool is_fixed)
 			can_jump_
 			)
 		{
-			player_state_ = PlayerState::JUMP;
+			playerState = PlayerState::JUMP;
 			return;
 		}
 	}
@@ -127,7 +128,7 @@ void PlayerController::Walk(bool is_fixed)
 			input_vertical_ == 0.0f
 			)
 		{
-			player_state_ = PlayerState::IDOLE;
+			playerState = PlayerState::IDOLE;
 			return;
 		}
 
@@ -136,7 +137,7 @@ void PlayerController::Walk(bool is_fixed)
 			Input::GetButtonPressTrigger(GamePadButton::INPUT_X)
 			)
 		{
-			player_state_ = PlayerState::MELEE_ATTACK_1;
+			playerState = PlayerState::MELEE_ATTACK_1;
 			return;
 		}
 		
@@ -145,7 +146,7 @@ void PlayerController::Walk(bool is_fixed)
 			Input::GetAxis(GamePadAxis::AXIS_LZ) < 0.0f
 			)
 		{
-			player_state_ = PlayerState::DODGE;
+			playerState = PlayerState::DODGE;
 
 		}
 
@@ -155,7 +156,7 @@ void PlayerController::Walk(bool is_fixed)
 			can_jump_
 			)
 		{
-			player_state_ = PlayerState::JUMP;
+			playerState = PlayerState::JUMP;
 			return;
 		}
 
@@ -215,7 +216,7 @@ void PlayerController::Dash(bool is_fixed)
 			( input_horizontal_ != 0.0f || input_vertical_ != 0.0f )
 			)
 		{
-			player_state_ = PlayerState::WALK;
+			playerState = PlayerState::WALK;
 			return;
 		}
 
@@ -223,7 +224,7 @@ void PlayerController::Dash(bool is_fixed)
 		if (input_horizontal_ == 0.0f &&
 			input_vertical_ == 0.0f	)
 		{
-			player_state_ = PlayerState::IDOLE;
+			playerState = PlayerState::IDOLE;
 			return;
 		}
 
@@ -232,7 +233,7 @@ void PlayerController::Dash(bool is_fixed)
 			Input::GetButtonPressTrigger(GamePadButton::INPUT_X)
 			)
 		{
-			player_state_ = PlayerState::MELEE_ATTACK_1;
+			playerState = PlayerState::MELEE_ATTACK_1;
 			return;
 		}
 
@@ -242,7 +243,7 @@ void PlayerController::Dash(bool is_fixed)
 			can_jump_
 			)
 		{
-			player_state_ = PlayerState::JUMP;
+			playerState = PlayerState::JUMP;
 			return;
 		}
 
@@ -325,7 +326,7 @@ void PlayerController::Jump(bool is_fixed)
 
 		if (regidbody_->velocity->y <= Mathf::epsilon)
 		{
-			player_state_ = PlayerState::JUMP_DROP;
+			playerState = PlayerState::JUMP_DROP;
 		}
 	}
 }
@@ -344,7 +345,7 @@ void PlayerController::Dodge(bool is_fixed)
 			(input_horizontal_ != 0.0f || input_vertical_ != 0.0f)
 			)
 		{
-			player_state_ = PlayerState::DASH;
+			playerState = PlayerState::DASH;
 			return;
 		}
 	}
@@ -361,7 +362,7 @@ void PlayerController::MeleeAttack1(bool is_fixed)
 		// アニメーションが終わったらアイドルに戻る
 		if (!model_data_->IsPlayAnimation())
 		{
-			player_state_ = PlayerState::IDOLE;
+			playerState = PlayerState::IDOLE;
 			return;
 		}
 

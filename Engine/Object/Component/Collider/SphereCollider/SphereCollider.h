@@ -10,7 +10,6 @@ public:
     /// <summary>
     /// ‰Šú‰»
     /// </summary>
-    void ComponentInitialize() override;
     void ComponentUpdate() override;
 
     /// <summary>

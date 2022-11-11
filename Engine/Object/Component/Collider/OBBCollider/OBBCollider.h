@@ -7,10 +7,6 @@ class OBBCollider final :
 {
 public:
     OBBCollider(Quaternion q = {0.0f,0.0f,0.0f,0.0f}, Vector3 extent = { 1.0f, 1.0f, 1.0f }, Vector3 center = { 0.0f,0.0f,0.0f });
-	/// <summary>
-	/// ‰Šú‰»
-	/// </summary>
-    void ComponentInitialize() override;
     void ComponentUpdate() override;
 
     void Infomation() override;

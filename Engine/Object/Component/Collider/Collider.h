@@ -21,6 +21,10 @@ public:
 	Collider();
 	~Collider();
 	/// <summary>
+   /// ‰Šú‰»
+   /// </summary>
+	void ComponentInitialize() override;
+	/// <summary>
 	/// XV
 	/// </summary>
 	void ComponentUpdate() override;

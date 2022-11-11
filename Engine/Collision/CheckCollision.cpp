@@ -6,9 +6,6 @@
 
 void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects)
 {
-
-
-
 	// コライダーのイテレーター
 	std::vector<std::weak_ptr<Collider>>::const_iterator collider_it_a;
 	std::vector<std::weak_ptr<Collider>>::const_iterator collider_it_b;
@@ -59,8 +56,8 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 			Collision collision_info_a;		// Aに送る情報
 			Collision collision_info_b;		// Bに送る情報
 
-			Rigidbody *a_rigidbody = (*object_a)->GetComponent<Rigidbody>();
-			Rigidbody *b_rigidbody = (*object_b)->GetComponent<Rigidbody>();
+			//Rigidbody *a_rigidbody = (*object_a)->GetComponent<Rigidbody>();
+			//Rigidbody *b_rigidbody = (*object_b)->GetComponent<Rigidbody>();
 
 			// ナローフェーズ
 			for (auto collider_a : (*object_a)->GetColliders())
@@ -446,7 +443,8 @@ bool CheckCollision::Sphere2OBB(
 	{
 		collision_sphere.contact_point_.point = closest_point;
 		Vector3 closent_obb_2_radius{};
-		if(Vector3::Dot(closest_point - sphere.center,normal) <= 0.0f)
+		float dot{ Vector3::Dot(closest_point - sphere.center,normal) };
+		if(dot < 0.0f)
 		{
 			// 侵入度
 
@@ -457,7 +455,7 @@ bool CheckCollision::Sphere2OBB(
 			intrusion_sphere = closest_point - closent_obb_2_radius;
 			
 		}
-		else
+		else if(dot > 0.0f)
 		{
 
 			//球から衝突点
@@ -467,9 +465,12 @@ bool CheckCollision::Sphere2OBB(
 			intrusion_sphere = closest_point - closent_obb_2_radius;
 
 		}
-
-		// 衝突法線
-		
+		// 完全に重なっているとき
+		else
+		{
+			intrusion_obb = { 0,0,0 };
+			intrusion_sphere = { 0,0,0 };
+		}
 
 
 		collision_sphere.contact_point_.normal = normal;
@@ -706,19 +707,10 @@ void CheckCollision::HitResponse(
 	Collision &collision_data_b
 	)
 {
-
-
-
-	//// めり込み量確認
-	//if (intrusion_a.Magnitude() <= 0.05f) return;
-	//// めり込み量確認
-	//if (intrusion_b.Magnitude() <= 0.05f) return;
 	
 	// 一番上のオブジェクトのトランスフォームを変化させる
 	GameObject *top_parent_a{ object_a->top };
 	GameObject *top_parent_b{ object_b->top };
-	Rigidbody *top_rigid_a = top_parent_a->GetComponent<Rigidbody>();
-	Rigidbody *top_rigid_b = top_parent_b->GetComponent<Rigidbody>();
 
 	bool is_static_a
 	{
@@ -739,69 +731,86 @@ void CheckCollision::HitResponse(
 		return;
 	}
 
-	// 質量の合計
-	float mass_total
-	{
-		(rigidbody_a ?
-		rigidbody_a->mass_ :
-		1.0f)
-		+
-		(rigidbody_b ?
-		rigidbody_b->mass_ :
-		1.0f)
-	};
+	Rigidbody *top_rigid_a = top_parent_a->GetComponent<Rigidbody>();
+	Rigidbody *top_rigid_b = top_parent_b->GetComponent<Rigidbody>();
 
 	// 押し戻し量
 	Vector3 penalty_a;
 	Vector3 penalty_b;
 
-	float k{ 0.9f };
-	float d{ 1.0f };
-	
-
 	// どちらも動く場合
 	if (!is_static_a && !is_static_b)
 	{
-		auto a_intrsion = intrusion_a * k;
-		auto a_r = Vector3::Scale(rigidbody_a->velocity * d, collision_data_a.contactPoint->normal);
-		penalty_a =
-			(a_intrsion* rigidbody_a->mass_ / mass_total) + a_r;
 
-		auto b_intrsion = intrusion_b * k;
+		// めり込み量確認
+		if (intrusion_a.Magnitude() <= Mathf::epsilon)
+		{
+			return;
+		}
+		if (Vector3::Dot(rigidbody_a->velocity->Normalized(), collision_data_a.contactPoint->normal) >= 0.0f)
+		{
+			return;
+		}
 
-		auto b_r = Vector3::Scale(rigidbody_b->velocity * d, collision_data_b.contactPoint->normal);
-		penalty_b =
-			(b_intrsion * rigidbody_a->mass_ / mass_total)+b_r;
+		// 質量の合計
+		float mass_total
+		{
+			(rigidbody_a ?
+			rigidbody_a->mass_ :
+			1.0f)
+			+
+			(rigidbody_b ?
+			rigidbody_b->mass_ :
+			1.0f)
+		};
 
+		float K{ 1.0f };
+		float B{ 1.0f };
 		
+		// A
+		Vector3 a_d{ intrusion_a };
+		Vector3 a_relative_velocity
+		{
+			Vector3::Scale(rigidbody_a->velocity,collision_data_a.contactPoint->normal).Magnitude() * collision_data_a.contactPoint->normal
+		};
+
+		penalty_a = K * a_d + B * a_relative_velocity;
+		rigidbody_a->velocity += penalty_a * rigidbody_a->mass_ / mass_total;
+
+		//B
+		Vector3 b_d{ intrusion_b };
+		Vector3 b_relative_velocity
+		{
+			Vector3::Scale(rigidbody_b->velocity,collision_data_b.contactPoint->normal).Magnitude() * collision_data_b.contactPoint->normal
+		};
+
+		penalty_b = K * b_d + B * b_relative_velocity;
+		rigidbody_b->velocity += penalty_b * rigidbody_a->mass_ / mass_total;
 	}
 	// aだけ動的な場合
 	else if(!is_static_a  && is_static_b)
 	{
 
-		penalty_b = { 0,0,0 };
-		auto intrsion = intrusion_a * k;
-		Vector3 r = Vector3::Scale(rigidbody_a->velocity, intrusion_a.Normalized());
-		if (Vector3::Dot(r, rigidbody_a->velocity) > 0.0f)
+		if (Vector3::Dot(rigidbody_a->velocity->Normalized(), collision_data_a.contactPoint->normal) >= 0.0f)
 		{
-			r *= -d;
+			return;
 		}
-		else
+		// めり込みが一定以上ならペナルティを課す
+		float K{ 1.0f };
+		float B{ 1.0f };
+		Vector3 d{ intrusion_a };
+		Vector3 relative_velocity
 		{
-			r *= d;
-		}
-		penalty_a = intrsion + r;
-		rigidbody_a->velocity += penalty_a;
+			Vector3::Scale(rigidbody_a->velocity,collision_data_a.contactPoint->normal).Magnitude() * collision_data_a.contactPoint->normal
+		};
 
+		penalty_a = K * d + B * relative_velocity;
+		rigidbody_a->velocity += penalty_a;
 	}
 	// bだけ動的な場合
 	else if (is_static_a && !is_static_b)
 	{
-		// めり込み量確認
-		if (intrusion_b.Magnitude() <= Mathf::epsilon)
-		{
-			return;
-		}
+		
 		if(Vector3::Dot(rigidbody_b->velocity->Normalized(), collision_data_b.contactPoint->normal)>=0.0f)
 		{
 			return;
@@ -810,46 +819,14 @@ void CheckCollision::HitResponse(
 		float K{ 1.0f };
 		float B{ 1.0f };
 		Vector3 d{ intrusion_b };
-		Vector3 relative_velocity{ Vector3::Scale(-rigidbody_b->velocity,collision_data_b.contactPoint->normal) };
-
+		Vector3 relative_velocity
+		{
+			Vector3::Scale(rigidbody_b->velocity,collision_data_b.contactPoint->normal).Magnitude() * collision_data_b.contactPoint->normal
+		};
 
 		penalty_b = K * d + B * relative_velocity;
 		rigidbody_b->velocity += penalty_b;
 
-		// 跳ね返りベクトル
-		/*Vector3 reflect {Vector3::Reflect(rigidbody_b->velocity,collision_data_b.contactPoint->normal) };
-		rigidbody_b->velocity = reflect;*/
-
-		//	Vector3 normal{ intrusion_b.Normalized() };
-	//	Vector3 v12{ rigidbody_b->velocity };
-
-
-	//	auto intrsion = intrusion_b;// *k;
-	//	Vector3 n = intrusion_b.Normalized();
-	//	Vector3 r = Vector3::Scale(rigidbody_b->velocity, n);
-	//	if (Vector3::Dot(r, rigidbody_b->velocity) > 0.0f)
-	//	{
-	//		r *= -d;
-	//	}
-	//	else
-	//	{
-	//		r *= d;
-	//	}
-
-	//	penalty_b = intrsion + r;
-	//	rigidbody_b->velocity += penalty_b;
-
 	}
-
-	
-	/*if (rigidbody_a)
-	{
-		rigidbody_a->velocity += penalty_a;
-	}
-	if (rigidbody_b)
-	{
-		rigidbody_b->velocity += penalty_b;
-	}*/
-
 }
 

@@ -26,6 +26,7 @@ Quaternion Quaternion::Euler(const float &roll, const float &pitch, const float 
 		cx * cy * sz - cz * sx * sy,
 		sx * sy * sz + cx * cy * cz
 	};
+
 	return quaternion;
 }
 
@@ -111,7 +112,7 @@ Vector3 Quaternion::EulerAngles() const
     }
 
 
-	Vector3 euler
+    Vector3 euler
 	{
 		tx,ty,tz
 	};

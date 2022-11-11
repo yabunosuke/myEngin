@@ -8,12 +8,6 @@ SphereCollider::SphereCollider(float radius, Vector3 center)
 	collision_type_ = CollisonType::Sphere;
 }
 
-void SphereCollider::ComponentInitialize()
-{
-	// オブジェクトにコライダーwaek_ptr渡す
-	game_object_->AddCollider(this);
-}
-
 void SphereCollider::ComponentUpdate()
 {
 	radius = local_radius_ / 2.0f * Mathf::Max(

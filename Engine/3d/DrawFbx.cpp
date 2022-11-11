@@ -1,7 +1,7 @@
 #include "DrawFbx.h"
 #include "PipelineManager.h"
 #include "ConstantBufferManager/ConstantBufferManager.h"
-#include "oldTexture.h"
+#include "Texture.h"
 
 std::vector<std::shared_ptr<FbxResource>>	Renderer::deferred_shading_datas_;
 std::vector<std::shared_ptr<FbxResource>>	Renderer::forward_shading_datas_;

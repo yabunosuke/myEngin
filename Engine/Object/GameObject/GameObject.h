@@ -111,7 +111,6 @@ public:	//ŠÖ”
 	std::vector<std::weak_ptr<T>>  GetComponents();*/
 
 
-
 	//‰Šú‰»
 	void Initialize();
 
@@ -216,6 +215,8 @@ public:	//ŠÖ”
 
 	Transform *transform_;
 
+	uint16_t layer_{0};
+
 private:
 	//===========================================
 	//
@@ -284,7 +285,6 @@ inline T *GameObject::AddComponent(Args ...args)
 			return static_cast<int>(lhs->type.r_) < static_cast<int>(rhs->type.r_);
 		}
 	);
-
 
 	return temp;
 }

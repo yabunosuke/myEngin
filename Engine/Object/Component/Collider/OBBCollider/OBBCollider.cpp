@@ -9,10 +9,6 @@ OBBCollider::OBBCollider(Quaternion q, Vector3 extent, Vector3 center)
 	collision_type_ = CollisonType::OBB;
 }
 
-void OBBCollider::ComponentInitialize()
-{
-	game_object_->AddCollider(this);
-}
 
 void OBBCollider::ComponentUpdate()
 {

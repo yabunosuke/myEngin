@@ -16,6 +16,13 @@ Collider::~Collider()
 	game_object_->RemoveCollider(this);
 }
 
+void Collider::ComponentInitialize()
+{
+	// オブジェクトにコライダーwaek_ptr渡す
+	game_object_->AddCollider(this);
+	ComponentUpdate();
+}
+
 
 void Collider::ComponentUpdate()
 {
