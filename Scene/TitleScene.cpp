@@ -6,9 +6,6 @@
 
 #include "Input.h"
 
-#include "oldTexture.h"
-#include "PipelineManager.h"
-#include "PrimitiveRenderer.h"
 #include "Object/GameObject/GameObject.h"
 
 // コンポーネント
