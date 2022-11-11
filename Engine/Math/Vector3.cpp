@@ -132,6 +132,16 @@ float Vector3::Distance(const Vector3 &lhs, const Vector3 &rhs)
 	return distance;
 }
 
+Vector3 Vector3::Project(const Vector3 &vector, const Vector3 &onNormal)
+{
+	Vector3 project
+	{
+		onNormal * vector.Magnitude()
+	};
+
+	return project;
+}
+
 Vector3 Vector3::Scale(const Vector3 &lhs, const Vector3 &rhs)
 {
 	Vector3 scale

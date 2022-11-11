@@ -51,19 +51,16 @@ void GameScene::Initialize()
 	//auto floors = GameObject::CreateObject("floors");
 	//floors->AddComponent<OBBCollider>()
 	auto floors = GameObject::CreateObject("Floors");
-	floors->tag = "Floor";
-	floors->isStatic = true;
-	floors->AddComponent<OBBCollider>(Quaternion{ 0.0f,0.0f,0.0f,0.0f }, Vector3{ 18.5f,1.0f,18.5f }, Vector3{ 18.5f / 2.0f,-0.5f,18.5f / 2.0f });
 
-	for( int i = 0; i<4;++i)
+	for( int i = 0; i<2;++i)
 	{
-		for (int j = 0; j < 4; ++j)
+		for (int j = 0; j < 2; ++j)
 		{
 			auto floor2_big = GameObject::CreateObject("Floor2 big");
 			floor2_big->AddComponent<Object3dComponent>(
 				DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 				"Assets/3d/Dungeon/fbx walls/floor2_big.fbx");
-			//floor2_big->AddComponent<OBBCollider>(Quaternion{ 0.0f,0.0f,0.0f,0.0f }, Vector3{ 6.0f,1.0f,6.0f }, Vector3{ -3.0f,-0.5f,-3.0f });
+			floor2_big->AddComponent<OBBCollider>(Quaternion{ 0.0f,0.0f,0.0f,0.0f }, Vector3{ 6.0f,1.0f,6.0f }, Vector3{ -3.0f,-0.5f,-3.0f });
 			floor2_big->transform_->position = { i * 6.0f,0.0f,j * 6.0f };
 			floor2_big->SetParent(floors);
 		}
@@ -86,7 +83,7 @@ void GameScene::Initialize()
 	
 	}
 
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < 2; ++i)
 	{
 		auto wall = GameObject::CreateObject("Wall");
 		wall->AddComponent<OBBCollider>(Quaternion{ 0,0,0,0 }, Vector3{ 0.5f,4.5f,6.0f }, Vector3{ 0.25f,2.25f,-3 });
@@ -98,19 +95,20 @@ void GameScene::Initialize()
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 			"Assets/3d/Dungeon/fbx walls/Wall.fbx");
 	}
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < 2; ++i)
 	{
 		auto wall = GameObject::CreateObject("Wall");
 		wall->AddComponent<OBBCollider>(Quaternion{ 0,0,0,0 }, Vector3{ 0.5f,4.5f,6.0f }, Vector3{ 0.25f,2.25f,-3 });
 		wall->isStatic = true;
-		wall->transform_->position = { 18.0f,-0.2f,i * 6.0f };
+		wall->transform_->position = { 6.0f,-0.2f,i * 6.0f - 6.0f };
+		wall->transform_->quaternion = Quaternion::Euler(0, 180.0f * Mathf::deg_to_rad, 0);
 		wall->tag = "Wall";
 		wall->isStatic = true;
 		wall->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 			"Assets/3d/Dungeon/fbx walls/Wall.fbx");
 	}
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < 2; ++i)
 	{
 		auto wall = GameObject::CreateObject("Wall");
 		wall->AddComponent<OBBCollider>(Quaternion{ 0,0,0,0 }, Vector3{ 0.5f,4.5f,6.0f }, Vector3{ 0.25f,2.25f,-3 });
@@ -126,16 +124,16 @@ void GameScene::Initialize()
 
 	for (int i = 0; i < 2; ++i)
 	{
-		auto wall = GameObject::CreateObject("Wall");
+		auto wall = GameObject::CreateObject("Wall Small");
 		wall->AddComponent<OBBCollider>(Quaternion{ 0,0,0,0 }, Vector3{ 0.5f,4.5f,6.0f }, Vector3{ 0.25f,2.25f,-3 });
 		wall->isStatic = true;
-		wall->transform_->position = { i * 6.0f - 6.0f ,-0.2f,18.0 };
-		wall->transform_->quaternion = Quaternion::Euler(0, -90.0f * Mathf::deg_to_rad, 0);
+		wall->transform_->position = { i * 6.0f,-0.2f,6.0 };
+		wall->transform_->quaternion = Quaternion::Euler(0, 90.0f * Mathf::deg_to_rad, 0);
 		wall->tag = "Wall";
 		wall->isStatic = true;
 		wall->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-			"Assets/3d/Dungeon/fbx walls/Wall.fbx");
+			"Assets/3d/Dungeon/fbx walls/wall_small.fbx");
 	}
 
 

@@ -1,7 +1,7 @@
 #include "CameraManager.h"
 #include <ConstantBufferManager/ConstantBufferManager.h>
 #include "WinApp.h"
-#include "oldTexture.h"
+#include "Texture.h"
 #include "PipelineManager.h"
 
 void CameraManager::BufferTransfer(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list, UINT subresource, UINT rootparameta_index)

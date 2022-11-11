@@ -217,6 +217,7 @@
     <ClCompile Include="Texture.cpp">
       <Filter>ResourceManager</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Component\Transform\RectTransform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -414,6 +415,7 @@
     <ClInclude Include="Texture.h">
       <Filter>ResourceManager</Filter>
     </ClInclude>
+    <ClInclude Include="Object\Component\Transform\RectTransform.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
@@ -555,6 +557,9 @@
     </Filter>
     <Filter Include="ResourceManager">
       <UniqueIdentifier>{666a3a27-8557-42c3-bfc3-e8d2b576eec9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component\Transform\RectTransform">
+      <UniqueIdentifier>{a55043a6-18d6-49b9-a87d-49c262acb7e9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

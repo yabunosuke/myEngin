@@ -738,6 +738,10 @@ void CheckCollision::HitResponse(
 	Vector3 penalty_a;
 	Vector3 penalty_b;
 
+	// –€ŽC—Ê
+	float friction_a;
+	float friction_b;
+
 	// ‚Ç‚¿‚ç‚à“®‚­ê‡
 	if (!is_static_a && !is_static_b)
 	{
@@ -825,6 +829,10 @@ void CheckCollision::HitResponse(
 		};
 
 		penalty_b = K * d + B * relative_velocity;
+
+		// –€ŽCŒvŽZ
+		//friction_b = 0.5f * Vector3::Scale(rigidbody_b->velocity, collision_data_b.contactPoint->normal).Magnitude();
+
 		rigidbody_b->velocity += penalty_b;
 
 	}

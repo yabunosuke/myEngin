@@ -105,6 +105,12 @@ public:
 	/// <returns>2点間の距離</returns>
 	static float Distance(const Vector3 &lhs, const Vector3 &rhs);
 
+
+	static Vector3 Project(const Vector3 &vector, const Vector3 &onNormal);
+
+	/// <summary>
+	/// 2つのベクトルの各成分を乗算
+	/// </summary>
 	static Vector3 Scale(const Vector3 &lhs, const Vector3 &rhs);
 
 	//===========================================
@@ -182,6 +188,8 @@ public:
 		return temp;
 	}
 	Vector3 operator -(const Vector3 &vector) const { return *this + -vector; }
+
+
 	Vector3 &operator +=(const Vector3 &vector) {
 		*this = *this + vector;
 		return *this;

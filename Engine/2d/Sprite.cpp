@@ -2,7 +2,7 @@
 #include "WinApp.h"
 #include <DirectXTex.h>
 #include "PipelineManager.h"
-#include "oldTexture.h"
+#include "Texture.h"
 using namespace Microsoft::WRL;
 
 //Ã“Iƒƒ“ƒo‚ÌÀ‘Ô
