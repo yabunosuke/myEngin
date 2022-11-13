@@ -117,7 +117,7 @@ bool Looper::Loop()
 			Time::GetInstance()->SubFixedTimer();
 
 			// 5回処理して改善しなければ強制的に離脱
-			if(i >=5)
+			if(i >=1)
 			{
 				break;
 			}

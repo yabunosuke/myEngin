@@ -289,7 +289,7 @@ void PlayerController::Jump(bool is_fixed)
 	{
 		if (can_jump_)
 		{
-			regidbody_->AddForce(Vector3::up * 5.0f, ForceMode::Impulse);
+			regidbody_->AddForce(Vector3::up * 3.0f, ForceMode::Impulse);
 			can_jump_ = false;
 			model_data_->PlayAnimation(static_cast<int>(AnimationState::Jump),false);
 		}

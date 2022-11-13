@@ -91,4 +91,6 @@ private:
 		Collision &collision_data_b
 	);
 
+	// 衝突したオブジェクトの一覧
+	static std::map<GameObject *, Vector3> hitlist_;
 };

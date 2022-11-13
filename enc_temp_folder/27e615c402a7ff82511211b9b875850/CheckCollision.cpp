@@ -825,10 +825,10 @@ void CheckCollision::HitResponse(
 	else if (is_static_a && !is_static_b)
 	{
 		
-		if(Vector3::Dot(rigidbody_b->velocity->Normalized(), collision_data_b.contactPoint->normal)>=0.0f)
+		/*if(Vector3::Dot(rigidbody_b->velocity->Normalized(), collision_data_b.contactPoint->normal)>=0.0f)
 		{
 			return;
-		}
+		}*/
 		// めり込みが一定以上ならペナルティを課す
 		float K{ 1.0f };
 		float B{ 1.0f };

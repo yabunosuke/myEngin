@@ -60,7 +60,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)lib\cereal\include;$(SolutionDir)DirectXTex</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)lib\nlohmann;$(SolutionDir)lib\cereal\include;$(SolutionDir)DirectXTex</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -81,7 +81,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)lib\cereal\include;$(SolutionDir)DirectXTex</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)lib\nlohmann;$(SolutionDir)lib\cereal\include;$(SolutionDir)DirectXTex</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -293,6 +293,7 @@
     <ClInclude Include="..\DirectX\Input\ControllerInput.h" />
     <ClInclude Include="..\DirectX\Object3d\ModelManager.h" />
     <ClInclude Include="..\DirectX\WinApp\WinApp.h" />
+    <ClInclude Include="..\lib\nlohmann\json.hpp" />
     <ClInclude Include="..\Scene\GameScene.h" />
     <ClInclude Include="..\Scene\TitleScene.h" />
     <ClInclude Include="..\System\IoChangedListener\IoChangedListener.h" />

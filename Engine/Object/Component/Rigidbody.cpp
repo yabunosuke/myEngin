@@ -76,15 +76,15 @@ void Rigidbody::ComponentFixedUpdate()
 
 	velocity_ *= test_masatu_;*/
 
-	
-	// ’ïRŒvŽZ
-	transform_->position += (velocity * Time::GetInstance()->fixedDeltaTime);
-	velocity = velocity - ((drag_ / 100.0f) * velocity);
 	// d—ÍŒvŽZ
 	if (use_gravity_)
 	{
 		velocity = velocity + Vector3::down * 9.8f * Time::GetInstance()->fixedDeltaTime;
 	}
+	// ’ïRŒvŽZ
+	transform_->position += (velocity * Time::GetInstance()->fixedDeltaTime);
+	velocity = velocity - ((drag_ / 100.0f) * velocity);
+	
 }
 
 void Rigidbody::ComponentUpdate()

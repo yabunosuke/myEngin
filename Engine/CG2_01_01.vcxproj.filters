@@ -416,6 +416,7 @@
       <Filter>ResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="Object\Component\Transform\RectTransform.h" />
+    <ClInclude Include="..\lib\nlohmann\json.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />

@@ -32,9 +32,8 @@ bool FileManager::FileSave(SAVE_TYPE saveType)
 			openFile.lpstrTitle = TEXT("Save the project");
 			break;
 		case SAVE_TYPE::SCENE:
-			openFile.lpstrDefExt = TEXT(".scene");		//Šg’£Žq
-			openFile.lpstrFilter = TEXT("yabuEnginScene(*.scene)\0*.scene\0");
-			openFile.lpstrTitle = TEXT("Save the scene");
+			CreateSceneFile(openFile);
+
 			break;
 		default:
 			break;
@@ -58,4 +57,14 @@ bool FileManager::FileSave(SAVE_TYPE saveType)
 bool FileManager::LoadFile()
 {
 	return false;
+}
+
+bool FileManager::CreateSceneFile(OPENFILENAME &openFile)
+{
+
+	openFile.lpstrDefExt = TEXT(".scene");		//Šg’£Žq
+	openFile.lpstrFilter = TEXT("yabuEnginScene(*.scene)\0*.scene\0");
+	openFile.lpstrTitle = TEXT("Save the scene");
+
+	return true;
 }
