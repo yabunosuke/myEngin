@@ -122,7 +122,6 @@ Quaternion Matrix4x4::GetRotation(const Matrix4x4 &rotate_matrix)
 	default:
 		break;
 	}
-
 	return result;
 }
 

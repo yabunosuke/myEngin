@@ -19,7 +19,6 @@ void Transform::Infomation()
     if(ImGui::Button("Reset"))
     {
         localMatrix = XMMatrixIdentity();
-        matrix = XMMatrixIdentity();
     }
 
     // ギズモ
@@ -60,7 +59,7 @@ void Transform::Infomation()
     }
     
     // 座標
-    if(ImGui::DragFloat3("Position", (float *)&local_position_),0.2f)
+    if(ImGui::DragFloat3("Position", (float *)&local_position_,0.2f))
     {
         UpdateMatrix();
 
@@ -68,7 +67,7 @@ void Transform::Infomation()
 
     // 回転
 	Vector3 euler = local_quaternion_.EulerAngles() * Mathf::rad_to_deg;
-    if (ImGui::DragFloat3("Rotation", (float *)&euler), 0.2f)
+    if (ImGui::DragFloat3("Rotation", (float *)&euler, 0.2f))
     {
         euler *= Mathf::deg_to_rad;
         local_quaternion_ = Quaternion::Euler(
@@ -77,7 +76,7 @@ void Transform::Infomation()
         UpdateMatrix();
     }
 	// スケール
-	if(ImGui::DragFloat3("Scale", (float *)&local_scale_), 0.2f)
+	if(ImGui::DragFloat3("Scale", (float *)&local_scale_, 0.2f))
     {
         UpdateMatrix();
 
@@ -175,7 +174,7 @@ void Transform::UpdateMatrix()
     }
     else if (parent_ != nullptr)
     {
-        world_matrix_ = local_matrix_ * parent_->GetWorldMatrix();
+        world_matrix_ = local_matrix_ * parent_->matrix;
     }
     else
     {
@@ -183,9 +182,7 @@ void Transform::UpdateMatrix()
     }
 
     // 取得用のワールドを再計算
-    {
-        MatrixDecompose(world_matrix_, world_scale_, world_quaternion_, world_position_);
-    }
+    MatrixDecompose(world_matrix_, world_scale_, world_quaternion_, world_position_);
     
 }
 
@@ -204,7 +201,6 @@ DirectX::XMMATRIX Transform::InverseMatrixAllParent()
     if (parent_ != nullptr)
     {
 		inverse = DirectX::XMMatrixInverse(nullptr, parent_->world_matrix_);
-        inverse *= parent_->InverseMatrixAllParent();
     }
     return inverse;
 }

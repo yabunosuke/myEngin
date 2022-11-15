@@ -23,7 +23,10 @@ public:
 	{
 		fixed_update_time_ -= fixed_delta_time_;
 	}
-
+	void ClearFixedTimer()
+	{
+		fixed_update_time_ = 0.0f;
+	}
 	// 最後のフレームから現在のフレームまでの経過秒数（ReadOnly）
 	yEngine::Property<double> time{ &delta_time_,yEngine::AccessorType::ReadOnly };
 

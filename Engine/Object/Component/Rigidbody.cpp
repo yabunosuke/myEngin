@@ -77,14 +77,15 @@ void Rigidbody::ComponentFixedUpdate()
 	velocity_ *= test_masatu_;*/
 
 	// d—ÍŒvŽZ
+	
+	transform_->position += (velocity * Time::GetInstance()->fixedDeltaTime);
+	// ’ïRŒvŽZ
+	velocity = velocity - ((drag_ / 100.0f) * velocity);
 	if (use_gravity_)
 	{
 		velocity = velocity + Vector3::down * 9.8f * Time::GetInstance()->fixedDeltaTime;
 	}
-	// ’ïRŒvŽZ
-	transform_->position += (velocity * Time::GetInstance()->fixedDeltaTime);
-	velocity = velocity - ((drag_ / 100.0f) * velocity);
-	
+
 }
 
 void Rigidbody::ComponentUpdate()
@@ -98,16 +99,16 @@ void Rigidbody::AddForce(const Vector3 &force, ForceMode force_mode)
 	switch (force_mode)
 	{
 	case ForceMode::Force:
-		velocity = velocity + force / mass_ * Time::GetInstance()->fixedDeltaTime;
+		velocity += force / mass_ * Time::GetInstance()->fixedDeltaTime;
 		break;
 	case ForceMode::Acceleration:
-		velocity = velocity + force * Time::GetInstance()->fixedDeltaTime;
+		velocity += force * Time::GetInstance()->fixedDeltaTime;
 		break;
 	case ForceMode::Impulse:
-		velocity = velocity + force / mass_;
+		velocity += force / mass_;
 		break;
 	case ForceMode::VelocityChange:
-		velocity = velocity + force;
+		velocity += force;
 		break;
 	default:
 		break;

@@ -92,5 +92,5 @@ private:
 	);
 
 	// 衝突したオブジェクトの一覧
-	static std::map<GameObject *, Vector3> hitlist_;
+	static std::map<GameObject *, std::pair<Vector3,int>> hitlist_;
 };

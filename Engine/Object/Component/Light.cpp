@@ -41,9 +41,9 @@ Light::Light(
 
 Light::~Light()
 {
-
 	// ライトマネージャーから削除
-	if (scene_light_manager_->GetLightList().size() != 0)
+	if (scene_light_manager_ != nullptr &&
+		scene_light_manager_->GetLightList().size() != 0)
 	{
 		auto light = scene_light_manager_->GetLightList().begin();
 		for (; light != scene_light_manager_->GetLightList().end(); ++light)

@@ -16,5 +16,9 @@ public:
 	void Update() override;
 
 	void Infomation() override;
+
+	bool is_invincible_{ false };
+	const float k_invincible_time_{ 0.5f };
+	float invincible_timer_{ 0.0f };
 };
 

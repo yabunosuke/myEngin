@@ -107,7 +107,7 @@ bool Looper::Loop()
 	{
 		for (int i = 0; Time::GetInstance()->CheckFixedUpdate(); ++i)
 		{
-
+			_RPT0(_CRT_WARN, "FixedUpdate\n");
 			scene_stack_.top()->FixedUpdate();
 
 			// 当たり判定
@@ -116,9 +116,10 @@ bool Looper::Loop()
 			// 経過時間を減少させる
 			Time::GetInstance()->SubFixedTimer();
 
-			// 5回処理して改善しなければ強制的に離脱
-			if(i >=1)
+			// 2回処理して改善しなければ強制的に離脱
+			if(i > 5)
 			{
+				Time::GetInstance()->ClearFixedTimer();
 				break;
 			}
 		}
@@ -128,6 +129,7 @@ bool Looper::Loop()
 
 
 	//シーンの更新
+	_RPT0(_CRT_WARN, "Update\n");
 	scene_stack_.top()->Update();
 
 	// 削除処理

@@ -2,6 +2,7 @@
 
 #include "Input.h"
 #include "Object3dComponent.h"
+#include "Math/Easing.h"
 #include "Object/GameObject/GameObject.h"
 #include "Object/Component/Camera.h"
 #include "Object/Component/Collider/SphereCollider/SphereCollider.h"
@@ -53,27 +54,55 @@ void PlayerController::Awake()
 void PlayerController::Start()
 {
 	// リジッド
-	regidbody_ = 
+	rigidbody_ = 
 		game_object_->GetComponent<Rigidbody>();
-	//regidbody_->useGravity = true;
+	transform_->scale = { 0.5f,0.5f,0.5f };
 	model_data_ = 
 		game_object_->GetComponent<Object3dComponent>()->GetObjectData();
+	camera_controller_ =
+		GameObject::Find("CameraRoot")->GetComponent<PlayerCameraController>();
 }
 
 void PlayerController::FixedUpdate()
 {
 	(this->*state_update_[playerState])(true);
+	// 移動処理
+	Vector3 move = input_stick_r_ * move_speed;
+	Vector3 camera_move = Camera::main.r_->transform_->quaternion * move;
+	camera_move.y = 0;
+	rigidbody_->AddForce(camera_move - Vector3::Scale({1,0,1}, rigidbody_->velocity), ForceMode::VelocityChange);
+	// 回転処理
+	if(input_stick_r_.x != 0.0f || input_stick_r_.z != 0.0f)
+	{
+		Vector3 dir = rigidbody_->velocity->Normalized();
+		dir.y = 0.0f;
+		transform_->LookAt(transform_->position + dir);
+	}
 
+	// カメラ移動処理
+	camera_controller_->FixedUpdateCameraPosition(*transform_);
+	if(player_state_ != PlayerState::DASH)
+	{
+		camera_controller_->DefaultCameraFov();
+	}
 }
 
 void PlayerController::Update()
 {
 
-	input_horizontal_ = Input::GetAxis(GamePadAxis::AXIS_LX);
-	input_vertical_ = -Input::GetAxis(GamePadAxis::AXIS_LY);
+	input_stick_r_ = 
+	{
+		Input::GetAxis(GamePadAxis::AXIS_LX),
+		0,
+		-Input::GetAxis(GamePadAxis::AXIS_LY)
+	};
 
 	(this->*state_update_[playerState])(false);
-	
+
+	// カメラの回転処理
+	camera_controller_->UpdateCameraLook(*transform_);
+
+	camera_controller_->UpdateCameraSpin();
 }
 
 void PlayerController::Idole(bool is_fixed)
@@ -81,13 +110,10 @@ void PlayerController::Idole(bool is_fixed)
 	if(!is_fixed)
 	{
 		// アイドルアニメーション再生
-		model_data_->PlayAnimation(static_cast<int>(AnimationState::IDOLE), true);
+		model_data_->PlayAnimation(static_cast<int>(AnimationState::Idol), true);
 
 		// 歩行
-		if (
-			input_horizontal_ != 0.0f ||
-			input_vertical_ != 0.0f
-			)
+		if (input_stick_r_.Magnitude() != 0.0f)
 		{
 			playerState = PlayerState::WALK;
 			return;
@@ -123,11 +149,9 @@ void PlayerController::Walk(bool is_fixed)
 {
 	if(!is_fixed)
 	{
+		move_speed = 2.0f;
 		// 入力が無くなったらIdoleに戻る
-		if (
-			input_horizontal_ == 0.0f &&
-			input_vertical_ == 0.0f
-			)
+		if (input_stick_r_.Magnitude() == 0.0f)
 		{
 			playerState = PlayerState::IDOLE;
 			return;
@@ -160,50 +184,20 @@ void PlayerController::Walk(bool is_fixed)
 			playerState = PlayerState::JUMP;
 			return;
 		}
-
-		// 正面へ移動している場合
-		//if (input_vertical_ >= 0.0f)
-		{
-			model_data_->PlayAnimation(static_cast<int>(AnimationState::WALK_FRONT));
-		}
-		/*else if (input_horizontal_ > 0.0f)
-		{
-			model_data_->PlayAnimation(static_cast<int>(AnimationState::WALK_RIGHT));
-		}
-		else if (input_horizontal_ < 0.0f)
-		{
-			model_data_->PlayAnimation(static_cast<int>(AnimationState::WALK_LEFT));
-		}*/
+		
+		model_data_->PlayAnimation(static_cast<int>(AnimationState::Walk));
+		
 	}
 	else
 	{
-		// カメラの正面ベクトル
-		Vector3 camera_forward = Vector3::Scale(Camera::main.r_->transform_->GetFront(), Vector3(1.0f, 0.0f, 1.0f)).Normalized();
-
-		Vector3 move_forward = (camera_forward * input_vertical_ + Camera::main.r_->transform_->GetRight() * input_horizontal_).Normalized();
-		
-		if (input_horizontal_ != 0.0f ||
-			input_vertical_ != 0.0f)
+		//if ((input_vertical_ != 0.0f) || (input_horizontal_ != 0.0f))
 		{
-			regidbody_->AddForce(move_forward, ForceMode::Acceleration);
-		}
+			// カメラの正面ベクトル
+			
 
-
-		// 回転処理
-		Vector3 target_position;
-		if (
-			regidbody_->velocity.r_.Magnitude() != 0.0f &&
-			regidbody_->velocity.r_.x != 0.0f &&
-			regidbody_->velocity.r_.z != 0.0f
-			)
-		{
-			target_position = Vector3::Scale(regidbody_->velocity.r_.Normalized(), Vector3(1.0f, 0.0f, 1.0f)) + transform_->position;
+			// 回転処理
+			//transform_->LookAt(move_forward.Normalized() + transform_->position);
 		}
-		else
-		{
-			target_position = transform_->position + transform_->GetFront();
-		}
-		transform_->LookAt(target_position);
 	}
 }
 
@@ -211,19 +205,21 @@ void PlayerController::Dash(bool is_fixed)
 {
 	if (!is_fixed)
 	{
+		
+
+		move_speed = 4.0f;
+
 		// ダッシュキーだけ離されたら歩く
 		if (
 			Input::GetAxis(GamePadAxis::AXIS_LZ) == 0.0f &&
-			( input_horizontal_ != 0.0f || input_vertical_ != 0.0f )
-			)
+			input_stick_r_.Magnitude() != 0.0f)
 		{
 			playerState = PlayerState::WALK;
 			return;
 		}
 
 		// 入力が無くなったらIdoleに戻る
-		if (input_horizontal_ == 0.0f &&
-			input_vertical_ == 0.0f	)
+		if (input_stick_r_.Magnitude() == 0.0f)
 		{
 			playerState = PlayerState::IDOLE;
 			return;
@@ -248,38 +244,11 @@ void PlayerController::Dash(bool is_fixed)
 			return;
 		}
 
-		model_data_->PlayAnimation(static_cast<int>(AnimationState::RUN_FRONT));
+		model_data_->PlayAnimation(static_cast<int>(AnimationState::Run));
 	}
 	else
 	{
-		// カメラの正面ベクトル
-		Vector3 camera_forward = Vector3::Scale(Camera::main.r_->transform_->GetFront(), Vector3(1.0f, 0.0f, 1.0f)).Normalized();
-
-		Vector3 move_forward = (camera_forward * input_vertical_ + Camera::main.r_->transform_->GetRight() * input_horizontal_).Normalized() * 2.0f;
-
-		if (input_horizontal_ != 0.0f ||
-			input_vertical_ != 0.0f)
-		{
-			regidbody_->AddForce(move_forward, ForceMode::Acceleration);
-		}
-
-
-		// 回転処理
-		Vector3 target_position;
-		if (
-			regidbody_->velocity.r_.Magnitude() != 0.0f &&
-			regidbody_->velocity.r_.x != 0.0f &&
-			regidbody_->velocity.r_.z != 0.0f
-			)
-		{
-			target_position = Vector3::Scale(regidbody_->velocity.r_.Normalized(), Vector3(1.0f, 0.0f, 1.0f)) + transform_->position;
-
-		}
-		else
-		{
-			target_position = transform_->position + transform_->GetFront();
-		}
-		transform_->LookAt(target_position);
+		camera_controller_->DashCameraFov();
 	}
 }
 
@@ -289,43 +258,31 @@ void PlayerController::Jump(bool is_fixed)
 	{
 		if (can_jump_)
 		{
-			regidbody_->AddForce(Vector3::up * 5.0f, ForceMode::Impulse);
+			rigidbody_->AddForce(Vector3::up * 5.0f, ForceMode::Impulse);
 			can_jump_ = false;
 			model_data_->PlayAnimation(static_cast<int>(AnimationState::Jump),false);
 		}
 	}
 	else
 	{
-		// カメラの正面ベクトル
-		Vector3 camera_forward = Vector3::Scale(Camera::main.r_->transform_->GetFront(), Vector3(1.0f, 0.0f, 1.0f)).Normalized();
-
-		Vector3 move_forward = (camera_forward * input_vertical_ + Camera::main.r_->transform_->GetRight() * input_horizontal_).Normalized() * 1.5f;
-
-		if (input_horizontal_ != 0.0f ||
-			input_vertical_ != 0.0f)
+		if(input_stick_r_.Magnitude() != 0.0f)
 		{
-			regidbody_->AddForce(move_forward, ForceMode::Acceleration);
+			// カメラの正面ベクトル
+			//Vector3 camera_forward = Vector3::Scale(Camera::main.r_->transform_->GetFront(), Vector3(1.0f, 0.0f, 1.0f)).Normalized();
+
+			//Vector3 move_forward = (camera_forward * input_vertical_ + Camera::main.r_->transform_->GetRight() * input_horizontal_).Normalized() * 1.5f;
+
+			//if (input_horizontal_ != 0.0f ||
+			//	input_vertical_ != 0.0f)
+			//{
+			//	rigidbody_->AddForce(move_forward, ForceMode::Acceleration);
+			//}
+
+			//// 回転処理
+			//transform_->LookAt(move_forward.Normalized() + transform_->position);
 		}
 
-
-		// 回転処理
-		Vector3 target_position;
-		if (
-			regidbody_->velocity.r_.Magnitude() != 0.0f &&
-			regidbody_->velocity.r_.x != 0.0f &&
-			regidbody_->velocity.r_.z != 0.0f
-			)
-		{
-			target_position = Vector3::Scale(regidbody_->velocity.r_.Normalized(), Vector3(1.0f, 0.0f, 1.0f)) + transform_->position;
-
-		}
-		else
-		{
-			target_position = transform_->position + transform_->GetFront();
-		}
-		transform_->LookAt(target_position);
-
-		if (regidbody_->velocity->y <= Mathf::epsilon)
+		if (rigidbody_->velocity->y <= Mathf::epsilon)
 		{
 			playerState = PlayerState::JUMP_DROP;
 		}
@@ -343,7 +300,7 @@ void PlayerController::Dodge(bool is_fixed)
 		// スティック入力があればダッシュ
 		if (
 			Input::GetAxis(GamePadAxis::AXIS_LZ) < 0.0f &&
-			(input_horizontal_ != 0.0f || input_vertical_ != 0.0f)
+			(input_stick_r_.Magnitude() != 0.0f)
 			)
 		{
 			playerState = PlayerState::DASH;
@@ -368,7 +325,7 @@ void PlayerController::MeleeAttack1(bool is_fixed)
 		}
 
 		// アニメーション
-		model_data_->PlayAnimation(static_cast<int>(AnimationState::SLASH), false);
+		model_data_->PlayAnimation(static_cast<int>(AnimationState::Attack1), false);
 	}
 }
 

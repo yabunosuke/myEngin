@@ -41,6 +41,7 @@ public:
 	static float Angle(const Quaternion &from, const Quaternion &to);
 
 
+
 	/// <summary>
 	/// 2つの回転の内積を返す
 	/// </summary>
@@ -86,6 +87,13 @@ public:
 	/// </summary>
 	/// <returns>Vector3 オイラー角表現</returns>
 	Vector3 EulerAngles() const;
+
+	/// <summary>
+	/// 回転を座標に対する角度の値に変換する
+	/// </summary>
+	/// <param name="angle">角度出力（度）</param>
+	/// <param name="axis">回転軸出力</param>
+	void ToAngleAxis(float &angle, Vector3 &axis);
 
 	//===========================================
 	//

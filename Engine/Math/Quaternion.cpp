@@ -119,3 +119,17 @@ Vector3 Quaternion::EulerAngles() const
     return euler;
 
 }
+
+void Quaternion::ToAngleAxis(float &angle, Vector3 &axis)
+{
+    angle =
+    {
+        2.0f * acosf(this->w) * Mathf::rad_to_deg
+    };
+    axis =
+    {
+        this->x / sinf(acosf(this->w)),
+        this->y / sinf(acosf(this->w)),
+        this->z / sinf(acosf(this->w))
+    };
+}

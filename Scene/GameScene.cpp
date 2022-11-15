@@ -22,6 +22,7 @@
 #include "Assets/Scripts/FlyEnemy.h"
 #include "Assets/Scripts/FlyEnemyEye.h"
 #include "Assets/Scripts/CameraController.h"
+#include "Assets/Scripts/CameraController/PlayerCameraController.h"
 #include "Weapon.h"
 #include "Assets/Scripts/Drone.h"
 #include "Object/Component/Collider/OBBCollider/OBBCollider.h"
@@ -40,16 +41,6 @@ void GameScene::Initialize()
 	directional_light_->AddComponent<Light>(LightType::Directional);
 	XMStoreFloat4(&directional_light_->transform_->localQuaternion, XMQuaternionRotationRollPitchYaw(45, 45, 0));
 
-	//// 城
-	//auto castle = GameObject::CreateObject("Castle");
-	//castle->AddComponent<Object3dComponent>(
-	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-	//	"Assets/3d/Castle/Castle FBX.fbx");
-	//castle->transform_->localScale = { 20,20,20 };
-	//castle->transform_->localPosition = { 0,-7,0 };
-
-	//auto floors = GameObject::CreateObject("floors");
-	//floors->AddComponent<OBBCollider>()
 	auto floors = GameObject::CreateObject("Floors");
 
 	for( int i = 0; i<2;++i)
@@ -77,11 +68,11 @@ void GameScene::Initialize()
 		pillar_big->AddComponent<OBBCollider>(Quaternion{ 0,0,0,0 }, Vector3{ 1.0f,4.5f,1.0f }, Vector3{ 0,2.25f,0 });
 		if (i == 0)
 		{
-			pillar_big->transform_->position = { -2.0f,0,6.0f };
+			pillar_big->transform_->position = { -3.0f,0,6.0f };
 		}
 		else
 		{
-			pillar_big->transform_->position = { 2.0f,0,6.0f };
+			pillar_big->transform_->position = { 3.0f,0,6.0f };
 
 		}
 	}
@@ -91,7 +82,7 @@ void GameScene::Initialize()
 		auto wall = GameObject::CreateObject("Wall");
 		wall->AddComponent<OBBCollider>(Quaternion{ 0,0,0,0 }, Vector3{ 0.5f,4.5f,6.0f }, Vector3{ 0.25f,2.25f,-3 });
 		wall->isStatic = true;
-		wall->transform_->position = { -6.0f,-0.2f,i * 6.0f };
+		wall->transform_->position = { -6.0f,0,i * 6.0f };
 		wall->tag = "Wall";
 		wall->isStatic = true;
 		wall->AddComponent<Object3dComponent>(
@@ -103,7 +94,7 @@ void GameScene::Initialize()
 		auto wall = GameObject::CreateObject("Wall");
 		wall->AddComponent<OBBCollider>(Quaternion{ 0,0,0,0 }, Vector3{ 0.5f,4.5f,6.0f }, Vector3{ 0.25f,2.25f,-3 });
 		wall->isStatic = true;
-		wall->transform_->position = { 6.0f,-0.2f,i * 6.0f - 6.0f };
+		wall->transform_->position = { 6.0f,0,i * 6.0f - 6.0f };
 		wall->transform_->quaternion = Quaternion::Euler(0, 180.0f * Mathf::deg_to_rad, 0);
 		wall->tag = "Wall";
 		wall->isStatic = true;
@@ -116,7 +107,7 @@ void GameScene::Initialize()
 		auto wall = GameObject::CreateObject("Wall");
 		wall->AddComponent<OBBCollider>(Quaternion{ 0,0,0,0 }, Vector3{ 0.5f,4.5f,6.0f }, Vector3{ 0.25f,2.25f,-3 });
 		wall->isStatic = true;
-		wall->transform_->position = { i * 6.0f -6.0f ,-0.2f,-6.0};
+		wall->transform_->position = { i * 6.0f -6.0f ,0,-6.0};
 		wall->transform_->quaternion = Quaternion::Euler(0, -90.0f * Mathf::deg_to_rad, 0);
 		wall->tag = "Wall";
 		wall->isStatic = true;
@@ -125,13 +116,13 @@ void GameScene::Initialize()
 			"Assets/3d/Dungeon/fbx walls/Wall.fbx");
 	}
 
-	float buf[2]{ -2.0f,2.0f };
+	float buf[2]{ -3.0f,3.0f };
 	for (int i = 0; i < 2; ++i)
 	{
 		auto wall = GameObject::CreateObject("Wall");
 		wall->AddComponent<OBBCollider>(Quaternion{ 0,0,0,0 }, Vector3{ 0.5f,4.5f,6.0f }, Vector3{ 0.25f,2.25f,-3 });
 		wall->isStatic = true;
-		wall->transform_->position = { i * 6.0f + buf[i],-0.2f,6.0};
+		wall->transform_->position = { i * 6.0f + buf[i],0,6.0};
 		wall->transform_->quaternion = Quaternion::Euler(0, 90.0f * Mathf::deg_to_rad, 0);
 		wall->tag = "Wall";
 		wall->isStatic = true;
@@ -163,12 +154,12 @@ void GameScene::Initialize()
 		wall->isStatic = true;
 		if (i < 3)
 		{
-			wall->transform_->position = { buf[0],-0.2f,6.0f * i + 6.0f };
+			wall->transform_->position = { buf[0],0,6.0f * i + 6.0f };
 			wall->transform_->quaternion = Quaternion::Euler(0, 180.0f * Mathf::deg_to_rad, 0);
 		}
 		else
 		{
-			wall->transform_->position = { buf[1],-0.2f,6.0f * (i - 3) + 12.0f };
+			wall->transform_->position = { buf[1],0,6.0f * (i - 3) + 12.0f };
 		}
 		wall->tag = "Wall";
 		wall->isStatic = true;
@@ -179,86 +170,58 @@ void GameScene::Initialize()
 		
 	}
 
-	auto wall = GameObject::CreateObject("Wall");
-	wall->AddComponent<OBBCollider>(Quaternion{ 0,0,0,0 }, Vector3{ 0.5f,4.5f,6.0f }, Vector3{ 0.25f,2.25f,-3 });
-	wall->isStatic = true;
-	wall->transform_->position = { 4.0f,-0.2f,24.0 };
-	wall->transform_->quaternion = Quaternion::Euler(0, 90.0f * Mathf::deg_to_rad, 0);
-	wall->tag = "Wall";
-	wall->isStatic = true;
-	wall->AddComponent<Object3dComponent>(
+	auto stairs = GameObject::CreateObject("Stairs Big");
+	auto collider = GameObject::CreateObject("Collder");
+	collider->AddComponent<OBBCollider>(Quaternion::Euler(0, 0, 0), Vector3{ 6.0f,1.0f,6.0f }, Vector3{ -3.0f,-0.5f,-3.0f });
+	collider->transform_->quaternion = Quaternion::Euler(40.0f * Mathf::deg_to_rad, 0, 0);
+	collider->SetParent(stairs);
+	stairs->isStatic = true;
+	stairs->transform_->position = { -3.5f,0,24.0f };
+	stairs->transform_->quaternion = Quaternion::Euler(0, 180.0f * Mathf::deg_to_rad, 0);
+	stairs->tag = "Stage";
+	stairs->isStatic = true;
+	stairs->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/Dungeon/fbx walls/wall.fbx");
-	wall->SetParent(road_one);
+		"Assets/3d/Dungeon/fbx walls/stairs_big.fbx");
+	/*wall->SetParent(road_one);*/
+	
+
+
+	// カメラ
+	auto camera_root = GameObject::CreateObject("CameraRoot");
+	camera_root->AddComponent<PlayerCameraController>();
+	auto camera_rotation_root = GameObject::CreateObject("RotationRoot");
+	camera_rotation_root->SetParent(camera_root);
+	auto camera_height_root = GameObject::CreateObject("HeightRoot");
+	camera_height_root->SetParent(camera_rotation_root);
+	auto main_camera = GameObject::CreateObject("MainCamera");
+	main_camera->SetParent(camera_height_root);
+	main_camera->transform_->localPosition = { 0.0f,1.5f,2.0f };
+	main_camera->AddComponent<Camera>();
+
 
 	// プレイヤー
-	auto player = GameObject::CreateObject("Player");
+	auto player = GameObject::CreateObject("Knight");
 	player->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/sword human/Sword man.fbx");
+		"Assets/3d/RPG Characters - Nov 2020/Humanoid Rig Versions/FBX/Warrior.fbx");
 	auto rg = player->AddComponent<Rigidbody>();
 	rg->useGravity = true;
 	player->AddComponent<PlayerController>();
-	player->AddComponent<SphereCollider>(1, Vector3{ 0,0.5f,0 });
+	player->AddComponent<SphereCollider>(2, Vector3{ 0,0.5f,0 });
 	auto player_light = GameObject::CreateObject("Player Light");
-	player_light->transform_->localPosition = { 0.0f,1.0f,0.0f };
+	player_light->transform_->localPosition = { 0.0f,0.0f,0.0f };
 	auto ligh_info = player_light->AddComponent<Light>();
 	ligh_info->range = 1.0f;
 	ligh_info->intensity = 1.0f;
 	player_light->SetParent(player);
 
-
-
-	auto enemy = GameObject::CreateObject("Enemy");
-	enemy->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/Dwarf/Dwarf.fbx");
-	auto enemy_rg = enemy->AddComponent<Rigidbody>();
-	enemy_rg->useGravity = true;
-	enemy->AddComponent<Enemy>();
-	enemy->transform_->position = { 0.0f,1.0f,0.0f };
-	enemy->AddComponent<SphereCollider>(1, Vector3{ 0,0.5f,0 });
-
-	auto eye = GameObject::CreateObject("Eye");
-	eye->transform_->localPosition = {0, 1.4f, 0.0f};
-	eye->SetParent(player);
-
+	// ドローン
 	auto drone = GameObject::CreateObject("Drone");
 	drone->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/Drone/drone.fbx");
 	drone->AddComponent<Drone>(&player->transform_->position.r_);
-
-
-	srand(time(NULL));
-	for (int i = 0; i < 3; ++i)
-	{
-		auto fly_enemy = GameObject::CreateObject("FlyEnemy");
-		fly_enemy->AddComponent<Object3dComponent>(
-			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-			"Assets/3d/Suzy.fbx");
-		auto collider = fly_enemy->AddComponent<SphereCollider>(0.01f,Vector3{0,1,0});
-		fly_enemy->AddComponent<Rigidbody>();
-		fly_enemy->AddComponent<FlyEnemy>();
-		fly_enemy->transform_->position = {static_cast<float>(rand() % 10 - 5),5.0f,static_cast<float>(rand() % 10 - 5) };
-		auto light = fly_enemy->AddComponent<Light>();
-		light->color = { 1,0,0,1 };
-		light->range = 2.0f;
-		light->intensity = 1.0f;
-		auto enemy_eye = GameObject::CreateObject("EnemyEye");
-		enemy_eye->AddComponent<FlyEnemyEye>();
-		auto collider_eye = enemy_eye->AddComponent<SphereCollider>(4, Vector3{ 0,2,0 });
-		collider_eye->isTrigger = true;
-		enemy_eye->SetParent(fly_enemy);
-	}
-
-	// カメラ
-	auto camera = GameObject::CreateObject("CameraObject");
-	camera->AddComponent<Camera>();
-	camera->transform_->localPosition = { 0,10,26 };
-	XMStoreFloat4(&camera->transform_->localQuaternion, XMQuaternionRotationRollPitchYaw(0, 0, 0));
-	camera->AddComponent<CameraController>(eye);
-	//camera->SetParent(eye);
 
 	// 武器
 	auto weapon = GameObject::CreateObject("Weapon");

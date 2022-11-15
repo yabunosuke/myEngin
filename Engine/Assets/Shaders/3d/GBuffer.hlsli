@@ -43,7 +43,7 @@ cbuffer CONSTANT_BUFFER_CAMERA : register(b0)
 };
 
 // メッシュバッファ
-#define MAX_BONES 128
+#define MAX_BONES 256
 cbuffer CONSTANT_BUFFER_MESH : register(b1)
 {
 	row_major float4x4	bone_transforms[MAX_BONES];

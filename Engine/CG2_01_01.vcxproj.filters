@@ -217,7 +217,12 @@
     <ClCompile Include="Texture.cpp">
       <Filter>ResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Component\Transform\RectTransform.cpp" />
+    <ClCompile Include="Object\Component\Transform\RectTransform.cpp">
+      <Filter>Object\Component\Transform\RectTransform</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\CameraController\PlayerCameraController.cpp">
+      <Filter>Asset\CameraController</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -415,8 +420,13 @@
     <ClInclude Include="Texture.h">
       <Filter>ResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Component\Transform\RectTransform.h" />
     <ClInclude Include="..\lib\nlohmann\json.hpp" />
+    <ClInclude Include="Object\Component\Transform\RectTransform.h">
+      <Filter>Object\Component\Transform\RectTransform</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\CameraController\PlayerCameraController.h">
+      <Filter>Asset\CameraController</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />

@@ -47,7 +47,7 @@ public:
 	/// </summary>
 	/// <param name="from">角度差の測定元となるベクトル</param>
 	/// <param name="to">角度差を測定するベクトル</param>
-	/// <returns>float 角度(degree)</returns>
+	/// <returns>float 角度(度)</returns>
 	static float Angle(const Vector3 &from, const Vector3 &to);
 
 	/// <summary>
@@ -196,6 +196,7 @@ public:
 	}
 	Vector3 &operator -=(const Vector3 &vector) {
 		*this = *this - vector;
+		assert(isfinite(this->x));
 		return *this;
 	}
 
@@ -247,7 +248,7 @@ inline Vector3 operator *(const Vector3 &vector,const float &num)
 inline  Vector3 operator *(const float &num, const Vector3 &vector)
 {
 	Vector3 temp = vector * num;
-	
+
 	return temp;
 }
 

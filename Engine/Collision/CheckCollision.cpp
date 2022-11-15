@@ -1,9 +1,10 @@
 #include "CheckCollision.h"
 #include <memory>
 #include "Object/Component/Behaviour/MonoBehaviour/MonoBehaviour.h"
+#include <sstream>
 
 
-std::map<GameObject *,Vector3> CheckCollision::hitlist_;
+std::map<GameObject *, std::pair<Vector3, int>> CheckCollision::hitlist_;
 
 void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects)
 {
@@ -205,7 +206,8 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 	//　衝突応答
 	for (auto &it : hitlist_)
 	{
-		it.first->transform_->position += it.second;
+		Vector3 penalty{ it.second.first / it.second.second };
+		it.first->transform_->position += penalty;
 	}
 	hitlist_.clear();
 
@@ -747,6 +749,9 @@ void CheckCollision::HitResponse(
 	float friction_a;
 	float friction_b;
 
+	float K{ 0.9f };
+	float B{ 0.9f };
+
 	// どちらも動く場合
 	if (!is_static_a && !is_static_b)
 	{
@@ -773,9 +778,6 @@ void CheckCollision::HitResponse(
 			1.0f)
 		};
 
-		float K{ 1.0f };
-		float B{ 1.0f };
-		
 		// A
 		Vector3 a_d{ intrusion_a };
 		Vector3 a_relative_velocity
@@ -804,22 +806,20 @@ void CheckCollision::HitResponse(
 		{
 			return;
 		}
-		// めり込みが一定以上ならペナルティを課す
-		float K{ 1.0f };
-		float B{ 1.0f };
+		
 		Vector3 d{ intrusion_a };
 
-		auto mg{ Vector3::Scale(rigidbody_a->velocity,collision_data_a.contactPoint->normal).Magnitude() };
 		Vector3 relative_velocity
 		{
-			mg * collision_data_a.contactPoint->normal
+			Vector3::Scale(rigidbody_a->velocity,collision_data_a.contactPoint->normal).Magnitude() * collision_data_a.contactPoint->normal
 		};
 
 		penalty_a = K * d + B * relative_velocity;
 
 		// 摩擦計算
 		rigidbody_a->velocity += B * relative_velocity;
-		hitlist_[top_parent_a] += intrusion_a;
+		hitlist_[top_parent_a].first += K * d;
+		hitlist_[top_parent_a].second += 1;
 	}
 	// bだけ動的な場合
 	else if (is_static_a && !is_static_b)
@@ -829,9 +829,7 @@ void CheckCollision::HitResponse(
 		{
 			return;
 		}
-		// めり込みが一定以上ならペナルティを課す
-		float K{ 1.0f };
-		float B{ 1.0f };
+		
 		Vector3 d{ intrusion_b };
 
 		auto mg{ Vector3::Scale(rigidbody_b->velocity,collision_data_b.contactPoint->normal).Magnitude() };
@@ -844,7 +842,8 @@ void CheckCollision::HitResponse(
 
 		// 摩擦計算
 		rigidbody_b->velocity += B * relative_velocity;
-		hitlist_[top_parent_b] += intrusion_b;
+		hitlist_[top_parent_b].first += K * d;
+		hitlist_[top_parent_b].second += 1;
 
 	}
 }

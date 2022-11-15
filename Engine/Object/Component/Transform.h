@@ -48,7 +48,11 @@ public:
 		&local_position_,
 		yEngine::AccessorType::AllAccess,
 		nullptr,
-		nullptr
+		[this](Vector3 pos)
+		{
+			local_position_ = pos;
+			UpdateMatrix();
+		}
 	};
 	/// <summary>
 	/// ワールド空間の回転 (AllAccess)
@@ -58,7 +62,11 @@ public:
 		yEngine::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
-		nullptr
+		[this](Quaternion qua)
+		{
+			local_quaternion_ = qua;
+			UpdateMatrix();
+		}
 	};
 	/// <summary>
 	/// ワールド空間の座標 (AllAccess)
@@ -68,7 +76,11 @@ public:
 		yEngine::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
-		nullptr
+		[this](Vector3 sca)
+		{
+			local_scale_ = sca;
+			UpdateMatrix();
+		}
 	};
 
 	/// <summary>
@@ -235,6 +247,62 @@ public:
 				local_quaternion_,
 				local_position_
 			);
+		}
+	};
+
+	// 正面
+	yEngine::Property<Vector3> forward
+	{
+		nullptr,
+		yEngine::AccessorType::AllAccess,
+		[this]()
+		{
+			Vector3 temp
+			{
+				quaternion * Vector3::forward
+			};
+			return temp;
+		},
+		[this](Vector3 next_vec)
+		{
+			/*Vector3 now_forward { this->forward };
+			float angle{ Vector3::Angle(now_forward.Normalized(),next_vec.Normalized())};
+			Vector3 axis{ Vector3::Cross(now_forward.Normalized(),next_vec.Normalized())};
+
+			quaternion = Quaternion(axis.Normalized(), angle*Mathf::deg_to_rad);*/
+
+			// ワールド行列を計算
+			XMMATRIX S = DirectX::XMMatrixScaling(
+				world_scale_.x,
+				world_scale_.y,
+				world_scale_.z
+			);
+
+			Vector3 front = next_vec.Normalized();
+			Vector3 right = Vector3::Cross(Vector3::up, front).Normalized();
+			Vector3 up = Vector3::Cross(front, right).Normalized();
+
+			XMMATRIX R
+			{
+				right.x,right.y,right.z,0.0f,
+				up.x,up.y,up.z,0.0f,
+				front.x,front.y,front.z,0.0f,
+				0.0f,0.0f,0.0f,1.0f
+			};
+
+		/*XMMATRIX R = DirectX::XMMatrixRotationQuaternion(
+			XMLoadFloat4(&world_quaternion_)
+		);*/
+
+			XMMATRIX T = DirectX::XMMatrixTranslation(
+				world_position_.x,
+				world_position_.y,
+				world_position_.z
+			);
+
+			XMMATRIX temp = S * R * T;
+
+			matrix = temp;
 		}
 	};
 

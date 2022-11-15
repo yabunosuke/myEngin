@@ -67,6 +67,11 @@ public:
 		nullptr
 	};
 
+	yEngine::Property<float> fieldOfView{
+		&fov_of_view_,
+		 yEngine::AccessorType::AllAccess,
+	};
+
 private:
 
 	//===========================================

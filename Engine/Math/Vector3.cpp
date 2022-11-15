@@ -37,14 +37,13 @@ Vector3 Vector3::Normalized() const
 		this->y /length,
 		this->z /length,
 	};
-
 	return normalized;
 }
 
 float Vector3::Angle(const Vector3 &from, const Vector3 &to)
 {
 	float cos_sita = Dot(from, to) / (from.Magnitude() * to.Magnitude());
-	float angle = acos(cos_sita);
+	float angle = acos(cos_sita) * Mathf::rad_to_deg;
 
 	return angle;
 }

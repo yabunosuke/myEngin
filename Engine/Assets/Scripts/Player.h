@@ -2,6 +2,7 @@
 #include "3d/Fbx/Fbx.h"
 #include "Object/Component/Behaviour/MonoBehaviour/MonoBehaviour.h"
 #include "Object/Component/Rigidbody.h"
+#include "Assets/Scripts/CameraController/PlayerCameraController.h"
 
 enum class PlayerState
 {
@@ -74,27 +75,33 @@ private:
 	// アニメーションステート
 	enum class AnimationState {
 		NONE = -1,
-		IDOLE,
+		Attack1,
+		Attack2,
+		Damage,
+		Deth,
+		Idol,
 		Jump,
-		RUN_FRONT,
-		SLASH,
-		T_POSE,
-		WALK_BACK,
-		WALK_FRONT,
-		WALK_LEFT,
-		WALK_RIGHT,
+		Roll,
+		Run,
+		Tpose,
+		Walk,
 		MAX
-	}animation_state_ = AnimationState::T_POSE;
+	}animation_state_ = AnimationState::Tpose;
 
     // 座標
-    Rigidbody *regidbody_;
+    Rigidbody *rigidbody_;
     Fbx *model_data_{ nullptr };
 
 	// 入力量
-	float input_horizontal_{ 0.0f };	// 横
-	float input_vertical_{ 0.0f };		// 縦
+	Vector3 input_stick_r_{0,0,0};
+	Vector3 input_stick_l_{0,0,0};
+
+	// 移動速度
+	float move_speed{ 2.0f };
 
 	int hp_ = 10;
 
+	// カメラ制御用
+	PlayerCameraController *camera_controller_{ nullptr };
 };
 

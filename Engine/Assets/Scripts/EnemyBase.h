@@ -17,7 +17,7 @@ public:
 	void Infomation() override;
 
 protected:
-
+	Fbx *fbx_;
 	Rigidbody *regidbody_{ nullptr };
 	// ‘Ì—Í
 	float max_hp_{10.0f};
