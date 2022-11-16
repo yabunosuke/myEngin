@@ -65,6 +65,8 @@ private:
 	void JumpDrop(bool is_fixed);
 	void Dodge(bool is_fixed);
 	void MeleeAttack1(bool is_fixed);
+	bool is_nextattack_{ false };
+	void MeleeAttack2(bool is_fixed);
 
 	std::map<PlayerState,void(PlayerController::*)(bool)> state_update_;
 

@@ -57,7 +57,7 @@ void PlayerCameraController::FixedUpdateCameraPosition(const Transform &player)
 void PlayerCameraController::DashCameraFov()
 {
 	// ƒJƒƒ‰ƒY[ƒ€
-	main_camera_->fieldOfView = Ease(In, Quad, 0.6f, main_camera_->fieldOfView, 90.0f);
+	main_camera_->fieldOfView = Ease(In, Quad, 0.6f, main_camera_->fieldOfView, 120.0f);
 }
 
 void PlayerCameraController::DefaultCameraFov()

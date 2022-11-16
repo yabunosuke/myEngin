@@ -215,7 +215,6 @@ public:	//関数
 
 	Transform *transform_;
 
-	uint16_t layer_{0};
 
 private:
 	//===========================================
@@ -245,8 +244,11 @@ private:
 	//
 	//===========================================
 
-	bool is_static_ = false;
+	// 動かないオブジェクトならtrue
+	bool is_static_{ false };
 
+	// 衝突レイヤー
+	uint16_t layer_{ 0 };
 
 
 	// 属しているシーン

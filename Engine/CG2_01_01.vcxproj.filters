@@ -223,6 +223,10 @@
     <ClCompile Include="Assets\Scripts\CameraController\PlayerCameraController.cpp">
       <Filter>Asset\CameraController</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\RabbitEnemy.cpp">
+      <Filter>Asset\Enemy\RabbitEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision\Layer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -427,6 +431,10 @@
     <ClInclude Include="Assets\Scripts\CameraController\PlayerCameraController.h">
       <Filter>Asset\CameraController</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\RabbitEnemy.h">
+      <Filter>Asset\Enemy\RabbitEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\Layer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
@@ -571,6 +579,12 @@
     </Filter>
     <Filter Include="Object\Component\Transform\RectTransform">
       <UniqueIdentifier>{a55043a6-18d6-49b9-a87d-49c262acb7e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Enemy\RabbitEnemy">
+      <UniqueIdentifier>{6e0b262c-863e-4d9f-be1c-63980299f92f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Enemy\NewFilter1">
+      <UniqueIdentifier>{11fbe093-dfe6-41ee-976b-3fbafc131494}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

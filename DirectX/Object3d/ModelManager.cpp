@@ -1,7 +1,7 @@
 #include "ModelManager.h"
 #include "ModelLoader.h"
 
-std::map<const std::string, std::shared_ptr<FbxResource>> ModelManager::model;
+std::map<const std::string, std::unique_ptr<FbxResource>> ModelManager::model;
 
 ModelManager *ModelManager::GetIns()
 {

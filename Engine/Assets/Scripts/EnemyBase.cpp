@@ -11,7 +11,6 @@ void EnemyBase::Start()
 	// ƒŠƒWƒbƒh
 	regidbody_ =
 		game_object_->GetComponent<Rigidbody>();
-	transform_->scale = { 40,40,40 };
 }
 
 void EnemyBase::FixedUpdate()

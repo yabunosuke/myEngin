@@ -6,6 +6,7 @@
 #include "Object/GameObject/GameObject.h"
 #include "Object/Component/Camera.h"
 #include "Object/Component/Collider/SphereCollider/SphereCollider.h"
+#include <Time/Time.h>
 
 class Object3dComponent;
 
@@ -21,6 +22,7 @@ MonoBehaviour("PlayerController")
 	state_update_[PlayerState::DODGE] = &PlayerController::Dodge;
 	state_update_[PlayerState::DASH] = &PlayerController::Dash;
 	state_update_[PlayerState::MELEE_ATTACK_1] = &PlayerController::MeleeAttack1;
+	state_update_[PlayerState::MELEE_ATTACK_2] = &PlayerController::MeleeAttack2;
 
 	//state_fixedupdate_[static_cast<int>(PlayerState::WALK)] = &PlayerController::WalkFixed;
 }
@@ -47,8 +49,8 @@ void PlayerController::OnCollisionStay(Collision &collision)
 
 void PlayerController::Awake()
 {
-	transform_->position = { 0.0f,0.0f,20.0f };
-	transform_->quaternion = Quaternion::Euler(0, 180.0f * Mathf::deg_to_rad, 0);
+	transform_->position = { -3.0f,0.0f,-3.0f };
+	transform_->quaternion = Quaternion::Euler(0, 45.0f * Mathf::deg_to_rad, 0);
 }
 
 void PlayerController::Start()
@@ -205,9 +207,7 @@ void PlayerController::Dash(bool is_fixed)
 {
 	if (!is_fixed)
 	{
-		
-
-		move_speed = 4.0f;
+		move_speed = 5.0f;
 
 		// ダッシュキーだけ離されたら歩く
 		if (
@@ -317,15 +317,61 @@ void PlayerController::MeleeAttack1(bool is_fixed)
 {
 	if (!is_fixed)
 	{
+		static float timer = 0;
+		if (timer >= 0.2f)
+		{
+			timer = 0.2f;
+
+			if (Input::GetButtonPressTrigger(GamePadButton::INPUT_X))
+			{
+				timer = 0.0f;
+				is_nextattack_ = true;
+			}
+		}
+		else
+		{
+			timer += Time::GetInstance()->time;
+		}
+
+		
+
+		// アニメーション
+		model_data_->PlayAnimation(static_cast<int>(AnimationState::Attack1), false);
+	}
+	else
+	{
+		// アニメーションが終わったらアイドルに戻る
+		if (!model_data_->IsPlayAnimation())
+		{
+			if (is_nextattack_)
+			{
+				is_nextattack_ = false;
+				playerState = PlayerState::MELEE_ATTACK_2;
+			}
+			else
+			{
+				playerState = PlayerState::IDOLE;
+			}
+			return;
+		}
+	}
+}
+
+void PlayerController::MeleeAttack2(bool is_fixed)
+{
+	if (!is_fixed)
+	{
+		// アニメーション
+		model_data_->PlayAnimation(static_cast<int>(AnimationState::Attack2), false);
+	}
+	else
+	{
 		// アニメーションが終わったらアイドルに戻る
 		if (!model_data_->IsPlayAnimation())
 		{
 			playerState = PlayerState::IDOLE;
 			return;
 		}
-
-		// アニメーション
-		model_data_->PlayAnimation(static_cast<int>(AnimationState::Attack1), false);
 	}
 }
 

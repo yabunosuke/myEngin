@@ -380,10 +380,38 @@ void Editor::ProjectSettingsWindow()
 		ImVec2(400, 500),
 		ImGuiCond_::ImGuiCond_FirstUseEver
 	);
-	//固定長更新の時間
-	float time = Time::GetInstance()->fixedDeltaTime;
-	ImGui::DragFloat("Fixed Timestep", &time,0.01f);
-	Time::GetInstance()->fixedDeltaTime = static_cast<double>(time);
+	
+	static std::vector<std::string> setting_list
+	{
+		"Adaptive Performance",
+		"Audio",
+		"Editor",
+		"Graphics",
+		"Input Manager",
+		"Physics",
+		"Physics 2D",
+		"Player",
+		"Preset Manager",
+		"Qualiy",
+		"Scene Template",
+		"Script Execution Order",
+		"Tags and Layers",
+		"Time",
+	};
+
+	static int selected = -1;
+	for (int n = 0; n < setting_list.size(); ++n)
+	{
+		if (ImGui::Selectable(setting_list[n].c_str(), selected == n))
+		{
+			selected = n;
+		}
+	}
+
+	////固定長更新の時間
+	//float time = Time::GetInstance()->fixedDeltaTime;
+	//ImGui::DragFloat("Fixed Timestep", &time, 0.01f);
+	//Time::GetInstance()->fixedDeltaTime = static_cast<double>(time);
 
 	ImGui::End();
 }

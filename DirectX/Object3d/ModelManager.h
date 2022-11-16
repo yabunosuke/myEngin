@@ -19,6 +19,6 @@ public:
 	//Model *GetModel(std::string modelName) { return model[modelName].get(); }
 
 private:
-	static std::map<const std::string , std::shared_ptr<FbxResource>> model;	//ƒ‚ƒfƒ‹Ši”[ƒ}ƒbƒv
+	static std::map<const std::string , std::unique_ptr<FbxResource>> model;	//ƒ‚ƒfƒ‹Ši”[ƒ}ƒbƒv
 };
 

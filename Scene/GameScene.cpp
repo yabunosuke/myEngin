@@ -35,6 +35,7 @@ GameScene::GameScene(IoChangedListener *impl)
 
 void GameScene::Initialize()
 {
+	srand(time(NULL));
 
 	// ライト
 	auto directional_light_ = GameObject::CreateObject("Directional Light");
@@ -56,6 +57,18 @@ void GameScene::Initialize()
 			floor2_big->SetParent(floors);
 		}
 	}
+	for (int i = 0; i < 3; ++i)
+	{
+
+		auto floor2_big = GameObject::CreateObject("Floor2 big");
+		floor2_big->AddComponent<Object3dComponent>(
+			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+			"Assets/3d/Dungeon/fbx walls/floor2_big.fbx");
+		floor2_big->AddComponent<OBBCollider>(Quaternion{ 0.0f,0.0f,0.0f,0.0f }, Vector3{ 6.0f,1.0f,6.0f }, Vector3{ -3.0f,-0.5f,-3.0f });
+		floor2_big->transform_->position = { 3.0f,3.4f,36.0f + i * 6.0f };
+		floor2_big->SetParent(floors);
+	}
+
 
 	for (int i = 0; i < 2; ++i)
 	{
@@ -77,6 +90,7 @@ void GameScene::Initialize()
 		}
 	}
 
+	auto walls = GameObject::CreateObject("walls");
 	for (int i = 0; i < 2; ++i)
 	{
 		auto wall = GameObject::CreateObject("Wall");
@@ -88,6 +102,7 @@ void GameScene::Initialize()
 		wall->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 			"Assets/3d/Dungeon/fbx walls/Wall.fbx");
+		wall->SetParent(walls);
 	}
 	for (int i = 0; i < 2; ++i)
 	{
@@ -101,6 +116,7 @@ void GameScene::Initialize()
 		wall->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 			"Assets/3d/Dungeon/fbx walls/Wall.fbx");
+		wall->SetParent(walls);
 	}
 	for (int i = 0; i < 2; ++i)
 	{
@@ -114,6 +130,7 @@ void GameScene::Initialize()
 		wall->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 			"Assets/3d/Dungeon/fbx walls/Wall.fbx");
+		wall->SetParent(walls);
 	}
 
 	float buf[2]{ -3.0f,3.0f };
@@ -129,9 +146,9 @@ void GameScene::Initialize()
 		wall->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 			"Assets/3d/Dungeon/fbx walls/wall.fbx");
+		wall->SetParent(walls);
 	}
 
-	auto road_one = GameObject::CreateObject("corner_one");
 	int buf_z{ 0 };
 	for (int i = 0; i < 6; ++i)
 	{
@@ -166,14 +183,14 @@ void GameScene::Initialize()
 		wall->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 			"Assets/3d/Dungeon/fbx walls/wall.fbx");
-		wall->SetParent(road_one);
+		wall->SetParent(walls);
 		
 	}
 
 	auto stairs = GameObject::CreateObject("Stairs Big");
 	auto collider = GameObject::CreateObject("Collder");
-	collider->AddComponent<OBBCollider>(Quaternion::Euler(0, 0, 0), Vector3{ 6.0f,1.0f,6.0f }, Vector3{ -3.0f,-0.5f,-3.0f });
-	collider->transform_->quaternion = Quaternion::Euler(40.0f * Mathf::deg_to_rad, 0, 0);
+	collider->AddComponent<OBBCollider>(Quaternion::Euler(0, 0, 0), Vector3{ 6.0f,1.0f,7.0f }, Vector3{ -3.0f,-0.5f,-3.0f });
+	collider->transform_->quaternion = Quaternion::Euler(30.0f * Mathf::deg_to_rad, 0, 0);
 	collider->SetParent(stairs);
 	stairs->isStatic = true;
 	stairs->transform_->position = { -3.5f,0,24.0f };
@@ -202,6 +219,7 @@ void GameScene::Initialize()
 
 	// プレイヤー
 	auto player = GameObject::CreateObject("Knight");
+	player->tag = "Player";
 	player->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/RPG Characters - Nov 2020/Humanoid Rig Versions/FBX/Warrior.fbx");
@@ -234,6 +252,26 @@ void GameScene::Initialize()
 	weapon->AddComponent<Weapon>();
 	auto weapon_collider = weapon->AddComponent<OBBCollider>(Quaternion{ 0.0f,0.0f,0.0f,0.0f },Vector3{1.8f,6.2f,1.8f});
 	weapon_collider->isTrigger = true;
+	
+
+	auto s_enemy = GameObject::CreateObject("Spike Enemy");
+	s_enemy->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/Ultimate Monsters/Blob/FBX/GreenSpikyBlob.fbx");
+	//auto enemy = GameObject::CreateObject("Enemy");
+	//enemy->AddComponent<Object3dComponent>(
+	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+	//	"Assets/3d/Dwarf/Dwarf.fbx");
+	//auto enemy_rg = enemy->AddComponent<Rigidbody>();
+	//enemy_rg->useGravity = true;
+	//enemy->AddComponent<Enemy>();
+	//enemy->transform_->position = { 0.0f,4.0f,40.0f };
+	//enemy->AddComponent<SphereCollider>(1, Vector3{ 0,0.5f,0 });
+
+	auto eye = GameObject::CreateObject("Eye");
+	eye->transform_->localPosition = { 0, 1.4f, 0.0f };
+	eye->SetParent(player);
+
 }
 
 void GameScene::Update()
