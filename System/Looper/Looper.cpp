@@ -1,4 +1,4 @@
-#include "Looper.h"
+﻿#include "Looper.h"
 #include "DirectXCommon.h"
 #include "AudioManager.h"	//音声管理
 //#include "KeyboardInput.h"

@@ -1,4 +1,5 @@
 #include "EnemyBase.h"
+#include <Object3dComponent.h>
 
 EnemyBase::EnemyBase(const std::string &name):
 MonoBehaviour(name)
@@ -9,8 +10,11 @@ MonoBehaviour(name)
 void EnemyBase::Start()
 {
 	// ƒŠƒWƒbƒh
-	regidbody_ =
+	rigidbody_ =
 		game_object_->GetComponent<Rigidbody>();
+
+	model_data_ =
+		game_object_->GetComponent<Object3dComponent>()->GetObjectData();
 }
 
 void EnemyBase::FixedUpdate()

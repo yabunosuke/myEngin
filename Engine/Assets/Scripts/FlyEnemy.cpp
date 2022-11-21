@@ -19,7 +19,6 @@ void FlyEnemy::OnTriggerEnter(Collider &other)
 	if (is_invincible_) return;
 	if ((other.game_object_->tag == "Weapon"))
 	{
-		fbx_->SetColor({ 1,0,0,1 });
 		--hp_;
 		is_invincible_ = true;
 	}
@@ -29,10 +28,10 @@ void FlyEnemy::OnTriggerEnter(Collider &other)
 
 void FlyEnemy::Start()
 {
-	regidbody_ =
+	rigidbody_ =
 		game_object_->GetComponent<Rigidbody>();
 	transform_->scale = { 50.0f,50.0f ,50.0f };
-	fbx_ = game_object_->GetComponent<Object3dComponent>()->GetObjectData();
+	model_data_ = game_object_->GetComponent<Object3dComponent>()->GetObjectData();
 }
 
 void FlyEnemy::FixedUpdate()
@@ -42,7 +41,6 @@ void FlyEnemy::FixedUpdate()
 		if(invincible_timer_ >= k_invincible_time_)
 		{
 			invincible_timer_ = 0.0f;
-			fbx_->SetColor({ 1,1,1,1 });
 			is_invincible_ = false;
 		}
 		invincible_timer_ += Time::GetInstance()->time;
@@ -57,7 +55,7 @@ void FlyEnemy::FixedUpdate()
 		wave_offset,
 		wave_offset
 	};
-	regidbody_->AddForce(wave_vec);
+	rigidbody_->AddForce(wave_vec);
 
 }
 

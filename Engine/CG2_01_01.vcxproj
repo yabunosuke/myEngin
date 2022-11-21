@@ -117,10 +117,9 @@
     <ClCompile Include="Assets\Scripts\FlyEnemy.cpp" />
     <ClCompile Include="Assets\Scripts\FlyEnemyEye.cpp" />
     <ClCompile Include="Assets\Scripts\Player.cpp" />
-    <ClCompile Include="Assets\Scripts\RabbitEnemy.cpp" />
+    <ClCompile Include="Assets\Scripts\SpikeEnemy.cpp" />
     <ClCompile Include="Collision\CheckCollision.cpp" />
     <ClCompile Include="Collision\Collision.cpp" />
-    <ClCompile Include="Collision\Layer.cpp" />
     <ClCompile Include="ConstantBufferManager\ConstantBufferLapper.cpp" />
     <ClCompile Include="ConstantBufferManager\ConstantBufferManager.cpp" />
     <ClCompile Include="Editor.cpp" />
@@ -315,11 +314,10 @@
     <ClInclude Include="Assets\Scripts\FlyEnemy.h" />
     <ClInclude Include="Assets\Scripts\FlyEnemyEye.h" />
     <ClInclude Include="Assets\Scripts\Player.h" />
-    <ClInclude Include="Assets\Scripts\RabbitEnemy.h" />
+    <ClInclude Include="Assets\Scripts\SpikeEnemy.h" />
     <ClInclude Include="Collision\CheckCollision.h" />
     <ClInclude Include="Collision\Collision.h" />
     <ClInclude Include="Collision\ContactPoint.h" />
-    <ClInclude Include="Collision\Layer.h" />
     <ClInclude Include="Collision\Primitive.h" />
     <ClInclude Include="ConstantBufferManager\ConstantBuffer.h" />
     <ClInclude Include="ConstantBufferManager\ConstantBufferLapper.h" />
@@ -358,7 +356,6 @@
     <ClInclude Include="Object\Component\Transform.h" />
     <ClInclude Include="Object\Component\Transform\RectTransform.h" />
     <ClInclude Include="Object\GameObject\GameObject.h" />
-    <ClInclude Include="Object\GameObject\Layer.h" />
     <ClInclude Include="Object\Material\Material.h" />
     <ClInclude Include="Object\Mesh\Mesh.h" />
     <ClInclude Include="Object\Object.h" />

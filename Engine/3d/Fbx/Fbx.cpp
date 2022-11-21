@@ -217,11 +217,12 @@ void Fbx::PlayAnimation(uint64_t index, bool loop, bool reset,float blend_second
 	animation_blend_seconds_ = blend_seconds;
 }
 
-bool Fbx::IsPlayAnimation() const
+bool Fbx::IsPlayAnimation(uint64_t index) const
 {
 	// 範囲内ならアニメーションしている
 	if (current_animation_index_ < 0) return false;
 	if (current_animation_index_ >= resource_->GetAnimations().size()) return false;
-	return true;
+	if(index == -1)	return true;
+	return current_animation_index_ == index;
 }
 

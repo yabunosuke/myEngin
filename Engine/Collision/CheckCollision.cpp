@@ -105,12 +105,10 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 								// 衝突解消
 								HitResponse(
 									*object_a,
-									rigidbody_a,
 									intrusion_a,
 									collision_info_a,
 
 									*object_b,
-									rigidbody_b,
 									intrusion_b,
 									collision_info_b
 									);
@@ -138,12 +136,10 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 								// 衝突解消
 								HitResponse(
 									*object_a,
-									rigidbody_a,
 									intrusion_a,
 									collision_info_a,
 
 									*object_b,
-									rigidbody_b,
 									intrusion_b,
 									collision_info_b
 								);
@@ -704,12 +700,10 @@ void CheckCollision::OnCollisionStay(GameObject *object, Collision &collision_da
 
 void CheckCollision::HitResponse(
 	GameObject *object_a,
-	Rigidbody *rigidbody_a,
 	const Vector3 &intrusion_a,
 	Collision &collision_data_a,
 
 	GameObject *object_b,
-	Rigidbody *rigidbody_b,
 	const Vector3 &intrusion_b,
 	Collision &collision_data_b
 	)
@@ -718,6 +712,9 @@ void CheckCollision::HitResponse(
 	// 一番上のオブジェクトのトランスフォームを変化させる
 	GameObject *top_parent_a{ object_a->top };
 	GameObject *top_parent_b{ object_b->top };
+
+	Rigidbody *rigidbody_a = top_parent_a->GetComponent<Rigidbody>();
+	Rigidbody *rigidbody_b = top_parent_b->GetComponent<Rigidbody>();
 
 	bool is_static_a
 	{
@@ -737,9 +734,6 @@ void CheckCollision::HitResponse(
 	{
 		return;
 	}
-
-	Rigidbody *top_rigid_a = top_parent_a->GetComponent<Rigidbody>();
-	Rigidbody *top_rigid_b = top_parent_b->GetComponent<Rigidbody>();
 
 	// 押し戻し量
 	Vector3 penalty_a;
@@ -796,7 +790,7 @@ void CheckCollision::HitResponse(
 		};
 
 		penalty_b = K * b_d + B * b_relative_velocity;
-		rigidbody_b->velocity += penalty_b * rigidbody_a->mass_ / mass_total;
+		rigidbody_b->velocity += penalty_b * rigidbody_b->mass_ / mass_total;
 	}
 	// aだけ動的な場合
 	else if(!is_static_a  && is_static_b)

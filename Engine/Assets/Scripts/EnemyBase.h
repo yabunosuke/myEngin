@@ -17,8 +17,8 @@ public:
 	void Infomation() override;
 
 protected:
-	Fbx *fbx_;
-	Rigidbody *regidbody_{ nullptr };
+	Fbx *model_data_;
+	Rigidbody *rigidbody_{ nullptr };
 	// ‘Ì—Í
 	float max_hp_{10.0f};
 	float hp_{max_hp_};

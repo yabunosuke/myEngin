@@ -71,7 +71,7 @@ public:
 	float GetCurrentAnimationSeconds() const { return current_animation_seconds_; }
 
 	// アニメーション中か判定
-	bool IsPlayAnimation() const;
+	bool IsPlayAnimation(uint64_t index = -1) const;
 
 	// 色を設定
 	void SetColor(XMFLOAT4 color) { color_ = color; }

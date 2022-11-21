@@ -81,12 +81,10 @@ private:
 	// Õ“ËŒã‚Ì‰“šˆ—
 	static void HitResponse(
 		GameObject *object_a,
-		Rigidbody *rigidbody_a,
 		const Vector3 &intrusion_a,
 		Collision &collision_data_a,
 
 		GameObject *object_b,
-		Rigidbody *rigidbody_b,
 		const Vector3 &intrusion_b,
 		Collision &collision_data_b
 	);

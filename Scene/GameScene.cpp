@@ -23,6 +23,7 @@
 #include "Assets/Scripts/FlyEnemyEye.h"
 #include "Assets/Scripts/CameraController.h"
 #include "Assets/Scripts/CameraController/PlayerCameraController.h"
+#include "Assets/Scripts/SpikeEnemy.h"
 #include "Weapon.h"
 #include "Assets/Scripts/Drone.h"
 #include "Object/Component/Collider/OBBCollider/OBBCollider.h"
@@ -54,26 +55,30 @@ void GameScene::Initialize()
 				"Assets/3d/Dungeon/fbx walls/floor2_big.fbx");
 			floor2_big->AddComponent<OBBCollider>(Quaternion{ 0.0f,0.0f,0.0f,0.0f }, Vector3{ 6.0f,1.0f,6.0f }, Vector3{ -3.0f,-0.5f,-3.0f });
 			floor2_big->transform_->position = { i * 6.0f,0.0f,j * 6.0f };
+			floor2_big->tag = "Stage";
 			floor2_big->SetParent(floors);
 		}
 	}
 	for (int i = 0; i < 3; ++i)
 	{
-
-		auto floor2_big = GameObject::CreateObject("Floor2 big");
-		floor2_big->AddComponent<Object3dComponent>(
-			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-			"Assets/3d/Dungeon/fbx walls/floor2_big.fbx");
-		floor2_big->AddComponent<OBBCollider>(Quaternion{ 0.0f,0.0f,0.0f,0.0f }, Vector3{ 6.0f,1.0f,6.0f }, Vector3{ -3.0f,-0.5f,-3.0f });
-		floor2_big->transform_->position = { 3.0f,3.4f,36.0f + i * 6.0f };
-		floor2_big->SetParent(floors);
+		for(int j = 0;j<3;++j)
+		{
+			auto floor2_big = GameObject::CreateObject("Floor2 big");
+			floor2_big->AddComponent<Object3dComponent>(
+				DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+				"Assets/3d/Dungeon/fbx walls/floor2_big.fbx");
+			floor2_big->AddComponent<OBBCollider>(Quaternion{ 0.0f,0.0f,0.0f,0.0f }, Vector3{ 6.0f,1.0f,6.0f }, Vector3{ -3.0f,-0.5f,-3.0f });
+			floor2_big->transform_->position = { j * 6.0f - 3.0f,3.4f,36.0f + i * 6.0f };
+			floor2_big->tag = "Stage";
+			floor2_big->SetParent(floors);
+		}
 	}
 
 
 	for (int i = 0; i < 2; ++i)
 	{
 		auto pillar_big = GameObject::CreateObject("Pillar big");
-		pillar_big->tag = "Pillar";
+		pillar_big->tag = "Stage";
 		pillar_big->isStatic = true;
 		pillar_big->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
@@ -97,7 +102,7 @@ void GameScene::Initialize()
 		wall->AddComponent<OBBCollider>(Quaternion{ 0,0,0,0 }, Vector3{ 0.5f,4.5f,6.0f }, Vector3{ 0.25f,2.25f,-3 });
 		wall->isStatic = true;
 		wall->transform_->position = { -6.0f,0,i * 6.0f };
-		wall->tag = "Wall";
+		wall->tag = "Stage";
 		wall->isStatic = true;
 		wall->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
@@ -111,7 +116,7 @@ void GameScene::Initialize()
 		wall->isStatic = true;
 		wall->transform_->position = { 6.0f,0,i * 6.0f - 6.0f };
 		wall->transform_->quaternion = Quaternion::Euler(0, 180.0f * Mathf::deg_to_rad, 0);
-		wall->tag = "Wall";
+		wall->tag = "Stage";
 		wall->isStatic = true;
 		wall->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
@@ -125,7 +130,7 @@ void GameScene::Initialize()
 		wall->isStatic = true;
 		wall->transform_->position = { i * 6.0f -6.0f ,0,-6.0};
 		wall->transform_->quaternion = Quaternion::Euler(0, -90.0f * Mathf::deg_to_rad, 0);
-		wall->tag = "Wall";
+		wall->tag = "Stage";
 		wall->isStatic = true;
 		wall->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
@@ -141,7 +146,7 @@ void GameScene::Initialize()
 		wall->isStatic = true;
 		wall->transform_->position = { i * 6.0f + buf[i],0,6.0};
 		wall->transform_->quaternion = Quaternion::Euler(0, 90.0f * Mathf::deg_to_rad, 0);
-		wall->tag = "Wall";
+		wall->tag = "Stage";
 		wall->isStatic = true;
 		wall->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
@@ -163,6 +168,7 @@ void GameScene::Initialize()
 				"Assets/3d/Dungeon/fbx walls/floor2_big.fbx");
 			floor2_big->AddComponent<OBBCollider>(Quaternion{ 0.0f,0.0f,0.0f,0.0f }, Vector3{ 6.0f,1.0f,6.0f }, Vector3{ -3.0f,-0.5f,-3.0f });
 			floor2_big->transform_->position = { 3.0f,0.0f, 12.0f + 6.0f * (buf_z - 1) };
+			floor2_big->tag = "Stage";
 			floor2_big->SetParent(floors);
 
 		}
@@ -178,7 +184,7 @@ void GameScene::Initialize()
 		{
 			wall->transform_->position = { buf[1],0,6.0f * (i - 3) + 12.0f };
 		}
-		wall->tag = "Wall";
+		wall->tag = "Stage";
 		wall->isStatic = true;
 		wall->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
@@ -189,7 +195,7 @@ void GameScene::Initialize()
 
 	auto stairs = GameObject::CreateObject("Stairs Big");
 	auto collider = GameObject::CreateObject("Collder");
-	collider->AddComponent<OBBCollider>(Quaternion::Euler(0, 0, 0), Vector3{ 6.0f,1.0f,7.0f }, Vector3{ -3.0f,-0.5f,-3.0f });
+	collider->AddComponent<OBBCollider>(Quaternion::Euler(0, 0, 0), Vector3{ 6.0f,1.0f,7.6f }, Vector3{ -3.0f,-0.5f,-3.0f });
 	collider->transform_->quaternion = Quaternion::Euler(30.0f * Mathf::deg_to_rad, 0, 0);
 	collider->SetParent(stairs);
 	stairs->isStatic = true;
@@ -200,7 +206,6 @@ void GameScene::Initialize()
 	stairs->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/Dungeon/fbx walls/stairs_big.fbx");
-	/*wall->SetParent(road_one);*/
 	
 
 
@@ -254,10 +259,29 @@ void GameScene::Initialize()
 	weapon_collider->isTrigger = true;
 	
 
-	auto s_enemy = GameObject::CreateObject("Spike Enemy");
-	s_enemy->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/Ultimate Monsters/Blob/FBX/GreenSpikyBlob.fbx");
+	for (int i = 0; i < 3; ++i)
+	{
+		auto s_enemy = GameObject::CreateObject("Spike Enemy");
+		s_enemy->transform_->scale = { 0.3f,0.3f,0.3f };
+		s_enemy->transform_->position = { i - 1.0f,0.0f,0.0f };
+		auto s_rg = s_enemy->AddComponent<Rigidbody>();
+		s_rg->useGravity = true;
+		s_enemy->AddComponent<Object3dComponent>(
+			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+			"Assets/3d/Ultimate Monsters/Blob/FBX/GreenSpikyBlob.fbx");
+		s_enemy->AddComponent<SpikeEnemy>();
+		s_enemy->AddComponent<SphereCollider>(2.0f, Vector3{ 0.0f,0.5f,0.0f });
+		{
+			// 索敵用コライダー
+			{
+				auto s_search_collider = GameObject::CreateObject("Search");
+				s_search_collider->SetParent(s_enemy);
+			}
+		}
+	}
+
+
+
 	//auto enemy = GameObject::CreateObject("Enemy");
 	//enemy->AddComponent<Object3dComponent>(
 	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),

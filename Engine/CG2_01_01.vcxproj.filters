@@ -223,10 +223,9 @@
     <ClCompile Include="Assets\Scripts\CameraController\PlayerCameraController.cpp">
       <Filter>Asset\CameraController</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\RabbitEnemy.cpp">
-      <Filter>Asset\Enemy\RabbitEnemy</Filter>
+    <ClCompile Include="Assets\Scripts\SpikeEnemy.cpp">
+      <Filter>Asset\Enemy\SpikeEnemy</Filter>
     </ClCompile>
-    <ClCompile Include="Collision\Layer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -418,9 +417,6 @@
     <ClInclude Include="Assets\Scripts\FlyEnemyEye.h">
       <Filter>Asset\Enemy\FlyEnemy</Filter>
     </ClInclude>
-    <ClInclude Include="Object\GameObject\Layer.h">
-      <Filter>Object\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>ResourceManager</Filter>
     </ClInclude>
@@ -431,10 +427,9 @@
     <ClInclude Include="Assets\Scripts\CameraController\PlayerCameraController.h">
       <Filter>Asset\CameraController</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\RabbitEnemy.h">
-      <Filter>Asset\Enemy\RabbitEnemy</Filter>
+    <ClInclude Include="Assets\Scripts\SpikeEnemy.h">
+      <Filter>Asset\Enemy\SpikeEnemy</Filter>
     </ClInclude>
-    <ClInclude Include="Collision\Layer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
@@ -580,11 +575,11 @@
     <Filter Include="Object\Component\Transform\RectTransform">
       <UniqueIdentifier>{a55043a6-18d6-49b9-a87d-49c262acb7e9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Asset\Enemy\RabbitEnemy">
+    <Filter Include="Asset\Enemy\SpikeEnemy">
       <UniqueIdentifier>{6e0b262c-863e-4d9f-be1c-63980299f92f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Asset\Enemy\NewFilter1">
-      <UniqueIdentifier>{11fbe093-dfe6-41ee-976b-3fbafc131494}</UniqueIdentifier>
+    <Filter Include="Asset\Damage">
+      <UniqueIdentifier>{8bc5368c-454e-4311-bfc3-746c0b5bbb1e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
