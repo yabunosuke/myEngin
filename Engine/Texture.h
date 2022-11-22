@@ -46,7 +46,7 @@ public:
 
 	const D3D12_RESOURCE_DESC GetResoureDesc(uint32_t texture_handle);
 
-
+	const Texture *GetTexture(const std::wstring &filename);
 private:
 	
 	TextureManager() = default;

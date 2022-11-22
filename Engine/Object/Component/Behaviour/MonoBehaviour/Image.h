@@ -26,7 +26,7 @@ private:
 	XMFLOAT4 color{1.0f,1.0f,1.0f,1.0f};			//色
 	std::wstring texture_name_;
 
-	XMMATRIX matProjection;									//射影行列
+	XMMATRIX mat_projection_;									//射影行列
     Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff;		//頂点バッファ
     Microsoft::WRL::ComPtr<ID3D12Resource> constBuff;		//定数バッファ
 	D3D12_VERTEX_BUFFER_VIEW vbView{};		//頂点バッファビュー

@@ -216,9 +216,6 @@
     <ClCompile Include="Assets\Scripts\EnemySearchPlayer.cpp">
       <Filter>Asset\Enemy\SpikeEnemy</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Component\Behaviour\MonoBehaviour\Image.cpp">
-      <Filter>Object\Component\Behaviour\MonoBehaviour\Image</Filter>
-    </ClCompile>
     <ClCompile Include="Object\Component\Behaviour\MonoBehaviour.cpp">
       <Filter>Object\Component\Behaviour</Filter>
     </ClCompile>
@@ -227,6 +224,9 @@
     </ClCompile>
     <ClCompile Include="Object\Component\Component.cpp">
       <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Component\Behaviour\MonoBehaviour\Image.cpp">
+      <Filter>Object\Component\Behaviour\MonoBehaviour</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -426,9 +426,6 @@
     <ClInclude Include="Assets\Scripts\EnemySearchPlayer.h">
       <Filter>Asset\Enemy\SpikeEnemy</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Component\Behaviour\MonoBehaviour\Image.h">
-      <Filter>Object\Component\Behaviour\MonoBehaviour\Image</Filter>
-    </ClInclude>
     <ClInclude Include="Object\Component\Behaviour\MonoBehaviour.h">
       <Filter>Object\Component\Behaviour</Filter>
     </ClInclude>
@@ -437,6 +434,9 @@
     </ClInclude>
     <ClInclude Include="Object\Component\Component.h">
       <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Component\Behaviour\MonoBehaviour\Image.h">
+      <Filter>Object\Component\Behaviour\MonoBehaviour</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
