@@ -70,6 +70,8 @@ public:
 	// ü•ª‚Æ“_‚Ì‹——£‚Ì•½•û‚ğ•Ô‹p
 	static float SqDistancePointSegment(Vector3 start,Vector3 end,Vector3 point);
 
+	static void PenaltyCalc();
+
 private:
 	static void OnTriggerEnter(GameObject *object, Collider &other, const Vector3 &hit_pos);
 	static void OnTriggerStay(GameObject *object, Collider &other, const Vector3 &hit_pos);

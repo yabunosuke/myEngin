@@ -1,6 +1,6 @@
 #include "CheckCollision.h"
 #include <memory>
-#include "Object/Component/Behaviour/MonoBehaviour/MonoBehaviour.h"
+#include "Object/Component/Behaviour/MonoBehaviour.h"
 #include <sstream>
 
 
@@ -199,13 +199,7 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 		}
 	}
 
-	//　衝突応答
-	for (auto &it : hitlist_)
-	{
-		Vector3 penalty{ it.second.first / it.second.second };
-		it.first->transform_->position += penalty;
-	}
-	hitlist_.clear();
+	
 
 }
 
@@ -662,6 +656,21 @@ float CheckCollision::SqDistancePointSegment(Vector3 start, Vector3 end, Vector3
 	return Vector3::Dot(start_to_point, start_to_point) - e * e / f;
 }
 
+void CheckCollision::PenaltyCalc()
+{
+	//　衝突応答
+	for (auto &it : hitlist_)
+	{
+		Vector3 penalty{ it.second.first / it.second.second };
+		if (!isfinite(penalty.x))
+		{
+			int A = 0;
+		}
+		it.first->transform_->position += penalty;
+	}
+	hitlist_.clear();
+}
+
 void CheckCollision::OnTriggerEnter(GameObject *object, Collider &other, const Vector3 &hit_pos)
 {
 	// 自分オブジェクトにあるスクリプト呼び出し
@@ -735,9 +744,6 @@ void CheckCollision::HitResponse(
 		return;
 	}
 
-	// 押し戻し量
-	Vector3 penalty_a;
-	Vector3 penalty_b;
 
 	// 摩擦量
 	float friction_a;
@@ -774,23 +780,29 @@ void CheckCollision::HitResponse(
 
 		// A
 		Vector3 a_d{ intrusion_a };
+
 		Vector3 a_relative_velocity
 		{
 			Vector3::Scale(rigidbody_a->velocity,collision_data_a.contactPoint->normal).Magnitude() * collision_data_a.contactPoint->normal
 		};
 
-		penalty_a = K * a_d + B * a_relative_velocity;
-		rigidbody_a->velocity += penalty_a * rigidbody_a->mass_ / mass_total;
+		rigidbody_a->velocity += B * a_relative_velocity * rigidbody_a->mass_ / mass_total;
+		hitlist_[top_parent_a].first += K * a_d * rigidbody_a->mass_ / mass_total;
+		hitlist_[top_parent_a].second += 1;
 
 		//B
 		Vector3 b_d{ intrusion_b };
+
 		Vector3 b_relative_velocity
 		{
 			Vector3::Scale(rigidbody_b->velocity,collision_data_b.contactPoint->normal).Magnitude() * collision_data_b.contactPoint->normal
 		};
 
-		penalty_b = K * b_d + B * b_relative_velocity;
-		rigidbody_b->velocity += penalty_b * rigidbody_b->mass_ / mass_total;
+		// 摩擦計算
+		rigidbody_b->velocity += B * b_relative_velocity * rigidbody_b->mass_ / mass_total;
+		hitlist_[top_parent_b].first += K * b_d * rigidbody_b->mass_ / mass_total;
+		hitlist_[top_parent_b].second += 1;
+
 	}
 	// aだけ動的な場合
 	else if(!is_static_a  && is_static_b)
@@ -808,8 +820,6 @@ void CheckCollision::HitResponse(
 			Vector3::Scale(rigidbody_a->velocity,collision_data_a.contactPoint->normal).Magnitude() * collision_data_a.contactPoint->normal
 		};
 
-		penalty_a = K * d + B * relative_velocity;
-
 		// 摩擦計算
 		rigidbody_a->velocity += B * relative_velocity;
 		hitlist_[top_parent_a].first += K * d;
@@ -826,13 +836,10 @@ void CheckCollision::HitResponse(
 		
 		Vector3 d{ intrusion_b };
 
-		auto mg{ Vector3::Scale(rigidbody_b->velocity,collision_data_b.contactPoint->normal).Magnitude() };
 		Vector3 relative_velocity
 		{
-			mg *collision_data_b.contactPoint->normal
+			Vector3::Scale(rigidbody_b->velocity,collision_data_b.contactPoint->normal).Magnitude() *collision_data_b.contactPoint->normal
 		};
-
-		penalty_b = K * d + B * relative_velocity;
 
 		// 摩擦計算
 		rigidbody_b->velocity += B * relative_velocity;

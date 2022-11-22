@@ -228,6 +228,7 @@
     <ClCompile Include="Object\Component\Behaviour\MonoBehaviour\Image.cpp">
       <Filter>Object\Component\Behaviour\MonoBehaviour</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\TitleManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -438,6 +439,7 @@
     <ClInclude Include="Object\Component\Behaviour\MonoBehaviour\Image.h">
       <Filter>Object\Component\Behaviour\MonoBehaviour</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\TitleManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
@@ -589,6 +591,9 @@
     </Filter>
     <Filter Include="Object\Component\Behaviour\MonoBehaviour\Image">
       <UniqueIdentifier>{884c8f77-a737-4f58-95ef-3ac973f8e0b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\TitleManager">
+      <UniqueIdentifier>{fa9baa3f-d740-4ca6-9074-68dc119eb8ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

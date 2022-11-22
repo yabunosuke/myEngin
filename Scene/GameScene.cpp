@@ -260,7 +260,7 @@ void GameScene::Initialize()
 	weapon_collider->isTrigger = true;
 	
 
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < 2; ++i)
 	{
 		auto s_enemy = GameObject::CreateObject("Spike Enemy");
 		s_enemy->tag = "Enemy";

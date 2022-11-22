@@ -32,6 +32,7 @@ void PlayerController::OnCollisionEnter(Collision &collision)
 {
 	if (collision.gameObject.r_->tag == "Enemy")
 	{
+		can_jump_ = true;
 		player_state_ = PlayerState::DAMAGE;
 	}
 }
@@ -42,8 +43,8 @@ void PlayerController::OnCollisionStay(Collision &collision)
 	{
 		if(playerState == PlayerState::JUMP_DROP)
 		{
-			playerState = PlayerState::IDOLE;
 			can_jump_ = true;
+			playerState = PlayerState::IDOLE;
 		}
 	}
 }

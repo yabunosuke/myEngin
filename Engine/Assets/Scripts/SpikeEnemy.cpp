@@ -69,22 +69,23 @@ void SpikeEnemy::OnTriggerEnter(Collider &other)
 
 void SpikeEnemy::Awake()
 {
-	hp_ = 4;
+	hp_ = 10;
 }
 
 void SpikeEnemy::FixedUpdate()
 {
 	(this->*state_update_[state_])(true);
 	is_ground_ = false;
-	if(Vector3::Scale(Vector3{ 1,0,1 }, rigidbody_->velocity) != Vector3::zero)
-	{
-		transform_->LookAt(transform_->position + Vector3::Scale(Vector3{ 1,0,1 }, rigidbody_->velocity));
-	}
 }
 
 void SpikeEnemy::Update()
 {
 	(this->*state_update_[state_])(false);
+	Vector3 target{ Vector3::Scale(Vector3{ 1,0,1 }, rigidbody_->velocity) };
+	if (target != Vector3::zero)
+	{
+		transform_->LookAt(transform_->position + target);
+	}
 }
 
 void SpikeEnemy::Infomation()
@@ -168,7 +169,7 @@ void SpikeEnemy::Contact(bool is_fixed)
 		if (contact_move_timer_ >= k_contact_move_cooldown)
 		{
 			// UŒ‚”ÍˆÍ‚É“ü‚Á‚Ä‚¢‚ê‚ÎUŒ‚‚ÉˆÚs
-			if ((transform_->position - target_position_).Magnitude() <= 3.0f)
+			if ((transform_->position - target_position_).Magnitude() <= 6.0f)
 			{
 				state_ = SpikeEnemyState::HeightJumpAttack;
 				return;
@@ -202,7 +203,7 @@ void SpikeEnemy::HeightJumpAttack(bool is_fixed)
 		if(!is_attack_)
 		{
 			Vector3 jump_vec{ Vector3::Scale((target_position_ - transform_->position).Normalized(),Vector3{1,0,1})};
-			jump_vec *= 4.0f;
+			jump_vec *= 2.0f;
 			jump_vec.y += 2.0f;
 			rigidbody_->AddForce(jump_vec, ForceMode::VelocityChange);
 			model_data_->PlayAnimation(static_cast<int>(SpikeAnimation::Bite_Front), false);

@@ -123,6 +123,7 @@ bool Looper::Loop()
 				break;
 			}
 		}
+		CheckCollision::PenaltyCalc();
 	}
 	// 各種初期化
 	PrimitiveRenderer::GetInstance().FrameInitialize();	// プリミティブのバッファインデックス初期化
