@@ -3,7 +3,8 @@
 #include "ImGui/imguiManager.h"
 
 #include "Object/Component/Collider/Collider.h"
-#include "Object/Component/Behaviour/MonoBehaviour/MonoBehaviour.h"
+#include "Object/Component/Behaviour/MonoBehaviour.h"
+#include "Object/Component/Transform/RectTransform.h"
 #include "Scene/Manager/GameObjectManager.h"
 
 
@@ -71,7 +72,7 @@ GameObject::~GameObject()
 	}
 }
 
-GameObject* GameObject::CreateObject(const std::string &object_name)
+GameObject* GameObject::CreateObject(const std::string &object_name, bool is_2d)
 {
 	GameObject *game_object;
 	// 名前が入っていなければ
@@ -84,7 +85,14 @@ GameObject* GameObject::CreateObject(const std::string &object_name)
 		game_object = Object::CreateObject<GameObject>(object_name);
 	}
 	// 生成時にトランスフォーム
-	game_object->transform_ = game_object->AddComponent<Transform>();
+	if(is_2d)
+	{
+		game_object->transform_ = game_object->AddComponent<RectTransform>();
+	}
+	else
+	{
+		game_object->transform_ = game_object->AddComponent<Transform>();
+	}
 
 	return game_object_manager_->add_objects_.emplace_back(game_object);
 }

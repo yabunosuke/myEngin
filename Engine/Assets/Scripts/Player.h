@@ -1,6 +1,6 @@
 #pragma once
 #include "3d/Fbx/Fbx.h"
-#include "Object/Component/Behaviour/MonoBehaviour/MonoBehaviour.h"
+#include "Object/Component/Behaviour/MonoBehaviour.h"
 #include "Object/Component/Rigidbody.h"
 #include "Assets/Scripts/CameraController/PlayerCameraController.h"
 
@@ -14,6 +14,9 @@ enum class PlayerState
 	
 	// ダッシュ
 	DASH,
+
+	// ダメージ
+	DAMAGE,
 
 	// ジャンプ
 	JUMP,
@@ -40,6 +43,8 @@ public:
 	void OnCollisionEnter(Collision& collision) override;
 	void OnCollisionStay(Collision& collision) override;
 
+	void OnTriggerEnter(Collider &other) override;
+
 	void Awake() override;
 	void Start() override;
     void FixedUpdate() override;
@@ -61,9 +66,12 @@ private:
 	void Idole(bool is_fixed);
 	void Walk(bool is_fixed);
 	void Dash(bool is_fixed);
+	void Damage(bool is_fixed);
 	void Jump(bool is_fixed);
 	void JumpDrop(bool is_fixed);
 	void Dodge(bool is_fixed);
+	const float k_invincible_cooldown_{ 1.0f };
+	float invincible_timer_{ 0.0f };
 	void MeleeAttack1(bool is_fixed);
 	bool is_nextattack_{ false };
 	void MeleeAttack2(bool is_fixed);

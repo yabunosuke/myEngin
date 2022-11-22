@@ -1,5 +1,5 @@
 #pragma once
-#include "../Engine/Object/Component/Behaviour/MonoBehaviour/MonoBehaviour.h"
+#include "../Engine/Object/Component/Behaviour/MonoBehaviour.h"
 #include "../Engine/Object/Component/Camera.h"
 class CameraController :
     public MonoBehaviour

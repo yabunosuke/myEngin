@@ -3,7 +3,6 @@
 
 #include "WinApp.h"			//ウィンドウの表示等
 #include "DirectXCommon.h"	//DirectX初期化等
-//#include "Object3d.h"		//オブジェクト
 #include "2d/Sprite.h"
 #include "AudioManager.h"
 #include "ModelManager.h"			//モデル
@@ -14,7 +13,6 @@
 
 #include "Time/Time.h"
 
-#include "../Engine/Object/Object.h"
 
 
 bool SystemMain::Initialize()
@@ -30,9 +28,6 @@ bool SystemMain::Initialize()
 	// パラノマスカイボックスロード
 	TextureManager::LoadTexture(DirectXCommon::dev.Get(), L"Assets/2d/Panorama-V01.png");
 
-	//Object3d::StaticInitialize(DirectXCommon::dev.Get());//オブジェクト共通データ生成
-	//Model::StaticInitialize(DirectXCommon::dev.Get());	//モデル姿勢的初期化
-
 	PipelineManager::GetInstance()->CreateAllPiplines(DirectXCommon::dev);
 	PrimitiveRenderer::GetInstance().CreatePrimitivAll(DirectXCommon::dev,DirectXCommon::cmdList);
 
@@ -41,9 +36,6 @@ bool SystemMain::Initialize()
 		WinApp::windowWidth, WinApp::windowHeight);
 
 	AudioManager::Initialize();
-	//ModelLoader::GetInstance()->CreatePrimitivAll(DirectXCommon::dev.Get());
-	//ModelManager::GetIns()->AllLoad();			//モデル読み込み
-
 	// バッファマネージャ生成
 	constant_buffer_manager_ = new ConstantBufferManager(DirectXCommon::dev);
 

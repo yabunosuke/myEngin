@@ -1,5 +1,5 @@
 #pragma once
-#include "Object/Component/Behaviour/MonoBehaviour/MonoBehaviour.h"
+#include "Object/Component/Behaviour/MonoBehaviour.h"
 #include "Object/Component/Camera.h"
 #include "Math/Vector2.h"
 

@@ -114,6 +114,7 @@
     <ClCompile Include="Assets\Scripts\Drone.cpp" />
     <ClCompile Include="Assets\Scripts\Enemy.cpp" />
     <ClCompile Include="Assets\Scripts\EnemyBase.cpp" />
+    <ClCompile Include="Assets\Scripts\EnemySearchPlayer.cpp" />
     <ClCompile Include="Assets\Scripts\FlyEnemy.cpp" />
     <ClCompile Include="Assets\Scripts\FlyEnemyEye.cpp" />
     <ClCompile Include="Assets\Scripts\Player.cpp" />
@@ -144,8 +145,9 @@
     <ClCompile Include="Math\Vector4.cpp" />
     <ClCompile Include="MultiRenderTarget\MulutiRenderTarget.cpp" />
     <ClCompile Include="Object3dComponent.cpp" />
-    <ClCompile Include="Object\Component\Behaviour\Behaviour.cpp" />
-    <ClCompile Include="Object\Component\Behaviour\MonoBehaviour\MonoBehaviour.cpp" />
+    <ClCompile Include="Object\Component\Behaviour.cpp" />
+    <ClCompile Include="Object\Component\Behaviour\MonoBehaviour.cpp" />
+    <ClCompile Include="Object\Component\Behaviour\MonoBehaviour\Image.cpp" />
     <ClCompile Include="Object\Component\Camera.cpp" />
     <ClCompile Include="Object\Component\Collider\Collider.cpp" />
     <ClCompile Include="Object\Component\Collider\OBBCollider\OBBCollider.cpp" />
@@ -270,24 +272,6 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="LinerPS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="LinerVS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
-    <FxCompile Include="SpriteVS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </FxCompile>
-    <FxCompile Include="SpritePS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -311,6 +295,7 @@
     <ClInclude Include="Assets\Scripts\Drone.h" />
     <ClInclude Include="Assets\Scripts\Enemy.h" />
     <ClInclude Include="Assets\Scripts\EnemyBase.h" />
+    <ClInclude Include="Assets\Scripts\EnemySearchPlayer.h" />
     <ClInclude Include="Assets\Scripts\FlyEnemy.h" />
     <ClInclude Include="Assets\Scripts\FlyEnemyEye.h" />
     <ClInclude Include="Assets\Scripts\Player.h" />
@@ -343,8 +328,9 @@
     <ClInclude Include="Math\Vector4.h" />
     <ClInclude Include="MultiRenderTarget\MulutiRenderTarget.h" />
     <ClInclude Include="Object3dComponent.h" />
-    <ClInclude Include="Object\Component\Behaviour\Behaviour.h" />
-    <ClInclude Include="Object\Component\Behaviour\MonoBehaviour\MonoBehaviour.h" />
+    <ClInclude Include="Object\Component\Behaviour.h" />
+    <ClInclude Include="Object\Component\Behaviour\MonoBehaviour.h" />
+    <ClInclude Include="Object\Component\Behaviour\MonoBehaviour\Image.h" />
     <ClInclude Include="Object\Component\Camera.h" />
     <ClInclude Include="Object\Component\Collider\Collider.h" />
     <ClInclude Include="Object\Component\Collider\OBBCollider\OBBCollider.h" />
@@ -378,8 +364,6 @@
     <None Include="Assets\Shaders\3d\GBuffer.hlsli" />
     <None Include="Assets\Shaders\PostEffect.hlsli" />
     <None Include="Assets\Shaders\SkyBox.hlsli" />
-    <None Include="Liner.hlsli" />
-    <None Include="Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DirectXTex\DirectXTex_Desktop_2019_Win10.vcxproj">

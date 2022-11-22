@@ -1,5 +1,5 @@
 #pragma once
-#include "Object/Component/Behaviour/Behaviour.h"
+#include "Object/Component/Behaviour.h"
 #include "Collision/Collision.h"
 class MonoBehaviour :
     public Behaviour

@@ -26,6 +26,7 @@
 #include "Assets/Scripts/SpikeEnemy.h"
 #include "Weapon.h"
 #include "Assets/Scripts/Drone.h"
+#include "Assets/Scripts/EnemySearchPlayer.h"
 #include "Object/Component/Collider/OBBCollider/OBBCollider.h"
 
 
@@ -262,6 +263,7 @@ void GameScene::Initialize()
 	for (int i = 0; i < 3; ++i)
 	{
 		auto s_enemy = GameObject::CreateObject("Spike Enemy");
+		s_enemy->tag = "Enemy";
 		s_enemy->transform_->scale = { 0.3f,0.3f,0.3f };
 		s_enemy->transform_->position = { i - 1.0f,0.0f,0.0f };
 		auto s_rg = s_enemy->AddComponent<Rigidbody>();
@@ -274,8 +276,11 @@ void GameScene::Initialize()
 		{
 			// 索敵用コライダー
 			{
-				auto s_search_collider = GameObject::CreateObject("Search");
-				s_search_collider->SetParent(s_enemy);
+				auto s_search = GameObject::CreateObject("Search");
+				auto s_search_collider = s_search->AddComponent<SphereCollider>(12.0f, Vector3{ 0.0f,0.5f,0.0f });
+				s_search_collider->isTrigger = true;
+				s_search->AddComponent<EnemySearchPlayer>();
+				s_search->SetParent(s_enemy);
 			}
 		}
 	}
@@ -295,6 +300,10 @@ void GameScene::Initialize()
 	auto eye = GameObject::CreateObject("Eye");
 	eye->transform_->localPosition = { 0, 1.4f, 0.0f };
 	eye->SetParent(player);
+
+	auto canvase = GameObject::CreateObject("Canvase",true);
+	auto image_test = GameObject::CreateObject("Image",true);
+	image_test->SetParent(canvase);
 
 }
 

@@ -20,6 +20,7 @@ MonoBehaviour("PlayerController")
 	state_update_[PlayerState::JUMP] = &PlayerController::Jump;
 	state_update_[PlayerState::JUMP_DROP] = &PlayerController::JumpDrop;
 	state_update_[PlayerState::DODGE] = &PlayerController::Dodge;
+	state_update_[PlayerState::DAMAGE] = &PlayerController::Damage;
 	state_update_[PlayerState::DASH] = &PlayerController::Dash;
 	state_update_[PlayerState::MELEE_ATTACK_1] = &PlayerController::MeleeAttack1;
 	state_update_[PlayerState::MELEE_ATTACK_2] = &PlayerController::MeleeAttack2;
@@ -29,9 +30,9 @@ MonoBehaviour("PlayerController")
 
 void PlayerController::OnCollisionEnter(Collision &collision)
 {
-	if (Vector3::Dot(collision.contactPoint->normal,{0,1,0}) >= 0.8f)
+	if (collision.gameObject.r_->tag == "Enemy")
 	{
-
+		player_state_ = PlayerState::DAMAGE;
 	}
 }
 
@@ -45,6 +46,11 @@ void PlayerController::OnCollisionStay(Collision &collision)
 			can_jump_ = true;
 		}
 	}
+}
+
+void PlayerController::OnTriggerEnter(Collider &other)
+{
+	
 }
 
 void PlayerController::Awake()
@@ -143,8 +149,7 @@ void PlayerController::Idole(bool is_fixed)
 	else
 	{
 	}
-
-	return;
+	
 }
 
 void PlayerController::Walk(bool is_fixed)
@@ -252,6 +257,27 @@ void PlayerController::Dash(bool is_fixed)
 	}
 }
 
+void PlayerController::Damage(bool is_fixed)
+{
+	model_data_->PlayAnimation(static_cast<int>(AnimationState::Damage), false);
+	if (!is_fixed)
+	{
+
+	}
+	else
+	{
+		if (invincible_timer_ >= k_invincible_cooldown_)
+		{
+			invincible_timer_ = 0.0f;
+			player_state_ = PlayerState::IDOLE;
+		}
+		else
+		{
+			invincible_timer_ += Time::GetInstance()->fixedDeltaTime;
+		}
+	}
+}
+
 void PlayerController::Jump(bool is_fixed)
 {
 	if(!is_fixed)
@@ -265,23 +291,6 @@ void PlayerController::Jump(bool is_fixed)
 	}
 	else
 	{
-		if(input_stick_r_.Magnitude() != 0.0f)
-		{
-			// カメラの正面ベクトル
-			//Vector3 camera_forward = Vector3::Scale(Camera::main.r_->transform_->GetFront(), Vector3(1.0f, 0.0f, 1.0f)).Normalized();
-
-			//Vector3 move_forward = (camera_forward * input_vertical_ + Camera::main.r_->transform_->GetRight() * input_horizontal_).Normalized() * 1.5f;
-
-			//if (input_horizontal_ != 0.0f ||
-			//	input_vertical_ != 0.0f)
-			//{
-			//	rigidbody_->AddForce(move_forward, ForceMode::Acceleration);
-			//}
-
-			//// 回転処理
-			//transform_->LookAt(move_forward.Normalized() + transform_->position);
-		}
-
 		if (rigidbody_->velocity->y <= Mathf::epsilon)
 		{
 			playerState = PlayerState::JUMP_DROP;

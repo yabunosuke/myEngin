@@ -11,10 +11,6 @@
     <FxCompile Include="Assets\Shaders\SepiaPS.hlsl" />
     <FxCompile Include="Assets\Shaders\TilingPS.hlsl" />
     <FxCompile Include="Assets\Shaders\UvScrollPS.hlsl" />
-    <FxCompile Include="LinerPS.hlsl" />
-    <FxCompile Include="LinerVS.hlsl" />
-    <FxCompile Include="SpriteVS.hlsl" />
-    <FxCompile Include="SpritePS.hlsl" />
     <FxCompile Include="Assets\Shaders\3d\GBufferVS.hlsl">
       <Filter>Shader\3d\GBuffer</Filter>
     </FxCompile>
@@ -148,12 +144,6 @@
     <ClCompile Include="Object\Component\Collider\SphereCollider\SphereCollider.cpp">
       <Filter>Object\Component\Collider\SphereCollider</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Component\Behaviour\Behaviour.cpp">
-      <Filter>Object\Component\Behaviour</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\Component\Behaviour\MonoBehaviour\MonoBehaviour.cpp">
-      <Filter>Object\Component\Behaviour\MonoBehaviour</Filter>
-    </ClCompile>
     <ClCompile Include="Object\Component\Light.cpp">
       <Filter>Object\Component\Light</Filter>
     </ClCompile>
@@ -202,9 +192,6 @@
     <ClCompile Include="Assets\Scripts\Drone.cpp">
       <Filter>Asset\Drone</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Component\Component.cpp">
-      <Filter>Object\Component</Filter>
-    </ClCompile>
     <ClCompile Include="Object\Component\Collider\OBBCollider\OBBCollider.cpp">
       <Filter>Object\Component\Collider\OBBCollider</Filter>
     </ClCompile>
@@ -225,6 +212,21 @@
     </ClCompile>
     <ClCompile Include="Assets\Scripts\SpikeEnemy.cpp">
       <Filter>Asset\Enemy\SpikeEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\EnemySearchPlayer.cpp">
+      <Filter>Asset\Enemy\SpikeEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Component\Behaviour\MonoBehaviour\Image.cpp">
+      <Filter>Object\Component\Behaviour\MonoBehaviour\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Component\Behaviour\MonoBehaviour.cpp">
+      <Filter>Object\Component\Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Component\Behaviour.cpp">
+      <Filter>Object\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Component\Component.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -345,12 +347,6 @@
     <ClInclude Include="Object\Component\Collider\SphereCollider\SphereCollider.h">
       <Filter>Object\Component\Collider\SphereCollider</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Component\Behaviour\Behaviour.h">
-      <Filter>Object\Component\Behaviour</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\Component\Behaviour\MonoBehaviour\MonoBehaviour.h">
-      <Filter>Object\Component\Behaviour\MonoBehaviour</Filter>
-    </ClInclude>
     <ClInclude Include="Object\Component\Light.h">
       <Filter>Object\Component\Light</Filter>
     </ClInclude>
@@ -405,9 +401,6 @@
     <ClInclude Include="Assets\Scripts\Drone.h">
       <Filter>Asset\Drone</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Component\Component.h">
-      <Filter>Object\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Object\Component\Collider\OBBCollider\OBBCollider.h">
       <Filter>Object\Component\Collider\OBBCollider</Filter>
     </ClInclude>
@@ -430,11 +423,24 @@
     <ClInclude Include="Assets\Scripts\SpikeEnemy.h">
       <Filter>Asset\Enemy\SpikeEnemy</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\EnemySearchPlayer.h">
+      <Filter>Asset\Enemy\SpikeEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Component\Behaviour\MonoBehaviour\Image.h">
+      <Filter>Object\Component\Behaviour\MonoBehaviour\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Component\Behaviour\MonoBehaviour.h">
+      <Filter>Object\Component\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Component\Behaviour.h">
+      <Filter>Object\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Component\Component.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
-    <None Include="Liner.hlsli" />
-    <None Include="Sprite.hlsli" />
     <None Include="Assets\Shaders\3d\GBuffer.hlsli">
       <Filter>Shader\3d\GBuffer</Filter>
     </None>
@@ -580,6 +586,9 @@
     </Filter>
     <Filter Include="Asset\Damage">
       <UniqueIdentifier>{8bc5368c-454e-4311-bfc3-746c0b5bbb1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component\Behaviour\MonoBehaviour\Image">
+      <UniqueIdentifier>{884c8f77-a737-4f58-95ef-3ac973f8e0b2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

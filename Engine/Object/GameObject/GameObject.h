@@ -54,7 +54,7 @@ public:	//ä÷êî
 	//
 	//===========================================
 
-	static GameObject *CreateObject(const std::string &object_name = "");
+	static GameObject *CreateObject(const std::string &object_name = "",bool is_2d = false);
 
 	static void SetGameObjectManager(GameObjectManager *game_object_manager);
 

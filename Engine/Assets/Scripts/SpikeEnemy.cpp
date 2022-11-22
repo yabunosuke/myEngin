@@ -8,6 +8,8 @@ SpikeEnemy::SpikeEnemy():
 	state_update_[SpikeEnemyState::Idle] = &SpikeEnemy::Idole;
 	state_update_[SpikeEnemyState::Damage] = &SpikeEnemy::Damage;
 	state_update_[SpikeEnemyState::Death] = &SpikeEnemy::Death;
+	state_update_[SpikeEnemyState::Contact] = &SpikeEnemy::Contact;
+	state_update_[SpikeEnemyState::HeightJumpAttack] = &SpikeEnemy::HeightJumpAttack;
 	state_update_[SpikeEnemyState::RandomJump] = &SpikeEnemy::RandomJump;
 }
 
@@ -18,7 +20,7 @@ void SpikeEnemy::OnCollisionEnter(Collision &collision)
 	{
 		if (Vector3::Dot(collision.contactPoint->normal, Vector3::up) >= 0.8f)
 		{
-			is_ground = true;
+			is_ground_ = true;
 		}
 	}
 }
@@ -30,7 +32,7 @@ void SpikeEnemy::OnCollisionStay(Collision &collision)
 	{
 		if (Vector3::Dot(collision.contactPoint->normal, Vector3::up) >= 0.8f)
 		{
-			is_ground = true;
+			is_ground_ = true;
 		}
 	}
 }
@@ -67,13 +69,17 @@ void SpikeEnemy::OnTriggerEnter(Collider &other)
 
 void SpikeEnemy::Awake()
 {
-	hp_ = 2;
+	hp_ = 4;
 }
 
 void SpikeEnemy::FixedUpdate()
 {
 	(this->*state_update_[state_])(true);
-	is_ground = false;
+	is_ground_ = false;
+	if(Vector3::Scale(Vector3{ 1,0,1 }, rigidbody_->velocity) != Vector3::zero)
+	{
+		transform_->LookAt(transform_->position + Vector3::Scale(Vector3{ 1,0,1 }, rigidbody_->velocity));
+	}
 }
 
 void SpikeEnemy::Update()
@@ -134,12 +140,11 @@ void SpikeEnemy::RandomJump(bool is_fixed)
 			Vector3 jump_vec{ 0,5.0f,1.0f };
 			jump_vec = Quaternion(Vector3::up, rand_angle) * jump_vec;
 			rigidbody_->AddForce(jump_vec, ForceMode::VelocityChange);
-			transform_->LookAt(transform_->position + Vector3::Scale(Vector3{ 1,0,1 }, rigidbody_->velocity));
 			model_data_->PlayAnimation(static_cast<int>(SpikeAnimation::Jump), false, true);
 		}
 		else
 		{
-			if (is_ground && rigidbody_->velocity->y < 0.0f)
+			if (is_ground_ && rigidbody_->velocity->y < 0.0f)
 			{
 				is_jump_ = false;
 				state_ = SpikeEnemyState::Idle;
@@ -153,21 +158,23 @@ void SpikeEnemy::Contact(bool is_fixed)
 {
 	if (!is_fixed)
 	{
-
 	}
 	else
 	{
+		if (Vector3::Scale(target_position_, Vector3(1, 0, 1)) != Vector3::zero)
+		{
+			transform_->LookAt(Vector3::Scale(target_position_, Vector3(1, 0, 1)));
+		}
 		if (contact_move_timer_ >= k_contact_move_cooldown)
 		{
 			// UŒ‚”ÍˆÍ‚É“ü‚Á‚Ä‚¢‚ê‚ÎUŒ‚‚ÉˆÚs
-			if (is_attack_)
+			if ((transform_->position - target_position_).Magnitude() <= 3.0f)
 			{
 				state_ = SpikeEnemyState::HeightJumpAttack;
+				return;
 			}
 
-
 			contact_move_timer_ = 0.0f;
-			transform_->LookAt(Vector3::Scale(target_position_, Vector3(1, 0, 1)));
 			
 			// ƒWƒƒƒ“ƒv•ûŒüŒˆ’è
 			Vector3 jump_vec{ transform_->forward };
@@ -185,6 +192,32 @@ void SpikeEnemy::Contact(bool is_fixed)
 
 void SpikeEnemy::HeightJumpAttack(bool is_fixed)
 {
+
+	if (!is_fixed)
+	{
+
+	}
+	else
+	{
+		if(!is_attack_)
+		{
+			Vector3 jump_vec{ Vector3::Scale((target_position_ - transform_->position).Normalized(),Vector3{1,0,1})};
+			jump_vec *= 4.0f;
+			jump_vec.y += 2.0f;
+			rigidbody_->AddForce(jump_vec, ForceMode::VelocityChange);
+			model_data_->PlayAnimation(static_cast<int>(SpikeAnimation::Bite_Front), false);
+			is_attack_ = true;
+		}
+		else
+		{
+			if(is_ground_)
+			{
+				state_ = SpikeEnemyState::Idle;
+				is_attack_ = false;
+			}
+		}
+
+	}
 }
 
 void SpikeEnemy::Damage(bool is_fixed)

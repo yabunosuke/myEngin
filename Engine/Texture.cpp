@@ -63,9 +63,21 @@ void TextureManager::CreateDescriptorHeap(ID3D12Device *dev)
 }
 const D3D12_RESOURCE_DESC TextureManager::GetResoureDesc(uint32_t texture_handle)
 {
-	assert(texture_handle < textures_.size()); // ロードしていなければ注視
+	assert(texture_handle < textures_.size()); // ロードしていなければ中止
 	Texture &texture = textures_.at(texture_handle);
 	return texture.resource->GetDesc();
+}
+
+const TextureManager::Texture *TextureManager::GetTexture(const std::wstring &filename)
+{
+	for(auto &tex : textures_)
+	{
+		if(tex.filename == filename)
+		{
+			return &tex;
+		}
+	}
+	return nullptr;
 }
 
 

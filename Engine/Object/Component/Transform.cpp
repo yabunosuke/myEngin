@@ -183,7 +183,6 @@ void Transform::UpdateMatrix()
 
     // 取得用のワールドを再計算
     MatrixDecompose(world_matrix_, world_scale_, world_quaternion_, world_position_);
-    
 }
 
 void Transform::MatrixDecompose(const XMMATRIX &matrix, XMFLOAT3 &scale, XMFLOAT4 &quaternion, XMFLOAT3 &position)

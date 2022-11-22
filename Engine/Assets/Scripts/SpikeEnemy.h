@@ -43,12 +43,17 @@ public:
     void Update() override;
 
     void Infomation() override;
+
+
+
+    bool is_target_{ false };
+    Vector3 target_position_{};
 private:
 
     std::map<SpikeEnemyState, void(SpikeEnemy:: *)(bool)> state_update_;
 
     // ê⁄ínÉtÉâÉO
-    bool is_ground{ false };
+    bool is_ground_{ false };
 
     void Idole(bool is_fixed);
     float k_idol_move_cooldown{ 2.0f };
@@ -62,7 +67,7 @@ private:
     float contact_move_timer_{ 0.0f };
 
     void HeightJumpAttack(bool is_fixed);
-    bool is_attack_{ false };
+    bool is_attack_{ false};
 
     void Damage(bool is_fixed);
     const float k_invincible_cooldown_{ 0.5f };
@@ -78,8 +83,6 @@ private:
     SpikeEnemyState state_ = SpikeEnemyState::Idle;
 
 
-    bool is_target_{ false };
-    Vector3 target_position_{};
 
 };
 

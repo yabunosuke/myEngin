@@ -310,7 +310,7 @@ public:
 
 	XMFLOAT4X4 *user_set_parent_{ nullptr };
 
-private:
+protected:
 	// ローカル座標
 	Vector3		local_position_ = { 0,0,0 };			// ローカル座標
 	Quaternion	local_quaternion_ = { 0,0,0,0, };	// ローカル回転（クオータニオン）
@@ -330,7 +330,7 @@ private:
 
 
 	// 行列更新
-	void UpdateMatrix();
+	virtual void UpdateMatrix();
 
 	//行列から各要素に変換
 	void MatrixDecompose(

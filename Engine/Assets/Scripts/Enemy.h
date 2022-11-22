@@ -1,6 +1,6 @@
 #pragma once
 #include "3d/Fbx/Fbx.h"
-#include "Object/Component/Behaviour/MonoBehaviour/MonoBehaviour.h"
+#include "Object/Component/Behaviour/MonoBehaviour.h"
 #include "Object/Component/Rigidbody.h"
 
 class Enemy :

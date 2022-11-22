@@ -250,7 +250,7 @@ void PipelineManager::CreateSpriutePipline(ComPtr<ID3D12Device> dev, const std::
 
 	// 頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"SpriteVS.hlsl",  // シェーダファイル名
+		L"Assets/Shaders/SpriteVS.hlsl",  // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
@@ -273,7 +273,7 @@ void PipelineManager::CreateSpriutePipline(ComPtr<ID3D12Device> dev, const std::
 
 	// ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"SpritePS.hlsl",   // シェーダファイル名
+		L"Assets/Shaders/SpritePS.hlsl",   // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "ps_5_0", // エントリーポイント名、シェーダーモデル指定
@@ -1075,7 +1075,7 @@ void PipelineManager::CreatePrimitivePipeline(ComPtr<ID3D12Device> dev)
 	// 頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile
 	(
-		L"LinerVS.hlsl",    // シェーダファイル名
+		L"Assets/Shaders/LinerVS.hlsl",    // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "vs_5_0",    // エントリーポイント名、シェーダーモデル指定
@@ -1101,7 +1101,7 @@ void PipelineManager::CreatePrimitivePipeline(ComPtr<ID3D12Device> dev)
 	// ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile
 	(
-		L"LinerPS.hlsl",    // シェーダファイル名
+		L"Assets/Shaders/LinerPS.hlsl",    // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "ps_5_0",    // エントリーポイント名、シェーダーモデル指定

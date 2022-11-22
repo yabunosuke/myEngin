@@ -103,6 +103,10 @@ namespace yEngine
         {
             return get_ ? (this->get_() == v) : (this->r_ == v);
         }
+        bool operator !=(const ReferenceT &v) const
+        {
+            return get_ ? !(this->get_() == v) : !(this->r_ == v);
+        }
         bool operator !() const
         {
             return get_ ? !(this->get_()) : !(this->r_);

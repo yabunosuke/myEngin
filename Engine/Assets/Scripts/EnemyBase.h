@@ -1,7 +1,7 @@
 #pragma once
 #include "3d/Fbx/Fbx.h"
 #include "Object/Component/Rigidbody.h"
-#include "Object/Component/Behaviour/MonoBehaviour/MonoBehaviour.h"
+#include "Object/Component/Behaviour/MonoBehaviour.h"
 
 class EnemyBase :
     public MonoBehaviour
