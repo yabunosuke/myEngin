@@ -26,6 +26,7 @@ public:
 	/// </summary>
 	void SceneStackPop() override;	//ポップアウト
 	
+	void ExitWindow() override { exit_window_ = true; };
 private:
 	enum class ChangeType
 	{
@@ -39,6 +40,8 @@ private:
 		Scenes scene_name;
 		bool is_clear;
 	}scene_change_data_{};
+
+	bool exit_window_{ false };
 
 	//シーンスタック
 	stack<unique_ptr<AbstractScene>> scene_stack_;

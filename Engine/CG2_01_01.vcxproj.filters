@@ -228,7 +228,9 @@
     <ClCompile Include="Object\Component\Behaviour\MonoBehaviour\Image.cpp">
       <Filter>Object\Component\Behaviour\MonoBehaviour</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Scripts\TitleManager.cpp" />
+    <ClCompile Include="Assets\Scripts\TitleManager.cpp">
+      <Filter>Asset\TitleManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -439,7 +441,9 @@
     <ClInclude Include="Object\Component\Behaviour\MonoBehaviour\Image.h">
       <Filter>Object\Component\Behaviour\MonoBehaviour</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Scripts\TitleManager.h" />
+    <ClInclude Include="Assets\Scripts\TitleManager.h">
+      <Filter>Asset\TitleManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
@@ -594,6 +598,9 @@
     </Filter>
     <Filter Include="Asset\TitleManager">
       <UniqueIdentifier>{fa9baa3f-d740-4ca6-9074-68dc119eb8ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\NewFilter1">
+      <UniqueIdentifier>{d7e552fc-62a7-4be3-9c73-9fded9158066}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

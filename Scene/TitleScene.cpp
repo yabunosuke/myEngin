@@ -61,7 +61,7 @@ void TitleScene::Initialize()
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/temp/End.fbx");
 
-	title_manager->AddComponent<TitleManager>(titile_text, start_text, end_text);
+	title_manager->AddComponent<TitleManager>(titile_text, start_text, end_text, implSceneChanged);
 
 
 	auto player = GameObject::CreateObject("Knight");
@@ -72,16 +72,6 @@ void TitleScene::Initialize()
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
 		"Assets/3d/RPG Characters - Nov 2020/Humanoid Rig Versions/FBX/Warrior.fbx");
 	player_model->GetObjectData()->PlayAnimation(9);
-}
-
-void TitleScene::Update()
-{
-
-	AbstractScene::Update();
-	if (Input::GetButtonPressTrigger(GamePadButton::INPUT_START))
-	{
-		implSceneChanged->OnSceneChanged(Scenes::Game);
-	}
 }
 
 void TitleScene::Draw() const

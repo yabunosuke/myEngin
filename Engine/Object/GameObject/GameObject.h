@@ -251,8 +251,6 @@ private:
 	uint16_t layer_{ 0 };
 
 
-	// 属しているシーン
-	//std::weak_ptr<AbstractScene> scene_;
 	// ゲームオブジェクトのタグ
 	std::string tag_ = "Notag";
 

@@ -32,9 +32,6 @@ Looper::Looper() {
 bool Looper::Loop()
 {
 
-	// 計測開始
-	Time::GetInstance()->InstrumentationStart();
-
 	// 遷移更新
 	if (scene_change_data_.type != ChangeType::None)
 	{
@@ -86,6 +83,10 @@ bool Looper::Loop()
 		scene_change_data_.scene_name = Scenes::MAX;
 		scene_change_data_.is_clear = false;
 	}
+
+	// 計測開始
+	Time::GetInstance()->InstrumentationStart();
+
 // ImGui描画前処理
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
@@ -115,15 +116,14 @@ bool Looper::Loop()
 
 			// 経過時間を減少させる
 			Time::GetInstance()->SubFixedTimer();
-
+			CheckCollision::PenaltyCalc();
 			// 2回処理して改善しなければ強制的に離脱
-			if(i > 5)
+			if(i > 0)
 			{
 				Time::GetInstance()->ClearFixedTimer();
 				break;
 			}
 		}
-		CheckCollision::PenaltyCalc();
 	}
 	// 各種初期化
 	PrimitiveRenderer::GetInstance().FrameInitialize();	// プリミティブのバッファインデックス初期化
@@ -174,13 +174,7 @@ bool Looper::Loop()
 	// 計測終了
 	Time::GetInstance()->InstrumentationEnd();
 
-	
-
-	//ESCが押されたらゲームを終了
-	if (Input::GetKeyPressTrigger(DIK_ESCAPE)) {
-		return false;
-	}
-	return true;
+	return !exit_window_;
 }
 
 void Looper::OnSceneChanged(const Scenes scene, const bool stackClear)

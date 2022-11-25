@@ -61,7 +61,7 @@ namespace EasingFunction
     {
         double pow2;
         int bounce = 4;
-        while (t < ((pow2 = pow(2, --bounce)) - 1) / 11) {}
+        while (t < ((pow2 = pow(2, -bounce)) - 1) / 11) {}
         return 1 / pow(4, 3 - bounce) - 7.5625 * pow((pow2 * 3 - 2) / 22 - t, 2);
     }
 

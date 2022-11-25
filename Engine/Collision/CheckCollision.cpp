@@ -2,7 +2,7 @@
 #include <memory>
 #include "Object/Component/Behaviour/MonoBehaviour.h"
 #include <sstream>
-
+#include "Time/Time.h"
 
 std::map<GameObject *, std::pair<Vector3, int>> CheckCollision::hitlist_;
 
@@ -198,8 +198,6 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 			}
 		}
 	}
-
-	
 
 }
 
@@ -662,10 +660,6 @@ void CheckCollision::PenaltyCalc()
 	for (auto &it : hitlist_)
 	{
 		Vector3 penalty{ it.second.first / it.second.second };
-		if (!isfinite(penalty.x))
-		{
-			int A = 0;
-		}
 		it.first->transform_->position += penalty;
 	}
 	hitlist_.clear();

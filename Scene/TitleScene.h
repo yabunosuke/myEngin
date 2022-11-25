@@ -9,7 +9,6 @@ class TitleScene final
 public:
 	explicit TitleScene(IoChangedListener *impl);
 	void Initialize() override;
-	void Update() override;
 	void Draw() const override;
 
 };
