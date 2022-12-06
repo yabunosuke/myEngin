@@ -1,6 +1,6 @@
 #pragma once
 #include "WinApp.h"
-#include "json.hpp"
+#include <string>
 
 enum class SAVE_TYPE {
 	PROJECT,
@@ -25,10 +25,12 @@ public:
 	/// <returns>ï€ë∂ÇµÇΩèÍçáÇÕtrue</returns>
 	bool FileSave(SAVE_TYPE saveType);
 
+	bool LoadLevelJson(const std::string &file_path);
 
 	bool LoadFile();
 private:
 
-	bool CreateSceneFile(OPENFILENAME &openFile);
+	bool SceneFileSetting(OPENFILENAME &openFile);
+	bool CreateSceneFile();
 };
 

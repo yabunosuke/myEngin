@@ -19,6 +19,7 @@ public:
 		CD3DX12_CPU_DESCRIPTOR_HANDLE cpu_desc_handle_SRV;
 		CD3DX12_GPU_DESCRIPTOR_HANDLE gpu_desc_handle_SRV;
 		std::wstring filename;
+		uint32_t handle;
 	};
 
 	static TextureManager *GetInstance();

@@ -1,7 +1,7 @@
 #include "AbstractScene.h"
 #include  "DirectXCommon.h"
 #include "PipelineManager.h"
-#include "3d/DrawFbx.h"
+#include "3d/Render.h"
 #include "Object/Component/Light.h"
 
 #include "../Manager/CameraManager.h"

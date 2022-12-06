@@ -266,13 +266,13 @@ void SpikeEnemy::Death(bool is_fixed)
 		else
 		{
 			death_timer_ += Time::GetInstance()->deltaTime;
-			if (death_timer_ >= k_death_delay_)
-			{
+			float t{ death_timer_ / k_death_counter_ };
+			
 			transform_->scale =
 				Ease(Out, Bounce,
-					(death_timer_ - k_death_delay_) / (k_death_counter_ - k_death_delay_),
+					t,
 					death_start_scale_, Vector3{ 0.0f,0.0f,0.0f });
-			}
+
 		}
 	}
 

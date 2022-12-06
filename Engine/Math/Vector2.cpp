@@ -71,14 +71,20 @@ Vector2 Vector2::Reflect(const Vector2 &inDirection, const Vector2 &inNormal)
 
 float Vector2::Magnitude() const
 {
-	float magnitude = XMVector2Length(XMLoadFloat2(this)).m128_f32[0];
-
+	float magnitude
+	{
+		std::sqrtf(x * x + y * y)
+	};
 	return magnitude;
 }
 
 Vector2 Vector2::Normalized() const
 {
-	Vector2 normalized = XMVector2Normalize(XMLoadFloat2(this));
-
+	float mag = 1.0f / this->Magnitude();
+	Vector2 normalized
+	{
+		x + mag,
+		y * mag
+	};
 	return normalized;
 }

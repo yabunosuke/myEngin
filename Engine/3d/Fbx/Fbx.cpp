@@ -2,7 +2,7 @@
 #include "PipelineManager.h"
 #include "Texture.h"
 #include "ConstantBufferManager/ConstantBufferManager.h"
-#include "3d/DrawFbx.h"
+#include "3d/Render.h"
 
 Fbx::Fbx(ID3D12Device *dev, const char *file_path)
 {

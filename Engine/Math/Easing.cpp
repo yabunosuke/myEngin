@@ -61,7 +61,7 @@ namespace EasingFunction
     {
         double pow2;
         int bounce = 4;
-        while (t < ((pow2 = pow(2, -bounce)) - 1) / 11) {}
+        while (t < ((pow2 = pow(2, --bounce)) - 1) / 11) {}
         return 1 / pow(4, 3 - bounce) - 7.5625 * pow((pow2 * 3 - 2) / 22 - t, 2);
     }
 
@@ -80,6 +80,12 @@ static double (*FuncPtr[12])(double t)
 
 double Ease(type InOutType, ease EaseType, double t, double start, double end)
 {
+    // 1.0f‚ðã‰ñ‚Á‚Ä‚¢‚éê‡‚Í§ŒÀ
+    if (t > 1.0f)
+    {
+        t = 1.0f;
+    }
+
     if (InOutType == In)
     {
         return (end - start) * FuncPtr[EaseType](t) + start;

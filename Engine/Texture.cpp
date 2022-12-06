@@ -70,6 +70,7 @@ const D3D12_RESOURCE_DESC TextureManager::GetResoureDesc(uint32_t texture_handle
 
 const TextureManager::Texture *TextureManager::GetTexture(const std::wstring &filename)
 {
+	if (filename == L"") return nullptr;
 	for(auto &tex : textures_)
 	{
 		if(tex.filename == filename)
@@ -105,6 +106,7 @@ uint32_t TextureManager::LoadTextureFromFile(ID3D12Device *dev, const wchar_t *f
 
 	Texture &texture = textures_.at(handle);
 	texture.filename = filename;
+	texture.handle = handle;
 
 	HRESULT result = S_FALSE;
 
@@ -223,6 +225,7 @@ uint32_t TextureManager::MakeTextureFromColor(ID3D12Device *dev, DWORD color, XM
 
 	Texture &texture = textures_.at(handle);
 	texture.filename = color_name;
+	texture.handle = handle;
 
 	HRESULT result = S_FALSE;
 

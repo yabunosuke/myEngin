@@ -75,15 +75,11 @@ void PlayerController::Start()
 void PlayerController::FixedUpdate()
 {
 	(this->*state_update_[playerState])(true);
-	// 移動処理
-	Vector3 move = input_stick_r_ * move_speed;
-	Vector3 camera_move = Camera::main.r_->transform_->quaternion * move;
-	camera_move.y = 0;
-	rigidbody_->AddForce(camera_move - Vector3::Scale({1,0,1}, rigidbody_->velocity), ForceMode::VelocityChange);
 	// 回転処理
 	if(input_stick_r_.x != 0.0f || input_stick_r_.z != 0.0f)
 	{
-		Vector3 dir = rigidbody_->velocity->Normalized();
+		Vector3 dir = Camera::main.r_->transform_->quaternion * input_stick_r_;
+
 		dir.y = 0.0f;
 		transform_->LookAt(transform_->position + dir);
 	}
@@ -121,6 +117,7 @@ void PlayerController::Idole(bool is_fixed)
 		// アイドルアニメーション再生
 		model_data_->PlayAnimation(static_cast<int>(AnimationState::Idol), true);
 
+		rigidbody_->velocity = Vector3::Scale(rigidbody_->velocity,{0.9,0.0f,0.9f});
 		// 歩行
 		if (input_stick_r_.Magnitude() != 0.0f)
 		{
@@ -193,6 +190,12 @@ void PlayerController::Walk(bool is_fixed)
 			return;
 		}
 		
+		// 移動処理
+		Vector3 move = input_stick_r_ * move_speed;
+		Vector3 camera_move = Camera::main.r_->transform_->quaternion * move;
+		camera_move.y = 0;
+		rigidbody_->AddForce(camera_move - Vector3::Scale({ 1,0,1 }, rigidbody_->velocity), ForceMode::VelocityChange);
+
 		model_data_->PlayAnimation(static_cast<int>(AnimationState::Walk));
 		
 	}
@@ -249,6 +252,14 @@ void PlayerController::Dash(bool is_fixed)
 			playerState = PlayerState::JUMP;
 			return;
 		}
+
+
+		// 移動処理
+		Vector3 move = input_stick_r_ * move_speed;
+		Vector3 camera_move = Camera::main.r_->transform_->quaternion * move;
+		camera_move.y = 0;
+		rigidbody_->AddForce(camera_move - Vector3::Scale({ 1,0,1 }, rigidbody_->velocity), ForceMode::VelocityChange);
+
 
 		model_data_->PlayAnimation(static_cast<int>(AnimationState::Run));
 	}

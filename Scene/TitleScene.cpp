@@ -70,7 +70,9 @@ void TitleScene::Initialize()
 	player->transform_->scale = {3,3,3};
 	auto player_model =  player->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/RPG Characters - Nov 2020/Humanoid Rig Versions/FBX/Warrior.fbx");
+		//"Assets/3d/Ultimate Monsters/Big/FBX/MushroomKing.fbx"
+		"Assets/3d/RPG Characters - Nov 2020/Humanoid Rig Versions/FBX/Warrior.fbx"
+		);
 	player_model->GetObjectData()->PlayAnimation(9);
 }
 

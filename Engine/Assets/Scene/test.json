@@ -1,0 +1,293 @@
+{
+    "name": "scene",
+    "objects": [
+        {
+            "type": "MESH",
+            "name": "floor2_big",
+            "transform": {
+                "translation": [
+                    6.0,
+                    -6.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.7071068286895752,
+                    0.7071068286895752
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Assets/3d/Dungeon/fbx walls/floor2_big.fbx",
+            "collider": {
+                "type": "BOX",
+                "center": [
+                    3.0,
+                    3.0,
+                    -1.0
+                ],
+                "size": [
+                    6.0,
+                    6.0,
+                    2.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "floor2_big.001",
+            "transform": {
+                "translation": [
+                    0.0,
+                    -6.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.7071068286895752,
+                    0.7071068286895752
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Assets/3d/Dungeon/fbx walls/floor2_big.fbx",
+            "collider": {
+                "type": "BOX",
+                "center": [
+                    3.0,
+                    3.0,
+                    -1.0
+                ],
+                "size": [
+                    6.0,
+                    6.0,
+                    2.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "floor2_big.002",
+            "transform": {
+                "translation": [
+                    6.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.7071068286895752,
+                    0.7071068286895752
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Assets/3d/Dungeon/fbx walls/floor2_big.fbx",
+            "collider": {
+                "type": "BOX",
+                "center": [
+                    3.0,
+                    3.0,
+                    -1.0
+                ],
+                "size": [
+                    6.0,
+                    6.0,
+                    2.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "floor2_big.003",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.7071068286895752,
+                    0.7071068286895752
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Assets/3d/Dungeon/fbx walls/floor2_big.fbx",
+            "collider": {
+                "type": "BOX",
+                "center": [
+                    3.0,
+                    3.0,
+                    -1.0
+                ],
+                "size": [
+                    6.0,
+                    6.0,
+                    2.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "floor2_big.004",
+            "transform": {
+                "translation": [
+                    3.0,
+                    -12.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.7071068286895752,
+                    0.7071068286895752
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Assets/3d/Dungeon/fbx walls/floor2_big.fbx",
+            "collider": {
+                "type": "BOX",
+                "center": [
+                    3.0,
+                    3.0,
+                    -1.0
+                ],
+                "size": [
+                    6.0,
+                    6.0,
+                    2.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "floor2_big.005",
+            "transform": {
+                "translation": [
+                    3.0,
+                    -18.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.7071068286895752,
+                    0.7071068286895752
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Assets/3d/Dungeon/fbx walls/floor2_big.fbx",
+            "collider": {
+                "type": "BOX",
+                "center": [
+                    3.0,
+                    3.0,
+                    -1.0
+                ],
+                "size": [
+                    6.0,
+                    6.0,
+                    2.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "floor2_big.006",
+            "transform": {
+                "translation": [
+                    3.0,
+                    -24.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.7071068286895752,
+                    0.7071068286895752
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Assets/3d/Dungeon/fbx walls/floor2_big.fbx",
+            "collider": {
+                "type": "BOX",
+                "center": [
+                    3.0,
+                    3.0,
+                    -1.0
+                ],
+                "size": [
+                    6.0,
+                    6.0,
+                    2.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "wall",
+            "transform": {
+                "translation": [
+                    6.0,
+                    -6.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Assets/3d/Dungeon/fbx walls/Wall.fbx",
+            "collider": {
+                "type": "BOX",
+                "center": [
+                    -0.25,
+                    2.0999999046325684,
+                    -3.0
+                ],
+                "size": [
+                    0.5,
+                    4.199999809265137,
+                    6.0
+                ]
+            }
+        }
+    ]
+}

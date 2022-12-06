@@ -46,12 +46,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)DirectX\Math;$(SolutionDir)DirectX\Collision;$(ProjectDir);$(SolutionDir)DirectX\AudioManager;$(SolutionDir)DirectX\DirectXCommon;$(SolutionDir)DirectX\Input;$(SolutionDir)DirectX\Model;$(SolutionDir)DirectX\ModelManager;$(SolutionDir)DirectX\Object3d;$(SolutionDir)DirectX\Sprite;$(SolutionDir)DirectX\WinApp;$(SolutionDir)System\AbstractScene;$(SolutionDir)System\IoChangedListener;$(SolutionDir)System\Looper;$(SolutionDir)System\SystemMain;$(SolutionDir)Scene;$(SolutionDir)lib\DirectXTex\include;$(SolutionDir)lib\fbx_sdk\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)DirectX\Math;$(SolutionDir)DirectX\Collision;$(ProjectDir);$(SolutionDir)DirectX\AudioManager;$(SolutionDir)DirectX\DirectXCommon;$(SolutionDir)DirectX\Input;$(SolutionDir)DirectX\Model;$(SolutionDir)DirectX\ModelManager;$(SolutionDir)DirectX\Object3d;$(SolutionDir)DirectX\Sprite;$(SolutionDir)DirectX\WinApp;$(SolutionDir)System\AbstractScene;$(SolutionDir)System\IoChangedListener;$(SolutionDir)System\Looper;$(SolutionDir)System\SystemMain;$(SolutionDir)Scene;$(SolutionDir)lib\DirectXTex\include;$(SolutionDir)lib\fbx_sdk\include;$(SolutionDir)lib\nlohmann\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib\DirectXTex\lib\$(Configuration);$(SolutionDir)lib\fbx_sdk\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)DirectX\Math;$(SolutionDir)DirectX\Collision;$(ProjectDir);$(SolutionDir)DirectX\AudioManager;$(SolutionDir)DirectX\DirectXCommon;$(SolutionDir)DirectX\Input;$(SolutionDir)DirectX\Model;$(SolutionDir)DirectX\ModelManager;$(SolutionDir)DirectX\Object3d;$(SolutionDir)DirectX\Sprite;$(SolutionDir)DirectX\WinApp;$(SolutionDir)System\AbstractScene;$(SolutionDir)System\IoChangedListener;$(SolutionDir)System\Looper;$(SolutionDir)System\SystemMain;$(SolutionDir)Scene;$(SolutionDir)lib\DirectXTex\include;$(SolutionDir)lib\fbx_sdk\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)DirectX\Math;$(SolutionDir)DirectX\Collision;$(ProjectDir);$(SolutionDir)DirectX\AudioManager;$(SolutionDir)DirectX\DirectXCommon;$(SolutionDir)DirectX\Input;$(SolutionDir)DirectX\Model;$(SolutionDir)DirectX\ModelManager;$(SolutionDir)DirectX\Object3d;$(SolutionDir)DirectX\Sprite;$(SolutionDir)DirectX\WinApp;$(SolutionDir)System\AbstractScene;$(SolutionDir)System\IoChangedListener;$(SolutionDir)System\Looper;$(SolutionDir)System\SystemMain;$(SolutionDir)Scene;$(SolutionDir)lib\DirectXTex\include;$(SolutionDir)lib\nlohmann\include;$(SolutionDir)lib\fbx_sdk\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib\DirectXTex\lib\$(Configuration);$(SolutionDir)lib\fbx_sdk\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -66,6 +66,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard_C>Default</LanguageStandard_C>
+      <CompileAsWinRT>false</CompileAsWinRT>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -85,6 +87,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <CompileAsWinRT>false</CompileAsWinRT>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -106,7 +109,7 @@
     <ClCompile Include="..\System\SystemMain\SystemMain.cpp" />
     <ClCompile Include="2d\PostEffect.cpp" />
     <ClCompile Include="2d\Sprite.cpp" />
-    <ClCompile Include="3d\DrawFbx.cpp" />
+    <ClCompile Include="3d\Render.cpp" />
     <ClCompile Include="3d\Fbx\Fbx.cpp" />
     <ClCompile Include="3d\Fbx\FbxResource.cpp" />
     <ClCompile Include="Assets\Scripts\CameraController.cpp" />
@@ -124,6 +127,7 @@
     <ClCompile Include="Collision\Collision.cpp" />
     <ClCompile Include="ConstantBufferManager\ConstantBufferLapper.cpp" />
     <ClCompile Include="ConstantBufferManager\ConstantBufferManager.cpp" />
+    <ClCompile Include="ECS\World.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
@@ -288,7 +292,7 @@
     <ClInclude Include="..\System\SystemMain\SystemMain.h" />
     <ClInclude Include="2d\PostEffect.h" />
     <ClInclude Include="2d\Sprite.h" />
-    <ClInclude Include="3d\DrawFbx.h" />
+    <ClInclude Include="3d\Render.h" />
     <ClInclude Include="3d\Fbx\Fbx.h" />
     <ClInclude Include="3d\Fbx\FbxResource.h" />
     <ClInclude Include="Assets\Scripts\CameraController.h" />
@@ -309,6 +313,7 @@
     <ClInclude Include="ConstantBufferManager\ConstantBuffer.h" />
     <ClInclude Include="ConstantBufferManager\ConstantBufferLapper.h" />
     <ClInclude Include="ConstantBufferManager\ConstantBufferManager.h" />
+    <ClInclude Include="ECS\World.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="ImGui\imconfig.h" />

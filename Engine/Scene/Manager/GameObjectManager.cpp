@@ -11,7 +11,8 @@ void GameObjectManager::Initialize()
 }
 
 void GameObjectManager::FixedUpdate()
-{//更新
+{
+	//更新
 	for (auto &e : game_objects_) {
 		e->FixedUpdate();
 	}

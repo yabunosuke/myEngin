@@ -4,7 +4,7 @@
 #include "Scene/Manager/GameObjectManager.h"
 #include "2d/PostEffect.h"
 #include "MultiRenderTarget/MulutiRenderTarget.h"
-
+#include "FileManager.h"
 
 #include "Scene/Manager/LightManager.h"
 #include <wrl.h>

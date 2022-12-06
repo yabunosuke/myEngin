@@ -97,7 +97,7 @@
     <ClCompile Include="Math\Vector3.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="3d\DrawFbx.cpp" />
+    <ClCompile Include="3d\Render.cpp" />
     <ClCompile Include="Object\Object.cpp">
       <Filter>Object</Filter>
     </ClCompile>
@@ -222,14 +222,15 @@
     <ClCompile Include="Object\Component\Behaviour.cpp">
       <Filter>Object\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Component\Component.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
     <ClCompile Include="Object\Component\Behaviour\MonoBehaviour\Image.cpp">
       <Filter>Object\Component\Behaviour\MonoBehaviour</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\TitleManager.cpp">
       <Filter>Asset\TitleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ECS\World.cpp" />
+    <ClCompile Include="Object\Component\Component.cpp">
+      <Filter>Object\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -302,7 +303,7 @@
     <ClInclude Include="Math\Vector3.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="3d\DrawFbx.h" />
+    <ClInclude Include="3d\Render.h" />
     <ClInclude Include="Math\Quaternion.h">
       <Filter>Math</Filter>
     </ClInclude>
@@ -435,14 +436,15 @@
     <ClInclude Include="Object\Component\Behaviour.h">
       <Filter>Object\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Component\Component.h">
-      <Filter>Object</Filter>
-    </ClInclude>
     <ClInclude Include="Object\Component\Behaviour\MonoBehaviour\Image.h">
       <Filter>Object\Component\Behaviour\MonoBehaviour</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\TitleManager.h">
       <Filter>Asset\TitleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS\World.h" />
+    <ClInclude Include="Object\Component\Component.h">
+      <Filter>Object\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -601,6 +603,9 @@
     </Filter>
     <Filter Include="Asset\NewFilter1">
       <UniqueIdentifier>{d7e552fc-62a7-4be3-9c73-9fded9158066}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS">
+      <UniqueIdentifier>{935675b2-b19b-4927-be41-2b6752da414f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

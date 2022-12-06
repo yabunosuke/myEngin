@@ -74,8 +74,7 @@ private:
     float invincible_timer_{ 0.0f };
 
     void Death(bool is_fixed);
-    const float k_death_delay_{ 2.0f };
-    const float k_death_counter_{ 4.0f };
+    const float k_death_counter_{ 2.0f };
     float death_timer_{ 0.0f };
     bool is_play_death_animation_{ false };
     Vector3 death_start_scale_{};

@@ -2,11 +2,16 @@
 
 #include "DirectXCommon.h"
 #include "ConstantBufferManager/ConstantBufferManager.h"
+#include <PipelineManager.h>
 
 
 Image::Image():
 MonoBehaviour("Image")
 {
+	//射影変換行列計算
+	mat_projection_ = XMMatrixOrthographicOffCenterLH(
+		0.0f, (float)WinApp::windowWidth, (float)WinApp::windowHeight, 0.0f, 0.0f, 1.0f);
+
 	HRESULT result = S_FALSE;
 	// 頂点バッファ生成
 	result = DirectXCommon::dev->CreateCommittedResource(
@@ -57,8 +62,48 @@ MonoBehaviour("Image")
 	return;
 }
 
+void Image::ComponentDraw()
+{
+	texture_name_ = L"Assets/2d/Panorama-V01.png";
+	if (TextureManager::GetInstance()->GetTexture(texture_name_) == nullptr) return;
+
+	auto &cmd_list = DirectXCommon::cmdList;
+
+	//頂点バッファへのデータ転送
+	TransferVertices();
+	//透明なら描画しない
+	// ワールド行列の更新
+	mat_word_ = transform_->matrix;
+
+	// 定数バッファにデータ転送
+	SpriteDate *constMap = nullptr;
+	HRESULT result = this->constBuff->Map(0, nullptr, (void **)&constMap);
+	if (SUCCEEDED(result)) {
+		constMap->color = color;
+		constMap->mat = mat_word_ * mat_projection_;	// 行列の合成	
+		this->constBuff->Unmap(0, nullptr);
+	}
+
+	// パイプラインセット
+	PipelineManager::GetInstance()->SetPipline(cmd_list, "Sprite");
+	// プリミティブ形状を設定
+	cmd_list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
+	// 頂点バッファの設定
+	cmd_list->IASetVertexBuffers(0, 1, &this->vbView);
+
+
+	TextureManager::GetInstance()->SetGraphicsRootDescriptorTable(cmd_list.Get(), 1, TextureManager::GetInstance()->GetTexture(texture_name_)->handle);
+	// 定数バッファビューをセット
+	cmd_list->SetGraphicsRootConstantBufferView(0, this->constBuff->GetGPUVirtualAddress());
+	// 描画コマンド
+	cmd_list->DrawInstanced(4, 1, 0, 0);
+}
+
 void Image::TransferVertices()
 {
+	if (TextureManager::GetInstance()->GetTexture(texture_name_) == nullptr) return;
+	
 	HRESULT result = S_FALSE;
 
 	// 左下、左上、右下、右上
