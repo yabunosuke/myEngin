@@ -228,7 +228,6 @@ public:
 		yEngine::AccessorType::AllAccess,
 		nullptr,
 		// ローカルの再計算処理
-		//nullptr
 		[this](XMMATRIX mat)
 		{
 			world_matrix_ = mat;
@@ -343,3 +342,38 @@ protected:
 	// 全ての親の逆行列を取得する
 	XMMATRIX InverseMatrixAllParent();
 };
+
+namespace ecs
+{
+	struct Position
+	{
+		float x, y, z;
+	};
+
+	struct Scale
+	{
+		float scale;
+	};
+	
+	struct NonUniforScale
+	{
+		float x, y, z;
+	};
+
+	struct Rotate
+	{
+		float x, y, z, w;
+	};
+
+	struct LocalToWorld
+	{
+
+	};
+
+	struct Parent
+	{
+
+	};
+
+
+}

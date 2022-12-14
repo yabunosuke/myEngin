@@ -11,7 +11,9 @@
 #include  "PrimitiveRenderer.h"
 #include "PipelineManager.h"
 
+
 #include "Time/Time.h"
+#include "D3D12Base/D3D12Base.h"
 
 
 
@@ -19,6 +21,13 @@ bool SystemMain::Initialize()
 {
 	WinApp::WindowCreate();				//ウィンドウ生成
 	DirectXCommon::Initialize();		//DirectX初期化
+	
+	//// テスト
+	//D3D12Base d3d12base;
+	//d3d12base.Initialize(WinApp::GetHwnd());
+	//// テスト
+
+
 
 	//imguiを初期化
 	imguiManager::GetIns()->Initialize();

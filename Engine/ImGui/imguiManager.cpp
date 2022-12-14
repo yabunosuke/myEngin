@@ -2,7 +2,7 @@
 #include "DirectXCommon.h"
 #include "WinAPP.h"
 
-ComPtr<ID3D12DescriptorHeap> imguiManager::heap;
+Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> imguiManager::heap;
 
 imguiManager *imguiManager::GetIns()
 {

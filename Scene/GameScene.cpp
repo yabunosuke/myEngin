@@ -44,6 +44,10 @@ void GameScene::Initialize()
 	directional_light_->AddComponent<Light>(LightType::Directional);
 	XMStoreFloat4(&directional_light_->transform_->localQuaternion, XMQuaternionRotationRollPitchYaw(45, 45, 0));
 
+	auto boss = GameObject::CreateObject("Boss");
+	boss->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		"Assets/3d/boss/boss.fbx");
 	auto floors = GameObject::CreateObject("Floors");
 
 	for( int i = 0; i<2;++i)

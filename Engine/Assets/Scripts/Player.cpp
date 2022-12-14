@@ -336,9 +336,9 @@ void PlayerController::Dodge(bool is_fixed)
 
 void PlayerController::MeleeAttack1(bool is_fixed)
 {
+	static float timer = 0;
 	if (!is_fixed)
 	{
-		static float timer = 0;
 		if (timer >= 0.2f)
 		{
 			timer = 0.2f;
@@ -373,6 +373,7 @@ void PlayerController::MeleeAttack1(bool is_fixed)
 			{
 				playerState = PlayerState::IDOLE;
 			}
+			timer = 0.0f;
 			return;
 		}
 	}

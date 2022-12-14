@@ -101,7 +101,7 @@ namespace yEngine
         // ”äŠr‰‰ŽZŽq
         bool operator ==(const ReferenceT &v) const
         {
-            return get_ ? (this->get_() == v) : (this->r_ == v);
+			return get_ ? (this->get_() == v) : (this->r_ == v);
         }
         bool operator !=(const ReferenceT &v) const
         {

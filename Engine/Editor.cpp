@@ -26,6 +26,9 @@ void Editor::Draw()
 	// 設定画面
 	ProjectSettingsWindow();
 
+	// ファイルブラウザ
+	FileBrowser();
+	
 	// 出力
 	/*if(true)
 	{
@@ -222,6 +225,14 @@ void Editor::Hierarchy(std::vector<GameObject*>& objects, bool is_child)
 		n++;
 		ImGui::PopID();
 	}
+}
+
+void Editor::FileBrowser()
+{
+	ImGui::Begin("File Browser", &isHierarchy);
+
+
+	ImGui::End();
 }
 
 void Editor::DrawInspector()

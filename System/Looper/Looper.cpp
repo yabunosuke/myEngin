@@ -31,7 +31,6 @@ Looper::Looper() {
 
 bool Looper::Loop()
 {
-
 	// 遷移更新
 	if (scene_change_data_.type != ChangeType::None)
 	{

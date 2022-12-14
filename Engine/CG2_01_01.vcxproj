@@ -112,6 +112,7 @@
     <ClCompile Include="3d\Render.cpp" />
     <ClCompile Include="3d\Fbx\Fbx.cpp" />
     <ClCompile Include="3d\Fbx\FbxResource.cpp" />
+    <ClCompile Include="Assets\Scripts\Boss.cpp" />
     <ClCompile Include="Assets\Scripts\CameraController.cpp" />
     <ClCompile Include="Assets\Scripts\CameraController\PlayerCameraController.cpp" />
     <ClCompile Include="Assets\Scripts\Drone.cpp" />
@@ -123,6 +124,14 @@
     <ClCompile Include="Assets\Scripts\Player.cpp" />
     <ClCompile Include="Assets\Scripts\SpikeEnemy.cpp" />
     <ClCompile Include="Assets\Scripts\TitleManager.cpp" />
+    <ClCompile Include="BehaviorTree\ActionNode.cpp" />
+    <ClCompile Include="BehaviorTree\BehaviorTree.cpp" />
+    <ClCompile Include="BehaviorTree\CompositeNode.cpp" />
+    <ClCompile Include="BehaviorTree\ConditionalNode.cpp" />
+    <ClCompile Include="BehaviorTree\Node.cpp" />
+    <ClCompile Include="BehaviorTree\Repeater.cpp" />
+    <ClCompile Include="BehaviorTree\Selector.cpp" />
+    <ClCompile Include="BehaviorTree\Sequencer.cpp" />
     <ClCompile Include="Collision\CheckCollision.cpp" />
     <ClCompile Include="Collision\Collision.cpp" />
     <ClCompile Include="ConstantBufferManager\ConstantBufferLapper.cpp" />
@@ -295,6 +304,7 @@
     <ClInclude Include="3d\Render.h" />
     <ClInclude Include="3d\Fbx\Fbx.h" />
     <ClInclude Include="3d\Fbx\FbxResource.h" />
+    <ClInclude Include="Assets\Scripts\Boss.h" />
     <ClInclude Include="Assets\Scripts\CameraController.h" />
     <ClInclude Include="Assets\Scripts\CameraController\PlayerCameraController.h" />
     <ClInclude Include="Assets\Scripts\Drone.h" />
@@ -306,6 +316,14 @@
     <ClInclude Include="Assets\Scripts\Player.h" />
     <ClInclude Include="Assets\Scripts\SpikeEnemy.h" />
     <ClInclude Include="Assets\Scripts\TitleManager.h" />
+    <ClInclude Include="BehaviorTree\ActionNode.h" />
+    <ClInclude Include="BehaviorTree\BehaviorTree.h" />
+    <ClInclude Include="BehaviorTree\CompositeNode.h" />
+    <ClInclude Include="BehaviorTree\ConditionalNode.h" />
+    <ClInclude Include="BehaviorTree\Node.h" />
+    <ClInclude Include="BehaviorTree\Repeater.h" />
+    <ClInclude Include="BehaviorTree\Selector.h" />
+    <ClInclude Include="BehaviorTree\Sequencer.h" />
     <ClInclude Include="Collision\CheckCollision.h" />
     <ClInclude Include="Collision\Collision.h" />
     <ClInclude Include="Collision\ContactPoint.h" />

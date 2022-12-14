@@ -63,7 +63,7 @@ private:
     bool is_jump_{ false };
 
     void Contact(bool is_fixed);
-    const float k_contact_move_cooldown{ 2.0f };
+    const float k_contact_move_cooldown{ 1.0f };
     float contact_move_timer_{ 0.0f };
 
     void HeightJumpAttack(bool is_fixed);

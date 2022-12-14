@@ -33,6 +33,8 @@ public:
 	// 親用
 	void Hierarchy(std::vector<GameObject*> &objects, bool is_child = false);
 
+	void FileBrowser();
+
 	/// <summary>
 	/// インスペクター描画
 	/// </summary>

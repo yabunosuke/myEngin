@@ -168,6 +168,7 @@ void SpikeEnemy::Contact(bool is_fixed)
 		}
 		if (contact_move_timer_ >= k_contact_move_cooldown)
 		{
+			contact_move_timer_ = 0.0f;
 			// UŒ‚”ÍˆÍ‚É“ü‚Á‚Ä‚¢‚ê‚ÎUŒ‚‚ÉˆÚs
 			if ((transform_->position - target_position_).Magnitude() <= 6.0f)
 			{
@@ -175,7 +176,6 @@ void SpikeEnemy::Contact(bool is_fixed)
 				return;
 			}
 
-			contact_move_timer_ = 0.0f;
 			
 			// ƒWƒƒƒ“ƒv•ûŒüŒˆ’è
 			Vector3 jump_vec{ transform_->forward };
@@ -203,8 +203,8 @@ void SpikeEnemy::HeightJumpAttack(bool is_fixed)
 		if(!is_attack_)
 		{
 			Vector3 jump_vec{ Vector3::Scale((target_position_ - transform_->position).Normalized(),Vector3{1,0,1})};
-			jump_vec *= 2.0f;
-			jump_vec.y += 2.0f;
+			jump_vec *= 3.0f;
+			jump_vec.y += 5.0f;
 			rigidbody_->AddForce(jump_vec, ForceMode::VelocityChange);
 			model_data_->PlayAnimation(static_cast<int>(SpikeAnimation::Bite_Front), false);
 			is_attack_ = true;

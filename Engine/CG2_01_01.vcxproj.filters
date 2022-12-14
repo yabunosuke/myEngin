@@ -228,9 +228,38 @@
     <ClCompile Include="Assets\Scripts\TitleManager.cpp">
       <Filter>Asset\TitleManager</Filter>
     </ClCompile>
-    <ClCompile Include="ECS\World.cpp" />
     <ClCompile Include="Object\Component\Component.cpp">
       <Filter>Object\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ECS\World.cpp">
+      <Filter>ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorTree\ActionNode.cpp">
+      <Filter>behavior tree</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorTree\BehaviorTree.cpp">
+      <Filter>behavior tree</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorTree\CompositeNode.cpp">
+      <Filter>behavior tree</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorTree\ConditionalNode.cpp">
+      <Filter>behavior tree</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorTree\Node.cpp">
+      <Filter>behavior tree</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorTree\Repeater.cpp">
+      <Filter>behavior tree</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorTree\Selector.cpp">
+      <Filter>behavior tree</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorTree\Sequencer.cpp">
+      <Filter>behavior tree</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Boss.cpp">
+      <Filter>Asset\Enemy\BossEnemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -417,7 +446,6 @@
     <ClInclude Include="Texture.h">
       <Filter>ResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\lib\nlohmann\json.hpp" />
     <ClInclude Include="Object\Component\Transform\RectTransform.h">
       <Filter>Object\Component\Transform\RectTransform</Filter>
     </ClInclude>
@@ -442,9 +470,39 @@
     <ClInclude Include="Assets\Scripts\TitleManager.h">
       <Filter>Asset\TitleManager</Filter>
     </ClInclude>
-    <ClInclude Include="ECS\World.h" />
     <ClInclude Include="Object\Component\Component.h">
       <Filter>Object\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS\World.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\nlohmann\json.hpp" />
+    <ClInclude Include="BehaviorTree\ActionNode.h">
+      <Filter>behavior tree</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorTree\BehaviorTree.h">
+      <Filter>behavior tree</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorTree\CompositeNode.h">
+      <Filter>behavior tree</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorTree\ConditionalNode.h">
+      <Filter>behavior tree</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorTree\Node.h">
+      <Filter>behavior tree</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorTree\Repeater.h">
+      <Filter>behavior tree</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorTree\Selector.h">
+      <Filter>behavior tree</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorTree\Sequencer.h">
+      <Filter>behavior tree</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Boss.h">
+      <Filter>Asset\Enemy\BossEnemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -601,11 +659,17 @@
     <Filter Include="Asset\TitleManager">
       <UniqueIdentifier>{fa9baa3f-d740-4ca6-9074-68dc119eb8ea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Asset\NewFilter1">
-      <UniqueIdentifier>{d7e552fc-62a7-4be3-9c73-9fded9158066}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ECS">
       <UniqueIdentifier>{935675b2-b19b-4927-be41-2b6752da414f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Enemy\BossEnemy">
+      <UniqueIdentifier>{8d7bc4f8-ff38-4086-b8ab-a5b64533fb69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="behavior tree">
+      <UniqueIdentifier>{22bd6a1c-eb25-4573-b147-372bcee9aa2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui\Third party">
+      <UniqueIdentifier>{7bb99605-2174-427e-9259-6df919701442}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
