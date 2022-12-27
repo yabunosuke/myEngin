@@ -72,6 +72,6 @@ namespace behaviorTree
 		Node *parent_node_{ nullptr };
 		std::string name_;
 		int index_{ -1 };
-		BehaviorStatus status_;
+		BehaviorStatus status_{BehaviorStatus::Inactive};
 	};
 }

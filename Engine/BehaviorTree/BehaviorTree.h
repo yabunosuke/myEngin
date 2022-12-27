@@ -32,6 +32,17 @@ namespace behaviorTree
 		void Update();
 
 
+		yEngine::Property<std::vector<std::unique_ptr<Node>>> AllNode
+		{
+			&node_container_,
+			yEngine::AccessorType::ReadOnly
+		};
+		yEngine::Property<std::stack<int>> ActiveStack
+		{
+			&active_stack_,
+			yEngine::AccessorType::ReadOnly
+		};
+
 		/// <summary>
 		///	再評価用の情報
 		/// </summary>
@@ -42,7 +53,7 @@ namespace behaviorTree
 			void Initialize(int i, BehaviorStatus status, int stack, int composite);
 			yEngine::Property<int> Index
 			{
-				&Index,
+				&index_,
 				yEngine::AccessorType::AllAccess
 			};
 			yEngine::Property<BehaviorStatus> Status
@@ -90,15 +101,16 @@ namespace behaviorTree
 		/// <param name="node"></param>
 		void CallOnAwake(Node *node);
 
+		// ノードの再評価
 		int ReevaluateConditionalTasks();
 
-		BehaviorStatus Excute(Node *node);
+		BehaviorStatus Execute(Node *node);
 
 		GameObject *owner_;					// ツリーを保持しているオブジェクト
 		Node *root_node_;	// 一番上にあるノード
 
-		std::vector<Node*> node_container_;	//全ノード
-		std::vector<std::unique_ptr<ConditionalReevaluate>> reevaluate_container_;	// 再評価用コンテナ
+		std::vector<std::unique_ptr<Node>> node_container_;	//全ノード
+		std::vector<ConditionalReevaluate*> reevaluate_container_;	// 再評価用コンテナ
 
 		std::stack<int> active_stack_;		// 実行中ノードを保持するスタック
 		

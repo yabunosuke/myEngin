@@ -26,16 +26,16 @@ void behaviorTree::SimpleBehaviorTree::Update()
 	int abort_index = ReevaluateConditionalTasks();
 	if (abort_index != -1)
 	{
-		// íÜífÇµÇΩÉmÅ[ÉhÇ∆åªç›é¿çsíÜÇÃÉmÅ[ÉhÇÃã§í ëcêÊÇíTçı
+		// íÜífÇµÇΩÉmÅ[ÉhÇ∆åªç›é¿çsíÜÇÃÉmÅ[ÉhÇÃã§í ÇÃëcêÊÇíTçı
 		int ca_index = CommonAncestorNode(abort_index, active_node_index_);
 		
-		Node *active_node = node_container_[active_node_index_];
+		Node *active_node = node_container_[active_node_index_].get();
 		active_node->OnAbort();
 
 		while (active_stack_.size() != 0)
 		{
 			PopNode();
-			active_node = node_container_[active_node_index_];
+			active_node = node_container_[active_node_index_].get();
 			active_node->OnAbort();
 
 			if (active_node_index_ == ca_index)
@@ -49,7 +49,7 @@ void behaviorTree::SimpleBehaviorTree::Update()
 			{
 				if (r->Index == active_node_index_)
 				{
-					cr = r.get();
+					cr = r;
 					break;
 				}
 				++i;
@@ -64,12 +64,12 @@ void behaviorTree::SimpleBehaviorTree::Update()
 	BehaviorStatus status = BehaviorStatus::Inactive;
 	if (active_node_index_ == -1)
 	{
-		status = Excute(root_node_);
+		status = Execute(root_node_);
 	}
 	else
 	{
-		Node *node = node_container_[active_node_index_];
-		status = Excute(node);
+		Node *node = node_container_[active_node_index_].get();
+		status = Execute(node);
 	}
 
 	if (status == BehaviorStatus::Completed)
@@ -129,7 +129,7 @@ int behaviorTree::SimpleBehaviorTree::CommonAncestorNode(int node1, int node2)
 void behaviorTree::SimpleBehaviorTree::CallOnAwake(Node *node)
 {
 	node->Index = node_container_.size();
-	node_container_.emplace_back(node);
+	node_container_.emplace_back(std::move(node));
 
 	node->Owner = owner_;
 
@@ -147,6 +147,7 @@ void behaviorTree::SimpleBehaviorTree::CallOnAwake(Node *node)
 	}
 }
 
+// ÉmÅ[ÉhÇÃçƒï]âø
 int behaviorTree::SimpleBehaviorTree::ReevaluateConditionalTasks()
 {
 	for (int i = 0; i < reevaluate_container_.size(); ++i)
@@ -157,7 +158,7 @@ int behaviorTree::SimpleBehaviorTree::ReevaluateConditionalTasks()
 		// ëOâÒÇ∆ïœâªÇ™Ç†ÇÍÇŒêÊëcÇ‹Ç≈Ç≥Ç©ÇÃÇ⁄ÇËèàóùí‚é~
 		if (cr.Status != status)
 		{
-			CompositeNode *cnode = dynamic_cast<CompositeNode *>(node_container_[cr.CompositeIndex]);
+			CompositeNode *cnode = dynamic_cast<CompositeNode *>(node_container_[cr.CompositeIndex].get());
 			if (cnode != nullptr)
 			{
 				cnode->OnConditionalAbort(cr.Index);
@@ -170,7 +171,7 @@ int behaviorTree::SimpleBehaviorTree::ReevaluateConditionalTasks()
 	return -1;
 }
 
-behaviorTree::BehaviorStatus behaviorTree::SimpleBehaviorTree::Excute(Node *node)
+behaviorTree::BehaviorStatus behaviorTree::SimpleBehaviorTree::Execute(Node *node)
 {
 	// é¿çsíÜÉmÅ[ÉhÇActive StackÇ…í«â¡
 	PushNode(node);
@@ -178,25 +179,21 @@ behaviorTree::BehaviorStatus behaviorTree::SimpleBehaviorTree::Excute(Node *node
 	CompositeNode *cnode = dynamic_cast<CompositeNode *>(node);
 	if (cnode != nullptr)
 	{
-		int i = 0;
-		CompositeNode *cnode = dynamic_cast<CompositeNode *>(node);
-		
 
 		while (cnode->CanExecute())
 		{
 			Node *child = cnode->Children.r_[cnode->CurrentChildIndex].get();
-			BehaviorStatus child_status = Excute(child);
+			BehaviorStatus child_status = Execute(child);
 
 			// çƒï]âøÇ™ïKóvÇ»ÇÁÉäÉXÉgÇ…í«â¡
 			if (cnode->NeedsConditionalAbort)
 			{
-				if (dynamic_cast<CompositeNode *>(child) != nullptr)
+				if (dynamic_cast<ConditionalNode *>(child) != nullptr)
 				{
-					auto add_date = std::make_unique<ConditionalReevaluate>();
+					ConditionalReevaluate *add_date = reevaluate_container_.emplace_back(std::move(new ConditionalReevaluate()));
 					add_date->Index = child->Index.r_;
 					add_date->CompositeIndex = cnode->Index.r_;
 					add_date->Status = child_status;
-					reevaluate_container_.emplace_back(std::move(add_date));
 				}
 			}
 

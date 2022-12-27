@@ -13,6 +13,7 @@ void behaviorTree::CompositeNode::OnConditionalAbort(int childNodeIndex)
 
 void behaviorTree::CompositeNode::OnChildExecuted(BehaviorStatus childStatus)
 {
+    // 全ての子ノードが実行されていなければreturn
     if (current_child_index_ < children_.size())
     {
         return;

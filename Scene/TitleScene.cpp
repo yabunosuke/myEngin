@@ -16,7 +16,6 @@
 #include "Object/Component/Camera.h"
 #include "Object/Component/Collider/OBBCollider/OBBCollider.h"
 #include "Assets/Scripts/TitleManager.h"
-#include "Assets/Scripts/Boss.h"
 
 
 
@@ -28,7 +27,6 @@ TitleScene::TitleScene(IoChangedListener *impl)
 void TitleScene::Initialize()
 {
 
-
 	// ƒ‰ƒCƒg
 	auto directional_light_ = GameObject::CreateObject("Directional Light");
 	directional_light_->AddComponent<Light>(LightType::Directional);
@@ -39,10 +37,6 @@ void TitleScene::Initialize()
 	camera->AddComponent<Camera>();
 	camera->transform_->localPosition = { 0,0,-10 };
 	camera->transform_->localQuaternion = Quaternion::Euler(0, 0, 0);
-
-	auto tree_test = GameObject::CreateObject("Tree test");
-	tree_test->AddComponent<Boss>();
-
 
 	auto title_manager = GameObject::CreateObject("TitleManager");
 	title_manager->transform_->quaternion = Quaternion::Euler(0, 180.0f * Mathf::deg_to_rad, 0);
@@ -70,16 +64,16 @@ void TitleScene::Initialize()
 	title_manager->AddComponent<TitleManager>(titile_text, start_text, end_text, implSceneChanged);
 
 
-	//auto player = GameObject::CreateObject("Knight");
-	//player->transform_->position = { -5.0f,-6.6f,-2.8f };
-	//player->transform_->localQuaternion = Quaternion::Euler(0, 115.0f * Mathf::deg_to_rad, 0);
-	//player->transform_->scale = {3,3,3};
-	//auto player_model =  player->AddComponent<Object3dComponent>(
-	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-	//	//"Assets/3d/Ultimate Monsters/Big/FBX/MushroomKing.fbx"
-	//	"Assets/3d/RPG Characters - Nov 2020/Humanoid Rig Versions/FBX/Warrior.fbx"
-	//	);
-	//player_model->GetObjectData()->PlayAnimation(9);
+	auto player = GameObject::CreateObject("Knight");
+	player->transform_->position = { -5.0f,-6.6f,-2.8f };
+	player->transform_->localQuaternion = Quaternion::Euler(0, 115.0f * Mathf::deg_to_rad, 0);
+	player->transform_->scale = {3,3,3};
+	auto player_model =  player->AddComponent<Object3dComponent>(
+		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+		//"Assets/3d/Ultimate Monsters/Big/FBX/MushroomKing.fbx"
+		"Assets/3d/RPG Characters - Nov 2020/Humanoid Rig Versions/FBX/Warrior.fbx"
+		);
+	player_model->GetObjectData()->PlayAnimation(9);
 }
 
 void TitleScene::Draw() const

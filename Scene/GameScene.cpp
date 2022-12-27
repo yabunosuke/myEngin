@@ -27,6 +27,7 @@
 #include "Weapon.h"
 #include "Assets/Scripts/Drone.h"
 #include "Assets/Scripts/EnemySearchPlayer.h"
+#include "Assets/Scripts/Boss.h"
 #include "Object/Component/Collider/OBBCollider/OBBCollider.h"
 
 
@@ -44,10 +45,6 @@ void GameScene::Initialize()
 	directional_light_->AddComponent<Light>(LightType::Directional);
 	XMStoreFloat4(&directional_light_->transform_->localQuaternion, XMQuaternionRotationRollPitchYaw(45, 45, 0));
 
-	auto boss = GameObject::CreateObject("Boss");
-	boss->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/boss/boss.fbx");
 	auto floors = GameObject::CreateObject("Floors");
 
 	for( int i = 0; i<2;++i)
@@ -228,7 +225,7 @@ void GameScene::Initialize()
 
 
 	// プレイヤー
-	auto player = GameObject::CreateObject("Knight");
+	auto player = GameObject::CreateObject("Player");
 	player->tag = "Player";
 	player->AddComponent<Object3dComponent>(
 		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
@@ -264,42 +261,43 @@ void GameScene::Initialize()
 	weapon_collider->isTrigger = true;
 	
 
-	for (int i = 0; i < 2; ++i)
+	//for (int i = 0; i < 2; ++i)
+	//{
+	//	auto s_enemy = GameObject::CreateObject("Spike Enemy");
+	//	s_enemy->tag = "Enemy";
+	//	s_enemy->transform_->scale = { 0.3f,0.3f,0.3f };
+	//	s_enemy->transform_->position = { i - 1.0f,0.0f,0.0f };
+	//	auto s_rg = s_enemy->AddComponent<Rigidbody>();
+	//	s_rg->useGravity = true;
+	//	s_enemy->AddComponent<Object3dComponent>(
+	//		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
+	//		"Assets/3d/Ultimate Monsters/Blob/FBX/GreenSpikyBlob.fbx");
+	//	s_enemy->AddComponent<SpikeEnemy>();
+	//	s_enemy->AddComponent<SphereCollider>(2.0f, Vector3{ 0.0f,0.5f,0.0f });
+	//	{
+	//		// 索敵用コライダー
+	//		{
+	//			auto s_search = GameObject::CreateObject("Search");
+	//			auto s_search_collider = s_search->AddComponent<SphereCollider>(12.0f, Vector3{ 0.0f,0.5f,0.0f });
+	//			s_search_collider->isTrigger = true;
+	//			s_search->AddComponent<EnemySearchPlayer>();
+	//			s_search->SetParent(s_enemy);
+	//		}
+	//	}
+	//}
+
+
 	{
-		auto s_enemy = GameObject::CreateObject("Spike Enemy");
-		s_enemy->tag = "Enemy";
-		s_enemy->transform_->scale = { 0.3f,0.3f,0.3f };
-		s_enemy->transform_->position = { i - 1.0f,0.0f,0.0f };
-		auto s_rg = s_enemy->AddComponent<Rigidbody>();
-		s_rg->useGravity = true;
-		s_enemy->AddComponent<Object3dComponent>(
+		auto boss = GameObject::CreateObject("Boss");
+		boss->transform_->scale = { 0.1f,0.1f, 0.1f };
+		boss->AddComponent<Object3dComponent>(
 			DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-			"Assets/3d/Ultimate Monsters/Blob/FBX/GreenSpikyBlob.fbx");
-		s_enemy->AddComponent<SpikeEnemy>();
-		s_enemy->AddComponent<SphereCollider>(2.0f, Vector3{ 0.0f,0.5f,0.0f });
-		{
-			// 索敵用コライダー
-			{
-				auto s_search = GameObject::CreateObject("Search");
-				auto s_search_collider = s_search->AddComponent<SphereCollider>(12.0f, Vector3{ 0.0f,0.5f,0.0f });
-				s_search_collider->isTrigger = true;
-				s_search->AddComponent<EnemySearchPlayer>();
-				s_search->SetParent(s_enemy);
-			}
-		}
+			"Assets/3d/Boss/fire_elemental.fbx");
+		boss->AddComponent<Boss>();
+		auto rg = boss->AddComponent<Rigidbody>();
+		rg->useGravity = true;
+		boss->AddComponent<SphereCollider>(10, Vector3{ 0,0.5f,0 });
 	}
-
-
-
-	//auto enemy = GameObject::CreateObject("Enemy");
-	//enemy->AddComponent<Object3dComponent>(
-	//	DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-	//	"Assets/3d/Dwarf/Dwarf.fbx");
-	//auto enemy_rg = enemy->AddComponent<Rigidbody>();
-	//enemy_rg->useGravity = true;
-	//enemy->AddComponent<Enemy>();
-	//enemy->transform_->position = { 0.0f,4.0f,40.0f };
-	//enemy->AddComponent<SphereCollider>(1, Vector3{ 0,0.5f,0 });
 
 	auto eye = GameObject::CreateObject("Eye");
 	eye->transform_->localPosition = { 0, 1.4f, 0.0f };
