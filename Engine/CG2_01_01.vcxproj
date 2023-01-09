@@ -122,6 +122,7 @@
     <ClCompile Include="Assets\Scripts\FlyEnemy.cpp" />
     <ClCompile Include="Assets\Scripts\FlyEnemyEye.cpp" />
     <ClCompile Include="Assets\Scripts\Player.cpp" />
+    <ClCompile Include="Assets\Scripts\SetBoneParent.cpp" />
     <ClCompile Include="Assets\Scripts\SpikeEnemy.cpp" />
     <ClCompile Include="Assets\Scripts\TitleManager.cpp" />
     <ClCompile Include="BehaviorTree\ActionNode.cpp" />
@@ -314,6 +315,7 @@
     <ClInclude Include="Assets\Scripts\FlyEnemy.h" />
     <ClInclude Include="Assets\Scripts\FlyEnemyEye.h" />
     <ClInclude Include="Assets\Scripts\Player.h" />
+    <ClInclude Include="Assets\Scripts\SetBoneParent.h" />
     <ClInclude Include="Assets\Scripts\SpikeEnemy.h" />
     <ClInclude Include="Assets\Scripts\TitleManager.h" />
     <ClInclude Include="BehaviorTree\ActionNode.h" />

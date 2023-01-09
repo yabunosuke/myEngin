@@ -16,7 +16,10 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 	for (auto object_a = game_objects.begin(); object_a != game_objects.end(); ++object_a)
 	{
 		// 非アクティブならスキップ
-		if ((*object_a)->activeSelf == false) continue;
+		if ((*object_a)->activeSelf == false)
+		{
+			continue;
+		}
 
 		// 一番上のオブジェクトのリジッドボディ
 		auto rigidbody_top_a =
@@ -30,7 +33,10 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 
 		for (; object_b != game_objects.end(); ++object_b)
 		{
-			if ((*object_b)->activeSelf == false) continue;
+			if ((*object_b)->activeSelf == false)
+			{
+				continue;
+			}
 
 			// 一番上のオブジェクトのリジッドボディ
 			auto rigidbody_top_b =

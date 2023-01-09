@@ -26,6 +26,7 @@
 #include "Assets/Scripts/SpikeEnemy.h"
 #include "Weapon.h"
 #include "Assets/Scripts/Drone.h"
+#include "Assets/Scripts/SetBoneParent.h"
 #include "Assets/Scripts/EnemySearchPlayer.h"
 #include "Assets/Scripts/Boss.h"
 #include "Object/Component/Collider/OBBCollider/OBBCollider.h"
@@ -296,7 +297,38 @@ void GameScene::Initialize()
 		boss->AddComponent<Boss>();
 		auto rg = boss->AddComponent<Rigidbody>();
 		rg->useGravity = true;
+		// 地形衝突判定用
 		boss->AddComponent<SphereCollider>(10, Vector3{ 0,0.5f,0 });
+		// 被弾判定用
+		{
+			auto hit_collider = GameObject::CreateObject("BossHitSphere");
+			hit_collider->SetParent(boss);
+			auto collider = hit_collider->AddComponent<SphereCollider>(20, Vector3{ 0,0.5f,0 });
+			collider->isTrigger = true;
+
+		}
+		// 攻撃判定用
+		{
+			{
+				auto attack_collider_R = GameObject::CreateObject("AttackSphereR");
+				attack_collider_R->activeSelf = false;
+				attack_collider_R->tag = "Enemy Attack Area";
+				attack_collider_R->SetParent(boss);
+				attack_collider_R->AddComponent< SetBoneParent>("RightHandMiddle1");
+				auto collider = attack_collider_R->AddComponent<SphereCollider>(0.1);
+				collider->isTrigger = true;
+			}
+			{
+				auto attack_collider_L = GameObject::CreateObject("AttackSphereL");
+				attack_collider_L->activeSelf = false;
+				attack_collider_L->tag = "Enemy Attack Area";
+				attack_collider_L->SetParent(boss);
+				attack_collider_L->AddComponent< SetBoneParent>("LeftHandMiddle1");
+				auto collider = attack_collider_L->AddComponent<SphereCollider>(0.1);
+				collider->isTrigger = true;
+			}
+
+		}
 	}
 
 	auto eye = GameObject::CreateObject("Eye");

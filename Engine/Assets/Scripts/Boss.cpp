@@ -11,12 +11,31 @@ void Boss::Start()
 	player_ = GameObject::Find("Player");
 	model_data_ =
 		game_object_->GetComponent<Object3dComponent>()->GetObjectData();
-	rg_ = game_object_->GetComponent<Rigidbody>();
+	rigidbody_ = game_object_->GetComponent<Rigidbody>();
 	CreateTree();
+
+	for (const auto &obj : game_object_->GetChildren())
+	{
+		if (obj->name == "AttackSphereR")
+		{
+			right_hand_ = obj;
+		}
+		else if (obj->name == "AttackSphereL")
+		{
+			left_hand_ = obj;
+		}
+	}
+}
+
+void Boss::FixedUpdate()
+{
+	rigidbody_->velocity = Vector3::Scale(rigidbody_->velocity, { 0.9,1.0f,0.9f });
+	rigidbody_->AddForce(move - Vector3::Scale({ 1,0,1 }, rigidbody_->velocity));
 }
 
 void Boss::Update()
 {
+
 	behavior_tree_->Update();
 }
 
@@ -120,9 +139,11 @@ void Boss::CreateTree()
 			{
 				(player_->transform_->position - owner->transform_->position).Normalized()
 			};
-			owner->transform_->position += dir * 0.01f;
 
-			const float ep{ 1.0f };
+			move = dir* move_speed_;
+			move.y = 0;
+
+			const float ep{ 2.0f };
 			Vector3 dv
 			{
 				player_->transform_->position - owner->transform_->position
@@ -158,22 +179,55 @@ void Boss::CreateTree()
 		}
 	);
 	Attack_check->Name = "Condition : Attack Check";
-	
+
 
 	// 攻撃アニメーションを行う
 	ActionNode *attack1 = new ActionNode
 	(
 		[&](GameObject *owner)
 		{
+			if (attack_num_ != 1)
+			{
+				return BehaviorStatus::Failure;
+			}
+
+			rigidbody_->velocity->x = 0.0f;
+			rigidbody_->velocity->z = 0.0f;
 			if (attack_) {
 				model_data_->PlayAnimation(1,false);
+				left_hand_->activeSelf = true;
+				right_hand_->activeSelf = true;
 				attack_ = false;
 			}
 			// アニメーションが終了したらフラグ切り替え
 			else if (model_data_->IsPlayAnimation(1) == false)
 			{
-				state_flag_ = StateFlag::Move;
-				return BehaviorStatus::Sucess;
+				attack_ = true;
+				left_hand_->activeSelf = false;
+				right_hand_->activeSelf = false;
+
+				const float ep{ 2.0f };
+				Vector3 dv
+				{
+					player_->transform_->position - owner->transform_->position
+				};
+				// 誤差範囲内になったら終了
+				if (fabsf(dv.x) <= ep &&
+					fabsf(dv.y) <= ep &&
+					fabsf(dv.z) <= ep)
+				{
+					
+					attack_num_ = 2;
+					return BehaviorStatus::Sucess;
+				}
+				else
+				{
+					attack_num_ = 1;
+					state_flag_ = StateFlag::Move;
+					return BehaviorStatus::Sucess;
+
+				}
+
 			}
 
 			return BehaviorStatus::Runnning;
@@ -185,16 +239,48 @@ void Boss::CreateTree()
 	(
 		[&](GameObject *owner)
 		{
-			// 一度だけアニメーションする
-			if (attack2->Status != BehaviorStatus::Runnning)
+
+			if (attack_num_ != 2)
 			{
+				return BehaviorStatus::Failure;
+			}
+
+			rigidbody_->velocity->x = 0.0f;
+			rigidbody_->velocity->z = 0.0f;
+			if (attack_) {
 				model_data_->PlayAnimation(2, false);
+				left_hand_->activeSelf = true;
+				right_hand_->activeSelf = true;
+				attack_ = false;
 			}
 			// アニメーションが終了したらフラグ切り替え
-			if (model_data_->IsPlayAnimation(2) == false)
+			else if (model_data_->IsPlayAnimation(2) == false)
 			{
-				state_flag_ = StateFlag::Move;
-				return BehaviorStatus::Sucess;
+				attack_ = true;
+				left_hand_->activeSelf = false;
+				right_hand_->activeSelf = false;
+
+				const float ep{ 2.0f };
+				Vector3 dv
+				{
+					player_->transform_->position - owner->transform_->position
+				};
+				// 誤差範囲内になったら終了
+				if (fabsf(dv.x) <= ep &&
+					fabsf(dv.y) <= ep &&
+					fabsf(dv.z) <= ep)
+				{
+
+					attack_num_ = 3;
+					return BehaviorStatus::Sucess;
+				}
+				else
+				{
+					attack_num_ = 1;
+					state_flag_ = StateFlag::Move;
+					return BehaviorStatus::Sucess;
+
+				}
 			}
 
 			return BehaviorStatus::Runnning;
@@ -206,14 +292,29 @@ void Boss::CreateTree()
 	(
 		[&](GameObject *owner)
 		{
-			// 一度だけアニメーションする
-			if (attack3->Status != BehaviorStatus::Runnning)
+
+			if (attack_num_ != 3)
 			{
-				model_data_->PlayAnimation(3, false);
+				return BehaviorStatus::Failure;
 			}
+			rigidbody_->velocity->x = 0.0f;
+			rigidbody_->velocity->z = 0.0f;
+
+			if (attack_) {
+				model_data_->PlayAnimation(3, false);
+				left_hand_->activeSelf = true;
+				right_hand_->activeSelf = true;
+				attack_ = false;
+			}
+
 			// アニメーションが終了したらフラグ切り替え
-			if (model_data_->IsPlayAnimation(3) == false)
+			else if (model_data_->IsPlayAnimation(3) == false)
 			{
+
+				attack_ = false;
+				left_hand_->activeSelf = false;
+				right_hand_->activeSelf = false;
+				attack_num_ = 1;
 				state_flag_ = StateFlag::Move;
 				return BehaviorStatus::Sucess;
 			}

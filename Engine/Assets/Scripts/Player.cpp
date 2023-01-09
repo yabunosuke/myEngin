@@ -30,11 +30,7 @@ MonoBehaviour("PlayerController")
 
 void PlayerController::OnCollisionEnter(Collision &collision)
 {
-	if (collision.gameObject.r_->tag == "Enemy")
-	{
-		can_jump_ = true;
-		player_state_ = PlayerState::DAMAGE;
-	}
+	
 }
 
 void PlayerController::OnCollisionStay(Collision &collision)
@@ -51,7 +47,11 @@ void PlayerController::OnCollisionStay(Collision &collision)
 
 void PlayerController::OnTriggerEnter(Collider &other)
 {
-	
+	std::string tag = other.game_object_->tag;
+	if (tag == "Enemy Attack Area")
+	{
+		player_state_ = PlayerState::DAMAGE;
+	}
 }
 
 void PlayerController::Awake()

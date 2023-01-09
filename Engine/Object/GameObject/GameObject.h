@@ -206,7 +206,7 @@ public:	//関数
 	/// <summary>
 	/// ローカルのアクティブ状態 (get = true, set = false)
 	/// </summary>
-	yEngine::Property<bool> activeSelf{ &active_self_ ,yEngine::AccessorType::ReadOnly };
+	yEngine::Property<bool> activeSelf{ &active_self_ ,yEngine::AccessorType::AllAccess };
 	/// <summary>
 	/// オブジェクトが動かない物ならtrue (get = true, set = true)
 	/// </summary>

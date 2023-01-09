@@ -261,6 +261,7 @@
     <ClCompile Include="Assets\Scripts\Boss.cpp">
       <Filter>Asset\Enemy\BossEnemy</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\SetBoneParent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -504,6 +505,7 @@
     <ClInclude Include="Assets\Scripts\Boss.h">
       <Filter>Asset\Enemy\BossEnemy</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\SetBoneParent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
@@ -670,6 +672,9 @@
     </Filter>
     <Filter Include="ImGui\Third party">
       <UniqueIdentifier>{7bb99605-2174-427e-9259-6df919701442}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\SetBoneParent">
+      <UniqueIdentifier>{08334c57-870f-44ee-8422-9798ef716c25}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

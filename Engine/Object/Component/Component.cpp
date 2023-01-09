@@ -52,10 +52,8 @@ Component::Component(std::string name, ComponentType component_id, bool dontRemo
 	isDontRemove(dontRemove),
 	type_(component_id)
 {
-
-
 	// Object—p
-	this->name = name;
+	this->name = ;
 	tag_ = "Notag";
 }
 
