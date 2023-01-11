@@ -41,10 +41,11 @@ namespace behaviorTree
 		/// 
 
 		// アクセッサ
-		yEngine::Property<GameObject*> Owner
+		yEngine::Property<std::weak_ptr<GameObject>> Owner
 		{
 			&owner_,
 			yEngine::AccessorType::AllAccess
+			
 		};
 		yEngine::Property<int> Index
 		{
@@ -68,7 +69,7 @@ namespace behaviorTree
 		};
 
 	protected:
-		GameObject *owner_{ nullptr };
+		std::weak_ptr<GameObject> owner_;
 		Node *parent_node_{ nullptr };
 		std::string name_;
 		int index_{ -1 };

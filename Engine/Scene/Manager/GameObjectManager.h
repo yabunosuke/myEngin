@@ -34,8 +34,8 @@ public:
 	/// <summary>
 	/// IDからオブジェクトを取得
 	/// </summary>
-	GameObject *GetGameObject(int id);
-	GameObject *GetGameObject(const std::string &name);
+	std::weak_ptr<GameObject> GetGameObject(int id);
+	std::weak_ptr<GameObject> GetGameObject(const std::string &name);
 
 	void AddObjects();
 
@@ -45,7 +45,7 @@ public:
 	void Finalize();
 
 	//オブジェクト
-	std::vector<GameObject*> game_objects_;
-	std::vector<GameObject*> add_objects_;	// 一時格納コンテナ
+	std::vector<std::weak_ptr<GameObject>> game_objects_;
+	std::vector<std::weak_ptr<GameObject>> add_objects_;	// 一時格納コンテナ
 };
 

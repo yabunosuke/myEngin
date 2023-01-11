@@ -26,16 +26,16 @@ void OBBCollider::ComponentUpdate()
 		local_center_.z
 	);
 
-	XMMATRIX mat = S * R * T * transform_->matrix;
+	XMMATRIX mat = S * R * T * transform->lock()->matrix;
 
 	
 	// 半径にスケール適応
-	extent = Vector3::Scale(local_extent_ *0.5f, transform_->scale);
+	extent = Vector3::Scale(local_extent_ *0.5f, transform->lock()->scale);
 	// オフセット適応
 	center = mat.r[3];
 
 	// 回転適応
-	Quaternion q = transform_->quaternion;
+	Quaternion q = transform->lock()->quaternion;
 	unidirectional[0] = Vector3::Normalize(Vector3(q * Vector3::right));
 	unidirectional[1] = Vector3::Normalize(Vector3(q * Vector3::up));
 	unidirectional[2] = Vector3::Normalize(Vector3(q * Vector3::forward));

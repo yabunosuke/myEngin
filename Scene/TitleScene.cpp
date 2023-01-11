@@ -22,58 +22,24 @@
 TitleScene::TitleScene(IoChangedListener *impl)
 	: AbstractScene(impl, "TitleScene")
 {
+	//LoadSceneData("Scene/Data/title.scene");
 }
 
 void TitleScene::Initialize()
 {
-
-	// ƒ‰ƒCƒg
-	auto directional_light_ = GameObject::CreateObject("Directional Light");
-	directional_light_->AddComponent<Light>(LightType::Directional);
-	directional_light_->transform_->localQuaternion = Quaternion::Euler(32.0f * Mathf::deg_to_rad, -150.0f * Mathf::deg_to_rad, 180.0f * Mathf::deg_to_rad);
-
 	// ƒJƒƒ‰
-	auto camera = GameObject::CreateObject("CameraObject");
-	camera->AddComponent<Camera>();
-	camera->transform_->localPosition = { 0,0,-10 };
-	camera->transform_->localQuaternion = Quaternion::Euler(0, 0, 0);
+	auto camera = Object::CreateObject<GameObject>("CameraObject");
+	camera.lock()->AddComponent<Camera>();
+	camera.lock()->transform->lock()->localPosition = {0,0,-10};
+	camera.lock()->transform->lock()->localQuaternion = Quaternion::Euler(0, 0, 0);
 
-	auto title_manager = GameObject::CreateObject("TitleManager");
-	title_manager->transform_->quaternion = Quaternion::Euler(0, 180.0f * Mathf::deg_to_rad, 0);
-
-	auto titile_text = GameObject::CreateObject("TitleText");
-	titile_text->SetParent(title_manager);
-	titile_text->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		//"Assets/3d/boss/boss.fbx");
-		"Assets/3d/temp/title.fbx");
+	auto test = Object::CreateObject<GameObject>("test");
+	test.lock()->transform->lock()->localPosition = {1,2,3};
+	auto test1 = Object::CreateObject<GameObject>("test1");
+	test.lock()->SetParent(test1);
 
 
-	auto start_text = GameObject::CreateObject("StartText");
-	start_text->SetParent(title_manager);
-	start_text->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/temp/Start.fbx");
 
-	auto end_text = GameObject::CreateObject("EndText");
-	end_text->SetParent(title_manager);
-	end_text->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		"Assets/3d/temp/End.fbx");
-
-	title_manager->AddComponent<TitleManager>(titile_text, start_text, end_text, implSceneChanged);
-
-
-	auto player = GameObject::CreateObject("Knight");
-	player->transform_->position = { -5.0f,-6.6f,-2.8f };
-	player->transform_->localQuaternion = Quaternion::Euler(0, 115.0f * Mathf::deg_to_rad, 0);
-	player->transform_->scale = {3,3,3};
-	auto player_model =  player->AddComponent<Object3dComponent>(
-		DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-		//"Assets/3d/Ultimate Monsters/Big/FBX/MushroomKing.fbx"
-		"Assets/3d/RPG Characters - Nov 2020/Humanoid Rig Versions/FBX/Warrior.fbx"
-		);
-	player_model->GetObjectData()->PlayAnimation(9);
 }
 
 void TitleScene::Draw() const

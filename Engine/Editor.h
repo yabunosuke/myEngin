@@ -4,7 +4,7 @@
 class Editor
 {
 public:
-	void Initialize(AbstractScene *nowScene) { this->nowScene = nowScene; }
+	void Initialize(AbstractScene *nowScene) { this->now_scene_ = nowScene; }
 	void Draw();
 
 	/// <summary>
@@ -31,7 +31,7 @@ public:
 	/// </summary>
 	void HierarchyWindow();
 	// 親用
-	void Hierarchy(std::vector<GameObject*> &objects, bool is_child = false);
+	void Hierarchy(std::vector<std::weak_ptr<GameObject>> &objects, bool is_child = false);
 
 	void FileBrowser();
 
@@ -50,6 +50,8 @@ public:
 	void ProjectSettingsWindow();
 
 private:	//メニュー
+
+
 	bool isDemo = false;			//デモウィンドウ
 	bool isHierarchy = true;	//ヒエラルキー
 	bool isInsupector = true;	//デモウィンドウ
@@ -57,7 +59,7 @@ private:	//メニュー
 
 	int selected_object_id = -1;
 
-	AbstractScene *nowScene;
+	AbstractScene *now_scene_;
 
 };
 

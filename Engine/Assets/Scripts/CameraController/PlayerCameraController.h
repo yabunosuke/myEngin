@@ -12,13 +12,13 @@ public:
 	void Infomation() override;
 
     void UpdateCameraSpin();
-    void UpdateCameraLook(const Transform &player);
-    void FixedUpdateCameraPosition(const Transform &player);
+    void UpdateCameraLook(const std::weak_ptr<Transform> player);
+    void FixedUpdateCameraPosition(const std::weak_ptr<Transform> player);
     void DashCameraFov();
     void DefaultCameraFov();
 private:
-    Transform *rotation_root_{ nullptr };
-    Transform *height_root_{ nullptr };
+    std::weak_ptr<Transform> rotation_root_;
+    std::weak_ptr<Transform> height_root_;
     Camera *main_camera_{ nullptr };
 
     // ÉJÉÅÉâè„â∫êßå¿

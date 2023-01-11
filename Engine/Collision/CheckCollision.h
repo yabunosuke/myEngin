@@ -11,7 +11,7 @@ class CheckCollision final
 {
 public:
 
-	static void CheckColliders(const std::vector<GameObject *> &game_objects);
+	static void CheckColliders(const std::vector<std::weak_ptr<GameObject>> &game_objects);
 	static bool CheckHit(
 		bool is_trigger, 
 		Collider *a, 

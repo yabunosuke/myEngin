@@ -11,19 +11,19 @@ PlayerBullet::PlayerBullet(const Vector3 &start_position,const Quaternion &q) :
 
 void PlayerBullet::Start()
 {
-	transform_->position = start_position_;
-	transform_->quaternion = start_q_;
-	rigidbody_ = game_object_->GetComponent<Rigidbody>();
+	transform->lock()->position = start_position_;
+	transform->lock()->quaternion = start_q_;
+	rigidbody_ = game_object_.lock()->GetComponent<Rigidbody>().lock().get();
 }
 
 void PlayerBullet::FixedUpdate()
 {
-	rigidbody_->AddForce(transform_->GetFront() * 1.0f, ForceMode::VelocityChange);
-	transform_->LookAt(transform_->position + rigidbody_->velocity);
+	rigidbody_->AddForce(transform->lock()->GetFront() * 1.0f, ForceMode::VelocityChange);
+	transform->lock()->LookAt(transform->lock()->position + rigidbody_->velocity);
 	live_timer_ += Time::GetInstance()->deltaTime;
 
 	if(live_timer_ >= 4.0f)
 	{
-		Destroy(game_object_);
+		Destroy(game_object_.lock().get());
 	}
 }

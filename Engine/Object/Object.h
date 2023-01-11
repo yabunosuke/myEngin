@@ -8,13 +8,18 @@
 
 #include "Property.h"
 
+#include <cereal/cereal.hpp>
+#include <cereal/archives/binary.hpp>
+#include <cereal/archives/json.hpp>
+#include <cereal/types/string.hpp>
+#include <cereal/types/memory.hpp>
 
-class Object
+class Object:
+	public std::enable_shared_from_this<Object>
 {
 public:
-	
-	Object();
 	virtual ~Object();
+
 	//===========================================
 	//
 	//		静的変数
@@ -52,7 +57,7 @@ public:
 	/// <param name="...parameter">パラメータ</param>
 	/// <returns>オブジェクトのweak_ptr</returns>
 	template<class T, class ...Parameter>
-	static T *CreateObject(Parameter ...parameter);
+	static std::weak_ptr<T> CreateObject(Parameter ...parameter);
 
 
 	static void Destroyer();
@@ -67,7 +72,19 @@ public:
 	/// </summary>
 	yEngine::Property<std::string> name{ &name_ ,yEngine::AccessorType::AllAccess };
 
+
+	// シリアライズ
+	template<class Archive>
+	void serialize(Archive &archive)
+	{
+		archive(
+			cereal::make_nvp("Name", name_)
+		);
+	}
+
+
 protected:
+	Object(const std::string &name = "");
 	virtual void DestoryRelated() {};
 
 private:
@@ -75,20 +92,20 @@ private:
 	/// <summary>
 	/// オブジェクトコンテナ
 	/// </summary>
-	static std::vector<std::unique_ptr<Object>> objects_;
+	static std::vector<std::shared_ptr<Object>> objects_;
 
 	// オブジェクトIDの重複回避用
-	static int static_id_;
-
+	static int id_counter_;
 	// インスタンスID
-	unsigned const int instance_id_;
+	unsigned int instance_id_;
 	// オブジェクト名
 	std::string name_;
 
 	// 削除までの時間
-	float destroy_timer_{ 0.0f };
-	bool is_destroy_ = false;
+	float destroy_timer_;
+	bool is_destroy_;
 };
+
 
 template<class Type>
 inline std::weak_ptr<Type> Object::FindObjectOfType()
@@ -97,6 +114,7 @@ inline std::weak_ptr<Type> Object::FindObjectOfType()
 	return std::weak_ptr<Type>();
 }
 
+
 template<class Type>
 inline std::weak_ptr<Type> Object::FindObjectOfType(bool include_inactive)
 {
@@ -104,9 +122,10 @@ inline std::weak_ptr<Type> Object::FindObjectOfType(bool include_inactive)
 }
 
 template<class T, class ...Parameter>
-inline T *Object::CreateObject(Parameter ...parameter)
+inline std::weak_ptr<T> Object::CreateObject(Parameter ...parameter)
 {
-	T *temp = new T(parameter...);
+	std::shared_ptr<T> temp = std::make_shared<T>(parameter...);
 	objects_.emplace_back(temp);
+	
 	return temp;
 }

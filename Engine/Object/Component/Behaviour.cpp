@@ -1,7 +1,8 @@
 #include "Behaviour.h"
 
-Behaviour::Behaviour(const std::string &name, ComponentType component_type):
-Component(name,component_type)
+Behaviour::Behaviour(const std::string &name, ComponentType component_type)
+	/*:
+	Component(name, component_type)*/
 {
 }
 

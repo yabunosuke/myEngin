@@ -8,6 +8,6 @@ behaviorTree::ConditionalNode::ConditionalNode(std::function<BehaviorStatus(Game
 behaviorTree::BehaviorStatus behaviorTree::ConditionalNode::OnUpdate()
 {
 	Node::OnUpdate();
-	status_ = condition_(owner_);
+	status_ = condition_(owner_.lock().get());
 	return status_;
 }

@@ -1,7 +1,7 @@
 #include "BehaviorTree.h"
 #include "CompositeNode.h"
 
-behaviorTree::SimpleBehaviorTree::SimpleBehaviorTree(GameObject *owner):
+behaviorTree::SimpleBehaviorTree::SimpleBehaviorTree(std::weak_ptr<GameObject> owner):
 	owner_(owner)
 {
 }

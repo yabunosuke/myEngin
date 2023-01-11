@@ -60,6 +60,7 @@ void SystemMain::Finalize() const
 	Time::Destroy();
 	AudioManager::SoundUnLoad(AudioManager::sound);		//音声を開放
 	WinApp::WindowClassRelease();	// ウィンドウクラスを登録解除
+
 }
 
 void SystemMain::main() const

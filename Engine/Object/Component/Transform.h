@@ -10,7 +10,7 @@ class Transform :
 {
 public:
 	Transform();
-	~Transform();
+
 
 	void Infomation() override;
 
@@ -106,12 +106,12 @@ public:
 			);
 
 			// ワールド行列再計算
-			if (parent_ == nullptr) {
+			if (!parent_.expired()) {
 				world_matrix_ = local_matrix_;
 			}
 			else {
 				world_matrix_ =
-					local_matrix_ * parent_->matrix;
+					local_matrix_ * parent_.lock()->matrix;
 			}
 
 			// ワールド各要素再計算
@@ -305,11 +305,13 @@ public:
 		}
 	};
 
-	Transform *parent_{ nullptr };
+
+	std::weak_ptr<Transform> parent_;
 
 	XMFLOAT4X4 *user_set_parent_{ nullptr };
 
 protected:
+
 	// ローカル座標
 	Vector3		local_position_ = { 0,0,0 };			// ローカル座標
 	Quaternion	local_quaternion_ = { 0,0,0,0, };	// ローカル回転（クオータニオン）

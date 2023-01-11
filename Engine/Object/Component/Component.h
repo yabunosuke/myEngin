@@ -32,7 +32,7 @@ enum class ComponentType
 class Component : 
 	public Object
 {
-protected: // エイリアス
+protected: 
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
@@ -42,8 +42,10 @@ protected: // エイリアス
 	using XMFLOAT4X4 = DirectX::XMFLOAT4X4;
 	using XMMATRIX = DirectX::XMMATRIX;
 
-public:
+	friend class GameObject;
 
+public:
+	
 	~Component() override;
 	/// <summary>
 	/// アクティブなときだけ初期化
@@ -107,15 +109,22 @@ public:
 	}
 
 	// ゲームオブジェクト
-	GameObject *game_object_;
+	std::weak_ptr<GameObject> game_object_;
 	// 重複チェック用のタグ
 	std::string tag_ = "";
 	// ゲームオブジェクトが持つTransform
-	Transform *transform_;
+
+	void SetTransform(std::weak_ptr<Transform> trans);
+	yEngine::Property<std::weak_ptr<Transform>> transform
+	{
+		&transform_,yEngine::AccessorType::ReadOnly,
+
+	};
 
 
 protected:	//関数
-	Component(std::string name, ComponentType component_id,bool dontRemove = false);
+	Component(std::string name = "Component", ComponentType component_id = ComponentType::None, bool dontRemove = false);
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -148,8 +157,12 @@ protected:	//関数
 
 	
 	// 削除不可
-	bool isDontRemove;
+	bool dont_remove_;
+
 private:
+
+	// トランスフォーム
+	std::weak_ptr<Transform> transform_;
 
 	ComponentType type_ = ComponentType::None;
 

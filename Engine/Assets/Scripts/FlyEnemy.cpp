@@ -17,7 +17,7 @@ void FlyEnemy::OnCollisionEnter(Collision &collision)
 void FlyEnemy::OnTriggerEnter(Collider &other)
 {
 	if (is_invincible_) return;
-	if ((other.game_object_->tag == "Weapon"))
+	if ((other.game_object_.lock()->tag == "Weapon"))
 	{
 		--hp_;
 		is_invincible_ = true;
@@ -29,9 +29,9 @@ void FlyEnemy::OnTriggerEnter(Collider &other)
 void FlyEnemy::Start()
 {
 	rigidbody_ =
-		game_object_->GetComponent<Rigidbody>();
-	transform_->scale = { 50.0f,50.0f ,50.0f };
-	model_data_ = game_object_->GetComponent<Object3dComponent>()->GetObjectData();
+		game_object_.lock()->GetComponent<Rigidbody>().lock().get();
+	transform->lock()->scale = {50.0f,50.0f ,50.0f};
+	model_data_ = game_object_.lock()->GetComponent<Object3dComponent>().lock()->GetObjectData();
 }
 
 void FlyEnemy::FixedUpdate()

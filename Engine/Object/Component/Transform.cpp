@@ -4,12 +4,8 @@
 #include "Object/GameObject/GameObject.h"
 #include "Camera.h"
 
-Transform::Transform() :
-	Component("Transform",  ComponentType::Transform,true)
-{
-}
-
-Transform::~Transform()
+ Transform::Transform():
+    Component("Transform",ComponentType::Transform)
 {
 }
 
@@ -172,9 +168,9 @@ void Transform::UpdateMatrix()
         world_matrix_ = local_matrix_ * user_parent_matrix_;
 
     }
-    else if (parent_ != nullptr)
+	else if (!parent_.expired())
     {
-        world_matrix_ = local_matrix_ * parent_->matrix;
+        world_matrix_ = local_matrix_ * parent_.lock()->matrix;
     }
     else
     {
@@ -197,9 +193,9 @@ void Transform::MatrixDecompose(const XMMATRIX &matrix, XMFLOAT3 &scale, XMFLOAT
 DirectX::XMMATRIX Transform::InverseMatrixAllParent()
 {
     XMMATRIX inverse = DirectX::XMMatrixIdentity();
-    if (parent_ != nullptr)
+    if ( !parent_.expired())
     {
-		inverse = DirectX::XMMatrixInverse(nullptr, parent_->world_matrix_);
+		inverse = DirectX::XMMatrixInverse(nullptr, parent_.lock()->world_matrix_);
     }
     return inverse;
 }

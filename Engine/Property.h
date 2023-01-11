@@ -1,6 +1,5 @@
 #pragma once
 // 参考ページ
-// https://takap-tech.com/entry/2018/07/28/215502
 #include <functional>
 #include <assert.h>
 
@@ -13,7 +12,7 @@ namespace yEngine
         WriteOnly = 0x02,
         AllAccess = 0x03,
     };
-    // test
+
     template<class ReferenceT>
     class Property
     {
@@ -21,7 +20,7 @@ namespace yEngine
         Property() = default;
         //Property(const Property &other) {  };
         Property(
-            ReferenceT *r,
+            ReferenceT *r = nullptr,
             AccessorType type = AccessorType::AllAccess,
             std::function<ReferenceT()> get = nullptr,
             std::function<void(ReferenceT value)> set = nullptr) :

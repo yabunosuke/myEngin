@@ -2,11 +2,6 @@
 
 #include "WinApp.h"
 
-RectTransform::RectTransform()
-{
-    name = "Rect Transform";
-}
-
 void RectTransform::Infomation()
 {
     // リセットボタン
@@ -64,9 +59,9 @@ void RectTransform::UpdateMatrix()
             world_matrix_ = local_matrix_ * user_parent_matrix_;
 
         }
-        else if (parent_ != nullptr)
+        else if (!parent_.expired())
         {
-            world_matrix_ = local_matrix_ * parent_->matrix;
+            world_matrix_ = local_matrix_ * parent_.lock()->matrix;
         }
         else
         {

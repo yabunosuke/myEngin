@@ -11,11 +11,11 @@ SphereCollider::SphereCollider(float radius, Vector3 center)
 void SphereCollider::ComponentUpdate()
 {
 	radius = local_radius_ / 2.0f * Mathf::Max(
-		transform_->scale->x,
-		transform_->scale->y,
-		transform_->scale->z
+		transform->lock()->scale->x,
+		transform->lock()->scale->y,
+		transform->lock()->scale->z
 	);
-	center = local_center_ + transform_->position;
+	center = local_center_ + transform->lock()->position;
 }
 
 void SphereCollider::Infomation()

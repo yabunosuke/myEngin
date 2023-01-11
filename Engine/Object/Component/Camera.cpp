@@ -35,19 +35,19 @@ void Camera::ComponentUpdate()
 {
 	// カメラの位置をセット
 	view_position = {
-		transform_->position->x,
-		transform_->position->y,
-		transform_->position->z,
+		transform->lock()->position->x,
+		transform->lock()->position->y,
+		transform->lock()->position->z,
 		1.0f
 	};
 
 	// 焦点計算
-	XMMATRIX temp = XMMatrixRotationQuaternion(XMLoadFloat4(&transform_->quaternion));
+	XMMATRIX temp = XMMatrixRotationQuaternion(XMLoadFloat4(&transform->lock()->quaternion));
 	XMVECTOR target
 	{
-			transform_->position->x + temp.r[2].m128_f32[0] * focus_,
-			transform_->position->y + temp.r[2].m128_f32[1] * focus_,
-			transform_->position->z + temp.r[2].m128_f32[2] * focus_,
+			transform->lock()->position->x + temp.r[2].m128_f32[0] * focus_,
+			transform->lock()->position->y + temp.r[2].m128_f32[1] * focus_,
+			transform->lock()->position->z + temp.r[2].m128_f32[2] * focus_,
 			1.0f
 	};
 	// ビュー行列計算
@@ -55,7 +55,7 @@ void Camera::ComponentUpdate()
 	{
 	case Camera::Perspective:
 		view_matrix = XMMatrixLookAtLH(
-			XMLoadFloat3(&transform_->position),
+			XMLoadFloat3(&transform->lock()->position),
 			target,
 			XMLoadFloat3(&Vector3::up)
 		);

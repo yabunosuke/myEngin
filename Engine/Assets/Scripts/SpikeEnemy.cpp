@@ -47,7 +47,7 @@ void SpikeEnemy::OnCollisionExit(Collision &collision)
 
 void SpikeEnemy::OnTriggerEnter(Collider &other)
 {
-	std::string tag = other.game_object_->tag;
+	std::string tag = other.game_object_.lock()->tag;
 	if (tag == "Weapon")
 	{
 		if (true)
@@ -84,7 +84,7 @@ void SpikeEnemy::Update()
 	Vector3 target{ Vector3::Scale(Vector3{ 1,0,1 }, rigidbody_->velocity) };
 	if (target != Vector3::zero)
 	{
-		transform_->LookAt(transform_->position + target);
+		transform->lock()->LookAt(transform->lock()->position + target);
 	}
 }
 
@@ -164,13 +164,13 @@ void SpikeEnemy::Contact(bool is_fixed)
 	{
 		if (Vector3::Scale(target_position_, Vector3(1, 0, 1)) != Vector3::zero)
 		{
-			transform_->LookAt(Vector3::Scale(target_position_, Vector3(1, 0, 1)));
+			transform->lock()->LookAt(Vector3::Scale(target_position_, Vector3(1, 0, 1)));
 		}
 		if (contact_move_timer_ >= k_contact_move_cooldown)
 		{
 			contact_move_timer_ = 0.0f;
 			// UŒ‚”ÍˆÍ‚É“ü‚Á‚Ä‚¢‚ê‚ÎUŒ‚‚ÉˆÚs
-			if ((transform_->position - target_position_).Magnitude() <= 6.0f)
+			if ((transform->lock()->position - target_position_).Magnitude() <= 6.0f)
 			{
 				state_ = SpikeEnemyState::HeightJumpAttack;
 				return;
@@ -178,7 +178,7 @@ void SpikeEnemy::Contact(bool is_fixed)
 
 			
 			// ƒWƒƒƒ“ƒv•ûŒüŒˆ’è
-			Vector3 jump_vec{ transform_->forward };
+			Vector3 jump_vec{ transform->lock()->forward };
 			jump_vec *= 2.0f;
 			jump_vec.y += 1.0f;
 			rigidbody_->AddForce(jump_vec, ForceMode::VelocityChange);
@@ -202,7 +202,7 @@ void SpikeEnemy::HeightJumpAttack(bool is_fixed)
 	{
 		if(!is_attack_)
 		{
-			Vector3 jump_vec{ Vector3::Scale((target_position_ - transform_->position).Normalized(),Vector3{1,0,1})};
+			Vector3 jump_vec{ Vector3::Scale((target_position_ - transform->lock()->position).Normalized(),Vector3{1,0,1})};
 			jump_vec *= 3.0f;
 			jump_vec.y += 5.0f;
 			rigidbody_->AddForce(jump_vec, ForceMode::VelocityChange);
@@ -250,7 +250,7 @@ void SpikeEnemy::Death(bool is_fixed)
 	if (!is_play_death_animation_)
 	{
 		model_data_->PlayAnimation(static_cast<int>(SpikeAnimation::Death), false);
-		death_start_scale_ = transform_->scale;
+		death_start_scale_ = transform->lock()->scale;
 		is_play_death_animation_ = true;
 	}
 	if (!is_fixed)
@@ -261,14 +261,14 @@ void SpikeEnemy::Death(bool is_fixed)
 	{
 		if (death_timer_ >= k_death_counter_)
 		{
-			GameObject::Destroy(game_object_);
+			GameObject::Destroy(game_object_.lock().get());
 		}
 		else
 		{
 			death_timer_ += Time::GetInstance()->deltaTime;
 			float t{ death_timer_ / k_death_counter_ };
 			
-			transform_->scale =
+			transform->lock()->scale =
 				Ease(Out, Bounce,
 					t,
 					death_start_scale_, Vector3{ 0.0f,0.0f,0.0f });

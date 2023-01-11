@@ -10,6 +10,12 @@
 #include <wrl.h>
 
 #include "Scene/Manager/CameraManager.h"
+//
+//// シリアル
+//#include <cereal/cereal.hpp>
+//#include <cereal/archives/binary.hpp>
+//#include <cereal/types/vector.hpp>
+
 class AbstractScene
 {
 protected:
@@ -30,6 +36,12 @@ public:
 	/// 毎フレーム更新
 	/// </summary>
 	virtual void Update();
+
+	// シーン読み込み
+	void LoadSceneData(const std::string &filename);
+	// シーン書き出し
+	void SeveSceneData();
+
 
 	/// <summary>
 	/// マルチレンダーターゲット描画前処理
@@ -54,11 +66,11 @@ public:
 	/// <summary>
 	/// マルチレンダーターゲット描画
 	/// </summary>
-	virtual void DrawMulutiRenderTarget(Microsoft::WRL::ComPtr<ID3D12Device>dev, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list);
+	void DrawMulutiRenderTarget(Microsoft::WRL::ComPtr<ID3D12Device>dev, Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list);
 
 	void PostDrawPoseEffect(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list);
 
-	virtual void DrawPostEffect(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list);
+	void DrawPostEffect(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list);
 
 
 	void DrawSkyBox(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list);
@@ -77,6 +89,19 @@ public:
 	std::string GetName() { return name; }
 	std::unique_ptr<MulutiRenderTarget> *GetMulutiRenderTarget() { return &muluti_render_target_; }
 
+
+
+	//// シリアライズ
+	//template<class Archive>
+	//void serialize(Archive &archive)
+	//{
+
+	//	archive(
+	//		CEREAL_NVP(test_val_),
+	//		CEREAL_NVP(game_object_manager_)
+	//	);
+	//}
+
 protected:	
 	// オブジェクトマネージャー
 	std::unique_ptr<GameObjectManager> game_object_manager_;
@@ -89,6 +114,8 @@ protected:
 	std::unique_ptr<PostEffect> post_effect_;
 	// マルチレンダーターゲット
 	std::unique_ptr<MulutiRenderTarget> muluti_render_target_;
+
+	int test_val_;
 
 private:
 	// シーン名

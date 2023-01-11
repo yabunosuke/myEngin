@@ -8,6 +8,6 @@ behaviorTree::ActionNode::ActionNode(std::function<BehaviorStatus(GameObject *)>
 behaviorTree::BehaviorStatus behaviorTree::ActionNode::OnUpdate()
 {
 	Node::OnUpdate();
-	status_ = action_(owner_);
+	status_ = action_(owner_.lock().get());
 	return status_;
 }

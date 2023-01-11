@@ -1,7 +1,6 @@
 #include "Editor.h"
 #include "ImGui/imguiManager.h"
 #include "ImGui/ImGuizmo.h"
-#include "FileManager.h"
 
 #include "Object/Component/Transform.h"
 
@@ -64,6 +63,11 @@ void Editor::MainMenu()
 			ImGui::EndMenu();
 		}
 
+		// シーン一覧
+		if (ImGui::BeginMenu("Scene")) {
+			ImGui::EndMenu();
+		}
+
 		//ヘルプ
 		if (ImGui::BeginMenu("Help")) {
 			ImGui::EndMenu();
@@ -75,11 +79,12 @@ void Editor::MainMenu()
 void Editor::FileMenu()
 {
 	//上書き保存
-	if (ImGui::MenuItem("Save", "Ctrl+S")) {
+	if (ImGui::MenuItem("Save Scene", "Ctrl+S")) {
+
 	}
 	//名前を付けて保存
-	if (ImGui::MenuItem("Save As..", "Ctrl+Shift+S")) {
-		FileManager::GetIns()->FileSave(SAVE_TYPE::SCENE);
+	if (ImGui::MenuItem("Save Scene As..", "Ctrl+Shift+S")) {
+		now_scene_->SeveSceneData();
 	}
 
 	ImGui::Separator();
@@ -150,12 +155,12 @@ void Editor::HierarchyWindow()
 		ImGuiCond_::ImGuiCond_FirstUseEver
 	);
 
-	ImGui::Text(nowScene->GetName().c_str());
+	ImGui::Text(now_scene_->GetName().c_str());
 	/*nowScene.get()->GetObjectManager()->DrawHierarchy(selected_object_id);*/
-	Hierarchy(nowScene->GetObjectManager()->game_objects_);
+	Hierarchy(now_scene_->GetObjectManager()->game_objects_);
 	//追加
 	if (ImGui::Button("add")) {
-		GameObject::CreateObject();
+		Object::CreateObject<GameObject>();
 	}
 
 	//終了
@@ -163,13 +168,13 @@ void Editor::HierarchyWindow()
 
 }
 
-void Editor::Hierarchy(std::vector<GameObject*>& objects, bool is_child)
+void Editor::Hierarchy(std::vector<std::weak_ptr<GameObject>> &objects, bool is_child)
 {
 	int n = 0;
 	for (const auto &object : objects)
 	{
 		// 親以外は後で表示する
-		if ((object->GetPearent() != nullptr) &&
+		if (!(object.lock()->GetPearent().expired()) &&
 			!is_child)
 		{
 			continue;
@@ -179,20 +184,20 @@ void Editor::Hierarchy(std::vector<GameObject*>& objects, bool is_child)
 
 		// 非表示用チェックボックス
 		std::ostringstream instance_id;
-		instance_id << "##bulind" << object->GetInstanceID();
-		bool isBlind = object->GetIsBlind();
+		instance_id << "##bulind" << object.lock()->GetInstanceID();
+		bool isBlind = object.lock()->GetIsBlind();
 		if (ImGui::Checkbox(instance_id.str().c_str(), &isBlind)) {
-			object->SetIsBlind(isBlind);
+			object.lock()->SetIsBlind(isBlind);
 		}
 		ImGui::SameLine();
 
 		// テーブル設定
 		std::ostringstream tabele_id;
-		tabele_id << object->name->c_str() <<"##bulind" << object->GetInstanceID();
-		if (ImGui::Selectable(tabele_id.str().c_str(), selected_object_id == object->GetInstanceID()))
+		tabele_id << object.lock()->name->c_str() <<"##bulind" << object.lock()->GetInstanceID();
+		if (ImGui::Selectable(tabele_id.str().c_str(), selected_object_id == object.lock()->GetInstanceID()))
 		{
 			// 選択
-			selected_object_id = object->GetInstanceID();
+			selected_object_id = object.lock()->GetInstanceID();
 
 		}
 		// 入れ替え処理
@@ -208,13 +213,13 @@ void Editor::Hierarchy(std::vector<GameObject*>& objects, bool is_child)
 		}
 
 		// 子オブジェクト表示
-		if(object->GetChildren().size() > 0)
+		if(object.lock()->GetChildren().size() > 0)
 		{
 			std::ostringstream child_id;
-			child_id << "Child ##child" << object->GetInstanceID();
+			child_id << "Child ##child" << object.lock()->GetInstanceID();
 			if (ImGui::TreeNode(child_id.str().c_str()))
 			{
-				Hierarchy(object->GetChildren(), true);
+				Hierarchy(object.lock()->GetChildren(), true);
 
 
 				ImGui::TreePop();
@@ -239,17 +244,17 @@ void Editor::DrawInspector()
 {
 	ImGui::Begin("Inspector", &isHierarchy);
 
-	auto *selectObject = nowScene->GetObjectManager()->GetGameObject(selected_object_id);
+	std::weak_ptr<GameObject> selectObject = now_scene_->GetObjectManager()->GetGameObject(selected_object_id);
 
 	// IDに合う物がなければ未表示
-	if (selectObject == nullptr) {
+	if (selectObject.expired()) {
 		ImGui::End();
 		return;
 	}
 
 	//インスペクター描画
 	ImGui::PushID(selected_object_id);
-	selectObject->DrawInspector();
+	selectObject.lock()->DrawInspector();
 	ImGui::PopID();
 
 	// ポップアップウィンドウ
@@ -426,3 +431,4 @@ void Editor::ProjectSettingsWindow()
 
 	ImGui::End();
 }
+

@@ -6,7 +6,6 @@ class RectTransform final :
     public Transform
 {
 public:
-	RectTransform();
 
 	enum  class Anchor
 	{

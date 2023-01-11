@@ -9,9 +9,9 @@ PlayerCameraController::PlayerCameraController() :
 
 void PlayerCameraController::Start()
 {
-	rotation_root_ = GameObject::Find("RotationRoot")->transform_;
-	height_root_ = GameObject::Find("HeightRoot")->transform_;
-	main_camera_ = GameObject::Find("MainCamera")->GetComponent<Camera>();
+	rotation_root_ = GameObject::FindObject("RotationRoot").lock()->transform;
+	height_root_ = GameObject::FindObject("HeightRoot").lock()->transform;
+	main_camera_ = GameObject::FindObject("MainCamera").lock()->GetComponent<Camera>().lock().get();
 }
 
 void PlayerCameraController::Infomation()
@@ -25,33 +25,33 @@ void PlayerCameraController::UpdateCameraSpin()
 {
 	// カメラ回転（左右）
 	Vector3 y_rot{ Vector3(0,Input::GetAxis(GamePadAxis::AXIS_RX) * rotation_speed_, 0) };
-	Vector3 r_result{ rotation_root_->quaternion->EulerAngles() + y_rot };
+	Vector3 r_result{ rotation_root_.lock()->quaternion->EulerAngles() + y_rot};
 	Quaternion quq{ Quaternion::Euler(r_result) };
-	rotation_root_->quaternion = quq;
+	rotation_root_.lock()->quaternion = quq;
 
 	// カメラ移動（上下）
 	Vector3 y_height{ Vector3(0,-Input::GetAxis(GamePadAxis::AXIS_RY) * height_speed_,0) };
-	Vector3 h_result{ height_root_->transform_->localPosition + y_height };
+	Vector3 h_result{ height_root_.lock()->transform->lock()->localPosition + y_height };
 	if (h_result.y > height_limit_min_max.y) h_result.y = height_limit_min_max.y;
 	else if (h_result.y <= height_limit_min_max.x) h_result.y = height_limit_min_max.x;
-	height_root_->transform_->localPosition = h_result;
+	height_root_.lock()->transform->lock()->localPosition = h_result;
 
 	
 }
 
-void PlayerCameraController::UpdateCameraLook(const Transform &player)
+void PlayerCameraController::UpdateCameraLook(const std::weak_ptr<Transform> player)
 {
-	Vector3 camera_marker{ player.position };
+	Vector3 camera_marker{ player.lock()->position};
 	camera_marker.y += 1.5f;
-	camera_marker += main_camera_->transform_->GetRight() * 0.5f;
-	Vector3 cam_look{ (camera_marker - main_camera_->transform_->position) };
+	camera_marker += main_camera_->transform->lock()->GetRight() * 0.5f;
+	Vector3 cam_look{ (camera_marker - main_camera_->transform->lock()->position)};
 	Vector3::Normalize(cam_look);
-	main_camera_->transform_->forward = cam_look;
+	main_camera_->transform->lock()->forward = cam_look;
 }
 
-void PlayerCameraController::FixedUpdateCameraPosition(const Transform &player)
+void PlayerCameraController::FixedUpdateCameraPosition(const std::weak_ptr<Transform> player)
 {
-	transform_->position = static_cast<Vector3>(player.position);
+	transform->lock()->position = static_cast<Vector3>(player.lock()->position);
 }
 
 void PlayerCameraController::DashCameraFov()

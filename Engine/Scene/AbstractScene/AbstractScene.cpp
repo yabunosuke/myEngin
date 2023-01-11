@@ -5,10 +5,15 @@
 #include "Object/Component/Light.h"
 
 #include "../Manager/CameraManager.h"
+#include "FileManager.h"
 
-AbstractScene::AbstractScene(IoChangedListener *impl,std::string sceneName)
+
+
+
+
+AbstractScene::AbstractScene(IoChangedListener *impl,std::string scene_name)
 	:implSceneChanged(impl),
-	name(sceneName)
+	name(scene_name)
 {
 	post_effect_ = std::make_unique<PostEffect>();
 	post_effect_->InitializePostEffect(DirectXCommon::dev);
@@ -21,14 +26,13 @@ AbstractScene::AbstractScene(IoChangedListener *impl,std::string sceneName)
 	camera_manager_ = std::make_unique<CameraManager>();
 	//camera_manager_ = std::make_shared<CameraManager>();
 
-
 }
 
 AbstractScene::~AbstractScene()
 {
 	for (auto &object : game_object_manager_->game_objects_)
 	{
-		Object::Destroy(object);
+		Object::Destroy(object.lock().get());
 	}
 }
 
@@ -56,6 +60,48 @@ void AbstractScene::Update()
 	// 最終更新
 	game_object_manager_->LastUpdate();
 
+
+}
+
+void AbstractScene::LoadSceneData(const std::string &filename)
+{
+	//std::ifstream ifs(filename.c_str());
+	//cereal::BinaryInputArchive deserialization(ifs);
+	//deserialization(*this);
+}
+
+void AbstractScene::SeveSceneData()
+{
+
+	//test_val_ = 1;
+
+
+	//static OPENFILENAME open_file;
+	////初期フルパス
+	//static TCHAR first_file_path[MAX_PATH];
+	////保存先フルパス
+	//static TCHAR save_file_path[MAX_PATH];
+	//// 拡張子
+	//static const std::wstring ext{ L"scene" };
+	//static const std::wstring filter{ L"SceneData(*.scene)\0*.scene\0" };
+	//static const std::wstring title{ L"Save the scene" };
+
+	//FileManager::GetIns()->FileSave(
+	//	open_file,
+	//	first_file_path,
+	//	save_file_path,
+	//	ext,
+	//	filter,
+	//	title
+	//);
+
+	//if (GetSaveFileName(&open_file))
+	//{
+	//	// バイナリ書き出し
+	//	std::ofstream ofs(save_file_path, std::ios::binary);
+	//	cereal::BinaryOutputArchive serealization(ofs);
+	//	serealization(*this);
+	//}
 
 }
 
@@ -131,8 +177,6 @@ void AbstractScene::DrawPostEffect(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandL
 void AbstractScene::DrawSkyBox(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmd_list)
 {
 	PipelineManager::GetInstance()->SetPipline(cmd_list, "SkyBox");
-
-
 }
 
 void AbstractScene::Finalize()

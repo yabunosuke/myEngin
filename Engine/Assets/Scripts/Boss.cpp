@@ -8,21 +8,21 @@ Boss::Boss():
 
 void Boss::Start()
 {
-	player_ = GameObject::Find("Player");
+	player_ = GameObject::FindObject("Player");
 	model_data_ =
-		game_object_->GetComponent<Object3dComponent>()->GetObjectData();
-	rigidbody_ = game_object_->GetComponent<Rigidbody>();
+		game_object_.lock()->GetComponent<Object3dComponent>().lock()->GetObjectData();
+	rigidbody_ = game_object_.lock()->GetComponent<Rigidbody>().lock().get();
 	CreateTree();
 
-	for (const auto &obj : game_object_->GetChildren())
+	for (const auto &obj : game_object_.lock()->GetChildren())
 	{
-		if (obj->name == "AttackSphereR")
+		if (obj.lock()->name == "AttackSphereR")
 		{
-			right_hand_ = obj;
+			right_hand_ = obj.lock().get();
 		}
-		else if (obj->name == "AttackSphereL")
+		else if (obj.lock()->name == "AttackSphereL")
 		{
-			left_hand_ = obj;
+			left_hand_ = obj.lock().get();
 		}
 	}
 }
@@ -78,7 +78,7 @@ void Boss::CreateTree()
 	(
 		[&](GameObject *owner)
 		{
-			owner->transform_->LookAt({ player_->transform_->position->x,owner->transform_->position->y,player_->transform_->position->z});
+			owner->transform->lock()->LookAt({player_.lock()->transform->lock()->position->x,owner->transform->lock()->position->y,player_.lock()->transform->lock()->position->z});
 			return BehaviorStatus::Sucess;
 		}
 	);
@@ -133,11 +133,11 @@ void Boss::CreateTree()
 		{
 			model_data_->PlayAnimation(6);
 			// ‰ñ“]
-			owner->transform_->LookAt({ player_->transform_->position->x,owner->transform_->position->y,player_->transform_->position->z });
+			owner->transform->lock()->LookAt({ player_.lock()->transform->lock()->position->x,owner->transform->lock()->position->y,player_.lock()->transform->lock()->position->z });
 
 			Vector3 dir
 			{
-				(player_->transform_->position - owner->transform_->position).Normalized()
+				(player_.lock()->transform->lock()->position - owner->transform->lock()->position).Normalized()
 			};
 
 			move = dir* move_speed_;
@@ -146,7 +146,7 @@ void Boss::CreateTree()
 			const float ep{ 2.0f };
 			Vector3 dv
 			{
-				player_->transform_->position - owner->transform_->position
+				player_.lock()->transform->lock()->position - owner->transform->lock()->position
 			};
 			// Œë·”ÍˆÍ“à‚É‚È‚Á‚½‚çI—¹
 			if (fabsf(dv.x) <= ep &&
@@ -209,7 +209,7 @@ void Boss::CreateTree()
 				const float ep{ 2.0f };
 				Vector3 dv
 				{
-					player_->transform_->position - owner->transform_->position
+					player_.lock()->transform->lock()->position - owner->transform->lock()->position
 				};
 				// Œë·”ÍˆÍ“à‚É‚È‚Á‚½‚çI—¹
 				if (fabsf(dv.x) <= ep &&
@@ -263,7 +263,7 @@ void Boss::CreateTree()
 				const float ep{ 2.0f };
 				Vector3 dv
 				{
-					player_->transform_->position - owner->transform_->position
+					player_.lock()->transform->lock()->position - owner->transform->lock()->position
 				};
 				// Œë·”ÍˆÍ“à‚É‚È‚Á‚½‚çI—¹
 				if (fabsf(dv.x) <= ep &&

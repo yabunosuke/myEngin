@@ -16,15 +16,15 @@ axis_pos_(axis_pos)
 
 void Drone::Start()
 {
-	transform_->scale = { 0.5f,0.5f,0.5f };
+	transform->lock()->scale = { 0.5f,0.5f,0.5f };
 }
 
 void Drone::FixedUpdate()
 
 {
-	Vector3 camera_right = Vector3::Scale(Camera::main.r_->transform_->GetRight(), Vector3(1.0f, 1.0f, 1.0f)).Normalized();
-	transform_->position = *axis_pos_ + camera_right * 1.0f + Vector3::up * 1.0f;
-	transform_->quaternion = Camera::main.r_->transform_->quaternion.r_;
+	Vector3 camera_right = Vector3::Scale(Camera::main.r_->transform->lock()->GetRight(), Vector3(1.0f, 1.0f, 1.0f)).Normalized();
+	transform->lock()->position = *axis_pos_ + camera_right * 1.0f + Vector3::up * 1.0f;
+	transform->lock()->quaternion = Camera::main.r_->transform->lock()->quaternion.r_;
 }
 
 void Drone::Update()
@@ -35,22 +35,22 @@ void Drone::Update()
 	{
 		if(shot_interval >= 0.4f || Input::GetButtonPressTrigger(GamePadButton::INPUT_RB))
 		{
-			auto bullet = GameObject::CreateObject("Bullet");
+			/*auto bullet = GameObject::CreateObject("Bullet").lock().get();
 			bullet->tag = "Weapon";
 			bullet->AddComponent<Object3dComponent>(
 				DirectXCommon::dev.Get(), DirectXCommon::cmdList.Get(),
-				"Assets/3d/webtrcc.fbx");
-			bullet->transform_->position = transform_->position.r_ + transform_->GetFront() * 0.2f;
-			bullet->transform_->scale= {0.2f,0.2f,0.2f};
+				"Assets/3d/webtrcc.fbx");*/
+			/*bullet->transform->lock()->position = transform->lock()->position.r_ + transform->lock()->GetFront() * 0.2f;
+			bullet->transform->lock()->scale= {0.2f,0.2f,0.2f};
 			bullet->AddComponent<Rigidbody>();
-			auto c = bullet->AddComponent<SphereCollider>();
+			auto c = bullet->AddComponent<SphereCollider>().lock().get();
 			c->isTrigger = true;
-			bullet->AddComponent<PlayerBullet>(transform_->position.r_, transform_->quaternion.r_);
-			auto light = bullet->AddComponent<Light>();
+			bullet->AddComponent<PlayerBullet>(transform->lock()->position.r_, transform->lock()->quaternion.r_);
+			auto light = bullet->AddComponent<Light>().lock().get();
 			light->color = {0,0,1,1};
 			light->intensity = 2.0f;
 			light->range = 3.0f;
-			shot_interval = 0.0f;
+			shot_interval = 0.0f;*/
 		}
 		else
 		{

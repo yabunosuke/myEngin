@@ -14,7 +14,7 @@ public:
     void Infomation() override;
 private:
 
-    GameObject *player_;
+    std::weak_ptr<GameObject> player_;
     std::unique_ptr<SimpleBehaviorTree> behavior_tree_;
 
     void CreateTree();

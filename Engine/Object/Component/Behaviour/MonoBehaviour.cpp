@@ -7,7 +7,7 @@ MonoBehaviour::MonoBehaviour(const std::string &name):
 
 void MonoBehaviour::ComponentInitialize()
 {
-	game_object_->AddMonoBehaviour(this);
+	game_object_.lock()->AddMonoBehaviour(this);
 }
 
 void MonoBehaviour::ComponentFixedUpdate()

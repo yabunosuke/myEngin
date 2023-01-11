@@ -3,8 +3,9 @@
 #include "Object/GameObject/GameObject.h"
 #include "Time/Time.h"
 
-Object3dComponent::Object3dComponent(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cmd_list, const char *file_path):
-	Component("Object3d", ComponentType::Mesh, false)
+Object3dComponent::Object3dComponent(ComPtr<ID3D12Device> dev, ComPtr<ID3D12GraphicsCommandList> cmd_list, const char *file_path)
+	/*:
+	Component("Object3d", ComponentType::Mesh, false)*/
 {
 	this->dev = dev;
 	this->cmd_list = cmd_list;
@@ -19,7 +20,7 @@ void Object3dComponent::ComponentInitialize()
 void Object3dComponent::ComponentUpdate()
 {
 	XMFLOAT4X4 world;
-	DirectX::XMStoreFloat4x4(&world, transform_->GetWorldMatrix());
+	DirectX::XMStoreFloat4x4(&world, transform->lock()->GetWorldMatrix());
 
 	// アニメーション再生
 	object_fbx->UpdateAnimation(Time::GetInstance()->time);

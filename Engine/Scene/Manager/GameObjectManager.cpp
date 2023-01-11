@@ -5,7 +5,7 @@ void GameObjectManager::Initialize()
 {
 	//更新
 	for (auto &e : game_objects_) {
-		e->Initialize();
+		//e.lock()->Initialize();
 	}
 	
 }
@@ -14,7 +14,7 @@ void GameObjectManager::FixedUpdate()
 {
 	//更新
 	for (auto &e : game_objects_) {
-		e->FixedUpdate();
+		e.lock()->FixedUpdate();
 	}
 }
 
@@ -22,7 +22,7 @@ void GameObjectManager::Update()
 {
 	//更新
 	for (auto &e : game_objects_) {
-		e->Update();
+		e.lock()->Update();
 	}
 }
 
@@ -30,7 +30,7 @@ void GameObjectManager::LastUpdate()
 {
 	//更新
 	for (auto &e : game_objects_) {
-		e->LastUpdate();
+		e.lock()->LastUpdate();
 	}
 }
 
@@ -38,34 +38,34 @@ void GameObjectManager::Draw() const
 {
 	//描画
 	for (auto &e : game_objects_) {
-		e->Draw();
+		e.lock()->Draw();
 	}
 }
 
 
 
-GameObject *GameObjectManager::GetGameObject(int id)
+std::weak_ptr<GameObject> GameObjectManager::GetGameObject(int id)
 {
 	for (const auto &object : game_objects_) 
 	{
-		if (id == object->GetInstanceID()) {
+		if (id == object.lock()->GetInstanceID()) {
 			return object;
 		}
 	}
 
-	return nullptr;
+	return std::weak_ptr<GameObject>();
 }
 
-GameObject *GameObjectManager::GetGameObject(const std::string &name)
+std::weak_ptr<GameObject> GameObjectManager::GetGameObject(const std::string &name)
 {
 	for (const auto &object : game_objects_)
 	{
-		if (name == object->name.r_) {
+		if (name == object.lock()->name.r_) {
 			return object;
 		}
 	}
 
-	return nullptr;
+	return std::weak_ptr<GameObject>();
 }
 
 void GameObjectManager::AddObjects()

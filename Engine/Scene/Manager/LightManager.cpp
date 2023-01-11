@@ -40,7 +40,7 @@ void LightManager::BufferTransfer(
 		}
 		const_light_map.light[i + 1].is_active = false;
 	}
-	Vector3 cam_pos = Camera::main.r_->transform_->position;
+	Vector3 cam_pos = Camera::main.r_->transform->lock()->position;
 	const_light_map.eye_pos =
 	{
 		cam_pos.x,

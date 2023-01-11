@@ -4,13 +4,14 @@
 #include "Time/Time.h"
 #include <iostream>
 
-int Object::static_id_ = 0;
-std::vector<std::unique_ptr<Object>> Object::objects_;
+int Object::id_counter_ = 0;
+std::vector<std::shared_ptr<Object>> Object::objects_;
 
-
-
-Object::Object() :
-	instance_id_(++static_id_)
+Object::Object(const std::string &name) :
+	instance_id_(id_counter_++),
+	name_(name),
+	is_destroy_(false),
+	destroy_timer_(0.0f)
 {
 }
 
@@ -33,21 +34,6 @@ void Object::Destroyer()
 	ImGui::Text("Object Count -> %d", objects_.size());
 	ImGui::End();
 
-	/*auto object = objects_.begin();
-	for (int i = 0; i < objects_.size(); ++i)
-	{
-		if ((*(object + i))->is_destroy_)
-		{
-			(*(object + i))->destroy_timer_ -= Time::GetInstance()->time;
-		}
-	}*/
-	/*std::remove_if(objects_.begin(), objects_.end(),
-		[](std::unique_ptr<Object> &object)
-		{
-			return true;
-		}
-	);*/
-
 	// タイマー処理
 	for (int index = 0; index < objects_.size(); ++index)
 	{
@@ -65,7 +51,7 @@ void Object::Destroyer()
 
 	// 削除処理
 	auto it = std::remove_if(objects_.begin(), objects_.end(),
-		[=](std::unique_ptr<Object> &object)
+		[=](std::shared_ptr<Object> &object)
 		{
 			if (object == nullptr) return false;
 			bool is_remove = object->destroy_timer_ <= 0.0f && object->is_destroy_;

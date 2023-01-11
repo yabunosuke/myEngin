@@ -20,7 +20,7 @@ namespace behaviorTree
 	class SimpleBehaviorTree
 	{
 	public:
-		SimpleBehaviorTree(GameObject *owner);
+		SimpleBehaviorTree(std::weak_ptr<GameObject> owner);
 
 		/// <summary>
 		/// ルートノード設定
@@ -106,7 +106,7 @@ namespace behaviorTree
 
 		BehaviorStatus Execute(Node *node);
 
-		GameObject *owner_;					// ツリーを保持しているオブジェクト
+		std::weak_ptr<GameObject> owner_;					// ツリーを保持しているオブジェクト
 		Node *root_node_;	// 一番上にあるノード
 
 		std::vector<std::unique_ptr<Node>> node_container_;	//全ノード

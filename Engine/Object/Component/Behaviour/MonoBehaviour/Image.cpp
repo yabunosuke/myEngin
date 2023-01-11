@@ -73,7 +73,7 @@ void Image::ComponentDraw()
 	TransferVertices();
 	//透明なら描画しない
 	// ワールド行列の更新
-	mat_word_ = transform_->matrix;
+	mat_word_ = transform->lock()->matrix;
 
 	// 定数バッファにデータ転送
 	SpriteDate *constMap = nullptr;

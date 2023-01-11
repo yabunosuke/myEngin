@@ -11,7 +11,7 @@ MonoBehaviour("Enemy")
 void Enemy::OnTriggerEnter(Collider &other)
 {
 	if (model_data_ == nullptr) return;
-	if (other.game_object_->name == "Weapon")
+	if (other.game_object_.lock()->name == "Weapon")
 	{
 		if(state != AnimationState::DEAD)
 		{
@@ -29,7 +29,7 @@ void Enemy::OnTriggerEnter(Collider &other)
 		}
 	}
 
-	if (other.game_object_->name.r_ == "Bullet")
+	if (other.game_object_.lock()->name.r_ == "Bullet")
 	{
 		if (state != AnimationState::DEAD)
 		{
@@ -52,9 +52,9 @@ void Enemy::Start()
 {
 	// ƒŠƒWƒbƒh
 	regidbody_ =
-		game_object_->GetComponent<Rigidbody>();
+		game_object_.lock()->GetComponent<Rigidbody>().lock().get();
 	model_data_ =
-		game_object_->GetComponent<Object3dComponent>()->GetObjectData();
+		game_object_.lock()->GetComponent<Object3dComponent>().lock()->GetObjectData();
 	model_data_->PlayAnimation(static_cast<int>(AnimationState::FIGHT_IDOLE),true,false ,0.0f);
 }
 

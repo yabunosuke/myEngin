@@ -102,9 +102,6 @@
       <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="Text\Text.cpp" />
-    <ClCompile Include="Object\GameObject\GameObject.cpp">
-      <Filter>Object\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="Math\Easing.cpp">
       <Filter>Math</Filter>
     </ClCompile>
@@ -262,6 +259,9 @@
       <Filter>Asset\Enemy\BossEnemy</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\SetBoneParent.cpp" />
+    <ClCompile Include="Object\GameObject\GameObject.cpp">
+      <Filter>Object\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -341,9 +341,6 @@
       <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="Text\Text.h" />
-    <ClInclude Include="Object\GameObject\GameObject.h">
-      <Filter>Object\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Math\Easing.h">
       <Filter>Math</Filter>
     </ClInclude>
@@ -506,6 +503,9 @@
       <Filter>Asset\Enemy\BossEnemy</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Scripts\SetBoneParent.h" />
+    <ClInclude Include="Object\GameObject\GameObject.h">
+      <Filter>Object\GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />

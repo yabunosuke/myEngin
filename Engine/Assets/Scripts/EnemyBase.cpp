@@ -11,10 +11,10 @@ void EnemyBase::Start()
 {
 	// ƒŠƒWƒbƒh
 	rigidbody_ =
-		game_object_->GetComponent<Rigidbody>();
+		game_object_.lock()->GetComponent<Rigidbody>().lock().get();
 
 	model_data_ =
-		game_object_->GetComponent<Object3dComponent>()->GetObjectData();
+		game_object_.lock()->GetComponent<Object3dComponent>().lock()->GetObjectData();
 }
 
 void EnemyBase::FixedUpdate()

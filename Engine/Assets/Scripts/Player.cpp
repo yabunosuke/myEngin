@@ -47,7 +47,7 @@ void PlayerController::OnCollisionStay(Collision &collision)
 
 void PlayerController::OnTriggerEnter(Collider &other)
 {
-	std::string tag = other.game_object_->tag;
+	std::string tag = other.game_object_.lock()->tag;
 	if (tag == "Enemy Attack Area")
 	{
 		player_state_ = PlayerState::DAMAGE;
@@ -56,20 +56,20 @@ void PlayerController::OnTriggerEnter(Collider &other)
 
 void PlayerController::Awake()
 {
-	transform_->position = { -3.0f,0.0f,-3.0f };
-	transform_->quaternion = Quaternion::Euler(0, 45.0f * Mathf::deg_to_rad, 0);
+	transform->lock()->position = { -3.0f,0.0f,-3.0f };
+	transform->lock()->quaternion = Quaternion::Euler(0, 45.0f * Mathf::deg_to_rad, 0);
 }
 
 void PlayerController::Start()
 {
 	// ƒŠƒWƒbƒh
 	rigidbody_ = 
-		game_object_->GetComponent<Rigidbody>();
-	transform_->scale = { 0.5f,0.5f,0.5f };
+		game_object_.lock()->GetComponent<Rigidbody>().lock().get();
+	transform->lock()->scale = { 0.5f,0.5f,0.5f };
 	model_data_ = 
-		game_object_->GetComponent<Object3dComponent>()->GetObjectData();
+		game_object_.lock()->GetComponent<Object3dComponent>().lock()->GetObjectData();
 	camera_controller_ =
-		GameObject::Find("CameraRoot")->GetComponent<PlayerCameraController>();
+		GameObject::FindObject("CameraRoot").lock()->GetComponent<PlayerCameraController>().lock().get();
 }
 
 void PlayerController::FixedUpdate()
@@ -78,14 +78,14 @@ void PlayerController::FixedUpdate()
 	// ‰ñ“]ˆ—
 	if(input_stick_r_.x != 0.0f || input_stick_r_.z != 0.0f)
 	{
-		Vector3 dir = Camera::main.r_->transform_->quaternion * input_stick_r_;
+		Vector3 dir = Camera::main.r_->transform->lock()->quaternion * input_stick_r_;
 
 		dir.y = 0.0f;
-		transform_->LookAt(transform_->position + dir);
+		transform->lock()->LookAt(transform->lock()->position + dir);
 	}
 
 	// ƒJƒƒ‰ˆÚ“®ˆ—
-	camera_controller_->FixedUpdateCameraPosition(*transform_);
+	camera_controller_->FixedUpdateCameraPosition(transform);
 	if(player_state_ != PlayerState::DASH)
 	{
 		camera_controller_->DefaultCameraFov();
@@ -105,7 +105,7 @@ void PlayerController::Update()
 	(this->*state_update_[playerState])(false);
 
 	// ƒJƒƒ‰‚Ì‰ñ“]ˆ—
-	camera_controller_->UpdateCameraLook(*transform_);
+	camera_controller_->UpdateCameraLook(transform);
 
 	camera_controller_->UpdateCameraSpin();
 }
@@ -192,7 +192,7 @@ void PlayerController::Walk(bool is_fixed)
 		
 		// ˆÚ“®ˆ—
 		Vector3 move = input_stick_r_ * move_speed;
-		Vector3 camera_move = Camera::main.r_->transform_->quaternion * move;
+		Vector3 camera_move = Camera::main.r_->transform->lock()->quaternion * move;
 		camera_move.y = 0;
 		rigidbody_->AddForce(camera_move - Vector3::Scale({ 1,0,1 }, rigidbody_->velocity), ForceMode::VelocityChange);
 
@@ -207,7 +207,7 @@ void PlayerController::Walk(bool is_fixed)
 			
 
 			// ‰ñ“]ˆ—
-			//transform_->LookAt(move_forward.Normalized() + transform_->position);
+			//transform->lock()->LookAt(move_forward.Normalized() + transform->lock()->position);
 		}
 	}
 }
@@ -256,7 +256,7 @@ void PlayerController::Dash(bool is_fixed)
 
 		// ˆÚ“®ˆ—
 		Vector3 move = input_stick_r_ * move_speed;
-		Vector3 camera_move = Camera::main.r_->transform_->quaternion * move;
+		Vector3 camera_move = Camera::main.r_->transform->lock()->quaternion * move;
 		camera_move.y = 0;
 		rigidbody_->AddForce(camera_move - Vector3::Scale({ 1,0,1 }, rigidbody_->velocity), ForceMode::VelocityChange);
 

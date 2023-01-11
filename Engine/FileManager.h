@@ -21,11 +21,22 @@ public:
 	/// <summary>
 	/// ファイル保存
 	/// </summary>
-	/// <param name="saveType">ダイアログの内容変更</param>
-	/// <returns>保存した場合はtrue</returns>
-	bool FileSave(SAVE_TYPE saveType);
+	/// <param name="first_file_path"></param>
+	/// <param name="save_file_path"></param>
+	/// <param name="ext"></param>
+	/// <param name="filter"></param>
+	/// <param name="title"></param>
+	/// <returns></returns>
+	bool FileSave(
+		OPENFILENAME &open_file,
+		TCHAR first_file_path[],
+		TCHAR save_file_path[],
+		const std::wstring &ext,
+		const std::wstring &filter,
+		const std::wstring &title
+	);
 
-	bool LoadLevelJson(const std::string &file_path);
+	//bool LoadLevelJson(const std::string &file_path);
 
 	bool LoadFile();
 private:

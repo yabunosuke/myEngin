@@ -10,8 +10,8 @@ CameraController::CameraController(GameObject *target_object):
 
 void CameraController::Start()
 {
-	camera_ = game_object_->GetComponent<Camera>();
-	target_position_ = target_object_->transform_->position.r_;
+	camera_ = game_object_.lock()->GetComponent<Camera>().lock().get();
+	target_position_ = target_object_->transform->lock()->position.r_;
 }
 
 void CameraController::FixedUpdate()
@@ -19,9 +19,9 @@ void CameraController::FixedUpdate()
 	if (target_object_ == nullptr) return;
 
 	// 現在位置
-	Vector3 self_position = transform_->position;
+	Vector3 self_position = transform->lock()->position;
 	// ターゲット座標更新
-	target_position_ = target_object_->transform_->position.r_;
+	target_position_ = target_object_->transform->lock()->position.r_;
 
 
 	Vector3 input
@@ -53,14 +53,14 @@ void CameraController::FixedUpdate()
 	float diff_distance = Vector3::Distance(self_position, target_position_) - radius_distance_;
 
 	// 指定半径になるように移動
-	transform_->position =
+	transform->lock()->position =
 		Vector3::MoveTowards(self_position, target_position_, diff_distance * 0.02f);
 
 
 	// ターゲットを中心に回転する
 	if(input.x != 0.0f)
 	{
-		transform_->RotateAround(
+		transform->lock()->RotateAround(
 			target_position_,
 			Vector3::up,
 			input.x
@@ -80,7 +80,7 @@ void CameraController::FixedUpdate()
 			horizontal = Vector3::Cross(input.Normalized(), diff_vector.Normalized()).Normalized();
 		}
 
-		transform_->RotateAround(
+		transform->lock()->RotateAround(
 			target_position_,
 			horizontal.Normalized(),
 			input.y
@@ -88,7 +88,7 @@ void CameraController::FixedUpdate()
 	}
 
 	// ターゲットの方を向く
-	transform_->LookAt(target_position_);
+	transform->lock()->LookAt(target_position_);
 }
 
 void CameraController::Update()

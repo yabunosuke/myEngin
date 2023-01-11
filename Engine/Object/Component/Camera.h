@@ -7,17 +7,17 @@
 class CameraManager;
 
 
-class Camera :
+class Camera final:
     public Component
 {
 	friend class CameraManager;
 public:
+
 	//===========================================
 	//
 	//		コンストラクタ
 	//
 	//===========================================
-
 	Camera();
 	~Camera();
 
@@ -73,7 +73,6 @@ public:
 	};
 
 private:
-
 	//===========================================
 	//
 	//		静的メンバ変数

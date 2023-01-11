@@ -3,8 +3,8 @@
 #include "Object/GameObject/GameObject.h"
 #include "Time/Time.h"
 
-Rigidbody::Rigidbody() :
-	Component("Rigidbody", ComponentType::RigitBody)
+Rigidbody::Rigidbody()
+	//:Component("Rigidbody", ComponentType::RigitBody)
 {
 	
 }
@@ -74,7 +74,7 @@ void Rigidbody::ComponentFixedUpdate()
 {
 	// d—ÍŒvZ
 	
-	transform_->position += (velocity * Time::GetInstance()->fixedDeltaTime);
+	transform->lock()->position += (velocity * Time::GetInstance()->fixedDeltaTime);
 	// ’ïRŒvZ
 	velocity = velocity - ((drag_ / 100.0f) * velocity);
 	if (use_gravity_)

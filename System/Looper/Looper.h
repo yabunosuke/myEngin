@@ -43,7 +43,8 @@ private:
 
 	bool exit_window_{ false };
 
-	//シーンスタック
+	
+	// シーンスタック
 	stack<unique_ptr<AbstractScene>> scene_stack_;
 
 private:	//メニュー

@@ -6,47 +6,49 @@
 
 std::map<GameObject *, std::pair<Vector3, int>> CheckCollision::hitlist_;
 
-void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects)
+void CheckCollision::CheckColliders(const std::vector<std::weak_ptr<GameObject>> &game_objects)
 {
 	// コライダーのイテレーター
 	std::vector<std::weak_ptr<Collider>>::const_iterator collider_it_a;
 	std::vector<std::weak_ptr<Collider>>::const_iterator collider_it_b;
-	
+	auto end = game_objects.end();
+
 	// 全てのオブジェクトをチェック
-	for (auto object_a = game_objects.begin(); object_a != game_objects.end(); ++object_a)
+	for (auto itr_a = game_objects.begin(); itr_a != end; ++itr_a)
 	{
+		GameObject *object_a = itr_a->lock().get();
 		// 非アクティブならスキップ
-		if ((*object_a)->activeSelf == false)
+		if (object_a->activeSelf == false)
 		{
 			continue;
 		}
 
 		// 一番上のオブジェクトのリジッドボディ
-		auto rigidbody_top_a =
-			static_cast<GameObject *>((*object_a)->top)->GetComponent<Rigidbody>();
+		auto rigidbody_top_a = (object_a->top)->lock()->GetComponent<Rigidbody>();
 		// Aオブジェクトのリジッドボディ
-		auto rigidbody_a = (*object_a)->GetComponent<Rigidbody>();
+		auto rigidbody_a = object_a->GetComponent<Rigidbody>();
 
 		// Bオブジェクトのイテレータを一つずらす
-		auto object_b = object_a;
-		++object_b;
+		/*auto object_b = object_a;
+		++object_b;*/
 
-		for (; object_b != game_objects.end(); ++object_b)
+		for (auto itr_b = itr_a + 1; itr_b != end; ++itr_b)
 		{
-			if ((*object_b)->activeSelf == false)
+			GameObject *object_b = itr_b->lock().get();
+
+			if (object_b->activeSelf == false)
 			{
 				continue;
 			}
-
+			auto test = (object_b->top)->lock();
 			// 一番上のオブジェクトのリジッドボディ
-			auto rigidbody_top_b =
-				static_cast<GameObject *>((*object_b)->top)->GetComponent<Rigidbody>();
+			auto rigidbody_top_b = (object_b->top)->lock()->GetComponent<Rigidbody>();
 			// Aオブジェクトのリジッドボディ
-			auto rigidbody_b = (*object_b)->GetComponent<Rigidbody>();
+			auto rigidbody_b = object_b->GetComponent<Rigidbody>();
 
 			// 両方ともリジッドボディがない場合は処理を行わない
-			if (rigidbody_top_a == nullptr &&
-				rigidbody_top_b == nullptr)
+			if (rigidbody_top_a.expired() &&
+				rigidbody_top_b.expired())
 			{
 				continue;
 			}
@@ -64,13 +66,13 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 			Collision collision_info_a;		// Aに送る情報
 			Collision collision_info_b;		// Bに送る情報
 
-			//Rigidbody *a_rigidbody = (*object_a)->GetComponent<Rigidbody>();
-			//Rigidbody *b_rigidbody = (*object_b)->GetComponent<Rigidbody>();
+			//Rigidbody *a_rigidbody = object_a->GetComponent<Rigidbody>();
+			//Rigidbody *b_rigidbody = object_b->GetComponent<Rigidbody>();
 
 			// ナローフェーズ
-			for (auto collider_a : (*object_a)->GetColliders())
+			for (auto collider_a : object_a->GetColliders())
 			{
-				for (auto collider_b : (*object_b)->GetColliders())
+				for (auto collider_b : object_b->GetColliders())
 				{
 
 					// 侵入度
@@ -102,25 +104,25 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 							// トリガー
 							if(is_trigger)
 							{
-								OnTriggerEnter(*object_a, *collider_b, hit_pos);
-								OnTriggerEnter(*object_b, *collider_a, hit_pos);
+								OnTriggerEnter(object_a, *collider_b, hit_pos);
+								OnTriggerEnter(object_b, *collider_a, hit_pos);
 							}
 							// コリジョン
 							else
 							{
 								// 衝突解消
 								HitResponse(
-									*object_a,
+									object_a,
 									intrusion_a,
 									collision_info_a,
 
-									*object_b,
+									object_b,
 									intrusion_b,
 									collision_info_b
 									);
 								// 押し戻し処理
-								OnCollisionEnter(*object_a, collision_info_a,hit_pos);
-								OnCollisionEnter(*object_b, collision_info_b,hit_pos);
+								OnCollisionEnter(object_a, collision_info_a,hit_pos);
+								OnCollisionEnter(object_b, collision_info_b,hit_pos);
 
 							}
 							// 衝突記憶
@@ -133,25 +135,25 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 							// トリガー
 							if (is_trigger)
 							{
-								OnTriggerStay(*object_a, *collider_b, hit_pos);
-								OnTriggerStay(*object_b, *collider_a, hit_pos);
+								OnTriggerStay(object_a, *collider_b, hit_pos);
+								OnTriggerStay(object_b, *collider_a, hit_pos);
 							}
 							// コリジョン
 							else
 							{
 								// 衝突解消
 								HitResponse(
-									*object_a,
+									object_a,
 									intrusion_a,
 									collision_info_a,
 
-									*object_b,
+									object_b,
 									intrusion_b,
 									collision_info_b
 								);
 
-								OnCollisionStay(*object_a, collision_info_a,hit_pos);
-								OnCollisionStay(*object_b, collision_info_b,hit_pos);
+								OnCollisionStay(object_a, collision_info_a,hit_pos);
+								OnCollisionStay(object_b, collision_info_b,hit_pos);
 							}
 						}
 
@@ -171,12 +173,12 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 							if (is_trigger)
 							{
 								// A
-								for (const auto &script_a : (*object_a)->GetMonoBehaviours()) {
+								for (const auto &script_a : object_a->GetMonoBehaviours()) {
 									script_a->OnTriggerExit(*collider_b);
 								}
 
 								// B
-								for (const auto &script_b : (*object_b)->GetMonoBehaviours()) {
+								for (const auto &script_b : object_b->GetMonoBehaviours()) {
 									script_b->OnTriggerExit(*collider_a);
 								}
 							}
@@ -184,12 +186,12 @@ void CheckCollision::CheckColliders(const std::vector<GameObject*> &game_objects
 							else
 							{
 								// A
-								for (const auto &script_a : (*object_a)->GetMonoBehaviours()) {
+								for (const auto &script_a : object_a->GetMonoBehaviours()) {
 									script_a->OnCollisionExit(collision_info_a);
 								}
 
 								// B
-								for (const auto &script_b : (*object_b)->GetMonoBehaviours()) {
+								for (const auto &script_b : object_b->GetMonoBehaviours()) {
 									script_b->OnCollisionExit(collision_info_b);
 								}
 
@@ -243,8 +245,8 @@ bool CheckCollision::CheckHit(
 			
 		);
 
-		collision_a.game_object_ = sphere_b->game_object_;
-		collision_b.game_object_ = sphere_a->game_object_;
+		collision_a.game_object_ = sphere_b->game_object_.lock().get();
+		collision_b.game_object_ = sphere_a->game_object_.lock().get();
 
 
 		return is_hit;
@@ -258,8 +260,8 @@ bool CheckCollision::CheckHit(
 		if((sphere = dynamic_cast<SphereCollider *>(a)) != nullptr )
 		{
 			obb = dynamic_cast<OBBCollider *>(b);
-			collision_a.game_object_ = obb->game_object_;
-			collision_b.game_object_ = sphere->game_object_;
+			collision_a.game_object_ = obb->game_object_.lock().get();
+			collision_b.game_object_ = sphere->game_object_.lock().get();
 
 			is_hit = Sphere2OBB(
 				is_trigger,
@@ -277,8 +279,8 @@ bool CheckCollision::CheckHit(
 		{
 			sphere = static_cast<SphereCollider *>(b);
 			obb = static_cast<OBBCollider *>(a);
-			collision_a.game_object_ = sphere->game_object_;
-			collision_b.game_object_ = obb->game_object_;
+			collision_a.game_object_ = sphere->game_object_.lock().get();
+			collision_b.game_object_ = obb->game_object_.lock().get();
 
 
 			is_hit = Sphere2OBB(
@@ -666,7 +668,7 @@ void CheckCollision::PenaltyCalc()
 	for (auto &it : hitlist_)
 	{
 		Vector3 penalty{ it.second.first / it.second.second };
-		it.first->transform_->position += penalty;
+		it.first->transform->lock()->position += penalty;
 	}
 	hitlist_.clear();
 }
@@ -719,11 +721,11 @@ void CheckCollision::HitResponse(
 {
 	
 	// 一番上のオブジェクトのトランスフォームを変化させる
-	GameObject *top_parent_a{ object_a->top };
-	GameObject *top_parent_b{ object_b->top };
+	GameObject *top_parent_a{ object_a->top->lock().get()};
+	GameObject *top_parent_b{ object_b->top->lock().get() };
 
-	Rigidbody *rigidbody_a = top_parent_a->GetComponent<Rigidbody>();
-	Rigidbody *rigidbody_b = top_parent_b->GetComponent<Rigidbody>();
+	Rigidbody *rigidbody_a = top_parent_a->GetComponent<Rigidbody>().lock().get();
+	Rigidbody *rigidbody_b = top_parent_b->GetComponent<Rigidbody>().lock().get();
 
 	bool is_static_a
 	{

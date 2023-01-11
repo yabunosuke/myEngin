@@ -2,8 +2,8 @@
 #include "Scene/AbstractScene/AbstractScene.h"
 
 
-Collider::Collider():
-	Component("Collider", ComponentType::Collider)
+Collider::Collider()
+	//: Component("Collider", ComponentType::Collider)
 {
 }
 
@@ -13,13 +13,13 @@ Collider::~Collider()
 	{
 		return;
 	}
-	game_object_->RemoveCollider(this);
+	game_object_.lock()->RemoveCollider(this);
 }
 
 void Collider::ComponentInitialize()
 {
 	// オブジェクトにコライダーwaek_ptr渡す
-	game_object_->AddCollider(this);
+	game_object_.lock()->AddCollider(this);
 	ComponentUpdate();
 }
 

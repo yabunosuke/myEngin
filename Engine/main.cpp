@@ -16,6 +16,5 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		system.main();
 	}
 	system.Finalize();
-
 	return 0;
 }
