@@ -20,7 +20,7 @@ void PlayerBullet::FixedUpdate()
 {
 	rigidbody_->AddForce(transform->lock()->GetFront() * 1.0f, ForceMode::VelocityChange);
 	transform->lock()->LookAt(transform->lock()->position + rigidbody_->velocity);
-	live_timer_ += Time::GetInstance()->deltaTime;
+	live_timer_ += Singleton<Time>::GetInstance().deltaTime;
 
 	if(live_timer_ >= 4.0f)
 	{

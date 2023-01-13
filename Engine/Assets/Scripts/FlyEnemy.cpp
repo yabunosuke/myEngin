@@ -43,11 +43,11 @@ void FlyEnemy::FixedUpdate()
 			invincible_timer_ = 0.0f;
 			is_invincible_ = false;
 		}
-		invincible_timer_ += Time::GetInstance()->time;
+		invincible_timer_ += Singleton<Time>::GetInstance().time;
 
 	}
 
-	float wave_angle = 2 * Mathf::pi * fmod(static_cast<float>(Time::GetInstance()->timeAsDouble), 1.0f);
+	float wave_angle = 2 * Mathf::pi * fmod(static_cast<float>(Singleton<Time>::GetInstance().timeAsDouble), 1.0f);
 	float wave_offset = sin(wave_angle);
 	Vector3 wave_vec
 	{

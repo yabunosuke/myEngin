@@ -5,7 +5,7 @@
 #include <iostream>
 
 int Object::id_counter_ = 0;
-std::vector<std::shared_ptr<Object>> Object::objects_;
+
 
 Object::Object(const std::string &name) :
 	instance_id_(id_counter_++),
@@ -31,26 +31,26 @@ void Object::Destroyer()
 {
 
 	ImGui::Begin("Object Count");
-	ImGui::Text("Object Count -> %d", objects_.size());
+	ImGui::Text("Object Count -> %d", Singleton<ObjectManager>::GetInstance().objects_.size());
 	ImGui::End();
 
 	// タイマー処理
-	for (int index = 0; index < objects_.size(); ++index)
+	for (int index = 0; index < Singleton<ObjectManager>::GetInstance().objects_.size(); ++index)
 	{
-		if ((*(objects_.begin() + index))->is_destroy_)
+		if ((*(Singleton<ObjectManager>::GetInstance().objects_.begin() + index))->is_destroy_)
 		{
-			(*(objects_.begin() + index))->destroy_timer_ -= Time::GetInstance()->time;
+			(*(Singleton<ObjectManager>::GetInstance().objects_.begin() + index))->destroy_timer_ -= Singleton<Time>::GetInstance().time;
 			
-			if ((*(objects_.begin() + index))->destroy_timer_ <= 0.0f)
+			if ((*(Singleton<ObjectManager>::GetInstance().objects_.begin() + index))->destroy_timer_ <= 0.0f)
 			{
-				(*(objects_.begin() + index))->DestoryRelated();
+				(*(Singleton<ObjectManager>::GetInstance().objects_.begin() + index))->DestoryRelated();
 			}
 
 		}
 	}
 
 	// 削除処理
-	auto it = std::remove_if(objects_.begin(), objects_.end(),
+	auto it = std::remove_if(Singleton<ObjectManager>::GetInstance().objects_.begin(), Singleton<ObjectManager>::GetInstance().objects_.end(),
 		[=](std::shared_ptr<Object> &object)
 		{
 			if (object == nullptr) return false;
@@ -59,8 +59,18 @@ void Object::Destroyer()
 			return is_remove;
 		}
 	);
-	objects_.erase(it, objects_.end());
+	Singleton<ObjectManager>::GetInstance().objects_.erase(it, Singleton<ObjectManager>::GetInstance().objects_.end());
 }
 
+void ObjectManager::Save()
+{
+	{
 
+		// バイナリ書き出し
+		std::ofstream ofs("test.json", std::ios::binary);
+		cereal::JSONOutputArchive serealization(ofs);
+		serealization(cereal::make_nvp("root", *this));
+	}
+
+}
 

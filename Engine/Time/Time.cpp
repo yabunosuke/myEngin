@@ -2,29 +2,17 @@
 #include <thread>
 #include <ImGui/imgui.h>
 
-Time *Time::time_instance_ = nullptr;	// インスタンス
+Time::Time():
 
+	frame_count_(0),             // 経過フレーム初期化
+	time_(0),                    // 経過時間初期化
 
-void Time::Create()
+	fixed_delta_time_(0.02),     // 0.02秒ごとにFixedUpdate
+	fixed_update_time_(0.0),
+
+	frame_rate_(1.0f / 60.0f)
 {
-    if(!time_instance_)
-    {
-        time_instance_ = new Time;
-        time_instance_->frame_count_    = 0;                    // 経過フレーム初期化
-        time_instance_->time_           = 0;                    // 経過時間初期化
 
-        time_instance_->fixed_delta_time_ = 0.02;       // 0.02秒ごとにFixedUpdate
-        time_instance_->fixed_update_time_ = 0.0;
-
-        // 仮で60FPSに設定
-        time_instance_->frame_rate_ = 1.0f / 60.0f;
-    }
-}
-
-void Time::Destroy()
-{
-    delete time_instance_;
-    time_instance_ = nullptr;
 }
 
 void Time::InstrumentationStart()

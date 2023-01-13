@@ -262,6 +262,7 @@
     <ClCompile Include="Object\GameObject\GameObject.cpp">
       <Filter>Object\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Singleton\Singleton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectX\AudioManager\AudioManager.h" />
@@ -506,6 +507,9 @@
     <ClInclude Include="Object\GameObject\GameObject.h">
       <Filter>Object\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Singleton\Singleton.h">
+      <Filter>Singleton</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\PostEffect.hlsli" />
@@ -675,6 +679,9 @@
     </Filter>
     <Filter Include="Asset\SetBoneParent">
       <UniqueIdentifier>{08334c57-870f-44ee-8422-9798ef716c25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Singleton">
+      <UniqueIdentifier>{2c7c6b80-8c61-43a0-8d15-6fd96a4bf597}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -46,7 +46,7 @@ void TitleManager::FixedUpdate()
 	title_->transform->lock()->localPosition =
 	{
 		-3.0f,
-		sinf(Time::GetInstance()->frameCount / 100.0f) * 0.2f + 2.0f,
+		sinf(Singleton<Time>::GetInstance().frameCount / 100.0f) * 0.2f + 2.0f,
 		-1.0f,
 	};
 
@@ -54,7 +54,7 @@ void TitleManager::FixedUpdate()
 	start_text_->transform->lock()->localPosition =
 	{
 		-3.0f,
-		sinf(Time::GetInstance()->frameCount / 100.0f) * 0.2f - 0.5f,
+		sinf(Singleton<Time>::GetInstance().frameCount / 100.0f) * 0.2f - 0.5f,
 		-1.0f,
 	};
 	
@@ -62,7 +62,7 @@ void TitleManager::FixedUpdate()
 	end_text_->transform->lock()->localPosition =
 	{
 		-3.0f,
-		sinf(Time::GetInstance()->frameCount / 100.0f) * 0.2f - 1.8f,
+		sinf(Singleton<Time>::GetInstance().frameCount / 100.0f) * 0.2f - 1.8f,
 		-1.0f,
 	};
 

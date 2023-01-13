@@ -4,7 +4,7 @@
 #include "Time/Time.h"
 
 Rigidbody::Rigidbody()
-	//:Component("Rigidbody", ComponentType::RigitBody)
+	:Component("Rigidbody", ComponentType::RigitBody)
 {
 	
 }
@@ -74,12 +74,12 @@ void Rigidbody::ComponentFixedUpdate()
 {
 	// d—ÍŒvŽZ
 	
-	transform->lock()->position += (velocity * Time::GetInstance()->fixedDeltaTime);
+	transform->lock()->position += (velocity * Singleton<Time>::GetInstance().fixedDeltaTime);
 	// ’ïRŒvŽZ
 	velocity = velocity - ((drag_ / 100.0f) * velocity);
 	if (use_gravity_)
 	{
-		velocity = velocity + Vector3::down * 9.8f * Time::GetInstance()->fixedDeltaTime;
+		velocity = velocity + Vector3::down * 9.8f * Singleton<Time>::GetInstance().fixedDeltaTime;
 	}
 
 }
@@ -95,10 +95,10 @@ void Rigidbody::AddForce(const Vector3 &force, ForceMode force_mode)
 	switch (force_mode)
 	{
 	case ForceMode::Force:
-		velocity += force / mass_ * Time::GetInstance()->fixedDeltaTime;
+		velocity += force / mass_ * Singleton<Time>::GetInstance().fixedDeltaTime;
 		break;
 	case ForceMode::Acceleration:
-		velocity += force * Time::GetInstance()->fixedDeltaTime;
+		velocity += force * Singleton<Time>::GetInstance().fixedDeltaTime;
 		break;
 	case ForceMode::Impulse:
 		velocity += force / mass_;

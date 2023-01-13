@@ -285,7 +285,7 @@ void PlayerController::Damage(bool is_fixed)
 		}
 		else
 		{
-			invincible_timer_ += Time::GetInstance()->fixedDeltaTime;
+			invincible_timer_ += Singleton<Time>::GetInstance().fixedDeltaTime;
 		}
 	}
 }
@@ -351,7 +351,7 @@ void PlayerController::MeleeAttack1(bool is_fixed)
 		}
 		else
 		{
-			timer += Time::GetInstance()->time;
+			timer += Singleton<Time>::GetInstance().time;
 		}
 
 		

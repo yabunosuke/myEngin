@@ -73,7 +73,7 @@ void Enemy::FixedUpdate()
 
 	//if (hp_<=0)
 	//{
-	//	destroy_timer_test_ += Time::GetInstance()->fixedDeltaTime;
+	//	destroy_timer_test_ += Singleton<Time>::GetInstance().fixedDeltaTime;
 	//}
 }
 

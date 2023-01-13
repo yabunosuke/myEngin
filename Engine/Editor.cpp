@@ -156,11 +156,12 @@ void Editor::HierarchyWindow()
 	);
 
 	ImGui::Text(now_scene_->GetName().c_str());
+	
 	/*nowScene.get()->GetObjectManager()->DrawHierarchy(selected_object_id);*/
 	Hierarchy(now_scene_->GetObjectManager()->game_objects_);
 	//’Ç‰Á
 	if (ImGui::Button("add")) {
-		Object::CreateObject<GameObject>();
+		//Object::CreateObject<GameObject>();
 	}
 
 	//I—¹
@@ -425,9 +426,9 @@ void Editor::ProjectSettingsWindow()
 	}
 
 	////ŒÅ’è’·XV‚ÌŽžŠÔ
-	//float time = Time::GetInstance()->fixedDeltaTime;
+	//float time = Singleton<Time>::GetInstance().fixedDeltaTime;
 	//ImGui::DragFloat("Fixed Timestep", &time, 0.01f);
-	//Time::GetInstance()->fixedDeltaTime = static_cast<double>(time);
+	//Singleton<Time>::GetInstance().fixedDeltaTime = static_cast<double>(time);
 
 	ImGui::End();
 }

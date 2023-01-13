@@ -30,6 +30,7 @@ Component::~Component()
 
 void Component::CheckInitialize()
 {
+
 	ComponentInitialize();
 }
 
@@ -78,6 +79,17 @@ void Component::ImGuiDraw()
 			{
 				Destroy(this);
 			}
+			if (ImGui::Button("TestOutPut"))
+			{
+
+				{
+					// バイナリ書き出し
+					std::ofstream ofs("test.json", std::ios::binary);
+					cereal::JSONOutputArchive serealization(ofs);
+					serealization(cereal::make_nvp("root", *this));
+				}
+			}
+
 
 		}
 		ImGui::TreePop();

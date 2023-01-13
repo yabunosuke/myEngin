@@ -4,14 +4,8 @@
 class Time final
 {
 public:
-	static Time *GetInstance()
-	{
-		return time_instance_;
-	}
 
-	static void Create();
-	static void Destroy();
-
+	Time();
 
 	void InstrumentationStart();
 	double InstrumentationEnd();
@@ -40,16 +34,6 @@ public:
 	yEngine::Property<double> timeAsDouble{ &time_,yEngine::AccessorType::ReadOnly };
 
 private:
-	//シングルトンパターン
-	Time() = default;
-	~Time() = default;
-	Time(const Time & r) = default;
-	Time &operator= (const Time & r) = default;
-
-
-	static Time *time_instance_;		// インスタンス
-
-
 	int frame_count_;					// 最初のシーンが起動してからの経過フレーム
 	double time_;						// 最初のシーンが起動してからの経過時間（秒）
 

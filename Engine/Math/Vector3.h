@@ -1,8 +1,10 @@
 #pragma once
 #include <DirectXMath.h>
 #include "Math/Mathf.h"
-using namespace DirectX;
 
+
+
+using namespace DirectX;
 
 class Vector3 :
 	public XMFLOAT3
@@ -230,6 +232,16 @@ public:
 		if (index == 2) return this->z;
 		// ”ÍˆÍŠOQÆ
 		assert(0);
+	}
+
+	template<class Archive>
+	void serialize(Archive &archive)
+	{
+		archive(
+			cereal::make_nvp("x", x),
+			cereal::make_nvp("y", y),
+			cereal::make_nvp("z", z)
+		);
 	}
 };
 

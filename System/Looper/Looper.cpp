@@ -14,13 +14,14 @@
 #include "Object/Component/Camera.h"
 #include "Object/Component/Light.h"
 #include "Texture.h"
+#include "Singleton/Singleton.h"
 
 Sprite *sprite;
 int sprite_num;
 
 Looper::Looper() {
 	//最初のシーン
-	OnSceneChanged(Scenes::Title, false);
+	OnSceneChanged(Scenes::Game, false);
 	//KeyboardInput::GetIns()->Initialize();
 	Input::Initialize();
 
@@ -84,7 +85,7 @@ bool Looper::Loop()
 	}
 
 	// 計測開始
-	Time::GetInstance()->InstrumentationStart();
+	Singleton<Time>::GetInstance().InstrumentationStart();
 
 // ImGui描画前処理
 	ImGui_ImplDX12_NewFrame();
@@ -105,7 +106,7 @@ bool Looper::Loop()
 
 	// 物理挙動アップデート
 	{
-		for (int i = 0; Time::GetInstance()->CheckFixedUpdate(); ++i)
+		for (int i = 0; Singleton<Time>::GetInstance().CheckFixedUpdate(); ++i)
 		{
 			_RPT0(_CRT_WARN, "FixedUpdate\n");
 			scene_stack_.top()->FixedUpdate();
@@ -114,12 +115,12 @@ bool Looper::Loop()
 			CheckCollision::CheckColliders(scene_stack_.top()->GetObjectManager()->game_objects_);
 
 			// 経過時間を減少させる
-			Time::GetInstance()->SubFixedTimer();
+			Singleton<Time>::GetInstance().SubFixedTimer();
 			CheckCollision::PenaltyCalc();
 			// 2回処理して改善しなければ強制的に離脱
 			if(i > 0)
 			{
-				Time::GetInstance()->ClearFixedTimer();
+				Singleton<Time>::GetInstance().ClearFixedTimer();
 				break;
 			}
 		}
@@ -156,7 +157,7 @@ bool Looper::Loop()
 	scene_stack_.top()->DrawPostEffect(DirectXCommon::cmdList);
 
 	ImGui::Begin("fps");
-	float fps = 1.0f/static_cast<float>(Time::GetInstance()->time);
+	float fps = 1.0f/static_cast<float>(Singleton<Time>::GetInstance().time);
 	ImGui::DragFloat("FPS", &fps);
 	ImGui::End();
 	
@@ -171,7 +172,7 @@ bool Looper::Loop()
 
 
 	// 計測終了
-	Time::GetInstance()->InstrumentationEnd();
+	Singleton<Time>::GetInstance().InstrumentationEnd();
 
 	return !exit_window_;
 }

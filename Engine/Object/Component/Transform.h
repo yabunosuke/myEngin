@@ -310,6 +310,17 @@ public:
 
 	XMFLOAT4X4 *user_set_parent_{ nullptr };
 
+	// シリアライズ
+	template<class Archive>
+	void serialize(Archive &archive)
+	{
+		archive(
+			cereal::base_class<Component>(this)/*,
+			cereal::make_nvp("LocalPosition", local_position_),
+			cereal::make_nvp("WorldPosition", world_position_)*/
+		);
+	}
+
 protected:
 
 	// ローカル座標
@@ -344,6 +355,11 @@ protected:
 	// 全ての親の逆行列を取得する
 	XMMATRIX InverseMatrixAllParent();
 };
+
+
+CEREAL_REGISTER_TYPE(Transform)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(Component, Transform)
+
 
 namespace ecs
 {

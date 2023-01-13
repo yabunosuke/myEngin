@@ -32,7 +32,8 @@ enum class ComponentType
 class Component : 
 	public Object
 {
-protected: 
+	friend cereal::access;
+protected:
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
@@ -110,8 +111,6 @@ public:
 
 	// ゲームオブジェクト
 	std::weak_ptr<GameObject> game_object_;
-	// 重複チェック用のタグ
-	std::string tag_ = "";
 	// ゲームオブジェクトが持つTransform
 
 	void SetTransform(std::weak_ptr<Transform> trans);
@@ -120,6 +119,19 @@ public:
 		&transform_,yEngine::AccessorType::ReadOnly,
 
 	};
+
+
+	// シリアライズ
+	template<class Archive>
+	void serialize(Archive &archive)
+	{
+		archive(
+			cereal::base_class<Object>(this),
+			//cereal::make_nvp("GameObject", game_object_),
+			cereal::make_nvp("DontRemove", dont_remove_)
+			//cereal::make_nvp("Transform", transform_)
+		);
+	}
 
 
 protected:	//関数
@@ -156,14 +168,18 @@ protected:	//関数
 	virtual void Infomation() {};
 
 	
-	// 削除不可
-	bool dont_remove_;
 
 private:
 
+	// 削除不可
+	bool dont_remove_;
 	// トランスフォーム
 	std::weak_ptr<Transform> transform_;
 
 	ComponentType type_ = ComponentType::None;
 
 };
+
+
+CEREAL_REGISTER_TYPE(Component)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(Object, Component)

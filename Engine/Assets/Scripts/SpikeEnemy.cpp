@@ -119,7 +119,7 @@ void SpikeEnemy::Idole(bool is_fixed)
 		}
 		else
 		{
-			idol_move_timer_ += Time::GetInstance()->fixedDeltaTime;
+			idol_move_timer_ += Singleton<Time>::GetInstance().fixedDeltaTime;
 		}
 	}
 
@@ -185,7 +185,7 @@ void SpikeEnemy::Contact(bool is_fixed)
 		}
 		else
 		{
-			contact_move_timer_ += Time::GetInstance()->fixedDeltaTime;
+			contact_move_timer_ += Singleton<Time>::GetInstance().fixedDeltaTime;
 		}
 	}
 }
@@ -238,7 +238,7 @@ void SpikeEnemy::Damage(bool is_fixed)
 		}
 		else
 		{
-			invincible_timer_ += Time::GetInstance()->fixedDeltaTime;
+			invincible_timer_ += Singleton<Time>::GetInstance().fixedDeltaTime;
 		}
 
 	}
@@ -265,7 +265,7 @@ void SpikeEnemy::Death(bool is_fixed)
 		}
 		else
 		{
-			death_timer_ += Time::GetInstance()->deltaTime;
+			death_timer_ += Singleton<Time>::GetInstance().deltaTime;
 			float t{ death_timer_ / k_death_counter_ };
 			
 			transform->lock()->scale =

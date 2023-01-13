@@ -73,6 +73,8 @@ public:
 	};
 
 private:
+
+
 	//===========================================
 	//
 	//		Ã“Iƒƒ“ƒo•Ï”
@@ -118,3 +120,7 @@ private:
 
 };
 
+
+
+CEREAL_REGISTER_TYPE(Camera)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(Component, Camera)

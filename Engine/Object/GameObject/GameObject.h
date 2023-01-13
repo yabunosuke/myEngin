@@ -11,6 +11,7 @@
 #include <map>
 
 
+
 // 基底クラス
 #include "Object/Object.h"
 #include "Object/Component/Transform.h"
@@ -21,6 +22,7 @@
 
 #include "Property.h"
 
+
 class Collider;
 class MonoBehaviour;
 class GameObjectManager;
@@ -28,6 +30,7 @@ class GameObjectManager;
 class GameObject final :
 public Object
 {
+	friend cereal::access;
 private:
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -41,14 +44,15 @@ public:
 	//		コンストラクタ
 	//
 	//===========================================
-	GameObject(const std::string &name = "", const std::string &tag = "", bool is_2d = false);
+	GameObject(const std::string &name = "", const std::string &tag = "");
 	~GameObject() override;
-
 	//===========================================
 	//
 	//		静的メンバ関数
 	//
 	//===========================================
+
+	static std::weak_ptr<GameObject> AddGameObjet(const std::string &name);
 
 	static void SetGameObjectManager(GameObjectManager *game_object_manager);
 
@@ -140,7 +144,7 @@ public:
 	bool GetIsBlind() { return is_blind_; }
 
 	// 親オブジェクトの取得
-	std::weak_ptr<GameObject> GetPearent() { return pearent_game_object_; }
+	std::weak_ptr<GameObject> GetPearent() { return parent_game_object_; }
 	// 子のオブジェクトコンテナの取得
 	std::vector<std::weak_ptr<GameObject>> &GetChildren() { return child_game_object_; }
 
@@ -171,7 +175,7 @@ public:
 			std::function<std::weak_ptr<GameObject>(std::weak_ptr<GameObject>)> parent_acquisition{
 				[&](std::weak_ptr<GameObject> object)
 				{
-					auto pearent = object.lock()->pearent_game_object_;
+					auto pearent = object.lock()->parent_game_object_;
 					if (!pearent.expired())
 					{
 						return parent_acquisition(pearent);
@@ -214,7 +218,10 @@ public:
 			cereal::base_class<Object>(this),
 			cereal::make_nvp("LocalActive", active_self_),
 			cereal::make_nvp("LocalBlind", is_blind_),
-			cereal::make_nvp("IsStatic", is_static_)
+			cereal::make_nvp("IsStatic", is_static_)/*,
+			cereal::make_nvp("Parent", parent_game_object_),
+			cereal::make_nvp("Childs", child_game_object_),
+			cereal::make_nvp("Components", component_list_)*/
 
 		);
 	}
@@ -264,7 +271,7 @@ private:
 	std::string tag_ = "Notag";
 
 	// 親オブジェクト
-	std::weak_ptr<GameObject> pearent_game_object_;
+	std::weak_ptr<GameObject> parent_game_object_;
 	// 子オブジェクトのコンテナ
 	std::vector<std::weak_ptr<GameObject>> child_game_object_;
 	// コンポーネント
@@ -310,3 +317,7 @@ std::weak_ptr<T> GameObject::GetComponent()
 
 	return temp;
 }
+
+
+CEREAL_REGISTER_TYPE(GameObject)
+CEREAL_REGISTER_POLYMORPHIC_RELATION(Object, GameObject)

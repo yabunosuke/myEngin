@@ -1,10 +1,105 @@
 {
-    "value0": {
-        "value0": {
-            "Name": "CameraObject"
-        },
-        "LocalActive": true,
-        "LocalBlind": false,
-        "IsStatic": false
+    "root": {
+        "Object Container": [
+            {
+                "polymorphic_id": 2147483649,
+                "polymorphic_name": "GameObject",
+                "ptr_wrapper": {
+                    "id": 2147483649,
+                    "data": {
+                        "value0": {
+                            "Name": "Camera"
+                        },
+                        "LocalActive": true,
+                        "LocalBlind": false,
+                        "IsStatic": false
+                    }
+                }
+            },
+            {
+                "polymorphic_id": 2147483650,
+                "polymorphic_name": "Transform",
+                "ptr_wrapper": {
+                    "id": 2147483650,
+                    "data": {
+                        "value0": {
+                            "value0": {
+                                "Name": "Transform"
+                            },
+                            "DontRemove": false
+                        }
+                    }
+                }
+            },
+            {
+                "polymorphic_id": 2147483651,
+                "polymorphic_name": "Camera",
+                "ptr_wrapper": {
+                    "id": 2147483651,
+                    "data": {
+                        "value0": {
+                            "Name": "Camera"
+                        },
+                        "DontRemove": false
+                    }
+                }
+            },
+            {
+                "polymorphic_id": 1,
+                "ptr_wrapper": {
+                    "id": 2147483652,
+                    "data": {
+                        "value0": {
+                            "Name": "test"
+                        },
+                        "LocalActive": true,
+                        "LocalBlind": false,
+                        "IsStatic": false
+                    }
+                }
+            },
+            {
+                "polymorphic_id": 2,
+                "ptr_wrapper": {
+                    "id": 2147483653,
+                    "data": {
+                        "value0": {
+                            "value0": {
+                                "Name": "Transform"
+                            },
+                            "DontRemove": false
+                        }
+                    }
+                }
+            },
+            {
+                "polymorphic_id": 1,
+                "ptr_wrapper": {
+                    "id": 2147483654,
+                    "data": {
+                        "value0": {
+                            "Name": "test1"
+                        },
+                        "LocalActive": true,
+                        "LocalBlind": false,
+                        "IsStatic": false
+                    }
+                }
+            },
+            {
+                "polymorphic_id": 2,
+                "ptr_wrapper": {
+                    "id": 2147483655,
+                    "data": {
+                        "value0": {
+                            "value0": {
+                                "Name": "Transform"
+                            },
+                            "DontRemove": false
+                        }
+                    }
+                }
+            }
+        ]
     }
 }

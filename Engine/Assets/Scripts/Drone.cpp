@@ -54,7 +54,7 @@ void Drone::Update()
 		}
 		else
 		{
-			shot_interval += Time::GetInstance()->time;
+			shot_interval += Singleton<Time>::GetInstance().time;
 		}
 	}
 	else

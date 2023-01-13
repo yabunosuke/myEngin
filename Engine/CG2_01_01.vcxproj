@@ -182,6 +182,7 @@
     <ClCompile Include="PrimitiveRenderer.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene\AbstractScene\AbstractScene.cpp" />
+    <ClCompile Include="Singleton\Singleton.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Scene\Manager\CameraManager.cpp" />
     <ClCompile Include="Scene\Manager\GameObjectManager.cpp" />
@@ -378,6 +379,7 @@
     <ClInclude Include="Property.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene\AbstractScene\AbstractScene.h" />
+    <ClInclude Include="Singleton\Singleton.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Scene\Manager\CameraManager.h" />
     <ClInclude Include="Scene\Manager\GameObjectManager.h" />

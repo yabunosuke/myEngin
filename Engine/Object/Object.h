@@ -12,7 +12,16 @@
 #include <cereal/archives/binary.hpp>
 #include <cereal/archives/json.hpp>
 #include <cereal/types/string.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/types/list.hpp>
 #include <cereal/types/memory.hpp>
+
+#include <fstream>
+#include <filesystem>
+#include <sstream>
+
+#include "Singleton/Singleton.h"
+
 
 class Object:
 	public std::enable_shared_from_this<Object>
@@ -25,12 +34,15 @@ public:
 	//		静的変数
 	//
 	//===========================================
+	
 	/// <summary>
 	/// ゲームオブジェクトやコンポーネント、アセットの削除関数
 	/// </summary>
 	/// <param name="objct">削除するオブジェクト</param>
 	/// <param name="t">削除するまでのディレイ時間</param>
 	static void Destroy(Object *destroy_object, float t = 0.0f);
+
+
 
 	/// <summary>
 	/// 指定された型に一致するオブジェクトを返す
@@ -41,6 +53,7 @@ public:
 	static std::weak_ptr<Type> FindObjectOfType();
 
 
+	
 	/// <summary>
 	/// 指定された型に一致するオブジェクトを返す
 	/// </summary>
@@ -72,7 +85,6 @@ public:
 	/// </summary>
 	yEngine::Property<std::string> name{ &name_ ,yEngine::AccessorType::AllAccess };
 
-
 	// シリアライズ
 	template<class Archive>
 	void serialize(Archive &archive)
@@ -82,17 +94,16 @@ public:
 		);
 	}
 
+	
 
 protected:
-	Object(const std::string &name = "");
+	Object(const std::string &name="");
 	virtual void DestoryRelated() {};
 
 private:
-
 	/// <summary>
 	/// オブジェクトコンテナ
 	/// </summary>
-	static std::vector<std::shared_ptr<Object>> objects_;
 
 	// オブジェクトIDの重複回避用
 	static int id_counter_;
@@ -105,6 +116,8 @@ private:
 	float destroy_timer_;
 	bool is_destroy_;
 };
+
+
 
 
 template<class Type>
@@ -125,7 +138,29 @@ template<class T, class ...Parameter>
 inline std::weak_ptr<T> Object::CreateObject(Parameter ...parameter)
 {
 	std::shared_ptr<T> temp = std::make_shared<T>(parameter...);
-	objects_.emplace_back(temp);
+	Singleton<ObjectManager>::GetInstance().objects_.emplace_back(temp);
 	
 	return temp;
 }
+
+class ObjectManager 
+{
+	friend class Object;
+public:
+	void Save();
+
+	// シリアライズ
+	template<class Archive>
+	void save(Archive &archive) const
+	{
+		archive(
+			cereal::make_nvp("Object Container", objects_)
+		);
+
+	}
+
+private:
+	std::vector<std::shared_ptr<Object>> objects_;
+
+
+};

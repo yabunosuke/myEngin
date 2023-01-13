@@ -23,7 +23,7 @@ void Object3dComponent::ComponentUpdate()
 	DirectX::XMStoreFloat4x4(&world, transform->lock()->GetWorldMatrix());
 
 	// アニメーション再生
-	object_fbx->UpdateAnimation(Time::GetInstance()->time);
+	object_fbx->UpdateAnimation(Singleton<Time>::GetInstance().time);
 
 	auto test = object_fbx->FindNode("LeftHand");
 

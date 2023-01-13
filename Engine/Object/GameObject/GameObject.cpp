@@ -8,15 +8,11 @@
 
 
 
-#include <fstream>
-#include <filesystem>
-#include <sstream>
-
 GameObjectManager *GameObject::game_object_manager_;
 
 
 
-GameObject::GameObject(const std::string &name, const std::string &tag, bool is_2d)
+GameObject::GameObject(const std::string &name, const std::string &tagk)
 	:Object(name)
 {
 	// 名前が入っていなければ
@@ -27,16 +23,6 @@ GameObject::GameObject(const std::string &name, const std::string &tag, bool is_
 
 	active_self_ = true;
 	is_blind_ = false;
-
-	// 生成時にトランスフォーム
-	if (is_2d)
-	{
-		transform_ = AddComponent<RectTransform>();
-	}
-	else
-	{
-		transform_ = AddComponent<Transform>();
-	}
 
 }
 
@@ -61,15 +47,15 @@ GameObject::~GameObject()
 			{
 				continue;
 			}
-			child.lock()->pearent_game_object_.reset();
+			child.lock()->parent_game_object_.reset();
 		}
 	}
 
 	// 親がいる場合は親のリストから削除
-	if (!pearent_game_object_.expired())
+	if (!parent_game_object_.expired())
 	{
-		auto game_obj = pearent_game_object_.lock()->child_game_object_.begin();
-		for (; game_obj != pearent_game_object_.lock()->child_game_object_.end(); ++game_obj)
+		auto game_obj = parent_game_object_.lock()->child_game_object_.begin();
+		for (; game_obj != parent_game_object_.lock()->child_game_object_.end(); ++game_obj)
 		{
 			if (game_obj->expired())
 			{
@@ -77,7 +63,7 @@ GameObject::~GameObject()
 			}
 			if (game_obj->lock()->GetInstanceID()  == this->GetInstanceID())
 			{
-				pearent_game_object_.lock()->child_game_object_.erase(game_obj);
+				parent_game_object_.lock()->child_game_object_.erase(game_obj);
 				break;
 			}
 		}
@@ -97,6 +83,29 @@ GameObject::~GameObject()
 
 		}
 	}
+}
+
+std::weak_ptr<GameObject> GameObject::AddGameObjet(const std::string &name)
+{
+	std::weak_ptr<GameObject> temp = Object::CreateObject<GameObject>(name);
+	game_object_manager_->add_objects_.emplace_back(temp);
+
+
+	// 生成時にトランスフォーム
+	if (false)
+	{
+		temp.lock()->transform_ = temp.lock()->AddComponent<RectTransform>();
+	}
+	else
+	{
+		temp.lock()->transform_ = temp.lock()->AddComponent<Transform>();
+	}
+
+	temp.lock()->transform_.lock()->game_object_ = temp;
+
+
+
+	return temp;
 }
 
 void GameObject::SetGameObjectManager(GameObjectManager *game_object_manager)
@@ -135,9 +144,9 @@ void GameObject::Update()
 {
 	// 親オブジェクトのアクティブ（親が存在しないときはfalse）
 	bool parent_is_active = true;
-	if (!pearent_game_object_.expired())
+	if (!parent_game_object_.expired())
 	{
-		parent_is_active = pearent_game_object_.lock()->active_self_;
+		parent_is_active = parent_game_object_.lock()->active_self_;
 	}
 	// 親オブジェクトが非アクティブなときと、自身が非アクティブなときは更新しない
 	if (!parent_is_active || !active_self_) return;
@@ -187,13 +196,7 @@ void GameObject::DrawInspector()
 {
 	if (ImGui::Button("TestOutPut"))
 	{
-
-		{
-			// バイナリ書き出し
-			std::ofstream ofs("test.json", std::ios::binary);
-			cereal::JSONOutputArchive serealization(ofs);
-			serealization(cereal::make_nvp("root", *this));
-		}
+		Singleton<ObjectManager>::GetInstance().Save();
 	}
 
 	//アクティブフラグ
@@ -229,7 +232,7 @@ void GameObject::DrawInspector()
 void GameObject::SetParent(std::weak_ptr<GameObject> parent)
 {
 	// 子に親をセット
-	pearent_game_object_ = parent;
+	parent_game_object_ = parent;
 	// 親に子をセット
 	parent.lock()->child_game_object_.emplace_back(std::dynamic_pointer_cast<GameObject>(weak_from_this().lock()));
 	// 子のトランスフォームに親のトランスフォームをセットする
@@ -286,7 +289,7 @@ void GameObject::DestoryRelated()
 	{
 		for (auto &child : child_game_object_)
 		{
-			child.lock()->pearent_game_object_.reset();
+			child.lock()->parent_game_object_.reset();
 			Destroy(child.lock().get());
 			child.lock()->DestoryRelated();
 		}

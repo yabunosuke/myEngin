@@ -15,6 +15,7 @@
 #include "Time/Time.h"
 #include "D3D12Base/D3D12Base.h"
 
+#include "Singleton/Singleton.h"
 
 
 bool SystemMain::Initialize()
@@ -49,7 +50,10 @@ bool SystemMain::Initialize()
 	constant_buffer_manager_ = new ConstantBufferManager(DirectXCommon::dev);
 
 	// Timeクラスのシングルトン生成
-	Time::Create();
+
+	// Instance生成
+	Singleton<Time>::GetInstance();
+	Singleton<ObjectManager>::GetInstance();
 
 	return true;
 }
@@ -57,10 +61,10 @@ bool SystemMain::Initialize()
 void SystemMain::Finalize() const
 {
 	// Timeクラスのシングルトン解放
-	Time::Destroy();
 	AudioManager::SoundUnLoad(AudioManager::sound);		//音声を開放
 	WinApp::WindowClassRelease();	// ウィンドウクラスを登録解除
-
+	
+	SingletonFinalizer::Finalize();
 }
 
 void SystemMain::main() const

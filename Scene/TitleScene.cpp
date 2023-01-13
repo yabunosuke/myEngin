@@ -28,14 +28,14 @@ TitleScene::TitleScene(IoChangedListener *impl)
 void TitleScene::Initialize()
 {
 	// ÉJÉÅÉâ
-	auto camera = Object::CreateObject<GameObject>("CameraObject");
+	auto camera =GameObject::AddGameObjet("Camera");
 	camera.lock()->AddComponent<Camera>();
 	camera.lock()->transform->lock()->localPosition = {0,0,-10};
 	camera.lock()->transform->lock()->localQuaternion = Quaternion::Euler(0, 0, 0);
 
-	auto test = Object::CreateObject<GameObject>("test");
+	auto test = GameObject::AddGameObjet("test");
 	test.lock()->transform->lock()->localPosition = {1,2,3};
-	auto test1 = Object::CreateObject<GameObject>("test1");
+	auto test1 = GameObject::AddGameObjet("test1");
 	test.lock()->SetParent(test1);
 
 
